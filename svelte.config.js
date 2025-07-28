@@ -13,14 +13,17 @@ const config = {
 		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 		adapter: adapter({
 			// Use Node.js 22.x runtime (Vercel default)
-			runtime: 'nodejs22.x'
+			runtime: 'nodejs22.x',
+			// Force dynamic rendering
+			isr: false,
+			// Ensure proper function generation
+			split: false
 		}),
 		
 		// Prerender static pages for better performance
 		prerender: {
 			entries: [
-				// Home and category pages (with ISR potential)
-				'/',
+				// Category pages (with ISR potential)
 				'/browse',
 				'/bags',
 				'/designer', 

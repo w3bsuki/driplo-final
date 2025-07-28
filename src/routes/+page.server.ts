@@ -1,6 +1,9 @@
 import type { PageServerLoad } from './$types';
 import { getCachedData, cacheKeys, cacheTTL } from '$lib/server/cache';
 
+// Disable prerendering to ensure dynamic content
+export const prerender = false;
+
 // Server-side debug logging
 const serverDebug = {
   log: (message: string, data?: any) => {
