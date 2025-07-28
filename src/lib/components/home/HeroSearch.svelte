@@ -205,41 +205,41 @@
 
 </script>
 
-<section bind:this={heroRef} class="relative bg-gradient-to-b from-[var(--color-brand-50)] to-[var(--color-white)] py-[var(--spacing-3)] md:py-[var(--spacing-6)] pb-0">
-	<div class="container px-[var(--spacing-4)]">
+<section bind:this={heroRef} class="relative bg-gradient-to-b from-brand-50 to-white py-3 md:py-6 pb-0">
+	<div class="container px-4">
 		<div class="max-w-3xl mx-auto">
 			
 			<!-- Desktop Layout -->
 			<div class="hidden md:block">
 				<div class="relative">
 					<div class={cn(
-						"relative bg-[var(--color-surface-primary)] rounded-[var(--border-radius-sm)] border border-[var(--color-border-primary)] transition-all duration-[var(--transition-duration-100)]",
-						isFocused ? "border-[var(--color-brand-500)] ring-1 ring-[var(--color-brand-500)]" : "border-[var(--color-border-primary)]"
+						"relative bg-white rounded-sm border border-gray-200 transition-all duration-100",
+						isFocused ? "border-brand-500 ring-1 ring-brand-500" : "border-gray-200"
 					)}>
-						<div class="flex items-center min-w-0 py-[var(--spacing-2)] px-[var(--spacing-3)]">
+						<div class="flex items-center min-w-0 py-2 px-3">
 							<!-- Category Dropdown Button -->
 							<div class="relative flex-shrink-0">
 								<button
 									data-categories-button
 									onclick={toggleCategoryDropdown}
 									class={cn(
-										`${BUTTON_HEIGHT} px-[var(--spacing-3)] font-medium focus:outline-none transition-all duration-[var(--transition-duration-100)] rounded-[var(--border-radius-sm)] flex items-center gap-[var(--spacing-2)]`,
+										`${BUTTON_HEIGHT} px-3 font-medium focus:outline-none transition-all duration-100 rounded-sm flex items-center gap-2`,
 										isCategoryDropdownOpen 
-											? "bg-[var(--color-brand-500)] text-[var(--color-white)] hover:bg-[var(--color-brand-600)]" 
-											: "bg-[var(--color-gray-900)] text-[var(--color-white)] hover:bg-[var(--color-gray-800)]"
+											? "bg-brand-500 text-white hover:bg-brand-600" 
+											: "bg-gray-900 text-white hover:bg-gray-800"
 									)}
 								>
-									<span class="text-[var(--font-size-sm)]">{header_categories()}</span>
+									<span class="text-sm">{header_categories()}</span>
 									<ChevronDown class={cn(
 										ICON_SIZE_SM,
-										"transition-transform duration-[var(--transition-duration-100)]",
+										"transition-transform duration-100",
 										isCategoryDropdownOpen && "rotate-180"
 									)} />
 								</button>
 							</div>
 							
 							<!-- Divider -->
-							<div class="w-px h-7 bg-[var(--color-border-primary)] flex-shrink-0 mx-[var(--spacing-3)]"></div>
+							<div class="w-px h-7 bg-gray-200 flex-shrink-0 mx-3"></div>
 							
 							<!-- Search Input with Icon -->
 							<div class="flex-1 min-w-0 flex items-center">
@@ -252,11 +252,11 @@
 									onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 									oninput={handleSearch}
 									aria-label={browse_search_placeholder()}
-									class={`${INPUT_HEIGHT} w-full border-0 focus:ring-0 bg-transparent text-[var(--font-size-sm)]`}
+									class={`${INPUT_HEIGHT} w-full border-0 focus:ring-0 bg-transparent text-sm`}
 								/>
 								<button
 									onclick={handleSearch}
-									class={`${BUTTON_HEIGHT} w-9 hover:opacity-75 transition-opacity duration-[var(--transition-duration-100)] focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-500)] rounded-[var(--border-radius-sm)] flex items-center justify-center flex-shrink-0`}
+									class={`${BUTTON_HEIGHT} w-9 hover:opacity-75 transition-opacity duration-100 focus:outline-none focus:ring-1 focus:ring-brand-500 rounded-sm flex items-center justify-center flex-shrink-0`}
 									aria-label={quick_filter_search_button()}
 								>
 									<Search class={ICON_SIZE_BASE} />
@@ -290,14 +290,14 @@
 								<div class="w-px h-5 bg-border flex-shrink-0" aria-hidden="true"></div>
 								
 								<!-- Category Quick Links -->
-								<div class="flex items-center gap-[var(--spacing-2)] overflow-x-auto scrollbar-hide">
+								<div class="flex items-center gap-2 overflow-x-auto scrollbar-hide">
 									{#each categories.slice(0, DESKTOP_CATEGORY_LIMIT) as category}
 										<button
 											onclick={() => handleCategorySelect(category.slug)}
 											aria-label="Category: {getCategoryName(category)}"
-											class="flex items-center gap-[var(--spacing-1-5)] px-[var(--spacing-3)] py-[var(--spacing-2)] rounded-[var(--border-radius-sm)] bg-[var(--color-surface-primary)] border border-[var(--color-border-primary)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text-secondary)] text-[var(--font-size-sm)] font-medium whitespace-nowrap transition-colors duration-[var(--transition-duration-100)] focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-500)]"
+											class="flex items-center gap-1.5 px-3 py-2 rounded-sm bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-sm font-medium whitespace-nowrap transition-colors duration-100 focus:outline-none focus:ring-1 focus:ring-brand-500"
 										>
-											<span class="text-[var(--font-size-sm)]" aria-hidden="true">{category.icon_url || category.icon || '📦'}</span>
+											<span class="text-sm" aria-hidden="true">{category.icon_url || category.icon || '📦'}</span>
 											<span>{getCategoryName(category)}</span>
 										</button>
 									{/each}
@@ -342,7 +342,7 @@
 							</div>
 							
 							<!-- Divider -->
-							<div class="w-px h-8 bg-[var(--color-border-primary)] flex-shrink-0"></div>
+							<div class="w-px h-8 bg-gray-200 flex-shrink-0"></div>
 							
 							<!-- Search Input -->
 							<input
@@ -354,12 +354,12 @@
 								onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 								oninput={handleSearch}
 								aria-label={browse_search_placeholder()}
-								class={`${INPUT_HEIGHT} flex-1 border-0 focus:ring-0 bg-transparent text-[var(--font-size-sm)] min-w-0`}
+								class={`${INPUT_HEIGHT} flex-1 border-0 focus:ring-0 bg-transparent text-sm min-w-0`}
 							/>
 							
 							<button
 								onclick={handleSearch}
-								class={`${BUTTON_HEIGHT} w-9 hover:opacity-75 transition-opacity duration-[var(--transition-duration-100)] focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-500)] rounded-[var(--border-radius-sm)] flex items-center justify-center flex-shrink-0`}
+								class={`${BUTTON_HEIGHT} w-9 hover:opacity-75 transition-opacity duration-100 focus:outline-none focus:ring-1 focus:ring-brand-500 rounded-sm flex items-center justify-center flex-shrink-0`}
 								aria-label={quick_filter_search_button()}
 							>
 								<Search class={ICON_SIZE_BASE} />
@@ -368,7 +368,7 @@
 						
 						<!-- Mobile Category Dropdown - Opens above pills for better UX -->
 						{#if isCategoryDropdownOpen}
-							<div class="border-t border-[var(--color-border-primary)]">
+							<div class="border-t border-gray-200">
 								<CategoryDropdown
 									{categories}
 									isOpen={isCategoryDropdownOpen}
@@ -380,11 +380,11 @@
 						{/if}
 						
 						<!-- Pills Section -->
-						<div class="border-t border-[var(--color-border-primary)]">
-							<div class="py-[var(--spacing-2)] px-[var(--spacing-3)] relative">
+						<div class="border-t border-gray-200">
+							<div class="py-2 px-3 relative">
 								<!-- Quick Filters -->
 								<div class="overflow-x-auto relative">
-									<div class="flex items-center gap-[var(--spacing-1-5)] overflow-x-auto scrollbar-hide">
+									<div class="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
 										<!-- Use QuickFilterPills component for consistent styling -->
 										<QuickFilterPills
 											filters={quickFilters}
