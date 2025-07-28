@@ -165,6 +165,69 @@ button.bg-gradient-to-r.from-orange-500.to-orange-600:hover,
 .ring-offset-background { --tw-ring-offset-color: var(--color-white); }
 .focus-visible\:ring-offset-2:focus-visible { --tw-ring-offset-width: 2px; }
 
+/* White color utilities */
+.bg-white { background-color: var(--color-white); }
+.text-white { color: var(--color-white); }
+.hover\:bg-white:hover { background-color: var(--color-white); }
+.dark\:bg-white:where(.dark, .dark *) { background-color: var(--color-white); }
+.dark\:text-white:where(.dark, .dark *) { color: var(--color-white); }
+
+/* White with opacity */
+.bg-white\/10 { background-color: rgba(255, 255, 255, 0.1); }
+.bg-white\/20 { background-color: rgba(255, 255, 255, 0.2); }
+.bg-white\/30 { background-color: rgba(255, 255, 255, 0.3); }
+.bg-white\/40 { background-color: rgba(255, 255, 255, 0.4); }
+.bg-white\/50 { background-color: rgba(255, 255, 255, 0.5); }
+.bg-white\/60 { background-color: rgba(255, 255, 255, 0.6); }
+.bg-white\/70 { background-color: rgba(255, 255, 255, 0.7); }
+.bg-white\/80 { background-color: rgba(255, 255, 255, 0.8); }
+.bg-white\/90 { background-color: rgba(255, 255, 255, 0.9); }
+.text-white\/70 { color: rgba(255, 255, 255, 0.7); }
+.text-white\/80 { color: rgba(255, 255, 255, 0.8); }
+.text-white\/90 { color: rgba(255, 255, 255, 0.9); }
+.hover\:bg-white\/10:hover { background-color: rgba(255, 255, 255, 0.1); }
+.hover\:bg-white\/20:hover { background-color: rgba(255, 255, 255, 0.2); }
+.hover\:text-white:hover { color: var(--color-white); }
+.dark\:hover\:bg-white\/20:hover:where(.dark, .dark *) { background-color: rgba(255, 255, 255, 0.2); }
+
+/* Gray color utilities - MISSING CLASSES CAUSING BLACK BANNER */
+.bg-gray-50 { background-color: var(--color-gray-50); }
+.bg-gray-100 { background-color: var(--color-gray-100); }
+.bg-gray-200 { background-color: var(--color-gray-200); }
+.bg-gray-300 { background-color: var(--color-gray-300); }
+.bg-gray-400 { background-color: var(--color-gray-400); }
+.bg-gray-500 { background-color: var(--color-gray-500); }
+.bg-gray-600 { background-color: var(--color-gray-600); }
+.bg-gray-700 { background-color: var(--color-gray-700); }
+.bg-gray-800 { background-color: var(--color-gray-800); }
+.bg-gray-900 { background-color: var(--color-gray-900); }
+.bg-gray-950 { background-color: var(--color-gray-950); }
+.text-gray-50 { color: var(--color-gray-50); }
+.text-gray-100 { color: var(--color-gray-100); }
+.text-gray-200 { color: var(--color-gray-200); }
+.text-gray-300 { color: var(--color-gray-300); }
+.text-gray-400 { color: var(--color-gray-400); }
+.text-gray-500 { color: var(--color-gray-500); }
+.text-gray-600 { color: var(--color-gray-600); }
+.text-gray-700 { color: var(--color-gray-700); }
+.text-gray-800 { color: var(--color-gray-800); }
+.text-gray-900 { color: var(--color-gray-900); }
+.text-gray-950 { color: var(--color-gray-950); }
+.hover\:bg-gray-50:hover { background-color: var(--color-gray-50); }
+.hover\:bg-gray-100:hover { background-color: var(--color-gray-100); }
+.hover\:bg-gray-200:hover { background-color: var(--color-gray-200); }
+.hover\:bg-gray-700:hover { background-color: var(--color-gray-700); }
+.hover\:bg-gray-800:hover { background-color: var(--color-gray-800); }
+.dark\:bg-gray-50:where(.dark, .dark *) { background-color: var(--color-gray-50); }
+.dark\:bg-gray-700:where(.dark, .dark *) { background-color: var(--color-gray-700); }
+.dark\:bg-gray-800:where(.dark, .dark *) { background-color: var(--color-gray-800); }
+.dark\:bg-gray-900:where(.dark, .dark *) { background-color: var(--color-gray-900); }
+.dark\:bg-gray-950:where(.dark, .dark *) { background-color: var(--color-gray-950); }
+.dark\:text-gray-50:where(.dark, .dark *) { color: var(--color-gray-50); }
+.dark\:text-gray-400:where(.dark, .dark *) { color: var(--color-gray-400); }
+.dark\:hover\:bg-gray-700:hover:where(.dark, .dark *) { background-color: var(--color-gray-700); }
+.dark\:hover\:bg-gray-800:hover:where(.dark, .dark *) { background-color: var(--color-gray-800); }
+
 /* Brand color utilities for gradients */
 .from-brand-50 { --tw-gradient-from: var(--color-brand-50); }
 .to-white { --tw-gradient-to: var(--color-white); }
@@ -192,3 +255,25 @@ button.bg-gradient-to-r.from-orange-500.to-orange-600:hover,
 .ring-brand-500 { --tw-ring-color: var(--color-brand-500); }
 .hover\:bg-brand-600:hover { background-color: var(--color-brand-600); }
 .hover\:bg-brand-700:hover { background-color: var(--color-brand-700); }
+
+/* Border utilities */
+.border-gray-50 { border-color: var(--color-gray-50); }
+.border-gray-100 { border-color: var(--color-gray-100); }
+.border-gray-200 { border-color: var(--color-gray-200); }
+.border-gray-300 { border-color: var(--color-gray-300); }
+.border-gray-400 { border-color: var(--color-gray-400); }
+.border-gray-500 { border-color: var(--color-gray-500); }
+.border-gray-600 { border-color: var(--color-gray-600); }
+.border-gray-700 { border-color: var(--color-gray-700); }
+.border-gray-800 { border-color: var(--color-gray-800); }
+.border-gray-900 { border-color: var(--color-gray-900); }
+.border-gray-950 { border-color: var(--color-gray-950); }
+.dark\:border-gray-600:where(.dark, .dark *) { border-color: var(--color-gray-600); }
+.dark\:border-gray-700:where(.dark, .dark *) { border-color: var(--color-gray-700); }
+.dark\:border-gray-800:where(.dark, .dark *) { border-color: var(--color-gray-800); }
+
+/* Border semantic utilities */
+.border-border-primary { border-color: var(--color-border-primary); }
+.border-border-secondary { border-color: var(--color-border-secondary); }
+.hover\:border-gray-300:hover { border-color: var(--color-gray-300); }
+.hover\:border-gray-400:hover { border-color: var(--color-gray-400); }

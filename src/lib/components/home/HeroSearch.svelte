@@ -135,6 +135,12 @@
 
 	// Lazy load sticky search bar
 	onMount(async () => {
+		console.log('[HeroSearch] Component mounted');
+		
+		// Test if JavaScript is working
+		const testButton = document.querySelector('[data-categories-button]');
+		console.log('[HeroSearch] Categories button found:', !!testButton);
+		
 		const stickyModule = await import('$lib/components/search/StickySearchBar.svelte');
 		StickySearchBar = stickyModule.default;
 		
@@ -165,6 +171,7 @@
 
 	// Debounced search handler
 	const debouncedHandleSearch = debounce(() => {
+		console.log('[HeroSearch] Debounced search executing', { query: searchQuery.trim() });
 		if (searchQuery.trim()) {
 			const params = new URLSearchParams();
 			params.set('q', searchQuery.trim());
@@ -175,6 +182,7 @@
 	}, SEARCH_DEBOUNCE_DELAY);
 
 	const handleSearch = () => {
+		console.log('[HeroSearch] handleSearch called', { query: searchQuery });
 		debug.log('Search initiated', { component: 'HeroSearch', data: { query: searchQuery.trim() } });
 		debouncedHandleSearch();
 	};
@@ -221,7 +229,10 @@
 							<div class="relative flex-shrink-0">
 								<button
 									data-categories-button
-									onclick={toggleCategoryDropdown}
+									onclick={() => {
+										console.log('[HeroSearch] Categories button clicked');
+										toggleCategoryDropdown();
+									}}
 									class={cn(
 										`${BUTTON_HEIGHT} px-3 font-medium focus:outline-none transition-all duration-100 rounded-sm flex items-center gap-2`,
 										isCategoryDropdownOpen 
@@ -246,11 +257,24 @@
 								<input
 									type="search"
 									placeholder={browse_search_placeholder()}
-									bind:value={searchQuery}
-									onfocus={() => isFocused = true}
-									onblur={() => isFocused = false}
-									onkeydown={(e) => e.key === 'Enter' && handleSearch()}
-									oninput={handleSearch}
+									value={searchQuery}
+									onfocus={() => {
+										console.log('[HeroSearch] Input focused');
+										isFocused = true;
+									}}
+									onblur={() => {
+										console.log('[HeroSearch] Input blurred');
+										isFocused = false;
+									}}
+									onkeydown={(e) => {
+										console.log('[HeroSearch] Key pressed:', e.key);
+										if (e.key === 'Enter') handleSearch();
+									}}
+									oninput={(e) => {
+										searchQuery = e.currentTarget.value;
+										console.log('[HeroSearch] Input changed:', searchQuery);
+										handleSearch();
+									}}
 									aria-label={browse_search_placeholder()}
 									class={`${INPUT_HEIGHT} w-full border-0 focus:ring-0 bg-transparent text-sm`}
 								/>
@@ -348,11 +372,14 @@
 							<input
 								type="search"
 								placeholder={browse_search_placeholder()}
-								bind:value={searchQuery}
+								value={searchQuery}
 								onfocus={() => isFocused = true}
 								onblur={() => isFocused = false}
 								onkeydown={(e) => e.key === 'Enter' && handleSearch()}
-								oninput={handleSearch}
+								oninput={(e) => {
+									searchQuery = e.currentTarget.value;
+									handleSearch();
+								}}
 								aria-label={browse_search_placeholder()}
 								class={`${INPUT_HEIGHT} flex-1 border-0 focus:ring-0 bg-transparent text-sm min-w-0`}
 							/>
