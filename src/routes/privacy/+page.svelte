@@ -66,7 +66,7 @@
 			<div class="bg-muted/50 p-6 rounded-lg mb-6">
 				<div class="flex items-center justify-between mb-4">
 					<h3 class="font-semibold">Your Current Cookie Preferences</h3>
-					<Button onclick={handleOpenCookieSettings} variant="outline" size="sm">
+					<Button onclick={openCookieSettings} variant="outline" size="sm">
 						<Settings class="w-4 h-4 mr-2" />
 						Manage Settings
 					</Button>
