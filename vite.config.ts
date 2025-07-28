@@ -7,6 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
 	plugins: [
 		// Tailwind v4 with CSS-first configuration
+		// MUST be first for proper CSS processing on Vercel
 		tailwindcss(),
 		paraglideVitePlugin({
 			project: "./project.inlang",
@@ -103,10 +104,8 @@ export default defineConfig({
 	
 	// CSS processing optimizations
 	css: {
-		// PostCSS optimizations for Tailwind v4
-		postcss: {
-			plugins: []
-		},
+		// Force PostCSS processing for Vercel
+		postcss: {},
 		// CSS dev source maps for debugging
 		devSourcemap: true,
 		// CSS preprocessing options
