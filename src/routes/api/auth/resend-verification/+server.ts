@@ -1,8 +1,7 @@
 import type { RequestHandler } from './$types';
 import { createClient } from '@supabase/supabase-js';
 import { SUPABASE_SERVICE_ROLE_KEY } from '$env/static/private';
-import { PUBLIC_SUPABASE_URL } from '$env/static/public';
-const PUBLIC_APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://driplo.com';
+import { PUBLIC_SUPABASE_URL, PUBLIC_APP_URL } from '$env/static/public';
 import { emailService } from '$lib/server/email';
 import { apiError, apiSuccess, ApiErrorType, validateRequest, ApiError } from '$lib/server/api-utils';
 import { z } from 'zod';
