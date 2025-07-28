@@ -7,7 +7,7 @@
     "dev": "node --max-http-header-size=16384 ./node_modules/vite/bin/vite.js dev",
     "build": "vite build",
     "preview": "vite preview",
-    "vercel-build": "svelte-kit sync && pnpm run build",
+    "vercel-build": "rm -rf .svelte-kit && rm -rf build && svelte-kit sync && pnpm run build",
     "prepare": "svelte-kit sync || echo ''",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
