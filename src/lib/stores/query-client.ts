@@ -6,7 +6,7 @@ let queryClient: QueryClient | null = null
 
 export function createQueryClient() {
 	// Always create a client, but with different settings for SSR
-	if (!queryClient) {
+	if (!queryClient || (browser && !queryClient)) {
 		const isSSR = !browser;
 		queryClient = new QueryClient({
 			defaultOptions: {
@@ -23,8 +23,8 @@ export function createQueryClient() {
 					refetchOnReconnect: !isSSR,
 					// Enable network mode for better offline handling
 					networkMode: isSSR ? 'always' : 'online',
-					// Disable queries during SSR
-					enabled: !isSSR
+					// Enable queries in both SSR and browser
+					enabled: true
 				},
 				mutations: {
 					// Retry failed mutations once

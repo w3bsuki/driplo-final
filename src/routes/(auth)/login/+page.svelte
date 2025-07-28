@@ -73,7 +73,12 @@
 		}
 	})
 
-	async function handleLogin() {
+	async function handleLogin(event?: Event) {
+		// Prevent form submission
+		if (event) {
+			event.preventDefault()
+		}
+		
 		if (!email || !password) {
 			toast.error(m.auth_fill_all_fields())
 			return
@@ -81,19 +86,23 @@
 		
 		// Check if auth context exists
 		if (!auth) {
+			console.error('Auth context not available:', auth)
 			toast.error('Authentication service not available. Please refresh the page.')
 			return
 		}
 		
-
+		console.log('Starting login process with:', { email, hasPassword: !!password })
 		loading = true
+		
 		try {
-			await auth.signIn(email, password, rememberMe)
+			const result = await auth.signIn(email, password, rememberMe)
+			console.log('Login successful:', result)
 			toast.success(m.auth_welcome_back_toast())
 			
-			
-			goto('/')
+			// Navigate after successful login
+			await goto('/')
 		} catch (error) {
+			console.error('Login error:', error)
 			if (error instanceof Error) {
 				// Handle specific error cases
 				if (error.message.includes('Email not confirmed')) {
@@ -224,7 +233,7 @@
 			</div>
 
 			<!-- Login Form -->
-			<form onsubmit={(e) => { e.preventDefault(); handleLogin(); }} class="space-y-3">
+			<form onsubmit={handleLogin} class="space-y-3">
 				<div>
 					<label for="email" class="block text-sm font-medium text-gray-700 mb-1">
 						Email
