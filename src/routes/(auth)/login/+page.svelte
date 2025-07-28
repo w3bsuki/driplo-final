@@ -10,7 +10,6 @@
 	import { Button, Input } from '$lib/components/ui'
 	import Icon from '$lib/components/ui/icon.svelte'
 	import { onMount } from 'svelte'
-	import TurnstileWrapper from '$lib/components/auth/TurnstileWrapper.svelte'
 
 	const auth = getAuthContext()
 	console.log('Auth context in login page:', auth)
@@ -21,10 +20,6 @@
 	let rememberMe = $state(false)
 	let loading = $state(false)
 	
-	// CAPTCHA state
-	let captchaToken = $state<string | null>(null)
-	let showCaptchaError = $state(false)
-	let captchaRef: TurnstileWrapper
 
 	// Show error messages based on URL parameters
 	onMount(() => {
@@ -90,23 +85,12 @@
 			return
 		}
 		
-		// Check CAPTCHA in production
-		if (import.meta.env.MODE === 'production' && !captchaToken) {
-			showCaptchaError = true
-			toast.error('Please complete the CAPTCHA verification')
-			return
-		}
 
 		loading = true
 		try {
 			await auth.signIn(email, password, rememberMe)
 			toast.success(m.auth_welcome_back_toast())
 			
-			// Reset CAPTCHA for security
-			if (captchaRef) {
-				captchaRef.reset()
-			}
-			captchaToken = null
 			
 			goto('/')
 		} catch (error) {
@@ -287,29 +271,6 @@
 						</button>
 					</div>
 				</div>
-				
-				<!-- CAPTCHA -->
-				<div>
-					<TurnstileWrapper
-						bind:this={captchaRef}
-						onVerify={(token) => {
-							captchaToken = token
-							showCaptchaError = false
-						}}
-						onExpire={() => {
-							captchaToken = null
-						}}
-						onError={() => {
-							captchaToken = null
-							toast.error('CAPTCHA verification failed. Please try again.')
-						}}
-						theme="light"
-						size="normal"
-					/>
-					{#if showCaptchaError && !captchaToken}
-						<p class="text-red-500 text-xs mt-1" role="alert" aria-live="assertive">Please complete the CAPTCHA verification</p>
-					{/if}
-				</div>
 
 				<div class="flex items-center justify-between text-sm">
 					<label class="flex items-center">
@@ -328,7 +289,7 @@
 				<button 
 					type="submit" 
 					class="w-full py-2 bg-blue-400 text-white font-medium rounded-sm hover:bg-blue-500 transition-colors duration-fast disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-					disabled={loading || (import.meta.env.MODE === 'production' && !captchaToken)}
+					disabled={loading}
 				>
 					{#if loading}
 						<Spinner size="sm" color="white" />
