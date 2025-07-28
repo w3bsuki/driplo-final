@@ -36,7 +36,7 @@
 	}
 	
 	// Track scroll position for landing page
-	let showMobileNavOnLanding = $state(false);
+	let showMobileNavOnLanding = $state(true); // Show immediately to prevent hydration issues
 	
 	// Define pages where bottom nav should be hidden
 	const hiddenPaths = [

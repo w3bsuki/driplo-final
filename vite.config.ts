@@ -6,14 +6,14 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
 	plugins: [
+		// SvelteKit must be before Tailwind for proper file handling
+		sveltekit(),
 		// Tailwind v4 with CSS-first configuration
-		// MUST be first for proper CSS processing on Vercel
 		tailwindcss(),
 		paraglideVitePlugin({
 			project: "./project.inlang",
 			outdir: "./src/lib/paraglide",
 		}),
-		sveltekit(),
 		// Enhanced bundle analyzer
 		visualizer({
 			emitFile: true,

@@ -71,15 +71,17 @@
 		error = null
 	}: Props = $props();
 	
-	// State - use a safe default that works on server and client
-	let windowWidth = $state(browser ? window.innerWidth : 768);
+	// State - use mobile-first default to prevent hydration mismatch
+	let windowWidth = $state(375); // Always start with mobile width for SSR
 	
 	// Update window width on resize and initial mount
 	$effect(() => {
 		if (!browser) return;
 		
-		// Set initial width on client mount to prevent hydration mismatch
-		windowWidth = window.innerWidth;
+		// Use requestAnimationFrame to update after hydration completes
+		requestAnimationFrame(() => {
+			windowWidth = window.innerWidth;
+		});
 		
 		const handleResize = () => {
 			windowWidth = window.innerWidth;
