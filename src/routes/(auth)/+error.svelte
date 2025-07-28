@@ -180,7 +180,7 @@
 
         {#if authErrorContent.showLogin}
           <a
-            href="/login"
+            href="/auth/login"
             class="block w-full bg-blue-600 text-white py-2 px-4 rounded-sm hover:bg-blue-700 transition-colors duration-100 text-sm text-center"
           >
             Sign In Instead
@@ -189,7 +189,7 @@
 
         {#if authErrorContent.showForgotPassword}
           <a
-            href="/forgot-password"
+            href="/auth/forgot-password"
             class="block w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 py-2 px-4 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-100 text-sm text-center"
           >
             Forgot Password?

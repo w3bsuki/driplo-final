@@ -168,13 +168,13 @@
 		
 		<div class="space-y-2">
 			<a
-				href="/login"
+				href="/auth/login"
 				class="flex items-center justify-center py-1.5 bg-primary hover:bg-primary/90 text-primary-foreground rounded-sm text-sm font-medium cursor-pointer w-full no-underline"
 			>
 				Sign in
 			</a>
 			<a
-				href="/register"
+				href="/auth/register"
 				class="flex items-center justify-center py-1.5 border border-border hover:bg-muted rounded-sm text-sm cursor-pointer w-full no-underline"
 			>
 				Create account

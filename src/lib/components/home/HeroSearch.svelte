@@ -74,6 +74,7 @@
 	let isSticky = $state(false);
 	let heroRef: HTMLElement;
 	let StickySearchBar = $state<any>(null);
+	let isHydrated = $state(false);
 
 	// Debug logging
 	debug.log('HeroSearch initialized', {
@@ -135,6 +136,7 @@
 
 	// Lazy load sticky search bar
 	onMount(async () => {
+		isHydrated = true;
 		
 		const stickyModule = await import('$lib/components/search/StickySearchBar.svelte');
 		StickySearchBar = stickyModule.default;
@@ -434,7 +436,7 @@
 </section>
 
 <!-- Sticky Search Bar -->
-{#if StickySearchBar}
+{#if isHydrated && StickySearchBar}
 	<StickySearchBar
 		bind:value={searchQuery}
 		placeholder={browse_search_placeholder()}

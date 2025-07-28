@@ -5,37 +5,33 @@ import { browser } from '$app/environment'
 let queryClient: QueryClient | null = null
 
 export function createQueryClient() {
-	if (!queryClient && browser) {
+	// Always create a client, but with different settings for SSR
+	if (!queryClient) {
+		const isSSR = !browser;
 		queryClient = new QueryClient({
 			defaultOptions: {
 				queries: {
 					// Cache for 5 minutes by default
-					staleTime: 5 * 60 * 1000,
+					staleTime: isSSR ? 0 : 5 * 60 * 1000,
 					// Keep in cache for 10 minutes
-					gcTime: 10 * 60 * 1000,
+					gcTime: isSSR ? 0 : 10 * 60 * 1000,
 					// Retry failed queries
-					retry: 2,
+					retry: isSSR ? 0 : 2,
 					// Only refetch on window focus in production
-					refetchOnWindowFocus: false,
+					refetchOnWindowFocus: !isSSR,
 					// Don't refetch on reconnect by default
-					refetchOnReconnect: false,
+					refetchOnReconnect: !isSSR,
 					// Enable network mode for better offline handling
-					networkMode: 'online'
+					networkMode: isSSR ? 'always' : 'online',
+					// Disable queries during SSR
+					enabled: !isSSR
 				},
 				mutations: {
 					// Retry failed mutations once
-					retry: 1,
+					retry: isSSR ? 0 : 1,
 					// Network mode for mutations
-					networkMode: 'online'
+					networkMode: isSSR ? 'always' : 'online'
 				}
-			}
-		})
-	}
-	// Return a placeholder if not in browser
-	if (!browser) {
-		return new QueryClient({
-			defaultOptions: {
-				queries: { enabled: false }
 			}
 		})
 	}

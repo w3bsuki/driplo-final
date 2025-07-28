@@ -148,7 +148,7 @@
 			}
 			captchaToken = null
 			
-			goto('/register?success=true')
+			goto('/auth/register?success=true')
 		} catch (error) {
 			if (error instanceof z.ZodError) {
 				// Zod validation errors
@@ -230,7 +230,7 @@
 						</p>
 					</div>
 				{/if}
-				<a href="/login" class="text-primary hover:text-primary/80 font-medium">
+				<a href="/auth/login" class="text-primary hover:text-primary/80 font-medium">
 					Return to login
 				</a>
 			</div>
@@ -538,7 +538,7 @@
 			<!-- Sign in link -->
 			<p class="text-center text-sm text-gray-600 mt-4">
 				Already have an account?
-				<a href="/login" class="text-primary hover:text-primary/80 font-medium">
+				<a href="/auth/login" class="text-primary hover:text-primary/80 font-medium">
 					Sign in
 				</a>
 			</p>

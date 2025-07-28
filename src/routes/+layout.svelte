@@ -162,7 +162,7 @@
 						message={m.banner_launch_message()} 
 						secondaryMessage={m.banner_launch_secondary()}
 						ctaText={m.banner_launch_cta()} 
-						ctaHref="/register"
+						ctaHref="/auth/register"
 						variant="launch"
 						countdown={true}
 					/>

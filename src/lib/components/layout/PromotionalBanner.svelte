@@ -20,7 +20,7 @@
 				variant: {
 					default: 'bg-surface-secondary text-text-primary border-b border-border-primary',
 					gradient: 'bg-gray-900 text-white dark:bg-gray-950 dark:text-gray-50',
-					launch: 'bg-brand-500/10 text-brand-600 dark:bg-brand-500/20 dark:text-brand-400'
+					launch: 'bg-gray-900 text-white dark:bg-gray-950 dark:text-gray-50'
 				}
 			},
 			defaultVariants: {
@@ -146,11 +146,13 @@
 	
 	// State - Initialize with true on server, update on client
 	let isDismissed = $state(false);
+	let isHydrated = $state(false);
 	
 	// Check localStorage only on client side after mount
 	$effect(() => {
 		if (typeof window !== 'undefined') {
 			isDismissed = !shouldShowBanner();
+			isHydrated = true;
 		}
 	});
 	
@@ -174,7 +176,7 @@
 	}
 </script>
 
-{#if !isDismissed}
+{#if isHydrated && !isDismissed}
 	<div 
 		class={bannerClass}
 		role="banner"
