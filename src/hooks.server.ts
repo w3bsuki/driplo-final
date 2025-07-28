@@ -206,16 +206,31 @@ const handleSupabase: Handle = async ({ event, resolve }) => {
 	response.headers.set('Permissions-Policy', 'geolocation=(), microphone=(), camera=()')
 	
 	// Add CSP header for reCAPTCHA, Stripe, and Sentry
-	response.headers.set('Content-Security-Policy', 
-		"default-src 'self'; " +
-		"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://js.stripe.com https://checkout.stripe.com https://browser.sentry-cdn.com; " +
-		"frame-src 'self' https://www.google.com https://checkout.stripe.com; " +
-		"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-		"font-src 'self' https://fonts.gstatic.com; " +
-		"img-src 'self' data: https: blob:; " +
-		"connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google.com https://api.stripe.com https://*.sentry.io https://*.ingest.sentry.io; " +
-		"report-uri https://o1.ingest.sentry.io/api/1/security/?sentry_key=" + PUBLIC_SENTRY_DSN?.split('@')[0].split('//')[1]
-	)
+	const cspDirectives = [
+		"default-src 'self'",
+		"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://js.stripe.com https://checkout.stripe.com https://vercel.live https://*.vercel.live",
+		"frame-src 'self' https://www.google.com https://checkout.stripe.com https://js.stripe.com https://hcaptcha.com https://*.hcaptcha.com",
+		"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+		"font-src 'self' https://fonts.gstatic.com data: blob:",
+		"img-src 'self' data: https: blob:",
+		"connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google.com https://api.stripe.com https://*.sentry.io https://*.ingest.sentry.io https://hcaptcha.com https://*.hcaptcha.com https://vercel.live https://*.vercel.live",
+		"object-src 'none'",
+		"base-uri 'self'",
+		"form-action 'self'",
+		"frame-ancestors 'none'"
+	];
+	
+	// Only add report-uri if Sentry DSN is configured
+	if (PUBLIC_SENTRY_DSN) {
+		try {
+			const sentryKey = PUBLIC_SENTRY_DSN.split('@')[0].split('//')[1];
+			cspDirectives.push(`report-uri https://o1.ingest.sentry.io/api/1/security/?sentry_key=${sentryKey}`);
+		} catch (e) {
+			// Ignore invalid DSN
+		}
+	}
+	
+	response.headers.set('Content-Security-Policy', cspDirectives.join('; '))
 	
 	// Only set HSTS in production
 	if (event.url.protocol === 'https:') {

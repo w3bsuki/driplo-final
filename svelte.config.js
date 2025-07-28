@@ -12,8 +12,8 @@ const config = {
 		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
 		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 		adapter: adapter({
-			// Use Node.js 20.x runtime
-			runtime: 'nodejs20.x'
+			// Use Node.js 22.x runtime (Vercel default)
+			runtime: 'nodejs22.x'
 		}),
 		
 		// Prerender static pages for better performance
@@ -42,18 +42,9 @@ const config = {
 			crawl: true
 		},
 		
-		// Security headers configuration
+		// Disable CSP here since we're using vercel.json
 		csp: {
-			directives: {
-				'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://www.google.com', 'https://www.gstatic.com', 'https://js.stripe.com', 'https://checkout.stripe.com'],
-				'frame-src': ["'self'", 'https://www.google.com', 'https://js.stripe.com', 'https://checkout.stripe.com'],
-				'img-src': ["'self'", 'data:', 'https:', 'blob:'],
-				'connect-src': ["'self'", 'https://*.supabase.co', 'wss://*.supabase.co', 'https://api.stripe.com', 'https://www.google.com'],
-				'font-src': ["'self'", 'https:', 'data:'],
-				'style-src': ["'self'", "'unsafe-inline'", 'https:'],
-				'base-uri': ["'self'"],
-				'form-action': ["'self'"]
-			}
+			mode: 'auto'
 		}
 	}
 };

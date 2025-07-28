@@ -27,7 +27,9 @@ export function getCSPHeader(nonce: string): string {
     ],
     'font-src': [
       "'self'",
-      'https://fonts.gstatic.com'
+      'https://fonts.gstatic.com',
+      'data:',
+      'blob:'
     ],
     'connect-src': [
       "'self'",

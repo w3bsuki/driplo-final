@@ -1,10 +1,11 @@
 import { QueryClient } from '@tanstack/svelte-query'
+import { browser } from '$app/environment'
 
 // Create a singleton query client
-let queryClient: QueryClient
+let queryClient: QueryClient | null = null
 
 export function createQueryClient() {
-	if (!queryClient) {
+	if (!queryClient && browser) {
 		queryClient = new QueryClient({
 			defaultOptions: {
 				queries: {
@@ -30,7 +31,15 @@ export function createQueryClient() {
 			}
 		})
 	}
-	return queryClient
+	// Return a placeholder if not in browser
+	if (!browser) {
+		return new QueryClient({
+			defaultOptions: {
+				queries: { enabled: false }
+			}
+		})
+	}
+	return queryClient!
 }
 
 // Get the existing query client
