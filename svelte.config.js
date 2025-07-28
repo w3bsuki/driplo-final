@@ -19,7 +19,9 @@ const config = {
 			// Ensure proper function generation
 			split: false,
 			// Disable static exports
-			precompress: false
+			precompress: false,
+			// Add external dependencies that should not be bundled
+			external: []
 		}),
 		
 		// Disable prerendering to ensure server-side rendering works

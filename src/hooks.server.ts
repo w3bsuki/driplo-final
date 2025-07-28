@@ -205,7 +205,10 @@ const handleSupabase: Handle = async ({ event, resolve }) => {
 	response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
 	response.headers.set('Permissions-Policy', 'geolocation=(), microphone=(), camera=()')
 	
-	// Add CSP header for reCAPTCHA, Stripe, and Sentry
+	// TEMPORARILY DISABLE CSP TO FIX VERCEL DEPLOYMENT
+	// The CSP header is blocking JavaScript execution on Vercel
+	// Will re-enable with proper nonce-based CSP after fixing deployment
+	/*
 	const cspDirectives = [
 		"default-src 'self'",
 		"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://js.stripe.com https://checkout.stripe.com https://vercel.live https://*.vercel.live",
@@ -219,18 +222,9 @@ const handleSupabase: Handle = async ({ event, resolve }) => {
 		"form-action 'self'",
 		"frame-ancestors 'none'"
 	];
-	
-	// Only add report-uri if Sentry DSN is configured
-	if (PUBLIC_SENTRY_DSN) {
-		try {
-			const sentryKey = PUBLIC_SENTRY_DSN.split('@')[0].split('//')[1];
-			cspDirectives.push(`report-uri https://o1.ingest.sentry.io/api/1/security/?sentry_key=${sentryKey}`);
-		} catch (e) {
-			// Ignore invalid DSN
-		}
-	}
-	
-	response.headers.set('Content-Security-Policy', cspDirectives.join('; '))
+	*/
+	// CSP temporarily disabled - see comment above
+	// response.headers.set('Content-Security-Policy', cspDirectives.join('; '))
 	
 	// Only set HSTS in production
 	if (event.url.protocol === 'https:') {
