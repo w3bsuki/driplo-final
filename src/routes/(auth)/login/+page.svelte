@@ -341,7 +341,7 @@
 			<!-- Sign up link -->
 			<p class="text-center text-sm text-gray-600 mt-3">
 				Don't have an account?
-				<a href="/auth/register" class="text-blue-400 hover:text-blue-500 font-medium">
+				<a href="/register" class="text-blue-400 hover:text-blue-500 font-medium">
 					Sign up
 				</a>
 			</p>

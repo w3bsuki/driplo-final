@@ -12,7 +12,7 @@
     // Check if user is authenticated
     if (!auth?.user) {
       toast.error('Please log in first');
-      goto('/auth/login');
+      goto('/login');
     }
   });
   

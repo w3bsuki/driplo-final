@@ -242,7 +242,7 @@
 					<p class="text-muted-foreground mb-6">
 						Your password has been reset successfully. Redirecting you to login...
 					</p>
-					<Button onclick={() => goto('/auth/login')} class="w-full">
+					<Button onclick={() => goto('/login')} class="w-full">
 						Go to login
 					</Button>
 				</div>
@@ -252,7 +252,7 @@
 		{#if !success}
 			<p class="text-center text-sm text-muted-foreground mt-6">
 				Remember your password?
-				<a href="/auth/login" class="text-primary hover:underline">Sign in</a>
+				<a href="/login" class="text-primary hover:underline">Sign in</a>
 			</p>
 		{/if}
 	</div>

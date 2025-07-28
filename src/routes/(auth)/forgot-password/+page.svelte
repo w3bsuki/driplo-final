@@ -83,7 +83,7 @@
 		<div class="bg-card rounded-lg shadow-lg border p-6 sm:p-8">
 			<div class="mb-6">
 				<button
-					onclick={() => goto('/auth/login')}
+					onclick={() => goto('/login')}
 					class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
 				>
 					<ArrowLeft class="w-4 h-4" />
@@ -183,7 +183,7 @@
 
 		<p class="text-center text-sm text-muted-foreground mt-6">
 			Remember your password?
-			<a href="/auth/login" class="text-primary hover:underline">Sign in</a>
+			<a href="/login" class="text-primary hover:underline">Sign in</a>
 		</p>
 	</div>
 </div>

@@ -29,7 +29,7 @@
 				</div>
 				
 				<div class="space-y-2">
-					<Button href="/auth/login" class="w-full">
+					<Button href="/login" class="w-full">
 						Try Again
 					</Button>
 					<Button href="/" variant="outline" class="w-full">

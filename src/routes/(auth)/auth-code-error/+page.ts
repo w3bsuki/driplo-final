@@ -1,2 +1,2 @@
-// Enable prerendering for auth error page (static content)
-export const prerender = true;
+// Disable prerendering to prevent build-time link crawling
+export const prerender = false;
