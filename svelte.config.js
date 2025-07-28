@@ -30,8 +30,7 @@ const config = {
 			crawl: false
 		},
 		
-		// Disable CSP entirely to prevent JavaScript execution issues
-		csp: false
+		// Remove CSP configuration - handled by vercel.json
 	}
 };
 
