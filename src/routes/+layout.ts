@@ -14,12 +14,11 @@ const routePreloader = isBrowser ? createRoutePreloader({
 
 export const load: LayoutLoad = async ({ data, depends, fetch, url }) => {
 	/**
-	 * Declare a dependency so the layout can be invalidated, for example, on
-	 * session refresh.
+	 * Declare a dependency so the layout can be invalidated on auth changes
 	 */
 	depends('supabase:auth')
 
-	// Create browser client for client-side operations
+	// Create browser client with secure configuration
 	const supabase = createBrowserClient<Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		global: {
 			fetch,
@@ -27,16 +26,19 @@ export const load: LayoutLoad = async ({ data, depends, fetch, url }) => {
 		auth: {
 			persistSession: true,
 			detectSessionInUrl: true,
-			flowType: 'pkce'
+			flowType: 'pkce',
+			// Security: Automatically refresh tokens
+			autoRefreshToken: true,
+			// Detect session in URL for OAuth callbacks
+			detectSessionInUrl: true
 		}
 	})
 
-	// Preload routes based on current path
+	// Preload routes based on current path (performance optimization)
 	if (isBrowser && routePreloader) {
-		// Preload related routes
 		routePreloader.preloadMatchingRoutes(url.pathname);
 		
-		// Preload commonly accessed routes after initial page load
+		// Preload commonly accessed routes after page load
 		if (url.pathname === '/') {
 			setTimeout(() => {
 				routePreloader.preloadRoute('/messages');
@@ -45,12 +47,14 @@ export const load: LayoutLoad = async ({ data, depends, fetch, url }) => {
 		}
 	}
 
-	// Always use the data passed from the server layout
-	// The server has already validated the session
+	// Return server-validated data to client
+	// All authentication decisions are made server-side
 	return {
 		session: data.session,
 		supabase,
 		user: data.user,
-		categories: data.categories || []
+		profile: data.profile,
+		categories: data.categories || [],
+		csrfToken: data.csrfToken
 	}
 }

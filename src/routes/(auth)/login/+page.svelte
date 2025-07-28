@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
-	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
-	import { getAuthContext } from '$lib/stores/auth-context.svelte'
 	import { Eye, EyeOff, Github } from 'lucide-svelte'
 	import { toast } from 'svelte-sonner'
 	import * as m from '$lib/paraglide/messages.js'
@@ -10,33 +8,26 @@
 	import { Button, Input } from '$lib/components/ui'
 	import Icon from '$lib/components/ui/icon.svelte'
 	import { onMount } from 'svelte'
-	import { createClient } from '@supabase/supabase-js'
-	import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public'
 
-	let { data } = $props()
+	let { data, form } = $props()
 	
-	// Get auth context from page data
-	const auth = getAuthContext()
-	
-	// Create direct Supabase client as fallback
-	const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
-	
-	console.log('Auth context in login page:', auth)
-	console.log('Page data:', data)
-	console.log('Direct Supabase client:', supabase)
-
-	let email = $state('')
-	let password = $state('')
 	let showPassword = $state(false)
-	let rememberMe = $state(false)
-	let loading = $state(false)
+	let isSubmitting = $state(false)
+	let resendEmail = $state('')
+	let resendLoading = $state(false)
+	let showResendForm = $state(false)
 	
+	// Use form data to preserve values on validation errors
+	let email = $state(form?.email || '')
+	let password = $state('')
+	let rememberMe = $state(false)
 
-	// Show error messages based on URL parameters
+	// Show messages based on URL parameters and form state
 	onMount(() => {
 		const error = $page.url.searchParams.get('error')
 		const message = $page.url.searchParams.get('message')
 		
+		// Handle URL error parameters
 		if (error) {
 			switch (error) {
 				case 'verification_expired':
@@ -65,6 +56,7 @@
 			}
 		}
 		
+		// Handle URL success messages
 		if (message) {
 			switch (message) {
 				case 'logged_out':
@@ -76,99 +68,45 @@
 			}
 		}
 		
-		// Clear any stale auth data on mount
-		if (auth && auth.user && !auth.session) {
-			// User exists but no session - likely stale data
-			auth.user = null
-			auth.profile = null
+		// Handle form validation errors
+		if (form?.error) {
+			toast.error(form.error)
+			if (form.error.includes('verify your email')) {
+				showResendForm = true
+			}
 		}
 	})
 
-	async function handleLogin(event?: Event) {
-		// Prevent form submission
-		if (event) {
-			event.preventDefault()
-		}
-		
-		if (!email || !password) {
-			toast.error(m.auth_fill_all_fields())
-			return
-		}
-		
-		console.log('Starting login process with:', { email, hasPassword: !!password })
-		loading = true
-		
-		try {
-			// Try auth context first, fallback to direct Supabase client
-			let result;
-			
-			if (auth && auth.signIn) {
-				console.log('Using auth context')
-				result = await auth.signIn(email, password, rememberMe)
-			} else {
-				console.log('Using direct Supabase client')
-				const { data: authData, error } = await supabase.auth.signInWithPassword({
-					email,
-					password
-				})
-				
-				if (error) throw error
-				result = authData
-			}
-			
-			console.log('Login successful:', result)
-			toast.success('Welcome back!')
-			
-			// Force page reload to update auth state
-			window.location.href = '/'
-			
-		} catch (error) {
-			console.error('Login error:', error)
-			if (error instanceof Error) {
-				// Handle specific error cases
-				if (error.message.includes('Email not confirmed')) {
-					toast.error('Please verify your email before logging in. Check your inbox for the confirmation link.')
-					showResendForm = true
-				} else if (error.message.includes('Invalid login credentials')) {
-					toast.error('Invalid email or password. Please try again.')
-				} else if (error.message.includes('Too many login attempts')) {
-					toast.error(error.message)
-				} else if (error.message.includes('rate_limit_exceeded')) {
-					toast.error('Too many login attempts. Please try again later.')
-				} else {
-					toast.error(error.message || 'Login failed')
-				}
-			} else {
-				toast.error('Login failed')
-			}
-		} finally {
-			loading = false
-		}
-	}
-
+	// OAuth login handler
 	async function handleOAuth(provider: 'google' | 'github') {
-		if (!auth) {
-			toast.error('Authentication service not available. Please refresh the page.')
-			return
-		}
-		
-		loading = true
+		isSubmitting = true
 		try {
-			await auth.signInWithProvider(provider)
+			const { error } = await data.supabase.auth.signInWithOAuth({
+				provider,
+				options: {
+					redirectTo: `${window.location.origin}/auth/callback`,
+					queryParams: {
+						access_type: 'offline',
+						prompt: 'consent'
+					}
+				}
+			})
+			
+			if (error) {
+				toast.error(error.message || 'OAuth login failed')
+			}
 		} catch (error) {
 			if (error instanceof Error) {
 				toast.error(error.message || m.auth_oauth_failed())
 			} else {
 				toast.error(m.auth_oauth_failed())
 			}
-			loading = false
+		} finally {
+			isSubmitting = false
 		}
 	}
 
-	let resendEmail = $state('')
-	let resendLoading = $state(false)
-	let showResendForm = $state(false)
-
+	// Resend verification email handler
 	async function handleResendVerification() {
 		if (!resendEmail) {
 			toast.error('Please enter your email address')
@@ -183,14 +121,14 @@
 				body: JSON.stringify({ email: resendEmail })
 			})
 
-			const data = await response.json()
+			const result = await response.json()
 			
-			if (data.success) {
-				toast.success(data.message)
+			if (result.success) {
+				toast.success(result.message)
 				showResendForm = false
 				resendEmail = ''
 			} else {
-				toast.error(data.error || 'Failed to resend verification email')
+				toast.error(result.error || 'Failed to resend verification email')
 			}
 		} catch (error) {
 			toast.error('An error occurred. Please try again.')
@@ -221,7 +159,7 @@
 					size="lg"
 					class="w-full"
 					onclick={() => handleOAuth('google')}
-					disabled={loading}
+					disabled={isSubmitting}
 				>
 					<svg class="w-5 h-5" viewBox="0 0 24 24">
 						<path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -236,7 +174,7 @@
 					size="lg"
 					class="w-full"
 					onclick={() => handleOAuth('github')}
-					disabled={loading}
+					disabled={isSubmitting}
 				>
 					<Icon icon={Github} size="sm" />
 					Continue with GitHub
@@ -253,21 +191,32 @@
 				</div>
 			</div>
 
-			<!-- Login Form -->
-			<form onsubmit={handleLogin} class="space-y-3">
+			<!-- Secure Login Form with CSRF Protection -->
+			<form method="post" action="?/login" class="space-y-3" use:enhance={() => {
+				isSubmitting = true
+				return async ({ update }) => {
+					await update()
+					isSubmitting = false
+				}
+			}}>
+				<!-- CSRF Token -->
+				<input type="hidden" name="csrfToken" value={data.csrfToken} />
+				
 				<div>
 					<label for="email" class="block text-sm font-medium text-gray-700 mb-1">
 						Email
 					</label>
 					<Input
 						id="email"
+						name="email"
 						type="email"
 						bind:value={email}
 						placeholder="Enter your email"
 						required
-						disabled={loading}
+						disabled={isSubmitting}
 						autocomplete="email"
 						size="lg"
+						class={form?.error && form.error.includes('email') ? 'border-red-500' : ''}
 					/>
 				</div>
 
@@ -278,11 +227,12 @@
 					<div class="relative">
 						<Input
 							id="password"
+							name="password"
 							type={showPassword ? 'text' : 'password'}
 							bind:value={password}
 							placeholder="Enter your password"
 							required
-							disabled={loading}
+							disabled={isSubmitting}
 							autocomplete="current-password"
 							size="lg"
 							class="pr-10"
@@ -292,6 +242,7 @@
 							class="absolute inset-y-0 right-0 pr-3 flex items-center touch-safe"
 							onclick={() => showPassword = !showPassword}
 							aria-label={showPassword ? 'Hide password' : 'Show password'}
+							disabled={isSubmitting}
 						>
 							{#if showPassword}
 								<Icon icon={EyeOff} size="sm" class="text-gray-400" />
@@ -306,8 +257,10 @@
 					<label class="flex items-center">
 						<input 
 							type="checkbox" 
+							name="rememberMe"
 							bind:checked={rememberMe}
 							class="rounded-sm border-gray-300 text-blue-400 focus:ring-blue-400" 
+							disabled={isSubmitting}
 						/>
 						<span class="ml-2 text-gray-600">Remember me</span>
 					</label>
@@ -317,12 +270,11 @@
 				</div>
 
 				<button 
-					type="submit" 
-					onclick={handleLogin}
+					type="submit"
 					class="w-full py-2 bg-blue-400 text-white font-medium rounded-sm hover:bg-blue-500 transition-colors duration-fast disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-					disabled={loading}
+					disabled={isSubmitting}
 				>
-					{#if loading}
+					{#if isSubmitting}
 						<Spinner size="sm" color="white" />
 					{:else}
 						Sign in

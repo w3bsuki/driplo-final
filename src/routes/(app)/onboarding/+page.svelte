@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { getAuthContext } from '$lib/stores/auth-context.svelte';
+	import { user, profile } from '$lib/stores/auth';
 	import type { PageData } from './$types';
 	import ProfileSetupWizard from '$lib/components/onboarding/ProfileSetupWizard.svelte';
 	
@@ -10,17 +10,15 @@
 	let showSetup = $state(false);
 	let loading = $state(true);
 	
-	const auth = getAuthContext();
-	
 	onMount(async () => {
 		// Only show onboarding for authenticated users
-		if (!auth.user) {
+		if (!$user) {
 			goto('/login');
 			return;
 		}
 		
 		// Check if profile setup is already completed
-		if (auth.profile?.onboarding_completed) {
+		if ($profile?.onboarding_completed) {
 			// Profile already set up, redirect to home
 			goto('/');
 			return;

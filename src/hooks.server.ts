@@ -9,6 +9,7 @@ import { check2FAMiddleware } from '$lib/server/auth-middleware'
 import { logError, createErrorResponse } from '$lib/utils/error-handling'
 import * as Sentry from '@sentry/sveltekit'
 import { SENTRY_CONFIG } from '$lib/config/sentry'
+import { redirect, error } from '@sveltejs/kit'
 
 // Try to get Sentry DSN from environment
 const PUBLIC_SENTRY_DSN = import.meta.env.PUBLIC_SENTRY_DSN || '';
@@ -90,6 +91,7 @@ const handleSupabase: Handle = async ({ event, resolve }) => {
 		/**
 		 * Creates a Supabase client specific to this server request.
 		 * The Supabase client gets the Auth token from the request cookies.
+		 * Using secure cookie configuration for production.
 		 */
 		event.locals.supabase = createServerClient<Database>(
 			PUBLIC_SUPABASE_URL,
@@ -98,18 +100,25 @@ const handleSupabase: Handle = async ({ event, resolve }) => {
 				cookies: {
 					get: (key) => event.cookies.get(key),
 					set: (key, value, options) => {
-						event.cookies.set(key, value, { 
-							...options, 
+						// Secure cookie configuration
+						event.cookies.set(key, value, {
+							...options,
 							path: '/',
 							httpOnly: true,
-							secure: !dev,
+							secure: !dev, // Only secure in production
 							sameSite: 'lax',
-							maxAge: options?.maxAge ?? 60 * 60 * 24 * 30 // 30 days default
+							maxAge: options?.maxAge ?? 60 * 60 * 24 * 7, // 7 days default
+							// Additional security for auth cookies
+							...(key.includes('auth') && { 
+								sameSite: 'strict',
+								maxAge: 60 * 60 * 24 * 1 // 1 day for auth cookies
+							})
 						})
 					},
-					remove: (key, _options) => {
-						// Ensure complete cookie removal with all necessary options
-						event.cookies.delete(key, { 
+					remove: (key, options) => {
+						// Ensure complete cookie removal
+						event.cookies.delete(key, {
+							...options,
 							path: '/',
 							httpOnly: true,
 							secure: !dev,
@@ -121,72 +130,94 @@ const handleSupabase: Handle = async ({ event, resolve }) => {
 		)
 
 	/**
-	 * Unlike `supabase.auth.getSession()`, which returns the session _without_
-	 * validating the JWT, this function also calls `getUser()` to validate the
-	 * JWT before returning the session.
+	 * Secure session validation using safeGetSession.
+	 * This function validates the JWT and ensures the session is legitimate.
+	 * It also handles token refresh automatically.
 	 */
 	event.locals.safeGetSession = async () => {
-		const {
-			data: { session }
-		} = await event.locals.supabase.auth.getSession()
-		
-		if (!session) {
+		try {
+			const {
+				data: { session },
+				error: sessionError
+			} = await event.locals.supabase.auth.getSession()
+			
+			if (sessionError || !session) {
+				return { session: null, user: null }
+			}
+
+			// Validate the session by fetching the user
+			const {
+				data: { user },
+				error: userError
+			} = await event.locals.supabase.auth.getUser()
+			
+			if (userError || !user) {
+				// JWT validation failed - clear invalid session
+				await event.locals.supabase.auth.signOut()
+				return { session: null, user: null }
+			}
+
+			// Additional security: verify session hasn't expired
+			if (session.expires_at && session.expires_at < Math.floor(Date.now() / 1000)) {
+				await event.locals.supabase.auth.signOut()
+				return { session: null, user: null }
+			}
+
+			return { session, user }
+		} catch (error) {
+			// Log error but don't break the request
+			logError(error, { handler: 'safeGetSession', url: event.url.pathname })
 			return { session: null, user: null }
 		}
-
-		const {
-			data: { user },
-			error
-		} = await event.locals.supabase.auth.getUser()
-		
-		if (error) {
-			// JWT validation has failed
-			return { session: null, user: null }
-		}
-
-		return { session, user }
 	}
 
-	// Check if user needs to complete profile setup
-	const { user } = await event.locals.safeGetSession()
-	if (user && !event.url.pathname.startsWith('/onboarding') && !event.url.pathname.startsWith('/api')) {
-		// Check if profile setup is complete
-		const { data: profile } = await event.locals.supabase
-			.from('profiles')
-			.select('*')
-			.eq('id', user.id)
-			.single()
+		// Handle authentication redirects and profile setup
+		const { user } = await event.locals.safeGetSession()
 		
-		// Only redirect to onboarding for truly new users who need setup
-		const needsOnboarding = profile && (
-			// User has a temporary username (ends with numbers)
-			((profile as any).username && (profile as any).username.match(/[0-9]+$/) && (profile as any).username.length < 20) ||
-			// User explicitly needs username setup
-			(profile as any).needs_username_setup === true ||
-			// User is very new (created within last hour) and hasn't completed onboarding
-			(!(profile as any).onboarding_completed && 
-			 new Date((profile as any).created_at).getTime() > Date.now() - 60 * 60 * 1000)
-		)
+		// Handle authentication requirements for protected routes
+		const isProtectedRoute = ![
+			'/login', '/register', '/forgot-password', '/reset-password',
+			'/auth/callback', '/auth/confirm', '/', '/browse'
+		].some(route => event.url.pathname === route || event.url.pathname.startsWith(route))
 		
-		if (needsOnboarding) {
-			// Redirect to onboarding if profile setup is not complete
-			// Skip redirect for auth pages, brand pages (for existing brands), and static assets
-			if (!event.url.pathname.startsWith('/login') && 
-				!event.url.pathname.startsWith('/register') &&
-				!event.url.pathname.startsWith('/callback') &&
-				!event.url.pathname.startsWith('/_app') &&
-				!event.url.pathname.includes('.') &&
-				// Don't redirect brand accounts from brand pages
-				!((profile as any).account_type === 'brand' && event.url.pathname.startsWith('/brands/'))) {
-				return new Response(null, {
-					status: 302,
-					headers: {
-						location: '/onboarding'
+		const isPublicAsset = event.url.pathname.startsWith('/_app') || 
+							  event.url.pathname.startsWith('/images') ||
+							  event.url.pathname.includes('.')
+		
+		// Redirect unauthenticated users from protected routes
+		if (isProtectedRoute && !isPublicAsset && !user) {
+			const redirectTo = event.url.pathname + event.url.search
+			throw redirect(303, `/login?redirect=${encodeURIComponent(redirectTo)}`)
+		}
+		
+		// Handle onboarding for authenticated users
+		if (user && !event.url.pathname.startsWith('/onboarding') && !event.url.pathname.startsWith('/api') && !isPublicAsset) {
+			try {
+				const { data: profile } = await event.locals.supabase
+					.from('profiles')
+					.select('username, needs_username_setup, onboarding_completed, account_type, created_at')
+					.eq('id', user.id)
+					.single()
+				
+				if (profile) {
+					const needsOnboarding = (
+						profile.needs_username_setup === true ||
+						(!profile.onboarding_completed && 
+						 new Date(profile.created_at).getTime() > Date.now() - 60 * 60 * 1000)
+					)
+					
+					if (needsOnboarding && !event.url.pathname.startsWith('/login') && 
+						!event.url.pathname.startsWith('/register') &&
+						!event.url.pathname.startsWith('/callback') &&
+						!(profile.account_type === 'brand' && event.url.pathname.startsWith('/brands/'))) {
+						throw redirect(303, '/onboarding')
 					}
-				})
+				}
+			} catch (profileError) {
+				// Don't break on profile fetch errors
+				logError(profileError, { handler: 'profile-check', userId: user.id })
 			}
 		}
-	}
 
 	const response = await resolve(event, {
 		filterSerializedResponseHeaders(name) {
@@ -198,33 +229,31 @@ const handleSupabase: Handle = async ({ event, resolve }) => {
 		}
 	})
 
-	// Add security headers
-	response.headers.set('X-Content-Type-Options', 'nosniff')
-	response.headers.set('X-Frame-Options', 'DENY')
-	response.headers.set('X-XSS-Protection', '1; mode=block')
-	response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
-	response.headers.set('Permissions-Policy', 'geolocation=(), microphone=(), camera=()')
-	
-	// TEMPORARILY DISABLE CSP TO FIX VERCEL DEPLOYMENT
-	// The CSP header is blocking JavaScript execution on Vercel
-	// Will re-enable with proper nonce-based CSP after fixing deployment
-	/*
-	const cspDirectives = [
-		"default-src 'self'",
-		"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://js.stripe.com https://checkout.stripe.com https://vercel.live https://*.vercel.live",
-		"frame-src 'self' https://www.google.com https://checkout.stripe.com https://js.stripe.com https://hcaptcha.com https://*.hcaptcha.com",
-		"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-		"font-src 'self' https://fonts.gstatic.com data: blob:",
-		"img-src 'self' data: https: blob:",
-		"connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google.com https://api.stripe.com https://*.sentry.io https://*.ingest.sentry.io https://hcaptcha.com https://*.hcaptcha.com https://vercel.live https://*.vercel.live",
-		"object-src 'none'",
-		"base-uri 'self'",
-		"form-action 'self'",
-		"frame-ancestors 'none'"
-	];
-	*/
-	// CSP temporarily disabled - see comment above
-	// response.headers.set('Content-Security-Policy', cspDirectives.join('; '))
+		// Add comprehensive security headers
+		response.headers.set('X-Content-Type-Options', 'nosniff')
+		response.headers.set('X-Frame-Options', 'DENY')
+		response.headers.set('X-XSS-Protection', '1; mode=block')
+		response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
+		response.headers.set('Permissions-Policy', 'geolocation=(), microphone=(), camera=(), payment=()')
+		
+		// Content Security Policy - Re-enabled for production security
+		if (!dev) {
+			const cspDirectives = [
+				"default-src 'self'",
+				"script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://js.stripe.com https://checkout.stripe.com",
+				"frame-src 'self' https://www.google.com https://checkout.stripe.com https://js.stripe.com https://hcaptcha.com https://*.hcaptcha.com",
+				"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+				"font-src 'self' https://fonts.gstatic.com data:",
+				"img-src 'self' data: https: blob:",
+				"connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google.com https://api.stripe.com https://*.sentry.io https://*.ingest.sentry.io https://hcaptcha.com https://*.hcaptcha.com",
+				"object-src 'none'",
+				"base-uri 'self'",
+				"form-action 'self'",
+				"frame-ancestors 'none'",
+				"upgrade-insecure-requests"
+			]
+			response.headers.set('Content-Security-Policy', cspDirectives.join('; '))
+		}
 	
 	// Only set HSTS in production
 	if (event.url.protocol === 'https:') {

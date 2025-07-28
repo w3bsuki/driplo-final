@@ -6,26 +6,19 @@
 	import CookieConsent from '$lib/components/cookie-consent/CookieConsent.svelte';
 	import ErrorBoundary from '$lib/components/shared/ErrorBoundary.svelte';
 	import { Toaster } from 'svelte-sonner';
-	import { setAuthContext } from '$lib/stores/auth-context.svelte.ts';
-	import { notifyAuthStateChange } from '$lib/stores/auth-compat';
 	import { onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { navigating } from '$app/stores';
-	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import { QueryClientProvider } from '@tanstack/svelte-query'
 	import { createQueryClient } from '$lib/stores/query-client';
 	import NotificationPopup from '$lib/components/NotificationPopup.svelte';
-	import { onboarding } from '$lib/stores/onboarding.svelte.ts';
 	import { browser, dev } from '$app/environment';
 	import { initWebVitals } from '$lib/utils/web-vitals';
 	import { setSentryUser } from '$lib/config/sentry';
 	import * as m from '$lib/paraglide/messages.js';
 
 	let { data, children } = $props();
-
-	// Initialize auth context with server-side data
-	const authContext = setAuthContext(data.supabase, data.user, data.session);
 	
 	// Initialize query client
 	const queryClient = createQueryClient();
@@ -35,8 +28,10 @@
 		setSentryUser(data.user);
 	}
 	
-	// Track scroll position for landing page
-	let showMobileNavOnLanding = $state(true); // Show immediately to prevent hydration issues
+	// Reactive state based on server data
+	let user = $derived(data.user);
+	let session = $derived(data.session);
+	let profile = $derived(data.profile);
 	
 	// Define pages where bottom nav should be hidden
 	const hiddenPaths = [
@@ -53,7 +48,6 @@
 		hiddenPaths.some(path => $page.url.pathname.startsWith(path)) || // Hidden paths
 		$page.url.pathname.includes('/listings/') || // Product detail pages
 		$page.url.pathname.includes('/sell') || // Sell product form
-		($page.url.pathname === '/' && !showMobileNavOnLanding) || // Landing page (show when scrolled)
 		$page.url.pathname.includes('/payment') || // Payment forms
 		$page.url.pathname.includes('/login') || // Login page
 		$page.url.pathname.includes('/register') || // Register page
@@ -86,52 +80,22 @@
 			});
 		}
 		
-		// Handle scroll for showing mobile nav on landing page
-		const handleScroll = () => {
-			if ($page.url.pathname === '/') {
-				// Keep nav visible always on landing page
-				showMobileNavOnLanding = true;
-			}
-		};
-		
-		window.addEventListener('scroll', handleScroll);
-		
-		// Listen for auth changes and update context
+		// Listen for auth changes and sync with server
 		const { data: authListener } = data.supabase.auth.onAuthStateChange(async (event, session) => {
-			// Update the auth context directly
+			// Update Sentry user context on auth changes
 			if (event === 'SIGNED_IN' && session?.user) {
-				authContext.user = session.user;
-				authContext.session = session;
-				// Update Sentry user context
 				setSentryUser(session.user);
-				// Initialize onboarding for new user
-				onboarding.initialize(session.user.id);
-				// Notify compatibility layer
-				notifyAuthStateChange(authContext.user, authContext.session, authContext.profile, authContext.loading);
-				// Invalidate to get fresh data
-				await invalidate('supabase:auth');
 			} else if (event === 'SIGNED_OUT') {
-				authContext.user = null;
-				authContext.session = null;
-				authContext.profile = null;
-				// Clear Sentry user context
 				setSentryUser(null);
-				// Reset onboarding
-				onboarding.reset();
-				// Notify compatibility layer
-				notifyAuthStateChange(authContext.user, authContext.session, authContext.profile, authContext.loading);
-				// Invalidate to clear server-side session
-				await invalidate('supabase:auth');
-			} else if (event === 'TOKEN_REFRESHED' && session) {
-				authContext.session = session;
-				// Invalidate to sync with server
-				await invalidate('supabase:auth');
 			}
+			
+			// Always invalidate to sync with server state
+			// Server-side auth is the source of truth
+			await invalidate('supabase:auth');
 		});
 
 		return () => {
 			authListener.subscription.unsubscribe();
-			window.removeEventListener('scroll', handleScroll);
 		};
 	});
 </script>
@@ -157,7 +121,7 @@
 		
 		<div class="min-h-screen bg-background">
 			{#if !isAuthPage}
-				{#if !data.user}
+				{#if !user}
 					<PromotionalBanner 
 						message={m.banner_launch_message()} 
 						secondaryMessage={m.banner_launch_secondary()}
@@ -175,11 +139,11 @@
 					/>
 				{/if}
 				<ErrorBoundary level="minimal" isolate={true}>
-					<Header categories={data.categories} supabase={data.supabase} />
+					<Header categories={data.categories} supabase={data.supabase} user={user} profile={profile} />
 				</ErrorBoundary>
 			{/if}
 			<main id="main-content" class={shouldHideMobileNav ? "pb-0 md:pb-0" : "pb-20 md:pb-0"}>
-				<ErrorBoundary level="detailed" isolate={true} resetKeys={[$page.url.pathname]}>
+				<ErrorBoundary level="detailed" isolate={true} resetKeys={[$page.url.pathname, user?.id]}>
 					{@render children()}
 				</ErrorBoundary>
 			</main>

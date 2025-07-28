@@ -14,6 +14,14 @@ declare global {
 		interface PageData {
 			session: Session | null
 			user: User | null
+			profile?: Database['public']['Tables']['profiles']['Row'] | null
+			categories?: Array<{
+				id: string
+				name: string
+				slug: string
+				icon: string | null
+			}>
+			csrfToken?: string
 			locale?: string
 		}
 		// interface PageState {}

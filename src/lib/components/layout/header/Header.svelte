@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getAuthContext } from '$lib/stores/auth-context.svelte';
+	import { user, profile } from '$lib/stores/auth';
 	import { onDestroy } from 'svelte';
 	import { cn } from '$lib/utils/cn';
 	import DriploLogo from '$lib/components/ui/DriploLogo.svelte';
