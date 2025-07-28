@@ -10,9 +10,20 @@
 	import { Button, Input } from '$lib/components/ui'
 	import Icon from '$lib/components/ui/icon.svelte'
 	import { onMount } from 'svelte'
+	import { createClient } from '@supabase/supabase-js'
+	import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public'
 
+	let { data } = $props()
+	
+	// Get auth context from page data
 	const auth = getAuthContext()
+	
+	// Create direct Supabase client as fallback
+	const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
+	
 	console.log('Auth context in login page:', auth)
+	console.log('Page data:', data)
+	console.log('Direct Supabase client:', supabase)
 
 	let email = $state('')
 	let password = $state('')
@@ -84,23 +95,33 @@
 			return
 		}
 		
-		// Check if auth context exists
-		if (!auth) {
-			console.error('Auth context not available:', auth)
-			toast.error('Authentication service not available. Please refresh the page.')
-			return
-		}
-		
 		console.log('Starting login process with:', { email, hasPassword: !!password })
 		loading = true
 		
 		try {
-			const result = await auth.signIn(email, password, rememberMe)
-			console.log('Login successful:', result)
-			toast.success(m.auth_welcome_back_toast())
+			// Try auth context first, fallback to direct Supabase client
+			let result;
 			
-			// Navigate after successful login
-			await goto('/')
+			if (auth && auth.signIn) {
+				console.log('Using auth context')
+				result = await auth.signIn(email, password, rememberMe)
+			} else {
+				console.log('Using direct Supabase client')
+				const { data: authData, error } = await supabase.auth.signInWithPassword({
+					email,
+					password
+				})
+				
+				if (error) throw error
+				result = authData
+			}
+			
+			console.log('Login successful:', result)
+			toast.success('Welcome back!')
+			
+			// Force page reload to update auth state
+			window.location.href = '/'
+			
 		} catch (error) {
 			console.error('Login error:', error)
 			if (error instanceof Error) {
@@ -115,10 +136,10 @@
 				} else if (error.message.includes('rate_limit_exceeded')) {
 					toast.error('Too many login attempts. Please try again later.')
 				} else {
-					toast.error(error.message || m.auth_login_failed())
+					toast.error(error.message || 'Login failed')
 				}
 			} else {
-				toast.error(m.auth_login_failed())
+				toast.error('Login failed')
 			}
 		} finally {
 			loading = false
@@ -297,6 +318,7 @@
 
 				<button 
 					type="submit" 
+					onclick={handleLogin}
 					class="w-full py-2 bg-blue-400 text-white font-medium rounded-sm hover:bg-blue-500 transition-colors duration-fast disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
 					disabled={loading}
 				>
