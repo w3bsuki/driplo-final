@@ -37,7 +37,6 @@
     "@storybook/addon-essentials": "9.0.0-alpha.12",
     "@storybook/addon-svelte-csf": "^5.0.7",
     "@storybook/sveltekit": "9.1.0-alpha.9",
-    "@sveltejs/adapter-auto": "^6.0.0",
     "@sveltejs/adapter-vercel": "^5.8.0",
     "@sveltejs/eslint-config": "^8.3.4",
     "@sveltejs/kit": "^2.22.0",
