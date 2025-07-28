@@ -14,35 +14,20 @@ const config = {
 		adapter: adapter({
 			// Use Node.js 22.x runtime (Vercel default)
 			runtime: 'nodejs22.x',
-			// Force dynamic rendering
+			// Force dynamic rendering for all routes
 			isr: false,
 			// Ensure proper function generation
-			split: false
+			split: false,
+			// Disable static exports
+			precompress: false
 		}),
 		
-		// Prerender static pages for better performance
+		// Disable prerendering to ensure server-side rendering works
 		prerender: {
-			entries: [
-				// Category pages (with ISR potential)
-				'/browse',
-				'/bags',
-				'/designer', 
-				'/kids',
-				'/men',
-				'/shoes',
-				'/women',
-				
-				// Static pages
-				'/privacy',
-				
-				// Auth pages (no server data)
-				'/login',
-				'/register',
-				'/auth-code-error'
-			],
+			entries: [],
 			handleHttpError: 'warn',
 			handleMissingId: 'warn',
-			crawl: true
+			crawl: false
 		},
 		
 		// Disable CSP here since we're using vercel.json
