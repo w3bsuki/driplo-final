@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { getAuthContext } from '$lib/stores/auth-context.svelte';
+	import { page } from '$app/stores';
 	import Button from '$lib/components/ui/button.svelte';
 	import Input from '$lib/components/ui/input.svelte';
 	import Alert from '$lib/components/ui/Alert.svelte';
@@ -15,7 +15,7 @@
 
 	let { form }: Props = $props();
 
-	const auth = getAuthContext();
+	const supabase = $derived($page.data.supabase);
 
 	let email = $state('');
 	let loading = $state(false);
@@ -51,7 +51,7 @@
 		loading = true;
 
 		try {
-			const { error: resetError } = await auth.supabase.auth.resetPasswordForEmail(email, {
+			const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
 				redirectTo: `${window.location.origin}/reset-password`
 			});
 

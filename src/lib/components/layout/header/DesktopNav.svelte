@@ -3,10 +3,13 @@
 	import NotificationBell from './NotificationBell.svelte';
 	import UserMenu from './UserMenu.svelte';
 	import * as m from '$lib/paraglide/messages.js';
-	import type { AuthContext } from '$lib/stores/auth-context.svelte';
+	import type { User, Session } from '@supabase/supabase-js';
+	import type { ExtendedProfile } from '$lib/types/database.extended';
 	
 	interface DesktopNavProps {
-		authContext: AuthContext | null;
+		user: User | null;
+		session: Session | null;
+		profile: ExtendedProfile | null;
 		brandSlug: string | null;
 		onSignOut: () => void;
 		showUnreadCount?: boolean;
@@ -14,7 +17,9 @@
 	}
 	
 	let {
-		authContext,
+		user,
+	session,
+	profile,
 		brandSlug,
 		onSignOut,
 		showUnreadCount = true,
@@ -45,5 +50,5 @@
 		<NotificationBell />
 	{/if}
 	
-	<UserMenu {authContext} {brandSlug} {onSignOut} />
+	<UserMenu {user} {session} {profile} {brandSlug} {onSignOut} />
 </div>

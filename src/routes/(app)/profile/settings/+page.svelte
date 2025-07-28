@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import { getAuthContext } from '$lib/stores/auth-context.svelte'
+	import { user } from '$lib/stores/auth'
 	import { onMount } from 'svelte'
 	import ImageUpload from '$lib/components/upload/ImageUpload.svelte'
 	import { Save, ArrowLeft, User, Image as ImageIcon, MapPin, Globe, FileText, Loader2, Camera, Instagram, Music2, Facebook, Twitter, Youtube, Link, Shield } from 'lucide-svelte'
@@ -12,8 +12,7 @@
 	// Get page data from server
 	let { data }: { data: PageData } = $props()
 	
-	// Get auth context
-	const auth = getAuthContext()
+	// Get user from store
 	
 	// Get supabase client from page data
 	const supabase = $derived(data.supabase)
@@ -47,12 +46,12 @@
 	
 	// Load existing social media accounts and 2FA status on mount
 	onMount(async () => {
-		if (auth.user?.id) {
+		if ($user?.id) {
 			try {
 				const { data: socialAccounts } = await supabase
 					.from('social_media_accounts')
 					.select('*')
-					.eq('user_id', auth.user.id)
+					.eq('user_id', $user.id)
 				
 				if (socialAccounts) {
 					socialAccounts.forEach(account => {
@@ -165,7 +164,7 @@
 					website: website.trim() || null,
 					updated_at: new Date().toISOString()
 				})
-				.eq('id', auth.user?.id)
+				.eq('id', $user?.id)
 
 			if (profileError) throw profileError
 
@@ -176,7 +175,7 @@
 					const { data: existing } = await supabase
 						.from('social_media_accounts')
 						.select('id')
-						.eq('user_id', auth.user?.id)
+						.eq('user_id', $user?.id)
 						.eq('platform', platform)
 						.single()
 
@@ -195,7 +194,7 @@
 						await supabase
 							.from('social_media_accounts')
 							.insert({
-								user_id: auth.user?.id,
+								user_id: $user?.id,
 								platform,
 								username: username.trim(),
 								url: getSocialMediaUrl(platform, username.trim())
@@ -206,7 +205,7 @@
 					await supabase
 						.from('social_media_accounts')
 						.delete()
-						.eq('user_id', auth.user?.id)
+						.eq('user_id', $user?.id)
 						.eq('platform', platform)
 				}
 			}

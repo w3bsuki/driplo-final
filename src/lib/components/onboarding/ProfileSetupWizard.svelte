@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { getAuthContext } from '$lib/stores/auth-context.svelte';
+	// Props are passed down, don't need to import stores directly
 	import { toast } from 'svelte-sonner';
 	import { ChevronLeft, ChevronRight, Check, User as UserIcon, Palette, Building2, Sparkles, AtSign } from 'lucide-svelte';
 	import ProgressBar from '$lib/components/ui/ProgressBar.svelte';
@@ -25,7 +25,9 @@
 
 	let { user, profile, onComplete, initialStep = 1, supabase }: Props = $props();
 	
-	const auth = getAuthContext();
+	// Get default supabase client if not provided
+	import { page } from '$app/stores';
+	const defaultSupabase = $derived($page.data.supabase);
 
 	// Check if user needs username setup
 	const needsUsernameSetup = profile?.needs_username_setup || profile?.username?.match(/[0-9]+$/);
@@ -101,7 +103,7 @@
 		let counter = 0;
 		
 		while (true) {
-			const client = supabase || auth.supabase;
+			const client = supabase || defaultSupabase;
 			const { data } = await client
 				.from('brand_profiles')
 				.select('id')
@@ -123,7 +125,7 @@
 		loading = true;
 		try {
 			// Save progress for current step
-			const client = supabase || auth.supabase;
+			const client = supabase || defaultSupabase;
 			switch (currentStep) {
 				case 1:
 					if (needsUsernameSetup) {
@@ -255,7 +257,7 @@
 		
 		// Load brand profile if exists
 		if (setupData.accountType === 'brand') {
-			const client = supabase || auth.supabase;
+			const client = supabase || defaultSupabase;
 			const { data: brandProfile } = await client
 				.from('brand_profiles')
 				.select('*')

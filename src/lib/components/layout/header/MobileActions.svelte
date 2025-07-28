@@ -3,10 +3,13 @@
 	import { cn } from '$lib/utils/cn';
 	import NotificationBell from './NotificationBell.svelte';
 	import UserMenu from './UserMenu.svelte';
-	import type { AuthContext } from '$lib/stores/auth-context.svelte';
+	import type { User, Session } from '@supabase/supabase-js';
+	import type { ExtendedProfile } from '$lib/types/database.extended';
 	
 	interface MobileActionsProps {
-		authContext: AuthContext | null;
+		user: User | null;
+		session: Session | null;
+		profile: ExtendedProfile | null;
 		brandSlug: string | null;
 		onSignOut: () => void;
 		showUnreadCount?: boolean;
@@ -14,7 +17,9 @@
 	}
 	
 	let {
-		authContext,
+		user,
+	session,
+	profile,
 		brandSlug,
 		onSignOut,
 		showUnreadCount = true,
@@ -23,9 +28,9 @@
 </script>
 
 <div class={cn("flex items-center gap-2 ml-auto md:hidden", className)} role="group" aria-label="Mobile actions">
-	{#if authContext?.user && showUnreadCount}
+	{#if user && showUnreadCount}
 		<NotificationBell />
 	{/if}
 	
-	<UserMenu {authContext} {brandSlug} {onSignOut} isMobile={true} />
+	<UserMenu {user} {session} {profile} {brandSlug} {onSignOut} isMobile={true} />
 </div>

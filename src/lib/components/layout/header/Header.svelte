@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { user, profile } from '$lib/stores/auth';
+	// Handle sign out via form action
 	import { onDestroy } from 'svelte';
 	import { cn } from '$lib/utils/cn';
 	import DriploLogo from '$lib/components/ui/DriploLogo.svelte';
@@ -13,24 +13,26 @@
 
 	type Props = Omit<HeaderProps, 'supabase'> & {
 		supabase: SupabaseClient<Database>;
+		session?: any;
+		profile?: any;
 	};
 
 	let {
 		supabase,
 		user = null,
+		session = null,
+		profile = null,
 		enableSearch = true,
 		showUnreadCount = true,
 		sticky = true,
 		class: className = ''
 	}: Props = $props();
 
-	const authContext = getAuthContext();
-
 	// Single source of truth for Supabase client
-	const effectiveSupabase = $derived(authContext?.supabase ?? supabase);
+	const effectiveSupabase = supabase;
 
 	// Initialize notifications with enhanced error handling and context updates
-	const notifications = useNotifications(effectiveSupabase, authContext?.user?.id);
+	const notifications = useNotifications(effectiveSupabase, user?.id);
 
 	// Brand slug state with comprehensive error handling
 	let brandSlug = $state<string | null>(null);
@@ -40,8 +42,8 @@
 
 	// Derived state to determine when brand slug should be fetched
 	const shouldFetchBrandSlug = $derived(
-		authContext?.profile?.account_type === 'brand' &&
-		authContext.user?.id &&
+		profile?.account_type === 'brand' &&
+		user?.id &&
 		!brandSlugFetched &&
 		!brandSlugLoading &&
 		!brandSlugError
@@ -58,7 +60,7 @@
 			const { data, error } = await effectiveSupabase
 				.from('brand_profiles')
 				.select('brand_slug')
-				.eq('user_id', authContext.user!.id)
+				.eq('user_id', user!.id)
 				.single();
 
 			if (error) {
@@ -86,7 +88,7 @@
 
 	// Reset brand slug state when user logs out or changes
 	$effect(() => {
-		const currentUserId = authContext?.user?.id;
+		const currentUserId = user?.id;
 		if (!currentUserId) {
 			// User logged out - reset all brand slug state
 			brandSlug = null;
@@ -105,10 +107,10 @@
 			clearTimeout(notificationTimeout);
 		}
 
-		if (authContext?.user) {
+		if (user) {
 			// Debounce notifications initialization to prevent rapid toggling
 			notificationTimeout = setTimeout(() => {
-				notifications.updateContext(effectiveSupabase, authContext.user!.id);
+				notifications.updateContext(effectiveSupabase, user.id);
 				notifications.initialize();
 			}, 100);
 		} else {
@@ -126,8 +128,8 @@
 				notificationTimeout = null;
 			}
 			
-			// Perform sign out
-			authContext?.signOut?.();
+			// Redirect to sign out page/action
+			window.location.href = '/auth/signout';
 		} catch (error) {
 			console.error('Sign out error:', error);
 			// Still attempt cleanup even if sign out fails
@@ -166,7 +168,9 @@
 		
 		<!-- Mobile Actions -->
 		<MobileActions 
-			{authContext} 
+			{user}
+			{session}
+			{profile}
 			{brandSlug} 
 			onSignOut={handleSignOut}
 			{showUnreadCount}
@@ -179,7 +183,9 @@
 
 		<!-- Desktop Actions -->
 		<DesktopNav
-			{authContext}
+			{user}
+			{session}
+			{profile}
 			{brandSlug}
 			onSignOut={handleSignOut}
 			{showUnreadCount}

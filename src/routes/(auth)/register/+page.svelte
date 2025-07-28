@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
-	import { getAuthContext } from '$lib/stores/auth-context.svelte'
+	// Use direct Supabase client for auth operations
 	import { Eye, EyeOff, Github, CheckCircle, Store, User } from 'lucide-svelte'
 	import { toast } from 'svelte-sonner'
 	import { z } from 'zod'
@@ -13,7 +13,7 @@
 	import { createBrowserClient } from '@supabase/ssr'
 	import TurnstileWrapper from '$lib/components/auth/TurnstileWrapper.svelte'
 
-	const auth = getAuthContext()
+	// Using auth store functions directly
 	
 	// Create a direct Supabase client as fallback
 	const supabaseClient = createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
@@ -80,8 +80,8 @@
 			return
 		}
 		
-		// Double check auth context
-		if (!auth && !supabaseClient) {
+		// Check if we have supabase client
+		if (!supabaseClient) {
 			toast.error('Authentication service not available. Please refresh the page.');
 			return;
 		}
@@ -100,23 +100,9 @@
 
 			loading = true
 			
-			// Try to use auth context first, fallback to direct client
-			if (auth) {
-				// Sign up with additional metadata and CAPTCHA token
-				// Generate a temporary username based on email
-				const tempUsername = email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '') + Math.floor(Math.random() * 1000)
-				await auth.signUp(email, password, tempUsername, undefined, {
-					account_type: accountType,
-					brand_name: accountType === 'brand' ? brandName : undefined,
-					brand_category: accountType === 'brand' ? brandCategory : undefined,
-					brand_website: accountType === 'brand' ? brandWebsite : undefined,
-					captcha_token: captchaToken,
-					needs_username_setup: true
-				})
-			} else {
-				// Use direct Supabase client
-				const tempUsername = email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '') + Math.floor(Math.random() * 1000)
-				const { data, error } = await supabaseClient.auth.signUp({
+			// Use direct Supabase client for signup
+			const tempUsername = email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '') + Math.floor(Math.random() * 1000)
+			const { data, error } = await supabaseClient.auth.signUp({
 					email,
 					password,
 					options: {
@@ -137,7 +123,6 @@
 				if (error) {
 					throw error;
 				}
-			}
 			
 			// Show success message
 			toast.success('Account created! Please check your email to verify your account.')
@@ -185,7 +170,8 @@
 			if (accountType === 'brand') {
 				localStorage.setItem('pending_account_type', 'brand')
 			}
-			await auth.signInWithProvider(provider)
+			// Redirect to OAuth endpoint
+			window.location.href = `/auth/${provider}`
 		} catch (error) {
 			if (error instanceof Error) {
 				toast.error(error.message || 'OAuth registration failed')

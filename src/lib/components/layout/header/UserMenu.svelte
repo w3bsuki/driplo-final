@@ -1,12 +1,15 @@
 <script lang="ts">
-	import { User, ChevronDown } from 'lucide-svelte';
+	import { User as UserIcon, ChevronDown } from 'lucide-svelte';
 	import { DropdownMenu } from '$lib/components/ui';
 	import ProfileDropdownContent from '../ProfileDropdownContent.svelte';
-	import type { AuthContext } from '$lib/stores/auth-context.svelte';
+	import type { User, Session } from '@supabase/supabase-js';
+	import type { ExtendedProfile } from '$lib/types/database.extended';
 	import { cn } from '$lib/utils/cn';
 	
 	interface UserMenuProps {
-		authContext: AuthContext | null;
+		user: User | null;
+		session: Session | null;
+		profile: ExtendedProfile | null;
 		brandSlug: string | null;
 		onSignOut: () => void;
 		isMobile?: boolean;
@@ -14,7 +17,9 @@
 	}
 	
 	let {
-		authContext,
+		user,
+	session,
+	profile,
 		brandSlug,
 		onSignOut,
 		isMobile = false,
@@ -33,7 +38,7 @@
 	
 	const avatarSizeClass = isMobile ? 'h-9 w-9' : 'h-[var(--button-height-lg)] w-[var(--button-height-lg)]';
 	const avatarSize = isMobile ? 36 : 40; // 40px = --button-height-lg
-	const primaryBadge = authContext?.profile?.badges?.[0];
+	const primaryBadge = profile?.badges?.[0];
 </script>
 
 <DropdownMenu.Root>
@@ -41,10 +46,10 @@
 		class="relative rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 hover:scale-105 active:scale-95 transition-all duration-100 {className}"
 		aria-label="Account menu"
 	>
-		{#if authContext?.user}
+		{#if user}
 			<img 
-				src={authContext.profile?.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${authContext.profile?.username || authContext.user.email}`} 
-				alt={`${authContext.profile?.username || authContext.user.email} profile`} 
+				src={profile?.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile?.username || user.email}`} 
+				alt={`${profile?.username || user.email} profile`} 
 				width={avatarSize}
 				height={avatarSize}
 				class={cn(
@@ -70,7 +75,7 @@
 				)}
 				aria-label="Guest user"
 			>
-				<User class="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+				<UserIcon class="h-5 w-5 text-muted-foreground" aria-hidden="true" />
 			</div>
 		{/if}
 		<div class="absolute -bottom-1 -right-1 bg-background rounded-sm p-0.5 border border-border">
@@ -82,6 +87,6 @@
 		sideOffset={8}
 		class="w-72 rounded-sm border border-border bg-popover p-0 shadow-lg z-[10000]"
 	>
-		<ProfileDropdownContent {authContext} {brandSlug} {onSignOut} />
+		<ProfileDropdownContent {user} {session} {profile} {brandSlug} {onSignOut} />
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

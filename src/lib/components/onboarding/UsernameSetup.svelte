@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { AtSign, AlertCircle, CheckCircle } from 'lucide-svelte';
-	import { getAuthContext } from '$lib/stores/auth-context.svelte';
+	import { user } from '$lib/stores/auth';
+	import { page } from '$app/stores';
 	
 	interface Props {
 		username: string;
@@ -16,7 +17,7 @@
 		error = $bindable('')
 	}: Props = $props();
 	
-	const auth = getAuthContext();
+	const supabase = $derived($page.data.supabase);
 	let checkTimeout: NodeJS.Timeout;
 	
 	// Username validation rules
@@ -45,11 +46,11 @@
 		error = '';
 		
 		try {
-			const { data, error: checkError } = await auth.supabase
+			const { data, error: checkError } = await supabase
 				.from('profiles')
 				.select('id')
 				.eq('username', username.toLowerCase())
-				.neq('id', auth.user?.id)
+				.neq('id', $user?.id)
 				.single();
 			
 			if (checkError && checkError.code === 'PGRST116') {

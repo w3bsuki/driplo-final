@@ -2,15 +2,15 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import TwoFactorVerification from '$lib/components/auth/TwoFactorVerification.svelte';
-  import { getAuthContext } from '$lib/stores/auth-context.svelte';
+  import { user } from '$lib/stores/auth';
   import { onMount } from 'svelte';
   import { toast } from 'svelte-sonner';
   
-  const auth = getAuthContext();
+  // Get user from store
   
   onMount(() => {
     // Check if user is authenticated
-    if (!auth?.user) {
+    if (!$user) {
       toast.error('Please log in first');
       goto('/login');
     }
@@ -34,7 +34,7 @@
   <div class="w-full max-w-md">
     <div class="bg-white rounded-sm border border-gray-200 p-6">
       <TwoFactorVerification 
-        email={auth?.user?.email}
+        email={$user?.email}
         onverified={handleVerified}
       />
     </div>
