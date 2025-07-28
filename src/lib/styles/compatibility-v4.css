@@ -256,6 +256,22 @@ button.bg-gradient-to-r.from-orange-500.to-orange-600:hover,
 .hover\:bg-brand-600:hover { background-color: var(--color-brand-600); }
 .hover\:bg-brand-700:hover { background-color: var(--color-brand-700); }
 
+/* Brand color with opacity - CRITICAL FOR VERCEL */
+.bg-brand-500\/10 { background-color: rgba(135, 206, 235, 0.1); }
+.bg-brand-500\/20 { background-color: rgba(135, 206, 235, 0.2); }
+.bg-brand-500\/30 { background-color: rgba(135, 206, 235, 0.3); }
+.bg-brand-500\/40 { background-color: rgba(135, 206, 235, 0.4); }
+.bg-brand-500\/50 { background-color: rgba(135, 206, 235, 0.5); }
+.bg-brand-500\/60 { background-color: rgba(135, 206, 235, 0.6); }
+.bg-brand-500\/70 { background-color: rgba(135, 206, 235, 0.7); }
+.bg-brand-500\/80 { background-color: rgba(135, 206, 235, 0.8); }
+.bg-brand-500\/90 { background-color: rgba(135, 206, 235, 0.9); }
+.text-brand-500\/70 { color: rgba(135, 206, 235, 0.7); }
+.text-brand-500\/80 { color: rgba(135, 206, 235, 0.8); }
+.text-brand-500\/90 { color: rgba(135, 206, 235, 0.9); }
+.hover\:bg-brand-500\/10:hover { background-color: rgba(135, 206, 235, 0.1); }
+.hover\:bg-brand-500\/20:hover { background-color: rgba(135, 206, 235, 0.2); }
+
 /* Border utilities */
 .border-gray-50 { border-color: var(--color-gray-50); }
 .border-gray-100 { border-color: var(--color-gray-100); }
