@@ -29,8 +29,8 @@
 		<!-- TEMPORARILY DISABLED: This script may be blocking on Vercel -->
 		<!-- <script defer src="%sveltekit.assets%/cookie-consent-init.js"></script> -->
 		
-		<!-- Theme Detection -->
-		<script>
+		<!-- Theme Detection - DISABLED to fix Vercel hydration issues -->
+		<!-- <script>
 			// Apply theme before render to prevent flash
 			(function() {
 				const stored = localStorage.getItem('theme');
@@ -42,7 +42,7 @@
 					document.documentElement.classList.add('dark');
 				}
 			})();
-		</script>
+		</script> -->
 		
 		<!-- Google Analytics (if you have it) -->
 		<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
