@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import ListingGrid from '$lib/components/listings/ListingGrid.svelte';
-	import HeroSearch from '$lib/components/home/HeroSearch.svelte';
+	import HeroSearch from '$lib/components/home/HeroSearchFixed.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 	import { debug } from '$lib/utils/debug-logger';
 	import { onMount } from 'svelte';

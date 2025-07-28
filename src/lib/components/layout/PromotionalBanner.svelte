@@ -144,8 +144,15 @@
 		return daysSince >= DISMISSAL_DURATION_DAYS;
 	}
 	
-	// State
-	let isDismissed = $state(!shouldShowBanner());
+	// State - Initialize with true on server, update on client
+	let isDismissed = $state(false);
+	
+	// Check localStorage only on client side after mount
+	$effect(() => {
+		if (typeof window !== 'undefined') {
+			isDismissed = !shouldShowBanner();
+		}
+	});
 	
 	// Derived values
 	let bannerClass = $derived(cn(bannerVariants({ variant }), className));
@@ -159,6 +166,11 @@
 			setStorageItem(STORAGE_KEY, Date.now().toString());
 		}
 		onDismiss?.();
+		
+		// Ensure the component is removed immediately
+		requestAnimationFrame(() => {
+			isDismissed = true;
+		});
 	}
 </script>
 

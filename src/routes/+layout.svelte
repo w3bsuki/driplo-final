@@ -89,8 +89,8 @@
 		// Handle scroll for showing mobile nav on landing page
 		const handleScroll = () => {
 			if ($page.url.pathname === '/') {
-				// Show nav immediately after first scroll
-				showMobileNavOnLanding = window.scrollY > 50;
+				// Keep nav visible always on landing page
+				showMobileNavOnLanding = true;
 			}
 		};
 		
