@@ -1,0 +1,119 @@
+name: Claude Advanced Workflows
+
+on:
+  # Trigger on PR comments with "/claude" command
+  issue_comment:
+    types: [created]
+  
+  # Trigger on PR reviews
+  pull_request_review:
+    types: [submitted]
+  
+  # Trigger on specific PR events
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '**.ts'
+      - '**.svelte'
+      - '**.js'
+      - '**.css'
+  
+  # Manual trigger with inputs
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: 'Custom prompt for Claude'
+        required: false
+        default: 'Review this code for best practices'
+
+jobs:
+  claude-analysis:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      # PR Review Mode - Comprehensive analysis
+      - name: Claude PR Review
+        if: github.event_name == 'pull_request'
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: review
+          direct_prompt: |
+            Please review this PR with focus on:
+            1. Svelte 5 best practices (use onclick not on:click, $state not let, etc)
+            2. TypeScript type safety
+            3. Performance implications
+            4. Security vulnerabilities
+            5. Code duplication
+            6. Accessibility concerns
+            
+            For Svelte components specifically check:
+            - Event handler syntax (must use onclick)
+            - State management ($state vs let)
+            - Props handling ($props() vs export let)
+            - Snippet usage vs slots
+            
+            Be strict but constructive. Suggest specific improvements.
+      
+      # Comment Trigger Mode - Interactive assistance
+      - name: Claude Comment Response
+        if: |
+          github.event_name == 'issue_comment' && 
+          github.event.issue.pull_request && 
+          contains(github.event.comment.body, '/claude')
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          trigger_phrase: '/claude'
+          mode: comment
+      
+      # Manual Workflow - Custom analysis
+      - name: Claude Custom Analysis
+        if: github.event_name == 'workflow_dispatch'
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          direct_prompt: ${{ github.event.inputs.prompt }}
+
+  # Specialized Svelte 5 Migration Check
+  svelte5-migration-check:
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request' && 
+      contains(github.event.pull_request.title, 'svelte') ||
+      contains(github.event.pull_request.body, 'svelte')
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Svelte 5 Migration Analysis
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          direct_prompt: |
+            This PR appears to involve Svelte changes. Please:
+            
+            1. Identify any Svelte 4 patterns that need migration:
+               - on:click → onclick
+               - export let → $props()
+               - <slot> → {@render children()}
+               - let reactive → $state()
+               - $: reactive → $derived
+            
+            2. Check for proper TypeScript integration with Svelte 5
+            
+            3. Suggest modern Svelte 5 patterns where applicable
+            
+            Mark any legacy patterns as "Must Fix" in your review.
