@@ -1,7 +1,7 @@
 import type { RequestHandler } from './$types';
 import { apiError, apiSuccess, ApiErrorType } from '$lib/server/api-utils';
 import { z } from 'zod';
-import type { TopSellersResponse } from '$lib/types/api.types';
+import type { TopSellersResponse } from '$lib/types/api';
 
 const querySchema = z.object({
   period: z.enum(['week', 'month', 'year', 'all']).default('month'),

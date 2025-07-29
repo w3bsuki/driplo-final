@@ -273,21 +273,21 @@
 
 <style>
 	/* Scrollbar styling for dropdown content */
-	.overflow-y-auto::-webkit-scrollbar {
+	:global(.overflow-y-auto::-webkit-scrollbar) {
 		width: 4px;
 	}
 
-	.overflow-y-auto::-webkit-scrollbar-track {
+	:global(.overflow-y-auto::-webkit-scrollbar-track) {
 		background: #f1f1f1;
 		border-radius: 2px;
 	}
 
-	.overflow-y-auto::-webkit-scrollbar-thumb {
+	:global(.overflow-y-auto::-webkit-scrollbar-thumb) {
 		background: #c1c1c1;
 		border-radius: 2px;
 	}
 
-	.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+	:global(.overflow-y-auto::-webkit-scrollbar-thumb:hover) {
 		background: #a8a8a8;
 	}
 </style>

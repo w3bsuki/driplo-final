@@ -88,7 +88,22 @@ export function useRevolutPayment() {
 
 		} catch (error) {
 			logger.error('❌ Failed to create manual payment:', error);
-			const errorMessage = error instanceof Error ? error.message : 'Failed to create payment';
+			
+			// Enhanced error handling with user-friendly messages
+			let errorMessage = 'Failed to create payment';
+			
+			if (error instanceof Error) {
+				if (error.message.includes('rate_limit')) {
+					errorMessage = 'Too many requests. Please wait a moment and try again.';
+				} else if (error.message.includes('network')) {
+					errorMessage = 'Network error. Please check your connection.';
+				} else if (error.message.includes('server')) {
+					errorMessage = 'Server temporarily unavailable. Please try again later.';
+				} else {
+					errorMessage = error.message;
+				}
+			}
+			
 			toast.error(errorMessage);
 			return { success: false, error: errorMessage };
 		} finally {

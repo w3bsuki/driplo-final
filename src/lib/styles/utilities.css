@@ -184,3 +184,8 @@
     }
   }
 }
+
+/* Category section styles */
+@utility category-section {
+  min-height: 120px;
+}

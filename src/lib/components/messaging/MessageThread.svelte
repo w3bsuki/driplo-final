@@ -30,15 +30,15 @@
         onClose
     }: Props = $props();
     
-    let messages: Message[] = [];
-    let newMessage = '';
-    let loading = true;
-    let sending = false;
-    let hasMore = false;
+    let messages = $state<Message[]>([]);
+    let newMessage = $state('');
+    let loading = $state(true);
+    let sending = $state(false);
+    let hasMore = $state(false);
     let messagesContainer: HTMLDivElement;
     let realtimeChannel: RealtimeChannel;
-    let attachments: { file: File; preview: string; type: string }[] = [];
-    let uploading = false;
+    let attachments = $state<{ file: File; preview: string; type: string }[]>([]);
+    let uploading = $state(false);
     let fileInput: HTMLInputElement;
     // let virtualListRef: VirtualList;
     

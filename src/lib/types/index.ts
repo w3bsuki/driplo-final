@@ -16,5 +16,5 @@ export * from './unified';
 
 // Extended database types
 export type * from './database.extended';
-export type * from './api.types';
+// Types consolidated into api.ts
 export type * from './rpc.types';

@@ -41,7 +41,7 @@
 	let isLikeLoading = $state(false);
 	let showFullscreenGallery = $state(false);
 	let isDescriptionExpanded = $state(false);
-	let checkoutFlowRef: any;
+	let checkoutFlowRef = $state<any>(null);
 
 	let isOwner = $derived(currentUser?.id === listing?.seller_id);
 	let images = $derived(() => {

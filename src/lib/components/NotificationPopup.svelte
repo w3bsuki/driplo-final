@@ -52,7 +52,7 @@
 						{/if}
 						{#if notification.action}
 							<button
-								onclick={handleNotification.action.callback}
+								onclick={notification.action.callback}
 								class="text-sm font-medium mt-2 hover:underline"
 							>
 								{notification.action.label}

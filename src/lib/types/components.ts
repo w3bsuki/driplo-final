@@ -8,8 +8,8 @@
  */
 
 import type { Snippet } from 'svelte';
-import type { HTMLAttributes, HTMLButtonAttributes, HTMLInputAttributes } from 'svelte/elements';
-import type { Tables, Database } from './database';
+import type { HTMLButtonAttributes, HTMLInputAttributes } from 'svelte/elements';
+import type { Database } from './database';
 
 // =============================================================================
 // CORE UI COMPONENT INTERFACES

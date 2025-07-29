@@ -25,16 +25,16 @@
 	let uploadingLogo = $state(false);
 	
 	// Brand info
-	let brandName = $state(profile?.brand_name || '');
-	let brandDescription = $state(profile?.brand_description || '');
-	let brandCategory = $state(profile?.brand_category || '');
-	let brandWebsite = $state(profile?.brand_website || '');
-	let brandStory = $state(profile?.brand_story || '');
-	let brandEstablishedDate = $state(profile?.brand_established_date || '');
+	let brandName = $state('');
+	let brandDescription = $state('');
+	let brandCategory = $state('');
+	let brandWebsite = $state('');
+	let brandStory = $state('');
+	let brandEstablishedDate = $state('');
 	
 	// Social media
-	let brandInstagram = $state(profile?.brand_instagram || '');
-	let brandFacebook = $state(profile?.brand_facebook || '');
+	let brandInstagram = $state('');
+	let brandFacebook = $state('');
 	let brandTwitter = $state('');
 	let brandYoutube = $state('');
 	let brandTiktok = $state('');
@@ -48,6 +48,20 @@
 	// Check if user is already a brand
 	let isBrand = $derived(profile?.account_type === 'brand');
 	let isVerified = $derived(profile?.is_verified || false);
+	
+	// Initialize form values when profile loads
+	$effect(() => {
+		if (profile) {
+			brandName = profile.brand_name || '';
+			brandDescription = profile.brand_description || '';
+			brandCategory = profile.brand_category || '';
+			brandWebsite = profile.brand_website || '';
+			brandStory = profile.brand_story || '';
+			brandEstablishedDate = profile.brand_established_date || '';
+			brandInstagram = profile.brand_instagram || '';
+			brandFacebook = profile.brand_facebook || '';
+		}
+	});
 	
 	async function generateBrandSlug(brandName: string): Promise<string> {
 		const baseSlug = brandName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -387,10 +401,11 @@
 				
 				<div class="border-t pt-6 space-y-4">
 					<div>
-						<label class="block text-sm font-medium text-gray-700 mb-2">
+						<label for="brand-name" class="block text-sm font-medium text-gray-700 mb-2">
 							Brand Name *
 						</label>
 						<input
+							id="brand-name"
 							type="text"
 							bind:value={brandName}
 							placeholder="Enter your brand name"
@@ -399,22 +414,24 @@
 					</div>
 					
 					<div>
-						<label class="block text-sm font-medium text-gray-700 mb-2">
+						<label for="brand-description" class="block text-sm font-medium text-gray-700 mb-2">
 							Brand Description
 						</label>
 						<textarea
+							id="brand-description"
 							bind:value={brandDescription}
 							placeholder="Tell us about your brand..."
 							rows="3"
 							class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-						/>
+						></textarea>
 					</div>
 					
 					<div>
-						<label class="block text-sm font-medium text-gray-700 mb-2">
+						<label for="brand-category" class="block text-sm font-medium text-gray-700 mb-2">
 							Brand Category
 						</label>
 						<select
+							id="brand-category"
 							bind:value={brandCategory}
 							class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
 						>

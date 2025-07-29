@@ -556,3 +556,102 @@ export type SortOrder = 'asc' | 'desc';
  * Currency Codes
  */
 export type CurrencyCode = 'GBP' | 'USD' | 'EUR';
+
+// =============================================================================
+// ADDITIONAL API TYPES (from api.types.ts)
+// =============================================================================
+
+/**
+ * Pagination Info Structure
+ */
+export interface PaginationInfo {
+  page: number;
+  limit: number;
+  total: number;
+  hasMore: boolean;
+  nextPage?: number | null;
+  prevPage?: number | null;
+}
+
+/**
+ * Browse Load More Response
+ */
+export interface BrowseLoadMoreResponse {
+  listings: Array<Tables<'listings'> & {
+    profiles: Tables<'profiles'>;
+    listing_images: Array<Tables<'listing_images'>>;
+    favorites?: Array<Tables<'favorites'>>;
+  }>;
+  hasMore: boolean;
+  nextPage: number | null;
+}
+
+/**
+ * Top Sellers Response
+ */
+export interface TopSellersResponse {
+  sellers: Array<{
+    id: string;
+    user_id: string;
+    username: string;
+    display_name: string;
+    avatar_url: string | null;
+    total_sales: number;
+    revenue: number;
+    average_rating: number | null;
+    review_count: number;
+    rank?: number;
+  }>;
+  period: string;
+  totalCount: number;
+}
+
+/**
+ * Message Send Response
+ */
+export interface MessageSendResponse {
+  message: Tables<'messages'>;
+  conversation_id: string;
+}
+
+/**
+ * Unread Count Response  
+ */
+export interface UnreadCountResponse {
+  count: number;
+}
+
+/**
+ * Order Response Interface
+ */
+export interface OrderResponse extends Tables<'orders'> {
+  listing?: Tables<'listings'>;
+  seller?: Tables<'profiles'>;
+  buyer?: Tables<'profiles'>;
+  payment?: Tables<'payments'>;
+}
+
+/**
+ * Order Create Request Interface
+ */
+export interface OrderCreateRequest {
+  listing_id: string;
+  quantity: number;
+  shipping_address: {
+    line1: string;
+    line2?: string;
+    city: string;
+    state: string;
+    postal_code: string;
+    country: string;
+  };
+  payment_method_id: string;
+}
+
+/**
+ * Wishlist Toggle Response
+ */
+export interface WishlistToggleResponse {
+  added: boolean;
+  favorite_id?: string;
+}

@@ -102,13 +102,30 @@ export const POST: RequestHandler = async (event) => {
       handleDatabaseError(listingError);
     }
 
-    // Validation checks with specific error types
+    // Enhanced validation checks with specific error types
     if (listing.seller_id === userId) {
       throw new ApiError(
         'Cannot buy your own item',
         400,
         ApiErrorType.VALIDATION,
         { reason: 'self_purchase' }
+      );
+    }
+    
+    // Additional security: Check if user has too many pending orders
+    const { count: pendingOrders } = await event.locals.supabase
+      .from('transactions')
+      .select('id', { count: 'exact' })
+      .eq('buyer_id', userId)
+      .eq('status', 'pending')
+      .single();
+    
+    if (pendingOrders && pendingOrders >= 5) {
+      throw new ApiError(
+        'Too many pending orders. Please complete existing orders first.',
+        429,
+        ApiErrorType.RATE_LIMIT,
+        { pending_count: pendingOrders }
       );
     }
 

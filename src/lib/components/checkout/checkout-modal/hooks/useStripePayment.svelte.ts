@@ -194,7 +194,22 @@ export function useStripePayment() {
 
 		} catch (error) {
 			logger.error('❌ Unexpected error during payment processing:', error);
-			return { success: false, error: 'An unexpected error occurred. Please try again.' };
+			
+			// Enhanced error handling for different error types
+			let errorMessage = 'An unexpected error occurred. Please try again.';
+			
+			if (error instanceof Error) {
+				// Handle specific Stripe errors
+				if (error.message.includes('card_declined')) {
+					errorMessage = 'Your card was declined. Please try a different payment method.';
+				} else if (error.message.includes('insufficient_funds')) {
+					errorMessage = 'Insufficient funds. Please try a different payment method.';
+				} else if (error.message.includes('network')) {
+					errorMessage = 'Network error. Please check your connection and try again.';
+				}
+			}
+			
+			return { success: false, error: errorMessage };
 		}
 	}
 

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import { ChevronLeft, ChevronRight, Maximize2, X } from 'lucide-svelte';
 	import { cn } from '$lib/utils';
 	import Image from '$lib/components/ui/Image.svelte';
@@ -17,8 +16,6 @@
 
 	let currentImageIndex = $state(0);
 	let showFullscreen = $state(false);
-
-	const dispatch = createEventDispatcher();
 
 	const hasMultipleImages = $derived(images.length > 1);
 

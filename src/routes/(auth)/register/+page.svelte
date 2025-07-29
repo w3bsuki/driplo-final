@@ -36,7 +36,7 @@
 	// CAPTCHA state
 	let captchaToken = $state<string | null>(null)
 	let showCaptchaError = $state(false)
-	let captchaRef: TurnstileWrapper
+	let captchaRef = $state<TurnstileWrapper | null>(null)
 	
 	// Check if showing success message
 	let showSuccess = $derived($page.url.searchParams.get('success') === 'true')

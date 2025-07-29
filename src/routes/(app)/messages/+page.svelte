@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from '$app/stores';
     import { goto } from '$app/navigation';
-    import ConversationList from '$lib/components/messaging/ConversationList.svelte';
+    import ConversationListEnhanced from '$lib/components/messaging/ConversationListEnhanced.svelte';
     import MessageSearch from '$lib/components/messaging/MessageSearch.svelte';
     import type { PageData } from './$types';
     
@@ -9,8 +9,8 @@
     let showSearch = $state(false);
     let showArchived = $state(false);
 
-    function handleSelectConversation(event: CustomEvent<{ conversationId: string }>) {
-        goto(`/messages/${event.detail.conversationId}`);
+    function handleSelectConversation(data: { conversationId: string }) {
+        goto(`/messages/${data.conversationId}`);
     }
 </script>
 
@@ -58,7 +58,11 @@
                     
                     <!-- Conversation list -->
                     <div class="p-6">
-                        <ConversationList userId={data.session?.user.id || ''} {showArchived} />
+                        <ConversationListEnhanced 
+                            userId={data.user.id} 
+                            conversations={data.conversations}
+                            {showArchived} 
+                        />
                     </div>
                 </div>
                 
@@ -79,7 +83,7 @@
 <!-- Search Modal -->
 <MessageSearch 
     bind:isOpen={showSearch} 
-    userId={data.session?.user.id || ''} 
+    userId={data.user.id} 
     onclose={() => showSearch = false}
     onselectConversation={handleSelectConversation}
 />

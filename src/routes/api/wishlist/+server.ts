@@ -1,7 +1,7 @@
 import type { RequestHandler } from './$types'
 import { apiError, apiSuccess, ApiErrorType, requireAuth, validateRequest } from '$lib/server/api-utils'
 import { z } from 'zod'
-import type { WishlistToggleResponse } from '$lib/types/api.types'
+import type { WishlistToggleResponse } from '$lib/types/api'
 
 export const GET: RequestHandler = async ({ locals }) => {
 	const requestId = crypto.randomUUID()

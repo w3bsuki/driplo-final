@@ -97,7 +97,25 @@
 			}
 		} catch (error) {
 			logger.error('❌ Payment processing failed:', error);
-			const errorMessage = error instanceof Error ? error.message : 'Payment failed';
+			
+			// Enhanced error handling with specific error types
+			let errorMessage = 'Payment failed';
+			
+			if (error instanceof Error) {
+				// Handle different types of payment errors
+				if (error.message.includes('authentication')) {
+					errorMessage = 'Authentication failed. Please log in again.';
+				} else if (error.message.includes('insufficient')) {
+					errorMessage = 'Insufficient funds. Please try a different payment method.';
+				} else if (error.message.includes('declined')) {
+					errorMessage = 'Payment declined. Please check your payment details or try another card.';
+				} else if (error.message.includes('network')) {
+					errorMessage = 'Network error. Please check your connection and try again.';
+				} else {
+					errorMessage = error.message;
+				}
+			}
+			
 			onPaymentError(errorMessage);
 		} finally {
 			onProcessingChange(false);

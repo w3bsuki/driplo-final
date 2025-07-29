@@ -28,19 +28,27 @@ export const load: PageServerLoad = async ({ locals }) => {
 		.eq('account_type', 'personal')
 		.order('total_sales', { ascending: false });
 		
-	// Fetch all brand profiles with their associated profile data
+	// Fetch brand profiles with profile data in a single JOIN query
 	const brandsResult = await locals.supabase
 		.from('brand_profiles')
-		.select('*');
-		
-	// Get profile data for brands separately
-	const brandUserIds = brandsResult.data?.map(b => b.user_id) || [];
-	const brandProfilesResult = brandUserIds.length > 0 
-		? await locals.supabase
-			.from('profiles')
-			.select('*')
-			.in('id', brandUserIds)
-		: { data: [] };
+		.select(`
+			id,
+			brand_name,
+			brand_slug,
+			brand_logo_url,
+			verification_status,
+			created_at,
+			profiles!brand_profiles_user_id_fkey (
+				username,
+				avatar_url,
+				total_sales,
+				seller_rating,
+				seller_rating_count,
+				total_earned,
+				followers_count,
+				badges
+			)
+		`);
 	
 	// Handle any errors
 	if (sellersResult.error) {
@@ -49,19 +57,10 @@ export const load: PageServerLoad = async ({ locals }) => {
 	if (brandsResult.error) {
 		console.error('Error fetching brands:', brandsResult.error);
 	}
-	if (brandProfilesResult.error) {
-		console.error('Error fetching brand profiles:', brandProfilesResult.error);
-	}
 	
-	// Create a map of profile data by user_id
-	const profileMap = new Map();
-	brandProfilesResult.data?.forEach(profile => {
-		profileMap.set(profile.id, profile);
-	});
-	
-	// Process brand data to combine brand_profiles with profiles data
+	// Process brand data with joined profile data
 	const brands = (brandsResult.data || []).map(brand => {
-		const profile = profileMap.get(brand.user_id) || {};
+		const profile = brand.profiles || {};
 		return {
 			brand_id: brand.id,
 			brand_name: brand.brand_name,
@@ -69,8 +68,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 			brand_logo_url: brand.brand_logo_url,
 			verification_status: brand.verification_status,
 			created_at: brand.created_at,
-			username: profile.username, // Add username for profile page
-			avatar_url: profile.avatar_url, // Add avatar for consistency
+			username: profile.username,
+			avatar_url: profile.avatar_url,
 			total_sales: profile.total_sales || 0,
 			average_rating: profile.seller_rating || 0,
 			rating_count: profile.seller_rating_count || 0,

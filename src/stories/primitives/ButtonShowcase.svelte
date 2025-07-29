@@ -2,8 +2,8 @@
   import Button from '$lib/components/ui/button.svelte';
   import { ChevronRight, Download, Heart, Plus, Settings, Trash2 } from 'lucide-svelte';
   
-  const variants = ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'];
-  const sizes = ['xs', 'sm', 'default', 'lg', 'xl'];
+  const variants: ('default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link')[] = ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'];
+  const sizes: ('xs' | 'sm' | 'default' | 'lg' | 'xl')[] = ['xs', 'sm', 'default', 'lg', 'xl'];
 </script>
 
 <div class="space-y-8 w-full max-w-4xl">

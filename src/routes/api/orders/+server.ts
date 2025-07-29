@@ -1,7 +1,7 @@
 import type { RequestHandler } from './$types';
 import { apiError, apiSuccess, ApiErrorType, requireAuth, validateRequest, getPagination } from '$lib/server/api-utils';
 import { z } from 'zod';
-import type { OrderResponse, OrderCreateRequest } from '$lib/types/api.types';
+import type { OrderResponse, OrderCreateRequest } from '$lib/types/api';
 
 const orderFiltersSchema = z.object({
     status: z.string().optional(),

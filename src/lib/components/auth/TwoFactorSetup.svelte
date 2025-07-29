@@ -1,12 +1,11 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
   import Button from '$lib/components/ui/button.svelte';
   import Input from '$lib/components/ui/input.svelte';
   import Label from '$lib/components/ui/label.svelte';
   import { toast } from 'svelte-sonner';
   import { Loader2, Copy, Download, Shield } from 'lucide-svelte';
 
-  const dispatch = createEventDispatcher();
+  let { oncomplete }: { oncomplete?: () => void } = $props();
 
   let step = $state<'intro' | 'qr' | 'verify' | 'backup'>('intro');
   let loading = $state(false);
@@ -99,7 +98,7 @@ ${backupCodes.join('\n')}`;
   }
 
   function complete() {
-    dispatch('complete');
+    oncomplete?.();
   }
 </script>
 

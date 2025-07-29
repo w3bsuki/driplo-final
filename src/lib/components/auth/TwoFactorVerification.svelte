@@ -1,14 +1,11 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
   import Button from '$lib/components/ui/button.svelte';
   import Input from '$lib/components/ui/input.svelte';
   import Label from '$lib/components/ui/label.svelte';
   import { toast } from 'svelte-sonner';
   import { Loader2, Smartphone, Key } from 'lucide-svelte';
 
-  const dispatch = createEventDispatcher();
-
-  let { email = '' }: { email?: string } = $props();
+  let { email = '', onverified }: { email?: string; onverified?: () => void } = $props();
   
   let verificationCode = $state('');
   let loading = $state(false);
@@ -44,7 +41,7 @@
       }
       
       toast.success('2FA verification successful');
-      dispatch('verified');
+      onverified?.();
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Failed to verify code');
     } finally {

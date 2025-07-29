@@ -1,5 +1,24 @@
 # Memory - Driplo Project
 
+## [2025-07-29] - Brutal Codebase Audit
+### What We Discovered
+- **25,702 lines** that should be **~7,000 lines** (72% bloat)
+- **PostCSS + Vite** = Triple CSS processing (40% slower builds)
+- **createEventDispatcher** usage will break in Svelte 5
+- Using SvelteKit like a 2019 React SPA (no form actions, no prerendering)
+
+### Key Decisions
+1. **Stop sugarcoating** - Previous audits were too lenient
+2. **Archive don't accumulate** - Moved 10+ refactoring plans to archive
+3. **Fix build tools first** - Remove PostCSS immediately
+4. **Consider starting fresh** - 2 weeks rebuild vs 3 weeks refactoring
+
+### Files Created
+- `BRUTAL_REFACTORING_PLAN.md` - The honest truth
+- `docs/SVELTE5_VIOLATIONS.md` - Runtime errors to fix
+- `docs/BUILD_TOOLS_MESS.md` - PostCSS conflict analysis
+- `docs/CODEBASE_BLOAT_ANALYSIS.md` - Where to cut 72%
+
 ## [2025-01-28] - Documentation Cleanup
 - **Decision**: Consolidated 80+ MD files into 6 essential docs
 - **Structure**: 5 files in root (CLAUDE, CONTEXT, MEMORY, TASK, README) + 2 in /docs
@@ -95,3 +114,37 @@
 3. Dark mode implementation
 4. Mobile app development
 5. Internationalization improvements
+
+## [2025-07-29] - CRITICAL: Security & Architecture Emergency
+### What We Discovered (Using Ultrathink Mode)
+- **createEventDispatcher DOESN'T EXIST in Svelte 5** - Auth is broken RIGHT NOW
+- **Client-side payment processing** - Major PCI compliance violation
+- **~700 TypeScript errors** being ignored - Runtime crashes imminent
+- **Dual i18n systems** (custom + Paraglide) causing conflicts
+- **No error boundaries** - One error will crash entire app
+
+### Refactoring Plans Evolution
+1. **BRUTAL_REFACTORING_PLAN.md** - Initial 3-week plan (too optimistic)
+2. **ULTIMATE_REFACTORING_PLAN.md** - Foolproof guide with checkpoints
+3. **REFACTORING_RISKS.md** - Discovered catastrophic hidden issues
+4. **FINAL_BRUTAL_REFACTORING_PLAN.md** - Reality: 8 weeks vs 4 week rebuild
+
+### Critical Decision Required
+- **Option 1**: 8-week careful refactoring (high risk, existing team)
+- **Option 2**: 4-week rebuild from scratch (lower risk, faster)
+- **Recommendation**: Given payment security issues and fundamental problems, rebuild is safer
+
+### Technical Bankruptcy Details
+- Using Svelte 5 syntax with Svelte 4 patterns everywhere
+- Payment system needs complete server-side rewrite
+- Auth system fragile with missing 2FA middleware
+- Database types hardcoded to specific Postgrest version
+- Error handling swallows critical failures
+- Build tools triple-processing CSS
+
+### Immediate Actions Required
+1. Fix createEventDispatcher in TwoFactorSetup.svelte TODAY
+2. Move ALL payment processing server-side IMMEDIATELY
+3. Document all environment variables
+4. Create database backup with tested restore
+5. Set up proper error tracking before any refactoring

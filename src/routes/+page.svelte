@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import ListingGrid from '$lib/components/listings/ListingGrid.svelte';
-	import HeroSearch from '$lib/components/home/HeroSearch.svelte';
+	import UnifiedSearch from '$lib/components/shared/UnifiedSearch.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 	import { debug } from '$lib/utils/debug-logger';
 	import { onMount } from 'svelte';
@@ -36,7 +36,16 @@
 	});
 </script>
 
-<HeroSearch categories={data.categories} />
+<UnifiedSearch 
+	variant="hero"
+	categories={data.categories}
+	showQuickFilters={true}
+	showTrending={true}
+	maxQuickFilters={6}
+	maxTrending={5}
+	theme="brand"
+	size="md"
+/>
 <ListingGrid title={m.home_featured_title()} listings={data.featuredListings} />
 <ListingGrid title={m.home_most_viewed_title()} listings={data.popularListings} />
 

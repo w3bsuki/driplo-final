@@ -13,7 +13,23 @@ export default defineConfig({
 			outdir: "./src/lib/paraglide",
 		}),
 		// Tailwind v4 with CSS-first configuration - moved after paraglide
-		tailwindcss(),
+		// Workaround to exclude Svelte component styles from Tailwind processing
+		...tailwindcss().map((plugin) => {
+			if (plugin.name === "@tailwindcss/vite:generate:serve") {
+				const originalTransform = plugin.transform;
+				return {
+					...plugin,
+					transform(code, id, options) {
+						// Skip Svelte component style blocks
+						if (id.includes('.svelte?inline&svelte&type=style')) {
+							return;
+						}
+						return originalTransform?.call(this, code, id, options);
+					},
+				};
+			}
+			return plugin;
+		}),
 		// Enhanced bundle analyzer
 		visualizer({
 			emitFile: true,
@@ -104,8 +120,6 @@ export default defineConfig({
 	
 	// CSS processing optimizations
 	css: {
-		// Force PostCSS processing for Vercel
-		postcss: {},
 		// CSS dev source maps for debugging
 		devSourcemap: true,
 		// CSS preprocessing options

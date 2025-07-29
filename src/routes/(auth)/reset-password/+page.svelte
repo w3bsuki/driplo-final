@@ -30,7 +30,7 @@
 	// CAPTCHA state
 	let captchaToken = $state<string | null>(null);
 	let showCaptchaError = $state(false);
-	let captchaRef: TurnstileWrapper;
+	let captchaRef = $state<TurnstileWrapper | null>(null);
 
 	const passwordSchema = z
 		.string()

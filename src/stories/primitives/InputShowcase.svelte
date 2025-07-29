@@ -1,6 +1,6 @@
 <script>
   import Input from '$lib/components/ui/input.svelte';
-  import { Search, Mail, Lock, User, Calendar, CreditCard } from 'lucide-svelte';
+  import { Search, Mail, Lock, User } from 'lucide-svelte';
 </script>
 
 <div class="space-y-8 w-full max-w-2xl">
