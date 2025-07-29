@@ -10,7 +10,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
     }
 
     // Get date range from query params (default to last 30 days)
-    const days = parseInt(url.searchParams.get('days') || '30');
+    const days = parseInt(url.searchParams.get('days' || '0') || '30');
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);
 

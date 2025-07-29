@@ -18,7 +18,7 @@
 		<div class="max-w-4xl mx-auto">
 			<h1 class="text-3xl font-bold text-gray-900 mb-8">Verify User Emails</h1>
 			
-			{#if data.unverifiedUsers.length === 0}
+			{#if data?.unverifiedUsers?.length ?? 0 === 0}
 				<div class="bg-white rounded-lg shadow p-8 text-center">
 					<CheckCircle class="w-16 h-16 text-green-500 mx-auto mb-4" />
 					<p class="text-gray-600">All users have verified emails!</p>
@@ -43,17 +43,17 @@
 							</tr>
 						</thead>
 						<tbody class="bg-white divide-y divide-gray-200">
-							{#each data.unverifiedUsers as user}
+							{#each data?.unverifiedUsers as user}
 								<tr>
 									<td class="px-6 py-4 whitespace-nowrap">
 										<div class="flex items-center">
 											<User class="w-5 h-5 text-gray-400 mr-2" />
 											<div>
 												<div class="text-sm font-medium text-gray-900">
-													{user.full_name || user.username || 'Unknown'}
+													{user?.full_name || user?.username || 'Unknown'}
 												</div>
-												{#if user.username}
-													<div class="text-sm text-gray-500">@{user.username}</div>
+												{#if user?.username}
+													<div class="text-sm text-gray-500">@{user?.username}</div>
 												{/if}
 											</div>
 										</div>
@@ -61,37 +61,37 @@
 									<td class="px-6 py-4 whitespace-nowrap">
 										<div class="flex items-center">
 											<Mail class="w-4 h-4 text-gray-400 mr-2" />
-											<span class="text-sm text-gray-900">{user.email || 'N/A'}</span>
+											<span class="text-sm text-gray-900">{user?.email || 'N/A'}</span>
 										</div>
 									</td>
 									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-										{new Date(user.created_at).toLocaleDateString()}
+										{new Date(user?.created_at).toLocaleDateString()}
 									</td>
 									<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
 										<form
 											method="POST"
 											action="?/verifyEmail"
 											use:enhance={() => {
-												verifying = user.id;
+												verifying = user?.id;
 												return async ({ result }) => {
 													verifying = null;
-													if (result.type === 'success') {
-														toast.success('Email verified successfully!');
+													if (result?.type === 'success') {
+														toast?.success('Email verified successfully!');
 														// Remove from list
-														data.unverifiedUsers = data.unverifiedUsers.filter(u => u.id !== user.id);
+														data?.unverifiedUsers = data?.unverifiedUsers?.filter?.(((u: any) => u?.id !== user?.id);
 													} else {
-														toast.error('Failed to verify email');
+														toast?.error('Failed to verify email');
 													}
 												};
 											}}
 										>
-											<input type="hidden" name="userId" value={user.id} />
+											<input type="hidden" name="userId" value={user?.id} />
 											<button
 												type="submit"
-												disabled={verifying === user.id}
+												disabled={verifying === user?.id}
 												class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
 											>
-												{#if verifying === user.id}
+												{#if verifying === user?.id}
 													Verifying...
 												{:else}
 													Verify Email

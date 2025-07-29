@@ -168,6 +168,19 @@ export type BadgeSize =
   | 'md'  // 28px height, default
   | 'lg'; // 32px height
 
+/**
+ * Badge Props
+ * Props interface for badge components
+ */
+export interface BadgeProps extends ComponentPropsBase {
+  /** Badge variant */
+  variant?: BadgeVariant;
+  /** Badge size */
+  size?: BadgeSize;
+  /** Badge children/content */
+  children?: any;
+}
+
 // =============================================================================
 // ALERT VARIANTS
 // =============================================================================

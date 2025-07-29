@@ -157,7 +157,7 @@
 			</div>
 			{#if !customAvatarUrl}
 				<button
-					onclick={handleGenerateNewSeed}
+					onclick={generateNewSeed}
 					class="absolute -bottom-2 -right-2 p-2 bg-white rounded-full shadow-md
 						hover:shadow-lg transition-all duration-200 group-hover:scale-110"
 					title="Generate new avatar"

@@ -4,7 +4,7 @@
 	import UserMenu from './UserMenu.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 	import type { User, Session } from '@supabase/supabase-js';
-	import type { ExtendedProfile } from '$lib/types/database.extended';
+	import type { ExtendedProfile } from '$lib/types';
 	
 	interface DesktopNavProps {
 		user: User | null;

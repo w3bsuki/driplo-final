@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
 import { browseListings, getBrowseFilters } from '$lib/server/browse'
 import { getCachedData, cacheKeys, cacheTTL } from '$lib/server/cache'
-import { setCacheHeaders, cachePresets } from '$lib/utils/cache-headers'
+// Removed unused import: setCacheHeaders, cachePresets
 
 export const load: PageServerLoad = async ({ url, locals }) => {
 	const session = await locals.safeGetSession()
@@ -63,7 +63,7 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 		const hasPrevPage = browseResult.page > 1
 
 		// Transform listings to match ListingCard props
-		const enrichedListings = browseResult.listings.map(listing => ({
+		const enrichedListings = browseResult.listings?.map?.((listing => ({
 			id: listing.id,
 			title: listing.title,
 			price: listing.price,
@@ -83,7 +83,7 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 			...listing,
 			is_negotiable: false,
 			shipping_included: false
-		}))
+		});
 
 		return {
 			listings: enrichedListings,

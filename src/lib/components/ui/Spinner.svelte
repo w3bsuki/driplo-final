@@ -1,15 +1,7 @@
 <script lang="ts">
 	import { Loader2 } from 'lucide-svelte';
 	import { cn } from '$lib/utils';
-
-	interface Props {
-		size?: 'sm' | 'md' | 'lg' | 'xl';
-		color?: 'primary' | 'white' | 'current';
-		class?: string;
-		text?: string;
-		fullScreen?: boolean;
-		overlay?: boolean;
-	}
+	import type { SpinnerProps } from '$lib/types/components';
 
 	let { 
 		size = 'md',
@@ -18,7 +10,7 @@
 		text = '',
 		fullScreen = false,
 		overlay = false
-	}: Props = $props();
+	}: SpinnerProps = $props();
 
 	const sizeClasses = {
 		sm: 'w-4 h-4',

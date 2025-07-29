@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
-	import { createEventDispatcher } from 'svelte';
 
 	interface Props {
 		checked?: boolean;
@@ -28,13 +27,10 @@
 		onCheckedChange
 	}: Props = $props();
 
-	const dispatch = createEventDispatcher();
-
 	function handleClick() {
 		if (!disabled) {
 			checked = !checked;
 			onCheckedChange?.(checked);
-			dispatch('change', checked);
 		}
 	}
 

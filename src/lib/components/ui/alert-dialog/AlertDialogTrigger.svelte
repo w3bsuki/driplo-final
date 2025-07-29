@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Snippet } from 'svelte';
-	import type { Writable } from 'svelte/store';
+	import type { _Writable} from 'svelte/store';
 
 	interface Props {
 		class?: string;

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { notifications } from '$lib/stores/notifications.svelte';
-	import { fly, fade } from 'svelte/transition';
+	import { fly, _fade} from 'svelte/transition';
 	import { CheckCircle, XCircle, Info, AlertTriangle, X } from 'lucide-svelte';
 	
 	let { position = 'top-right' }: { position?: 'top-right' | 'top-center' | 'bottom-right' } = $props();
@@ -52,7 +52,7 @@
 						{/if}
 						{#if notification.action}
 							<button
-								onclick={handleNotification.action.callback}
+								onclick={notification.action.callback}
 								class="text-sm font-medium mt-2 hover:underline"
 							>
 								{notification.action.label}

@@ -1,40 +1,41 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
+	// import { page } from '$app/stores';
 	import type { PageData } from './$types';
 	import { 
-		Store, Check, X, Upload, Link, Instagram, Facebook, 
-		Globe, FileText, Shield, AlertCircle, Clock, ChevronRight,
+		Store, Check, X, Instagram, Facebook, 
+		Globe, FileText, Shield, AlertCircle, Clock,
 		Twitter, Youtube
 	} from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 	import { cn } from '$lib/utils';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
-	import * as m from '$lib/paraglide/messages.js';
+	// Messages import kept for future use
+	// import * as m from '$lib/paraglide/messages.js';
 
 	let { data }: { data: PageData } = $props();
 	
-	const supabase = $derived(data.supabase);
-	const user = $derived(data.user);
-	const profile = $derived(data.profile);
+	const supabase = $derived(data?.supabase);
+	const user = $derived(data?.user);
+	const profile = $derived(data?.profile);
 	
 	// Form state
 	let loading = $state(false);
 	let activeTab = $state<'info' | 'verification' | 'social'>('info');
-	let uploadingLogo = $state(false);
+	// let _uploadingLogo = $state(false);
 	
 	// Brand info
-	let brandName = $state(profile?.brand_name || '');
-	let brandDescription = $state(profile?.brand_description || '');
-	let brandCategory = $state(profile?.brand_category || '');
-	let brandWebsite = $state(profile?.brand_website || '');
-	let brandStory = $state(profile?.brand_story || '');
-	let brandEstablishedDate = $state(profile?.brand_established_date || '');
+	let brandName = $state('');
+	let brandDescription = $state('');
+	let brandCategory = $state('');
+	let brandWebsite = $state('');
+	let brandStory = $state('');
+	let brandEstablishedDate = $state('');
 	
 	// Social media
-	let brandInstagram = $state(profile?.brand_instagram || '');
-	let brandFacebook = $state(profile?.brand_facebook || '');
+	let brandInstagram = $state('');
+	let brandFacebook = $state('');
 	let brandTwitter = $state('');
 	let brandYoutube = $state('');
 	let brandTiktok = $state('');
@@ -49,8 +50,22 @@
 	let isBrand = $derived(profile?.account_type === 'brand');
 	let isVerified = $derived(profile?.is_verified || false);
 	
+	// Initialize form values when profile loads
+	$effect(() => {
+		if (profile) {
+			brandName = profile?.brand_name || '';
+			brandDescription = profile?.brand_description || '';
+			brandCategory = profile?.brand_category || '';
+			brandWebsite = profile?.brand_website || '';
+			brandStory = profile?.brand_story || '';
+			brandEstablishedDate = profile?.brand_established_date || '';
+			brandInstagram = profile?.brand_instagram || '';
+			brandFacebook = profile?.brand_facebook || '';
+		}
+	});
+	
 	async function generateBrandSlug(brandName: string): Promise<string> {
-		const baseSlug = brandName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+		const baseSlug = brandName?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 		let slug = baseSlug;
 		let counter = 0;
 		
@@ -82,12 +97,12 @@
 			const { data: fetchedProfile } = await supabase
 				.from('profiles')
 				.select('*')
-				.eq('id', user.id)
+				.eq('id', user?.id)
 				.single();
 			
 			if (fetchedProfile) {
 				// Update the local state with fetched profile
-				data.profile = fetchedProfile;
+				data?.profile = fetchedProfile;
 			}
 		}
 		
@@ -96,7 +111,7 @@
 			const { data } = await supabase
 				.from('brand_verification_requests' as any)
 				.select('*')
-				.eq('user_id', user.id)
+				.eq('user_id', user?.id)
 				.order('created_at', { ascending: false })
 				.limit(1)
 				.single();
@@ -107,19 +122,19 @@
 		}
 		
 		// Load social media accounts from page data
-		const socialAccounts = data.socialMediaAccounts;
+		const socialAccounts = data?.socialMediaAccounts;
 		
 		if (socialAccounts) {
-			socialAccounts.forEach(account => {
-				switch (account.platform) {
+			socialAccounts?.forEach((account: { platform: string; username: string }) => {
+				switch (account?.platform) {
 					case 'twitter':
-						brandTwitter = account.username;
+						brandTwitter = account?.username;
 						break;
 					case 'youtube':
-						brandYoutube = account.username;
+						brandYoutube = account?.username;
 						break;
 					case 'tiktok':
-						brandTiktok = account.username;
+						brandTiktok = account?.username;
 						break;
 				}
 			});
@@ -127,8 +142,8 @@
 	});
 	
 	async function handleUpgradeToBrand() {
-		if (!brandName.trim()) {
-			toast.error('Please enter a brand name');
+		if (!brandName?.trim()) {
+			toast?.error('Please enter a brand name');
 			return;
 		}
 		
@@ -145,7 +160,7 @@
 					brand_story: brandStory,
 					brand_established_date: brandEstablishedDate || null
 				})
-				.eq('id', user.id);
+				.eq('id', user?.id);
 			
 			if (error) throw error;
 			
@@ -156,7 +171,7 @@
 			const { error: brandProfileError } = await supabase
 				.from('brand_profiles')
 				.insert({
-					user_id: user.id,
+					user_id: user?.id,
 					brand_name: brandName,
 					brand_slug: brandSlug,
 					brand_description: brandDescription,
@@ -165,11 +180,11 @@
 			
 			if (brandProfileError) throw brandProfileError;
 			
-			toast.success('Successfully upgraded to brand account!');
+			toast?.success('Successfully upgraded to brand account!');
 			// Redirect to brand welcome page
 			goto(`/brands/welcome?slug=${brandSlug}`);
 		} catch (error: any) {
-			toast.error(error.message || 'Failed to upgrade account');
+			toast?.error(error?.message || 'Failed to upgrade account');
 		} finally {
 			loading = false;
 		}
@@ -190,37 +205,37 @@
 					brand_instagram: brandInstagram,
 					brand_facebook: brandFacebook
 				})
-				.eq('id', user.id);
+				.eq('id', user?.id);
 			
 			if (error) throw error;
 			
 			// Save social media accounts
 			const socialPlatforms = [
-				{ platform: 'instagram', username: brandInstagram, url: `https://instagram.com/${brandInstagram}` },
-				{ platform: 'facebook', username: brandFacebook, url: `https://facebook.com/${brandFacebook}` },
-				{ platform: 'twitter', username: brandTwitter, url: `https://twitter.com/${brandTwitter}` },
-				{ platform: 'youtube', username: brandYoutube, url: `https://youtube.com/@${brandYoutube}` },
-				{ platform: 'tiktok', username: brandTiktok, url: `https://tiktok.com/@${brandTiktok}` }
+				{ platform: 'instagram', username: brandInstagram, url: `https://instagram?.com/${brandInstagram}` },
+				{ platform: 'facebook', username: brandFacebook, url: `https://facebook?.com/${brandFacebook}` },
+				{ platform: 'twitter', username: brandTwitter, url: `https://twitter?.com/${brandTwitter}` },
+				{ platform: 'youtube', username: brandYoutube, url: `https://youtube?.com/@${brandYoutube}` },
+				{ platform: 'tiktok', username: brandTiktok, url: `https://tiktok?.com/@${brandTiktok}` }
 			];
 			
 			for (const social of socialPlatforms) {
-				if (social.username) {
+				if (social?.username) {
 					await supabase
 						.from('social_media_accounts')
 						.upsert({
-							user_id: user.id,
-							platform: social.platform,
-							username: social.username,
-							url: social.url
+							user_id: user?.id,
+							platform: social?.platform,
+							username: social?.username,
+							url: social?.url
 						}, {
 							onConflict: 'user_id,platform'
 						});
 				}
 			}
 			
-			toast.success('Brand information updated successfully!');
+			toast?.success('Brand information updated successfully!');
 		} catch (error: any) {
-			toast.error(error.message || 'Failed to update brand info');
+			toast?.error(error?.message || 'Failed to update brand info');
 		} finally {
 			loading = false;
 		}
@@ -228,7 +243,7 @@
 	
 	async function handleSubmitVerification() {
 		if (!businessRegistrationNumber && !taxId) {
-			toast.error('Please provide at least one business identifier');
+			toast?.error('Please provide at least one business identifier');
 			return;
 		}
 		
@@ -238,19 +253,19 @@
 			let documentUrls = [];
 			if (verificationDocuments.length > 0) {
 				for (const doc of verificationDocuments) {
-					const fileName = `brand-docs/${user.id}/${Date.now()}-${doc.name}`;
-					const { data: uploadData, error: uploadError } = await supabase.storage
+					const fileName = `brand-docs/${user?.id}/${Date?.now()}-${doc?.name}`;
+					const { error: uploadError } = await supabase?.storage
 						.from('documents')
 						.upload(fileName, doc);
 					
 					if (uploadError) throw uploadError;
 					
-					const { data: { publicUrl } } = supabase.storage
+					const { data: { publicUrl } } = supabase?.storage
 						.from('documents')
 						.getPublicUrl(fileName);
 					
-					documentUrls.push({
-						name: doc.name,
+					documentUrls?.push({
+						name: doc?.name,
 						url: publicUrl,
 						uploaded_at: new Date().toISOString()
 					});
@@ -261,7 +276,7 @@
 			const { data, error } = await supabase
 				.from('brand_verification_requests' as any)
 				.insert({
-					user_id: user.id,
+					user_id: user?.id,
 					brand_name: brandName,
 					brand_category: brandCategory,
 					business_registration_number: businessRegistrationNumber || null,
@@ -282,18 +297,18 @@
 			if (error) throw error;
 			
 			verificationRequest = data;
-			toast.success('Verification request submitted successfully! We\'ll review it within 2-3 business days.');
+			toast?.success('Verification request submitted successfully! We\'ll review it within 2-3 business days.');
 		} catch (error: any) {
-			toast.error(error.message || 'Failed to submit verification');
+			toast?.error(error?.message || 'Failed to submit verification');
 		} finally {
 			loading = false;
 		}
 	}
 	
 	function handleFileSelect(event: Event) {
-		const input = event.target as HTMLInputElement;
-		if (input.files) {
-			verificationDocuments = Array.from(input.files);
+		const input = event?.target as HTMLInputElement;
+		if (input?.files) {
+			verificationDocuments = Array?.from(input?.files);
 		}
 	}
 	
@@ -387,10 +402,11 @@
 				
 				<div class="border-t pt-6 space-y-4">
 					<div>
-						<label class="block text-sm font-medium text-gray-700 mb-2">
+						<label for="brand-name" class="block text-sm font-medium text-gray-700 mb-2">
 							Brand Name *
 						</label>
 						<input
+							id="brand-name"
 							type="text"
 							bind:value={brandName}
 							placeholder="Enter your brand name"
@@ -399,22 +415,24 @@
 					</div>
 					
 					<div>
-						<label class="block text-sm font-medium text-gray-700 mb-2">
+						<label for="brand-description" class="block text-sm font-medium text-gray-700 mb-2">
 							Brand Description
 						</label>
 						<textarea
+							id="brand-description"
 							bind:value={brandDescription}
 							placeholder="Tell us about your brand..."
 							rows="3"
 							class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-						/>
+						></textarea>
 					</div>
 					
 					<div>
-						<label class="block text-sm font-medium text-gray-700 mb-2">
+						<label for="brand-category" class="block text-sm font-medium text-gray-700 mb-2">
 							Brand Category
 						</label>
 						<select
+							id="brand-category"
 							bind:value={brandCategory}
 							class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
 						>
@@ -434,7 +452,7 @@
 					
 					<button
 						onclick={handleUpgradeToBrand}
-						disabled={loading || !brandName.trim()}
+						disabled={loading || !brandName?.trim()}
 						class="w-full py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
 					>
 						{#if loading}
@@ -572,7 +590,7 @@
 								<input
 									type="url"
 									bind:value={brandWebsite}
-									placeholder="https://yourbrand.com"
+									placeholder="https://yourbrand?.com"
 									class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
 								/>
 							</div>
@@ -605,33 +623,33 @@
 									</div>
 								</div>
 							{:else if verificationRequest}
-								{@const status = getStatusBadge(verificationRequest.verification_status)}
-								{@const StatusIcon = status.icon}
+								{@const status = getStatusBadge(verificationRequest?.verification_status)}
+								{@const StatusIcon = status?.icon}
 								<div class={cn(
 									"border rounded-lg p-6 flex items-start gap-4",
-									verificationRequest.verification_status === 'pending' && "bg-yellow-50 border-yellow-200",
-									verificationRequest.verification_status === 'rejected' && "bg-red-50 border-red-200",
-									verificationRequest.verification_status === 'more_info_needed' && "bg-orange-50 border-orange-200"
+									verificationRequest?.verification_status === 'pending' && "bg-yellow-50 border-yellow-200",
+									verificationRequest?.verification_status === 'rejected' && "bg-red-50 border-red-200",
+									verificationRequest?.verification_status === 'more_info_needed' && "bg-orange-50 border-orange-200"
 								)}>
-									<div class={cn("w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0", status.class)}>
+									<div class={cn("w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0", status?.class)}>
 										<StatusIcon class="w-6 h-6" />
 									</div>
 									<div class="flex-1">
-										<h3 class="font-semibold">{status.text}</h3>
+										<h3 class="font-semibold">{status?.text}</h3>
 										<p class="text-sm text-gray-600 mt-1">
-											Submitted on {new Date(verificationRequest.submitted_at).toLocaleDateString()}
+											Submitted on {new Date(verificationRequest?.submitted_at || new Date()).toLocaleDateString()}
 										</p>
-										{#if verificationRequest.admin_notes}
+										{#if verificationRequest?.admin_notes}
 											<div class="mt-3 p-3 bg-white rounded border">
 												<p class="text-sm font-medium mb-1">Admin Notes:</p>
-												<p class="text-sm text-gray-600">{verificationRequest.admin_notes}</p>
+												<p class="text-sm text-gray-600">{verificationRequest?.admin_notes}</p>
 											</div>
 										{/if}
 									</div>
 								</div>
 							{/if}
 							
-							{#if !isVerified && (!verificationRequest || verificationRequest.verification_status === 'rejected')}
+							{#if !isVerified && (!verificationRequest || verificationRequest?.verification_status === 'rejected')}
 								<div class="space-y-4">
 									<p class="text-gray-600">
 										Verify your brand to get a verified badge and access premium features.

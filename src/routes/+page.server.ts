@@ -7,46 +7,46 @@ export const prerender = false;
 // Server-side debug logging
 const serverDebug = {
   log: (message: string, data?: any) => {
-    console.log(`[SERVER] ${new Date().toISOString()} - ${message}`, data || '');
+    console?.log(`[SERVER] ${new Date().toISOString()} - ${message}`, data || '');
   },
   error: (message: string, error?: any) => {
-    console.error(`[SERVER ERROR] ${new Date().toISOString()} - ${message}`, error || '');
+    console?.error(`[SERVER ERROR] ${new Date().toISOString()} - ${message}`, error || '');
   }
 };
 
 export const load: PageServerLoad = async ({ locals }) => {
   // Load critical data first, stream the rest
   const criticalData = await getCachedData(
-    cacheKeys.homepage_critical,
+    cacheKeys?.homepage_critical,
     async () => {
       // Use optimized RPC functions to reduce queries
-      const [categoriesResult, featuredResult] = await Promise.all([
+      const [categoriesResult, featuredResult] = await Promise?.all([
         // Get main categories with product counts in single query
-        locals.supabase.rpc('get_categories_with_counts'),
+        locals?.supabase.rpc('get_categories_with_counts'),
 
         // Get featured listings with all related data
-        locals.supabase.rpc('get_homepage_listings', {
+        locals?.supabase.rpc('get_homepage_listings', {
           p_type: 'featured',
           p_limit: 8
         })
       ]);
 
-      if (categoriesResult.error) {
-        console.error('Error loading categories:', categoriesResult.error);
+      if (categoriesResult?.error) {
+        console?.error('Error loading categories:', categoriesResult?.error);
       }
-      if (featuredResult.error) {
-        console.error('Error loading featured listings:', featuredResult.error);
+      if (featuredResult?.error) {
+        console?.error('Error loading featured listings:', featuredResult?.error);
       }
 
       // Transform RPC results to match expected format
-      const categories = (categoriesResult.data || []).map((item: any) => ({
-        ...item.category_data,
-        product_count: [{ count: item.product_count }]
+      const categories = (categoriesResult?.data || []).map((item: any) => ({
+        ...item?.category_data,
+        product_count: [{ count: item?.product_count }]
       }));
 
-      const featuredListings = (featuredResult.data || []).map((item: any) => item.listing_data);
+      const featuredListings = (featuredResult?.data || []).map((item: any) => item?.listing_data);
 
-      serverDebug.log('Featured listings loaded', {
+      serverDebug?.log('Featured listings loaded', {
         count: featuredListings.length,
         sampleListing: featuredListings[0]
       });
@@ -56,22 +56,22 @@ export const load: PageServerLoad = async ({ locals }) => {
         featuredListings
       };
     },
-    cacheTTL.homepage
+    cacheTTL?.homepage
   );
 
   // Load non-critical data asynchronously
   const nonCriticalData = getCachedData(
-    cacheKeys.homepage_secondary,
+    cacheKeys?.homepage_secondary,
     async () => {
-      const [popularResult, topSellersResult] = await Promise.all([
+      const [popularResult, topSellersResult] = await Promise?.all([
         // Get popular listings with optimized query
-        locals.supabase.rpc('get_homepage_listings', {
+        locals?.supabase.rpc('get_homepage_listings', {
           p_type: 'popular',
           p_limit: 16
         }),
 
         // Get top sellers based on sales count and rating
-        locals.supabase
+        locals?.supabase
           .from('profiles')
           .select(`
             id,
@@ -92,23 +92,23 @@ export const load: PageServerLoad = async ({ locals }) => {
           .limit(5)
       ]);
 
-      if (popularResult.error) {
-        console.error('Error loading popular listings:', popularResult.error);
+      if (popularResult?.error) {
+        console?.error('Error loading popular listings:', popularResult?.error);
       }
 
-      const popularListings = (popularResult.data || []).map((item: any) => item.listing_data);
+      const popularListings = (popularResult?.data || []).map((item: any) => item?.listing_data);
 
-      serverDebug.log('Popular listings loaded', {
+      serverDebug?.log('Popular listings loaded', {
         count: popularListings.length,
         sampleListing: popularListings[0]
       });
 
       return {
         popularListings,
-        topSellers: topSellersResult.data || []
+        topSellers: topSellersResult?.data || []
       };
     },
-    cacheTTL.homepage
+    cacheTTL?.homepage
   );
 
   // Return critical data immediately, non-critical will stream

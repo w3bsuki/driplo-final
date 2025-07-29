@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
+	import { _onMount, onDestroy } from 'svelte';
 	import { CreditCard } from 'lucide-svelte';
-	import { toast } from 'svelte-sonner';
+	import { _toast} from 'svelte-sonner';
 	import { logger } from '$lib/services/logger';
 	import { useStripePayment } from './hooks/useStripePayment.svelte';
 	import { useRevolutPayment } from './hooks/useRevolutPayment.svelte';
@@ -56,21 +56,21 @@
 
 	// Initialize payment method when provider changes
 	$effect(() => {
-		if (paymentProvider === 'stripe' && !stripePayment.clientSecret && !stripePayment.isInitializing) {
+		if (paymentProvider === 'stripe' && !stripePayment?.clientSecret && !stripePayment?.isInitializing) {
 			initializePayment();
 		}
 	});
 
 	// Mount Stripe card element when container is ready
 	$effect(() => {
-		if (stripeContainer && stripePayment.elements && !stripePayment.cardElementMounted) {
-			stripePayment.mountCardElement(stripeContainer);
+		if (stripeContainer && stripePayment?.elements && !stripePayment?.cardElementMounted) {
+			stripePayment?.mountCardElement(stripeContainer);
 		}
 	});
 
 	// Cleanup on destroy
 	onDestroy(() => {
-		stripePayment.cleanup();
+		stripePayment?.cleanup();
 	});
 
 	async function initializePayment() {
@@ -80,7 +80,7 @@
 				shippingAddress,
 				totalAmount
 			};
-			await stripePayment.initializeStripePayment(paymentData);
+			await stripePayment?.initializeStripePayment(paymentData);
 		}
 	}
 
@@ -96,8 +96,26 @@
 				await processRevolutPayment();
 			}
 		} catch (error) {
-			logger.error('❌ Payment processing failed:', error);
-			const errorMessage = error instanceof Error ? error.message : 'Payment failed';
+			logger?.error('❌ Payment processing failed:', error);
+			
+			// Enhanced error handling with specific error types
+			let errorMessage = 'Payment failed';
+			
+			if (error instanceof Error) {
+				// Handle different types of payment errors
+				if (error?.message.includes('authentication')) {
+					errorMessage = 'Authentication failed. Please log in again.';
+				} else if (error?.message.includes('insufficient')) {
+					errorMessage = 'Insufficient funds. Please try a different payment method.';
+				} else if (error?.message.includes('declined')) {
+					errorMessage = 'Payment declined. Please check your payment details or try another card.';
+				} else if (error?.message.includes('network')) {
+					errorMessage = 'Network error. Please check your connection and try again.';
+				} else {
+					errorMessage = error?.message;
+				}
+			}
+			
 			onPaymentError(errorMessage);
 		} finally {
 			onProcessingChange(false);
@@ -111,15 +129,15 @@
 			totalAmount
 		};
 
-		const result = await stripePayment.processStripePayment(paymentData);
+		const result = await stripePayment?.processStripePayment(paymentData);
 		
-		if (result.success) {
+		if (result?.success) {
 			onPaymentSuccess({
 				success: true,
-				payment_intent_id: stripePayment.clientSecret
+				payment_intent_id: stripePayment?.clientSecret
 			});
 		} else {
-			onPaymentError(result.error || 'Stripe payment failed');
+			onPaymentError(result?.error || 'Stripe payment failed');
 		}
 	}
 
@@ -130,14 +148,14 @@
 			totalAmount
 		};
 
-		const result = await revolutPayment.createManualPayment(paymentData);
+		const result = await revolutPayment?.createManualPayment(paymentData);
 		
-		if (result.success) {
+		if (result?.success) {
 			// For manual payments, we don't immediately call onPaymentSuccess
 			// The user needs to complete the payment manually first
-			logger.debug('✅ Manual payment instructions displayed');
+			logger?.debug('✅ Manual payment instructions displayed');
 		} else {
-			onPaymentError(result.error || 'Failed to create manual payment');
+			onPaymentError(result?.error || 'Failed to create manual payment');
 		}
 	}
 
@@ -145,18 +163,18 @@
 		onProcessingChange(true);
 
 		try {
-			const result = await revolutPayment.confirmManualPayment();
+			const result = await revolutPayment?.confirmManualPayment();
 			
-			if (result.success) {
+			if (result?.success) {
 				onPaymentSuccess({
 					success: true,
-					order_id: revolutPayment.revolutOrderId
+					order_id: revolutPayment?.revolutOrderId
 				});
 			} else {
-				onPaymentError(result.error || 'Failed to confirm payment');
+				onPaymentError(result?.error || 'Failed to confirm payment');
 			}
 		} catch (error) {
-			logger.error('❌ Manual payment confirmation failed:', error);
+			logger?.error('❌ Manual payment confirmation failed:', error);
 			onPaymentError('Failed to confirm payment');
 		} finally {
 			onProcessingChange(false);
@@ -164,13 +182,13 @@
 	}
 
 	function openRevolutLink() {
-		revolutPayment.openRevolutLink();
+		revolutPayment?.openRevolutLink();
 	}
 
 	// Validation for payment processing
 	function canProcessPayment(): boolean {
 		if (paymentProvider === 'stripe') {
-			return stripePayment.cardElementMounted && !!stripePayment.clientSecret;
+			return stripePayment?.cardElementMounted && !!stripePayment?.clientSecret;
 		} else if (paymentProvider === 'revolut_manual') {
 			return true; // Manual payments can always be initiated
 		}
@@ -180,13 +198,13 @@
 	function getPaymentButtonText(): string {
 		if (isProcessing) {
 			return paymentProvider === 'stripe' 
-				? m.processing_payment() 
-				: m.creating_payment();
+				? m?.processing_payment() 
+				: m?.creating_payment();
 		}
 		
 		return paymentProvider === 'stripe' 
-			? m.pay_now() 
-			: m.create_payment_request();
+			? m?.pay_now() 
+			: m?.create_payment_request();
 	}
 </script>
 
@@ -197,37 +215,37 @@
 		<div class="space-y-4">
 			<div class="flex items-center space-x-2">
 				<CreditCard class="h-5 w-5 text-brand-500" />
-				<h3 class="text-lg font-semibold text-gray-900">{m.card_details()}</h3>
+				<h3 class="text-lg font-semibold text-gray-900">{m?.card_details()}</h3>
 			</div>
 
 			<!-- Stripe Initialization Status -->
-			{#if stripePayment.isInitializing}
+			{#if stripePayment?.isInitializing}
 				<div class="flex items-center justify-center py-8">
 					<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500"></div>
-					<span class="ml-3 text-sm text-gray-600">{m.loading_payment_form()}</span>
+					<span class="ml-3 text-sm text-gray-600">{m?.loading_payment_form()}</span>
 				</div>
-			{:else if stripePayment.clientSecret}
+			{:else if stripePayment?.clientSecret}
 				<!-- Stripe Card Element Container -->
 				<div class="border border-gray-300 rounded-lg p-4 bg-white">
 					<div bind:this={stripeContainer} class="stripe-card-element"></div>
 				</div>
 
 				<!-- Stripe Processing Status -->
-				{#if !stripePayment.cardElementMounted}
+				{#if !stripePayment?.cardElementMounted}
 					<div class="flex items-center justify-center py-4">
 						<div class="animate-spin rounded-full h-6 w-6 border-b-2 border-brand-500"></div>
-						<span class="ml-2 text-sm text-gray-600">{m.loading_card_form()}</span>
+						<span class="ml-2 text-sm text-gray-600">{m?.loading_card_form()}</span>
 					</div>
 				{/if}
 			{:else}
 				<!-- Stripe Initialization Failed -->
 				<div class="bg-red-50 border border-red-200 rounded-lg p-4">
-					<p class="text-sm text-red-700">{m.payment_form_load_error()}</p>
+					<p class="text-sm text-red-700">{m?.payment_form_load_error()}</p>
 					<button
 						onclick={initializePayment}
 						class="mt-2 text-sm text-red-600 hover:text-red-800 underline"
 					>
-						{m.try_again()}
+						{m?.try_again()}
 					</button>
 				</div>
 			{/if}
@@ -235,18 +253,18 @@
 	{/if}
 
 	<!-- Revolut Manual Payment Instructions -->
-	{#if paymentProvider === 'revolut_manual' && revolutPayment.showPaymentInstructions && revolutPayment.manualPaymentData}
+	{#if paymentProvider === 'revolut_manual' && revolutPayment?.showPaymentInstructions && revolutPayment?.manualPaymentData}
 		<PaymentInstructions
-			manualPaymentData={revolutPayment.manualPaymentData}
+			manualPaymentData={revolutPayment?.manualPaymentData}
 			onConfirmPayment={confirmManualPayment}
 			onOpenRevolutLink={openRevolutLink}
 			isProcessing={isProcessing}
-			isExpired={revolutPayment.isPaymentExpired()}
+			isExpired={revolutPayment?.isPaymentExpired()}
 		/>
 	{/if}
 
 	<!-- Payment Action Button -->
-	{#if paymentProvider === 'stripe' || (paymentProvider === 'revolut_manual' && !revolutPayment.showPaymentInstructions)}
+	{#if paymentProvider === 'stripe' || (paymentProvider === 'revolut_manual' && !revolutPayment?.showPaymentInstructions)}
 		<button
 			onclick={processPayment}
 			disabled={isProcessing || !canProcessPayment()}
@@ -263,9 +281,9 @@
 	<div class="text-center">
 		<p class="text-xs text-gray-500">
 			{#if paymentProvider === 'stripe'}
-				{m.stripe_security_notice()}
+				{m?.stripe_security_notice()}
 			{:else}
-				{m.revolut_security_notice()}
+				{m?.revolut_security_notice()}
 			{/if}
 		</p>
 	</div>
@@ -289,7 +307,7 @@
 	/* Payment button hover effects */
 	button:not(:disabled):hover {
 		transform: translateY(-1px);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0?.15);
 	}
 
 	button:disabled {

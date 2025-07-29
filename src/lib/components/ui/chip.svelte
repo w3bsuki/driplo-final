@@ -1,18 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
-	import type { Snippet } from 'svelte';
-	
-	interface Props {
-		variant?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'destructive';
-		size?: 'sm' | 'md' | 'lg';
-		dismissible?: boolean;
-		interactive?: boolean;
-		selected?: boolean;
-		class?: string;
-		children: Snippet;
-		onclick?: (e: MouseEvent) => void;
-		ondismiss?: () => void;
-	}
+	import type { ChipProps } from '$lib/types/components';
 	
 	let { 
 		variant = 'default',
@@ -24,7 +12,7 @@
 		children,
 		onclick,
 		ondismiss
-	}: Props = $props();
+	}: ChipProps = $props();
 	
 	const variants = {
 		default: 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-200',

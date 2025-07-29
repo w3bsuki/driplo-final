@@ -2,7 +2,6 @@
 	import { 
 		Building2, 
 		Search, 
-		Filter, 
 		CheckCircle, 
 		XCircle, 
 		Clock,
@@ -10,7 +9,7 @@
 		Calendar,
 		AlertCircle
 	} from 'lucide-svelte';
-	import { toast } from 'svelte-sonner';
+	// Filter and toast imports removed as unused
 	import type { PageData } from './$types';
 
 	interface Props {
@@ -162,7 +161,7 @@
 						<input
 							type="checkbox"
 							checked={selectedRequests.size === filteredRequests.length && filteredRequests.length > 0}
-							onchange={handleToggleAll}
+							onchange={toggleAll}
 							class="rounded"
 						/>
 					</th>
@@ -218,7 +217,7 @@
 							<td class="px-6 py-4">
 								{#if request.social_media_accounts && Object.keys(request.social_media_accounts).length > 0}
 									<div class="flex gap-1">
-										{#each Object.entries(request.social_media_accounts).slice(0, 3) as [platform, account]}
+										{#each Object.entries(request.social_media_accounts).slice(0, 3) as [platform, _account]}
 											<span class="text-xs bg-gray-100 px-2 py-1 rounded">
 												{platform}
 											</span>

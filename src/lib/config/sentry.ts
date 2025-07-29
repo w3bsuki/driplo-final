@@ -92,7 +92,7 @@ export const SENTRY_CONFIG = {
   },
   
   // Before send hook for additional filtering
-  beforeSend: (event: any, hint: any) => {
+  beforeSend: (event: any) => {
     // Filter out 404 errors
     if (event.exception?.values?.[0]?.value?.includes('404')) {
       return null;

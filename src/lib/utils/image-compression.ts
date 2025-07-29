@@ -11,7 +11,7 @@ interface CompressionOptions {
 export function validateImageFile(file: File): string | null {
 	// Check file type
 	const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
-	if (!validTypes.includes(file.type)) {
+	if (!validTypes?.includes(file?.type)) {
 		return 'Please upload a valid image file (JPG, PNG, GIF, or WebP)'
 	}
 	

@@ -9,7 +9,7 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession, supabas
 	const { session, user } = await safeGetSession()
 	
 	// Get main categories for navigation (cached for 5 minutes)
-	const { data: categories, error: categoriesError } = await supabase
+	const { data: categories, error: _categoriesError} = await supabase
 		.from('categories')
 		.select('id, name, slug, icon')
 		.is('parent_id', null)

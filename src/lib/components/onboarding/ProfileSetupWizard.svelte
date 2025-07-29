@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
+	import { _goto} from '$app/navigation';
 	// Props are passed down, don't need to import stores directly
 	import { toast } from 'svelte-sonner';
 	import { ChevronLeft, ChevronRight, Check, User as UserIcon, Palette, Building2, Sparkles, AtSign } from 'lucide-svelte';
@@ -12,8 +12,8 @@
 	import BrandInfoForm from './BrandInfoForm.svelte';
 	import SetupComplete from './SetupComplete.svelte';
 	import type { User, SupabaseClient } from '@supabase/supabase-js';
-	import type { Tables } from '$lib/types/database';
-	import type { ExtendedProfile } from '$lib/types/database.extended';
+	import type { _Tables} from '$lib/types';
+	import type { ExtendedProfile } from '$lib/types';
 
 	interface Props {
 		user: User;
@@ -30,7 +30,7 @@
 	const defaultSupabase = $derived($page.data.supabase);
 
 	// Check if user needs username setup
-	const needsUsernameSetup = profile?.needs_username_setup || profile?.username?.match(/[0-9]+$/);
+	const needsUsernameSetup = !profile?.setup_completed || profile?.username?.match(/[0-9]+$/);
 	
 	const STEPS = [
 		{ id: 1, name: 'Username', icon: AtSign, component: UsernameSetup, conditional: needsUsernameSetup },

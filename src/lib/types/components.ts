@@ -8,8 +8,8 @@
  */
 
 import type { Snippet } from 'svelte';
-import type { HTMLAttributes, HTMLButtonAttributes, HTMLInputAttributes } from 'svelte/elements';
-import type { Tables, Database } from './database';
+import type { HTMLButtonAttributes, HTMLInputAttributes } from 'svelte/elements';
+import type { Database } from './db';
 
 // =============================================================================
 // CORE UI COMPONENT INTERFACES
@@ -66,6 +66,177 @@ export interface BadgeProps {
   class?: string;
   /** Badge content */
   children: Snippet;
+}
+
+/**
+ * Spinner/Loading Component Props
+ * Loading indicators with various states
+ */
+export interface SpinnerProps {
+  /** Spinner size */
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  /** Spinner color theme */
+  color?: 'primary' | 'white' | 'current';
+  /** Additional CSS classes */
+  class?: string;
+  /** Loading text to display */
+  text?: string;
+  /** Show as full screen overlay */
+  fullScreen?: boolean;
+  /** Show as overlay on container */
+  overlay?: boolean;
+}
+
+/**
+ * Verified Badge Component Props
+ * Verification status indicator
+ */
+export interface VerifiedBadgeProps {
+  /** Whether the item is verified */
+  verified: boolean;
+  /** Badge size */
+  size?: 'sm' | 'md' | 'lg';
+  /** Show verification text */
+  showText?: boolean;
+}
+
+/**
+ * Category Badge Component Props
+ * Category classification indicator
+ */
+export interface CategoryBadgeProps {
+  /** Category name */
+  category: string;
+  /** Badge color variant */
+  variant?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
+  /** Badge size */
+  size?: 'xs' | 'sm' | 'md' | 'lg';
+  /** Additional CSS classes */
+  class?: string;
+  /** Make badge clickable */
+  clickable?: boolean;
+  /** Click handler */
+  onclick?: (category: string) => void;
+}
+
+/**
+ * Condition Badge Component Props
+ * Item condition indicator
+ */
+export interface ConditionBadgeProps {
+  /** Item condition */
+  condition: string | null | undefined;
+  /** Badge size */
+  size?: 'xs' | 'sm' | 'md' | 'lg';
+  /** Additional CSS classes */
+  class?: string;
+}
+
+/**
+ * Size Badge Component Props
+ * Size information indicator
+ */
+export interface SizeBadgeProps {
+  /** Size text/value */
+  size: string;
+  /** Badge variant */
+  variant?: 'default' | 'outline';
+  /** Additional CSS classes */
+  class?: string;
+}
+
+/**
+ * Rating Stars Component Props
+ * Star rating display and input component
+ */
+export interface RatingStarsProps {
+  /** Current rating value */
+  rating: number;
+  /** Maximum rating value */
+  maxRating?: number;
+  /** Star size */
+  size?: 'sm' | 'md' | 'lg';
+  /** Allow user interaction */
+  interactive?: boolean;
+  /** Show rating text */
+  showText?: boolean;
+  /** Rating change handler */
+  onRate?: (rating: number) => void;
+  /** Additional CSS classes */
+  class?: string;
+}
+
+/**
+ * Progress Bar Component Props
+ * Progress indicator component
+ */
+export interface ProgressBarProps {
+  /** Current progress value (0-100) */
+  value: number;
+  /** Maximum value */
+  max?: number;
+  /** Progress bar size */
+  size?: 'sm' | 'md' | 'lg';
+  /** Progress bar variant */
+  variant?: 'default' | 'success' | 'warning' | 'error';
+  /** Show progress text */
+  showValue?: boolean;
+  /** Additional CSS classes */
+  class?: string;
+  /** Progress label */
+  label?: string;
+}
+
+/**
+ * Color Picker Component Props
+ * Color selection input component
+ */
+export interface ColorPickerProps {
+  /** Selected color value */
+  value?: string | null;
+  /** Available color options */
+  colors?: { name: string; value: string; emoji: string }[];
+  /** Color picker size */
+  size?: 'sm' | 'md' | 'lg';
+  /** Allow custom color input */
+  allowCustom?: boolean;
+  /** Show color name/value */
+  showValue?: boolean;
+  /** Color change handler */
+  onColorChange?: (color: string) => void;
+  /** Change handler (legacy) */
+  onchange?: (color: string) => void;
+  /** Field label */
+  label?: string;
+  /** Required field */
+  required?: boolean;
+  /** Additional CSS classes */
+  class?: string;
+}
+
+/**
+ * Chip Component Props
+ * Selectable tag/label component
+ */
+export interface ChipProps {
+  /** Chip visual variant */
+  variant?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'destructive';
+  /** Chip size */
+  size?: 'sm' | 'md' | 'lg';
+  /** Can be dismissed/removed */
+  dismissible?: boolean;
+  /** Interactive/clickable */
+  interactive?: boolean;
+  /** Selected state */
+  selected?: boolean;
+  /** Additional CSS classes */
+  class?: string;
+  /** Chip content */
+  children: Snippet;
+  /** Click handler */
+  onclick?: (e: MouseEvent) => void;
+  /** Dismiss handler */
+  ondismiss?: () => void;
 }
 
 // =============================================================================
@@ -247,20 +418,22 @@ export interface HeaderProps {
  * Error handling and display component
  */
 export interface ErrorBoundaryProps {
+  /** Current error object */
+  error?: any;
+  /** Reset function */
+  reset?: (() => void) | null;
+  /** Fallback HTML content */
+  fallback?: string | null;
   /** Error display level */
-  level?: 'minimal' | 'detailed' | 'debug';
-  /** Custom error message */
-  fallbackMessage?: string;
-  /** Show error details in production */
-  showDetailsInProduction?: boolean;
+  level?: 'minimal' | 'detailed' | 'custom';
+  /** Isolate error boundary to prevent global error handling */
+  isolate?: boolean;
   /** Custom error handler */
-  onError?: (error: Error, errorInfo: any) => void;
-  /** Error boundary reset handler */
-  onReset?: () => void;
-  /** Additional CSS classes for error UI */
-  class?: string;
+  onError?: ((error: any, errorInfo: any) => void) | null;
+  /** Keys that trigger error reset when changed */
+  resetKeys?: any[];
   /** Child components */
-  children: Snippet;
+  children?: Snippet;
 }
 
 // =============================================================================

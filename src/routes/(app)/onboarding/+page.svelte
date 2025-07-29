@@ -6,7 +6,7 @@
 	import type { PageData } from './$types';
 	import ProfileSetupWizard from '$lib/components/onboarding/ProfileSetupWizard.svelte';
 	
-	let { data }: { data: PageData } = $props();
+	let { _data}: { data: PageData } = $props();
 	let showSetup = $state(false);
 	let loading = $state(true);
 	
@@ -25,7 +25,7 @@
 		}
 		
 		// Check if coming from email verification
-		const isNewSignup = $page.url.searchParams.get('new') === 'true';
+		const _isNewSignup = $page?.url.searchParams?.get('new') === 'true';
 		
 		// Show profile setup wizard
 		loading = false;
@@ -34,24 +34,24 @@
 
 	async function handleComplete() {
 		// Mark onboarding as complete
-		await auth.supabase
+		await auth?.supabase
 			.from('profiles')
 			.update({ 
 				onboarding_completed: true,
 				onboarding_step: 5 // Final step
 			})
-			.eq('id', auth.user!.id);
+			.eq('id', auth?.user!.id);
 
 		// Refresh profile
-		await auth.loadProfile();
+		await auth?.loadProfile();
 
 		// Check if user created a brand account
-		if (auth.profile?.account_type === 'brand') {
+		if (auth?.profile?.account_type === 'brand') {
 			// Get the brand profile to find the slug
-			const { data: brandProfile } = await auth.supabase
+			const { data: brandProfile } = await auth?.supabase
 				.from('brand_profiles')
 				.select('brand_slug')
-				.eq('user_id', auth.user!.id)
+				.eq('user_id', auth?.user!.id)
 				.single();
 
 			if (brandProfile?.brand_slug) {
@@ -62,7 +62,7 @@
 		}
 
 		// Redirect to home or wherever they came from
-		const redirectTo = $page.url.searchParams.get('redirectTo') || '/';
+		const redirectTo = $page?.url.searchParams?.get('redirectTo') || '/';
 		goto(redirectTo);
 	}
 </script>
@@ -80,11 +80,11 @@
 			<p class="text-gray-600">Preparing your profile setup...</p>
 		</div>
 	</div>
-{:else if showSetup && auth.user}
+{:else if showSetup && auth?.user}
 	<div class="min-h-[100dvh] bg-gradient-to-br from-blue-50 to-purple-50">
 		<ProfileSetupWizard 
-			user={auth.user} 
-			profile={auth.profile}
+			user={auth?.user} 
+			profile={auth?.profile}
 			onComplete={handleComplete}
 		/>
 	</div>

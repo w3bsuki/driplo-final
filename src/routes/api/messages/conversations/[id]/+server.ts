@@ -10,7 +10,7 @@ export const GET: RequestHandler = async ({ locals, params, url }) => {
     }
 
     const conversationId = params.id;
-    const limit = parseInt(url.searchParams.get('limit') || '50');
+    const limit = parseInt(url.searchParams.get('limit' || '0') || '50');
     const before = url.searchParams.get('before');
 
     // Verify user has access to this conversation
@@ -52,7 +52,7 @@ export const GET: RequestHandler = async ({ locals, params, url }) => {
     }
 
     // Mark messages as read
-    if (messages && messages.length > 0) {
+    if (messages && messages?.length ?? 0 > 0) {
         await supabase.rpc('mark_messages_as_read', {
             p_conversation_id: conversationId,
             p_user_id: session.user.id

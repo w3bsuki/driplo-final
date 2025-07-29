@@ -9,10 +9,10 @@
 	let { data }: Props = $props()
 	
 	const statCards = [
-		{ label: 'Total Users', value: data.stats.totalUsers, icon: Users, color: 'blue' },
-		{ label: 'Total Listings', value: data.stats.totalListings, icon: ShoppingBag, color: 'green' },
-		{ label: 'Total Orders', value: data.stats.totalOrders, icon: Package, color: 'purple' },
-		{ label: 'Pending Verifications', value: data.stats.pendingVerifications, icon: Shield, color: 'orange' }
+		{ label: 'Total Users', value: data?.stats.totalUsers, icon: Users, color: 'blue' },
+		{ label: 'Total Listings', value: data?.stats.totalListings, icon: ShoppingBag, color: 'green' },
+		{ label: 'Total Orders', value: data?.stats.totalOrders, icon: Package, color: 'purple' },
+		{ label: 'Pending Verifications', value: data?.stats.pendingVerifications, icon: Shield, color: 'orange' }
 	]
 </script>
 
@@ -25,11 +25,11 @@
 			<div class="bg-white rounded-lg shadow p-6">
 				<div class="flex items-center justify-between">
 					<div>
-						<p class="text-sm font-medium text-gray-600">{stat.label}</p>
-						<p class="text-2xl font-bold text-gray-900 mt-2">{stat.value}</p>
+						<p class="text-sm font-medium text-gray-600">{stat?.label}</p>
+						<p class="text-2xl font-bold text-gray-900 mt-2">{stat?.value}</p>
 					</div>
-					<div class="bg-{stat.color}-100 p-3 rounded-lg">
-						<stat.icon class="w-6 h-6 text-{stat.color}-600" />
+					<div class="bg-{stat?.color}-100 p-3 rounded-lg">
+						<stat?.icon class="w-6 h-6 text-{stat?.color}-600" />
 					</div>
 				</div>
 			</div>
@@ -44,16 +44,16 @@
 				<h2 class="text-lg font-semibold text-gray-900">Recent Users</h2>
 			</div>
 			<div class="p-6">
-				{#if data.recentUsers.length > 0}
+				{#if data?.recentUsers?.length ?? 0 > 0}
 					<div class="space-y-4">
-						{#each data.recentUsers as user}
+						{#each data?.recentUsers as user}
 							<div class="flex items-center justify-between">
 								<div>
-									<p class="font-medium text-gray-900">{user.username || 'No username'}</p>
-									<p class="text-sm text-gray-600">{user.email}</p>
+									<p class="font-medium text-gray-900">{user?.username || 'No username'}</p>
+									<p class="text-sm text-gray-600">{user?.email}</p>
 								</div>
 								<p class="text-sm text-gray-500">
-									{new Date(user.created_at).toLocaleDateString()}
+									{new Date(user?.created_at || new Date()).toLocaleDateString()}
 								</p>
 							</div>
 						{/each}
@@ -70,16 +70,16 @@
 				<h2 class="text-lg font-semibold text-gray-900">Recent Orders</h2>
 			</div>
 			<div class="p-6">
-				{#if data.recentOrders.length > 0}
+				{#if data?.recentOrders?.length ?? 0 > 0}
 					<div class="space-y-4">
-						{#each data.recentOrders as order}
+						{#each data?.recentOrders as order}
 							<div class="flex items-center justify-between">
 								<div>
-									<p class="font-medium text-gray-900">Order #{order.id.slice(-6)}</p>
-									<p class="text-sm text-gray-600">${order.total_amount}</p>
+									<p class="font-medium text-gray-900">Order #{order?.id?.slice?.((-6)}</p>
+									<p class="text-sm text-gray-600">${order?.total_amount}</p>
 								</div>
-								<span class="px-2 py-1 text-xs font-medium rounded-full bg-{order.status === 'completed' ? 'green' : 'yellow'}-100 text-{order.status === 'completed' ? 'green' : 'yellow'}-800">
-									{order.status}
+								<span class="px-2 py-1 text-xs font-medium rounded-full bg-{order?.status === 'completed' ? 'green' : 'yellow'}-100 text-{order?.status === 'completed' ? 'green' : 'yellow'}-800">
+									{order?.status}
 								</span>
 							</div>
 						{/each}

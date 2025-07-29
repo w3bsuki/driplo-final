@@ -20,7 +20,7 @@
 	}: Props = $props();
 </script>
 
-<RadioGroupPrimitive.Item
+<RadioGroupPrimitive?.Item
 	value={itemValue}
 	{disabled}
 	{id}
@@ -34,10 +34,10 @@
 	)}
 	{...restProps}
 >
-	<RadioGroupPrimitive.ItemIndicator class="flex items-center justify-center">
+	<RadioGroupPrimitive?.ItemIndicator class="flex items-center justify-center">
 		<div class="h-2 w-2 rounded-full bg-current" />
-	</RadioGroupPrimitive.ItemIndicator>
+	</RadioGroupPrimitive?.ItemIndicator>
 	{#if children}
 		{@render children()}
 	{/if}
-</RadioGroupPrimitive.Item>
+</RadioGroupPrimitive?.Item>

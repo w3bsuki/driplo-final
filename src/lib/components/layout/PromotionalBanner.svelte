@@ -106,7 +106,7 @@
 		ctaText, 
 		ctaHref, 
 		dismissible = true,
-		countdown = false,
+		_countdown= false,
 		variant = 'gradient',
 		onDismiss,
 		class: className = ''
@@ -116,7 +116,7 @@
 	function getStorageItem(key: string): string | null {
 		if (typeof window === 'undefined') return null;
 		try {
-			return localStorage.getItem(key);
+			return localStorage?.getItem(key);
 		} catch {
 			return null;
 		}
@@ -125,7 +125,7 @@
 	function setStorageItem(key: string, value: string): void {
 		if (typeof window === 'undefined') return;
 		try {
-			localStorage.setItem(key, value);
+			localStorage?.setItem(key, value);
 		} catch {
 			// Silently fail
 		}
@@ -140,7 +140,7 @@
 		const timestamp = parseInt(dismissedAt, 10);
 		if (isNaN(timestamp)) return true;
 		
-		const daysSince = (Date.now() - timestamp) / MS_PER_DAY;
+		const daysSince = (Date?.now() - timestamp) / MS_PER_DAY;
 		return daysSince >= DISMISSAL_DURATION_DAYS;
 	}
 	
@@ -165,7 +165,7 @@
 	function handleDismiss(): void {
 		isDismissed = true;
 		if (dismissible) {
-			setStorageItem(STORAGE_KEY, Date.now().toString());
+			setStorageItem(STORAGE_KEY, Date?.now().toString());
 		}
 		onDismiss?.();
 		

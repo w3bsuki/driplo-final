@@ -1,19 +1,23 @@
 <script lang="ts">
-	import { cn } from '$lib/utils'
-	import { Check } from 'lucide-svelte'
+	import { cn } from '$lib/utils';
+	import { Check } from 'lucide-svelte';
+	import type { ColorPickerProps } from '$lib/types/components';
 	
-	interface Props {
-		value?: string | null
-		onchange?: (color: string) => void
-		label?: string
-		required?: boolean
-		class?: string
-	}
+	let { 
+		value = $bindable(), 
+		colors: customColors,
+		_size= 'md',
+		_allowCustom= false,
+		_showValue= false,
+		onColorChange,
+		onchange,
+		label,
+		required = false,
+		class: className = ''
+	}: ColorPickerProps = $props();
 	
-	let { value = $bindable(), onchange, label, required = false, class: className }: Props = $props()
-	
-	// Popular clothing colors with proper hex values
-	const colors = [
+	// Use custom colors if provided, otherwise use default colors
+	const defaultColors = [
 		{ name: 'Black', value: '#000000', emoji: '⚫' },
 		{ name: 'White', value: '#FFFFFF', emoji: '⚪' },
 		{ name: 'Gray', value: '#6B7280', emoji: '🩶' },
@@ -28,11 +32,14 @@
 		{ name: 'Brown', value: '#92400E', emoji: '🤎' },
 		{ name: 'Beige', value: '#D4A574', emoji: '🟤' },
 		{ name: 'Multi', value: 'multi', emoji: '🌈' },
-	]
+	];
+	
+	const colors = customColors || defaultColors;
 	
 	function handleSelect(color: typeof colors[0]) {
-		value = color.value
-		onchange?.(color.value)
+		value = color?.value;
+		onchange?.(color?.value);
+		onColorChange?.(color?.value);
 	}
 	
 	// Helper to determine if we need dark or light text
@@ -63,30 +70,30 @@
 					"relative group aspect-square rounded-xl border-2 transition-all duration-200",
 					"flex flex-col items-center justify-center p-2",
 					"hover:scale-105 active:scale-95",
-					value === color.value 
+					value === color?.value 
 						? "ring-2 ring-offset-2 ring-blue-500 shadow-lg" 
 						: "hover:shadow-md"
 				)}
-				style:background-color={color.value !== 'multi' ? color.value : undefined}
-				style:background={color.value === 'multi' ? 'linear-gradient(to br, #EF4444, #F59E0B, #10B981, #3B82F6, #8B5CF6)' : undefined}
-				aria-label={`Select ${color.name}`}
+				style:background-color={color?.value !== 'multi' ? color?.value : undefined}
+				style:background={color?.value === 'multi' ? 'linear-gradient(to br, #EF4444, #F59E0B, #10B981, #3B82F6, #8B5CF6)' : undefined}
+				aria-label={`Select ${color?.name}`}
 			>
 				<!-- Emoji indicator -->
 				<span class="text-2xl mb-1 drop-shadow-sm">
-					{color.emoji}
+					{color?.emoji}
 				</span>
 				
 				<!-- Color name -->
 				<span class={cn(
 					"text-xs font-medium",
-					needsDarkText(color.value) ? "text-gray-900" : "text-white",
+					needsDarkText(color?.value) ? "text-gray-900" : "text-white",
 					"drop-shadow-sm"
 				)}>
-					{color.name}
+					{color?.name}
 				</span>
 				
 				<!-- Selected checkmark -->
-				{#if value === color.value}
+				{#if value === color?.value}
 					<div class={cn(
 						"absolute -top-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center",
 						"bg-blue-500 text-white shadow-md animate-in zoom-in-50 duration-200"

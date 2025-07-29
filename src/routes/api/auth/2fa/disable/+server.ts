@@ -8,7 +8,7 @@ const disableSchema = z.object({
   password: z.string().min(1)
 });
 
-export const POST: RequestHandler = async ({ request, locals }) => {
+export const POST: RequestHandler = async ({ request, locals, cookies }) => {
   try {
     const supabase = locals.supabase;
     

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ChevronDown, Menu } from 'lucide-svelte';
+	import { _ChevronDown, Menu } from 'lucide-svelte';
 	import { cn } from '$lib/utils';
 	import { fly } from 'svelte/transition';
 	import CategoryDropdown from '$lib/components/shared/CategoryDropdown.svelte';
@@ -20,11 +20,11 @@
 
 	let {
 		value = $bindable(''),
-		placeholder = m.browse_search_placeholder(),
+		placeholder = m?.browse_search_placeholder(),
 		onSearch,
 		onCategorySelect,
 		categories = [],
-		activeCategory = '',
+		_activeCategory= '',
 		class: className = '',
 		visible = true
 	}: Props = $props();
@@ -37,12 +37,12 @@
 		
 		// Get actual header height (NOT including banner since it scrolls away)
 		const calculateHeaderHeight = () => {
-			const header = document.querySelector('header');
+			const header = document?.querySelector('header');
 			
 			if (header) {
 				// The header already has the correct height set via Tailwind classes
 				// On mobile: h-14 (56px), on desktop: h-16 (64px)
-				headerHeight = header.offsetHeight;
+				headerHeight = header?.offsetHeight;
 			}
 		};
 		
@@ -51,13 +51,13 @@
 		
 		// Recalculate on resize
 		const handleResize = () => calculateHeaderHeight();
-		window.addEventListener('resize', handleResize);
+		window?.addEventListener('resize', handleResize);
 		
 		// Recalculate after a short delay to ensure DOM is ready
 		setTimeout(calculateHeaderHeight, 100);
 		
 		return () => {
-			window.removeEventListener('resize', handleResize);
+			window?.removeEventListener('resize', handleResize);
 		};
 	});
 
@@ -79,7 +79,7 @@
 	}
 
 	function handleKeydown(e: KeyboardEvent) {
-		if (e.key === 'Enter') {
+		if (e?.key === 'Enter') {
 			handleSearch();
 		}
 	}
@@ -87,10 +87,10 @@
 	// Handle category selection from dropdown
 	function handleCategoryClick(category: Category) {
 		if (onCategorySelect) {
-			onCategorySelect(category.slug);
+			onCategorySelect(category?.slug);
 		} else {
 			// Default navigation behavior
-			goto(`/${category.slug}`);
+			goto(`/${category?.slug}`);
 		}
 		closeCategoryDropdown();
 	}
@@ -163,7 +163,7 @@
 							"focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1"
 						)}
 					>
-						{m.quick_filter_search_button()}
+						{m?.quick_filter_search_button()}
 					</button>
 				</div>
 			</div>

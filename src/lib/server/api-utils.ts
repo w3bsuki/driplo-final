@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 import type { Session } from '@supabase/supabase-js';
-import type { Tables } from '$lib/types/database';
+import type { Tables } from '$lib/types/db';
 import { z } from 'zod';
 import { dev } from '$app/environment';
 
@@ -131,7 +131,7 @@ export async function requireAuth(
     
     // Check if session is expired (unless explicitly allowed)
     if (!options?.allowExpired && session.expires_at) {
-      const expiresAt = new Date(session.expires_at * 1000);
+      const expiresAt = new Date(session.expires_at * 1000 || new Date());
       if (expiresAt < new Date()) {
         console.warn('Session expired:', session.expires_at);
         return null;
@@ -246,8 +246,8 @@ export const schemas = {
 
 // Enhanced pagination helper with validation
 export function getPagination(url: URL, defaultLimit = 20) {
-  const page = Math.max(1, parseInt(url.searchParams.get('page') || '1'));
-  const limit = Math.min(100, Math.max(1, parseInt(url.searchParams.get('limit') || String(defaultLimit))));
+  const page = Math.max(1, parseInt(url.searchParams.get('page' || '0') || '1'));
+  const limit = Math.min(100, Math.max(1, parseInt(url.searchParams.get('limit' || '0') || String(defaultLimit))));
   const offset = (page - 1) * limit;
   
   return { page, limit, offset };

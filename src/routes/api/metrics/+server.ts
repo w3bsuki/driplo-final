@@ -19,17 +19,17 @@ interface WebVitalMetric {
 // Examples: Google Analytics, Vercel Analytics, or custom solution
 export const POST: RequestHandler = async ({ request }) => {
 	try {
-		const { metrics } = await request.json() as { metrics: WebVitalMetric[] };
+		const { metrics: _metrics } = await request.json() as { metrics: WebVitalMetric[] };
 		
 		// Log metrics in development
 		// if (dev) {
-		// 	console.log('[Metrics API] Received metrics:', metrics);
+		// 	console.log('[Metrics API] Received metrics:', _metrics);
 		// }
 		
 		// In production, send to analytics service
 		if (!dev) {
 			// Example: Send to Google Analytics 4
-			// metrics.forEach(metric => {
+			// metrics?.forEach?.((metric => {
 			//   gtag('event', metric.name, {
 			//     value: metric.value,
 			//     metric_rating: metric.rating,
@@ -48,7 +48,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			// Example: Store in Supabase
 			// const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 			// await supabase.from('web_vitals').insert(
-			//   metrics.map(m => ({
+			//   metrics?.map?.((m => ({
 			//     name: m.name,
 			//     value: m.value,
 			//     rating: m.rating,

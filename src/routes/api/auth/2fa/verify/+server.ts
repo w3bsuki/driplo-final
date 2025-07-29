@@ -8,7 +8,7 @@ const verifySchema = z.object({
   type: z.enum(['totp', 'backup']).default('totp')
 });
 
-export const POST: RequestHandler = async ({ request, locals }) => {
+export const POST: RequestHandler = async ({ request, locals, cookies }) => {
   try {
     const supabase = locals.supabase;
     
@@ -47,7 +47,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         .eq('id', user.id)
         .single();
       
-      if (!profile?.backup_codes || profile.backup_codes.length === 0) {
+      if (!profile?.backup_codes || profile.backup_codes?.length ?? 0 === 0) {
         return json({ error: 'No backup codes available' }, { status: 400 });
       }
       

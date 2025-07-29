@@ -40,27 +40,27 @@
 					</tr>
 				</thead>
 				<tbody class="bg-white divide-y divide-gray-200">
-					{#each data.requests as request}
+					{#each data?.requests as request}
 						<tr>
 							<td class="px-6 py-4 whitespace-nowrap">
 								<div class="text-sm font-medium text-gray-900">
-									{request.profiles.brand_name || 'N/A'}
+									{request?.profiles?.brand_name || 'N/A'}
 								</div>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap">
-								<div class="text-sm text-gray-900">{request.profiles.username}</div>
-								<div class="text-sm text-gray-500">{request.profiles.email}</div>
+								<div class="text-sm text-gray-900">{request?.profiles?.username}</div>
+								<div class="text-sm text-gray-500">{request?.profiles?.email}</div>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap">
 								<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-									{request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ''}
-									{request.status === 'approved' ? 'bg-green-100 text-green-800' : ''}
-									{request.status === 'rejected' ? 'bg-red-100 text-red-800' : ''}">
-									{request.status}
+									{request?.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ''}
+									{request?.status === 'approved' ? 'bg-green-100 text-green-800' : ''}
+									{request?.status === 'rejected' ? 'bg-red-100 text-red-800' : ''}">
+									{request?.status}
 								</span>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-								{new Date(request.created_at).toLocaleDateString()}
+								{new Date(request?.created_at).toLocaleDateString()}
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
 								<div class="flex gap-2">
@@ -70,10 +70,10 @@
 									>
 										<Eye class="w-5 h-5" />
 									</button>
-									{#if request.status === 'pending'}
+									{#if request?.status === 'pending'}
 										<form method="POST" action="?/approve" use:enhance>
-											<input type="hidden" name="requestId" value={request.id} />
-											<input type="hidden" name="userId" value={request.user_id} />
+											<input type="hidden" name="requestId" value={request?.id} />
+											<input type="hidden" name="userId" value={request?.user_id} />
 											<button
 												type="submit"
 												class="text-green-600 hover:text-green-900"
@@ -82,7 +82,7 @@
 											</button>
 										</form>
 										<button
-											onclick={() => { rejectingId = request.id; showRejectModal = true }}
+											onclick={() => { rejectingId = request?.id; showRejectModal = true }}
 											class="text-red-600 hover:text-red-900"
 										>
 											<X class="w-5 h-5" />
@@ -106,21 +106,21 @@
 			<div class="space-y-4">
 				<div>
 					<h3 class="font-semibold">Brand Name</h3>
-					<p>{selectedRequest.profiles.brand_name}</p>
+					<p>{selectedRequest?.profiles.brand_name}</p>
 				</div>
 				<div>
 					<h3 class="font-semibold">Business Type</h3>
-					<p>{selectedRequest.business_type}</p>
+					<p>{selectedRequest?.business_type}</p>
 				</div>
 				<div>
 					<h3 class="font-semibold">Business Description</h3>
-					<p>{selectedRequest.business_description}</p>
+					<p>{selectedRequest?.business_description}</p>
 				</div>
-				{#if selectedRequest.documents}
+				{#if selectedRequest?.documents}
 					<div>
 						<h3 class="font-semibold">Submitted Documents</h3>
 						<ul class="list-disc list-inside">
-							{#each selectedRequest.documents as doc}
+							{#each selectedRequest?.documents as doc}
 								<li>{doc}</li>
 							{/each}
 						</ul>
@@ -144,7 +144,7 @@
 			<h2 class="text-xl font-bold mb-4">Reject Verification</h2>
 			<form method="POST" action="?/reject" use:enhance={() => {
 				return async ({ result }) => {
-					if (result.type === 'success') {
+					if (result?.type === 'success') {
 						showRejectModal = false
 					}
 				}

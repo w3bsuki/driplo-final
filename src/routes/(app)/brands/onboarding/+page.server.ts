@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const { data: profile } = await supabase
 		.from('profiles')
 		.select('*')
-		.eq('id', session.user.id)
+		.eq('id', session?.user.id)
 		.single();
 
 	if (!profile) {
@@ -26,11 +26,11 @@ export const load: PageServerLoad = async ({ locals }) => {
 		const { data: brandProfile } = await supabase
 			.from('brand_profiles')
 			.select('brand_slug')
-			.eq('user_id', session.user.id)
+			.eq('user_id', session?.user.id)
 			.single();
 
 		if (brandProfile?.brand_slug) {
-			throw redirect(303, `/brands/${brandProfile.brand_slug}`);
+			throw redirect(303, `/brands/${brandProfile?.brand_slug}`);
 		}
 	}
 
@@ -38,7 +38,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const { data: existingBrandProfile } = await supabase
 		.from('brand_profiles')
 		.select('*')
-		.eq('user_id', session.user.id)
+		.eq('user_id', session?.user.id)
 		.single();
 
 	return {

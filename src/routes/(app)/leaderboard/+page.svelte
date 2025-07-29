@@ -3,18 +3,18 @@
 		Users, 
 		Building2, 
 		Store,
-		Star,
-		TrendingUp,
+		_Star,
+		_TrendingUp,
 		Award,
 		ChevronRight,
 		MapPin,
 		Package,
 		Heart,
-		ShoppingBag,
+		_ShoppingBag,
 		Sparkles,
-		Crown,
-		Flame,
-		Filter,
+		_Crown,
+		_Flame,
+		_Filter,
 		Search
 	} from 'lucide-svelte';
 	import { cn } from '$lib/utils';
@@ -38,79 +38,79 @@
 	};
 	
 	// Mock data for all sellers (in startup phase, show all)
-	const allSellers = $derived.by(() => {
+	const allSellers = $derived?.by(() => {
 		// For now, use the top sellers data but imagine this would be all sellers
-		const sellers = data.topSellers || [];
+		const sellers = data?.topSellers || [];
 		
 		// Filter by search
 		const filtered = searchQuery 
-			? sellers.filter(s => 
-				s.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				s.full_name?.toLowerCase().includes(searchQuery.toLowerCase())
+			? sellers??.filter?.((s => 
+				s?.username?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+				s?.full_name?.toLowerCase().includes(searchQuery?.toLowerCase())
 			)
 			: sellers;
 		
 		// Sort
-		return filtered.sort((a, b) => {
+		return filtered?.sort((a, b) => {
 			switch (sortBy) {
 				case 'sales':
-					return (b.total_sales || 0) - (a.total_sales || 0);
+					return (b?.total_sales || 0) - (a?.total_sales || 0);
 				case 'recent':
-					return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+					return new Date(b?.created_at || 0).getTime() - new Date(a?.created_at || 0).getTime();
 				default: // rating
-					return (b.average_rating || 0) - (a.average_rating || 0);
+					return (b?.average_rating || 0) - (a?.average_rating || 0);
 			}
 		});
 	});
 	
 	// Mock data for brands
-	const allBrands = $derived.by(() => {
-		const brands = data.topBrands || [];
+	const allBrands = $derived?.by(() => {
+		const brands = data?.topBrands || [];
 		
 		// Filter by search
 		const filtered = searchQuery 
-			? brands.filter(b => 
-				b.brand_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				b.brand_slug?.toLowerCase().includes(searchQuery.toLowerCase())
+			? brands??.filter?.((b => 
+				b?.brand_name?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+				b?.brand_slug?.toLowerCase().includes(searchQuery?.toLowerCase())
 			)
 			: brands;
 		
 		// Sort
-		return filtered.sort((a, b) => {
+		return filtered?.sort((a, b) => {
 			switch (sortBy) {
 				case 'sales':
-					return (b.total_sales || 0) - (a.total_sales || 0);
+					return (b?.total_sales || 0) - (a.total_sales || 0);
 				case 'recent':
 					return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
 				default: // rating
-					return (b.average_rating || 0) - (a.average_rating || 0);
+					return (b?.average_rating || 0) - (a?.average_rating || 0);
 			}
 		});
 	});
 	
 	// Mock data for stores (physical stores)
-	const allStores = $derived.by(() => {
+	const allStores = $derived?.by(() => {
 		// For now, filter sellers/brands that might have physical stores
 		// In real app, this would be a separate query
-		const stores = [...(data.topSellers || []), ...(data.topBrands || [])]
-			.filter(() => Math.random() > 0.5) // Mock: randomly select some as having stores
-			.map(s => ({
+		const stores = [...(data?.topSellers || []), ...(data?.topBrands || [])]
+			?.filter?.((() => Math?.random() > 0.5) // Mock: randomly select some as having stores
+			?.map?.((s => ({
 				...s,
 				hasPhysicalStore: true,
-				storeLocation: ['New York', 'Los Angeles', 'Chicago', 'Miami', 'Seattle'][Math.floor(Math.random() * 5)]
+				storeLocation: ['New York', 'Los Angeles', 'Chicago', 'Miami', 'Seattle'][Math?.floor(Math?.random() * 5)]
 			}));
 		
 		// Filter by search
 		const filtered = searchQuery 
-			? stores.filter(s => 
-				s.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				s.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				s.brand_name?.toLowerCase().includes(searchQuery.toLowerCase())
+			? stores??.filter?.((s => 
+				s?.username?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+				s?.full_name?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+				s?.brand_name?.toLowerCase().includes(searchQuery?.toLowerCase())
 			)
 			: stores;
 		
 		// Sort
-		return filtered.sort((a, b) => {
+		return filtered?.sort((a, b) => {
 			switch (sortBy) {
 				case 'sales':
 					return (b.total_sales || 0) - (a.total_sales || 0);
@@ -126,18 +126,18 @@
 		if (rank === 1) return { emoji: '🥇', class: 'bg-gradient-to-br from-yellow-400 to-amber-500 text-white' };
 		if (rank === 2) return { emoji: '🥈', class: 'bg-gradient-to-br from-gray-300 to-gray-400 text-gray-800' };
 		if (rank === 3) return { emoji: '🥉', class: 'bg-gradient-to-br from-orange-400 to-orange-500 text-white' };
-		return { emoji: rank.toString(), class: 'bg-gray-100 text-gray-700' };
+		return { emoji: rank?.toString(), class: 'bg-gray-100 text-gray-700' };
 	}
 	
 	function formatNumber(num: number) {
 		if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
 		if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
-		return num.toString();
+		return num?.toString();
 	}
 </script>
 
 <svelte:head>
-	<title>{m.nav_sellers()} - Driplo</title>
+	<title>{m?.nav_sellers()} - Driplo</title>
 	<meta name="description" content="Discover top-rated sellers, brands, and stores on Driplo" />
 </svelte:head>
 
@@ -156,7 +156,7 @@
 							</div>
 						</div>
 						<div>
-							<h1 class="text-xl font-bold text-gray-900">{m.nav_sellers()}</h1>
+							<h1 class="text-xl font-bold text-gray-900">{m?.nav_sellers()}</h1>
 							<p class="text-sm text-gray-500">Discover amazing sellers on our platform</p>
 						</div>
 					</div>
@@ -194,7 +194,7 @@
 							"text-xs px-2 py-0.5 rounded-full",
 							activeTab === 'sellers' ? "bg-blue-100 text-blue-700" : "bg-gray-200 text-gray-600"
 						)}>
-							{allSellers.length}
+							{allSellers?.length ?? 0}
 						</span>
 					</button>
 					
@@ -213,7 +213,7 @@
 							"text-xs px-2 py-0.5 rounded-full",
 							activeTab === 'brands' ? "bg-blue-100 text-blue-700" : "bg-gray-200 text-gray-600"
 						)}>
-							{allBrands.length}
+							{allBrands?.length ?? 0}
 						</span>
 					</button>
 					
@@ -232,7 +232,7 @@
 							"text-xs px-2 py-0.5 rounded-full",
 							activeTab === 'stores' ? "bg-blue-100 text-blue-700" : "bg-gray-200 text-gray-600"
 						)}>
-							{allStores.length}
+							{allStores?.length ?? 0}
 						</span>
 					</button>
 				</div>
@@ -276,10 +276,10 @@
 		<!-- Sellers Tab -->
 		{#if activeTab === 'sellers'}
 			<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-				{#each allSellers as seller, index (seller.user_id || seller.username)}
+				{#each allSellers as seller, index (seller?.user_id || seller?.username)}
 					{@const rank = getRankBadge(index + 1)}
 					<a 
-						href="/profile/{seller.username}"
+						href="/profile/{seller?.username}"
 						class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-200 group"
 					>
 						<!-- Header -->
@@ -288,14 +288,14 @@
 								<!-- Avatar -->
 								<div class="relative">
 									<img 
-										src={seller.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${seller.username}`} 
-										alt={seller.full_name || seller.username}
+										src={seller?.avatar_url || `https://api?.dicebear.com/7?.x/avataaars/svg?seed=${seller?.username}`} 
+										alt={seller?.full_name || seller?.username}
 										class="w-14 h-14 rounded-full object-cover border-2 border-gray-100"
 									/>
-									{#if seller.badges?.length}
+									{#if seller?.badges??.length ?? 0}
 										<div class="absolute -bottom-1 -right-1 bg-white rounded-full px-0.5 shadow-sm border border-gray-200">
-											<span class="text-sm" title={badgeConfig[seller.badges[0]]?.label}>
-												{badgeConfig[seller.badges[0]]?.emoji}
+											<span class="text-sm" title={badgeConfig[seller?.badges[0]]?.label}>
+												{badgeConfig[seller?.badges[0]]?.emoji}
 											</span>
 										</div>
 									{/if}
@@ -304,12 +304,12 @@
 								<!-- Info -->
 								<div>
 									<h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-										{seller.full_name || seller.username}
+										{seller.full_name || seller?.username}
 									</h3>
-									<p class="text-sm text-gray-500">@{seller.username}</p>
-									{#if seller.badges?.length > 1}
+									<p class="text-sm text-gray-500">@{seller?.username}</p>
+									{#if seller?.badges??.length ?? 0 > 1}
 										<div class="flex gap-1 mt-1">
-											{#each seller.badges.slice(1) as badge}
+											{#each seller?.badges??.slice?.((1) as badge}
 												{#if badgeConfig[badge]}
 													<span class="text-xs" title={badgeConfig[badge].label}>
 														{badgeConfig[badge].emoji}
@@ -322,26 +322,26 @@
 							</div>
 							
 							<!-- Rank -->
-							<div class={cn("w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold", rank.class)}>
-								{rank.emoji}
+							<div class={cn("w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold", rank?.class)}>
+								{rank?.emoji}
 							</div>
 						</div>
 						
 						<!-- Stats Grid -->
 						<div class="grid grid-cols-3 gap-3 mb-4">
 							<div class="text-center p-2 bg-gray-50 rounded-lg">
-								<p class="text-lg font-bold text-gray-900">{formatNumber(seller.total_sales || 0)}</p>
+								<p class="text-lg font-bold text-gray-900">{formatNumber(seller?.total_sales || 0)}</p>
 								<p class="text-xs text-gray-500">Sales</p>
 							</div>
 							<div class="text-center p-2 bg-gray-50 rounded-lg">
 								<p class="text-lg font-bold text-yellow-600">
-									{seller.average_rating ? seller.average_rating.toFixed(1) : '0.0'}
+									{seller?.average_rating ? seller?.average_rating.toFixed(1) : '0.0'}
 								</p>
 								<p class="text-xs text-gray-500">Rating</p>
 							</div>
 							<div class="text-center p-2 bg-gray-50 rounded-lg">
 								<p class="text-lg font-bold text-green-600">
-									${formatNumber(seller.total_revenue || 0)}
+									${formatNumber(seller?.total_revenue || 0)}
 								</p>
 								<p class="text-xs text-gray-500">Revenue</p>
 							</div>
@@ -351,7 +351,7 @@
 						<div class="flex items-center justify-between pt-3 border-t border-gray-100">
 							<div class="flex items-center gap-1 text-sm text-gray-500">
 								<Package class="w-4 h-4" />
-								<span>{seller.listings_count || 0} listings</span>
+								<span>{seller?.listings_count || 0} listings</span>
 							</div>
 							<ChevronRight class="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform" />
 						</div>
@@ -359,7 +359,7 @@
 				{/each}
 			</div>
 			
-			{#if allSellers.length === 0}
+			{#if allSellers?.length ?? 0 === 0}
 				<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
 					<Users class="w-12 h-12 text-gray-400 mx-auto mb-4" />
 					<h3 class="text-lg font-medium text-gray-900 mb-2">No sellers found</h3>
@@ -371,10 +371,10 @@
 		<!-- Brands Tab -->
 		{#if activeTab === 'brands'}
 			<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-				{#each allBrands as brand, index (brand.brand_id || brand.brand_slug)}
+				{#each allBrands as brand, index (brand?.brand_id || brand?.brand_slug)}
 					{@const rank = getRankBadge(index + 1)}
 					<a 
-						href="/profile/{brand.username || brand.brand_slug}"
+						href="/profile/{brand?.username || brand?.brand_slug}"
 						class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-200 group"
 					>
 						<!-- Header -->
@@ -383,11 +383,11 @@
 								<!-- Logo -->
 								<div class="relative">
 									<img 
-										src={brand.brand_logo_url || brand.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${brand.brand_name}`} 
-										alt={brand.brand_name}
+										src={brand?.brand_logo_url || brand?.avatar_url || `https://api?.dicebear.com/7?.x/initials/svg?seed=${brand?.brand_name}`} 
+										alt={brand?.brand_name}
 										class="w-14 h-14 rounded-xl object-cover border-2 border-gray-100"
 									/>
-									{#if brand.verification_status === 'verified'}
+									{#if brand?.verification_status === 'verified'}
 										<div class="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
 											<svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
 												<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -399,13 +399,13 @@
 								<!-- Info -->
 								<div>
 									<h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-										{brand.brand_name}
+										{brand?.brand_name}
 									</h3>
 									<div class="flex items-center gap-2 mt-1">
 										<span class="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full">
 											🏪 Brand
 										</span>
-										{#if brand.verification_status === 'verified'}
+										{#if brand?.verification_status === 'verified'}
 											<span class="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full">
 												✅ Verified
 											</span>
@@ -415,26 +415,26 @@
 							</div>
 							
 							<!-- Rank -->
-							<div class={cn("w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold", rank.class)}>
-								{rank.emoji}
+							<div class={cn("w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold", rank?.class)}>
+								{rank?.emoji}
 							</div>
 						</div>
 						
 						<!-- Stats Grid -->
 						<div class="grid grid-cols-3 gap-3 mb-4">
 							<div class="text-center p-2 bg-gray-50 rounded-lg">
-								<p class="text-lg font-bold text-gray-900">{formatNumber(brand.total_sales || 0)}</p>
+								<p class="text-lg font-bold text-gray-900">{formatNumber(brand?.total_sales || 0)}</p>
 								<p class="text-xs text-gray-500">Sales</p>
 							</div>
 							<div class="text-center p-2 bg-gray-50 rounded-lg">
 								<p class="text-lg font-bold text-yellow-600">
-									{brand.average_rating ? brand.average_rating.toFixed(1) : '0.0'}
+									{brand?.average_rating ? brand?.average_rating.toFixed(1) : '0.0'}
 								</p>
 								<p class="text-xs text-gray-500">Rating</p>
 							</div>
 							<div class="text-center p-2 bg-gray-50 rounded-lg">
 								<p class="text-lg font-bold text-green-600">
-									${formatNumber(brand.total_revenue || 0)}
+									${formatNumber(brand?.total_revenue || 0)}
 								</p>
 								<p class="text-xs text-gray-500">Revenue</p>
 							</div>
@@ -444,7 +444,7 @@
 						<div class="flex items-center justify-between pt-3 border-t border-gray-100">
 							<div class="flex items-center gap-1 text-sm text-gray-500">
 								<Heart class="w-4 h-4" />
-								<span>{brand.followers_count || 0} followers</span>
+								<span>{brand?.followers_count || 0} followers</span>
 							</div>
 							<ChevronRight class="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform" />
 						</div>
@@ -452,7 +452,7 @@
 				{/each}
 			</div>
 			
-			{#if allBrands.length === 0}
+			{#if allBrands?.length ?? 0 === 0}
 				<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
 					<Building2 class="w-12 h-12 text-gray-400 mx-auto mb-4" />
 					<h3 class="text-lg font-medium text-gray-900 mb-2">No brands found</h3>
@@ -464,10 +464,10 @@
 		<!-- Stores Tab -->
 		{#if activeTab === 'stores'}
 			<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-				{#each allStores as store, index (store.user_id || store.username || store.brand_id)}
+				{#each allStores as store, index (store?.user_id || store?.username || store?.brand_id)}
 					{@const rank = getRankBadge(index + 1)}
 					<a 
-						href={store.brand_slug ? `/brands/${store.brand_slug}` : `/profile/${store.username}`}
+						href={store?.brand_slug ? `/brands/${store?.brand_slug}` : `/profile/${store?.username}`}
 						class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-200 group"
 					>
 						<!-- Header -->
@@ -476,8 +476,8 @@
 								<!-- Avatar/Logo -->
 								<div class="relative">
 									<img 
-										src={store.avatar_url || store.brand_logo_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${store.username || store.brand_name}`} 
-										alt={store.full_name || store.brand_name || store.username}
+										src={store?.avatar_url || store?.brand_logo_url || `https://api?.dicebear.com/7?.x/avataaars/svg?seed=${store?.username || store?.brand_name}`} 
+										alt={store?.full_name || store?.brand_name || store?.username}
 										class="w-14 h-14 rounded-full object-cover border-2 border-gray-100"
 									/>
 									<div class="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm border border-gray-200">
@@ -488,11 +488,11 @@
 								<!-- Info -->
 								<div>
 									<h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-										{store.brand_name || store.full_name || store.username}
+										{store?.brand_name || store?.full_name || store?.username}
 									</h3>
 									<div class="flex items-center gap-1 text-sm text-gray-500">
 										<MapPin class="w-3 h-3" />
-										<span>{store.storeLocation}</span>
+										<span>{store?.storeLocation}</span>
 									</div>
 									<div class="flex gap-1 mt-1">
 										<span class="text-xs px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full">
@@ -503,26 +503,26 @@
 							</div>
 							
 							<!-- Rank -->
-							<div class={cn("w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold", rank.class)}>
-								{rank.emoji}
+							<div class={cn("w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold", rank?.class)}>
+								{rank?.emoji}
 							</div>
 						</div>
 						
 						<!-- Stats Grid -->
 						<div class="grid grid-cols-3 gap-3 mb-4">
 							<div class="text-center p-2 bg-gray-50 rounded-lg">
-								<p class="text-lg font-bold text-gray-900">{formatNumber(store.total_sales || 0)}</p>
+								<p class="text-lg font-bold text-gray-900">{formatNumber(store?.total_sales || 0)}</p>
 								<p class="text-xs text-gray-500">Sales</p>
 							</div>
 							<div class="text-center p-2 bg-gray-50 rounded-lg">
 								<p class="text-lg font-bold text-yellow-600">
-									{store.average_rating ? store.average_rating.toFixed(1) : '0.0'}
+									{store?.average_rating ? store?.average_rating.toFixed(1) : '0.0'}
 								</p>
 								<p class="text-xs text-gray-500">Rating</p>
 							</div>
 							<div class="text-center p-2 bg-gray-50 rounded-lg">
 								<p class="text-lg font-bold text-green-600">
-									${formatNumber(store.total_revenue || 0)}
+									${formatNumber(store?.total_revenue || 0)}
 								</p>
 								<p class="text-xs text-gray-500">Revenue</p>
 							</div>
@@ -540,7 +540,7 @@
 				{/each}
 			</div>
 			
-			{#if allStores.length === 0}
+			{#if allStores?.length ?? 0 === 0}
 				<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
 					<Store class="w-12 h-12 text-gray-400 mx-auto mb-4" />
 					<h3 class="text-lg font-medium text-gray-900 mb-2">No physical stores found</h3>

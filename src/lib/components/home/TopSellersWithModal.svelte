@@ -4,7 +4,7 @@
 	import SellerQuickView from './SellerQuickView.svelte';
 	import type { Profile, Listing } from '$lib/types/unified';
 	import type { SupabaseClient } from '@supabase/supabase-js';
-	import type { Database } from '$lib/types/database';
+	import type { Database } from '$lib/types';
 
 	interface Props {
 		topSellers: Profile[];
@@ -16,7 +16,7 @@
 	let selectedSeller: Profile | null = $state(null);
 	let isModalOpen = $state(false);
 	let sellerTopListings: Listing[] = $state([]);
-	let isLoadingListings = $state(false);
+	let _isLoadingListings = $state(false);
 
 	async function handleSellerClick(seller: Profile) {
 		selectedSeller = seller;

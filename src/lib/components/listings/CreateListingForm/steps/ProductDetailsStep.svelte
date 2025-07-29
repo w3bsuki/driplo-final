@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getFormContext } from '../FormContext.svelte.ts'
-	import { validateField, getSuggestions, sanitizeInput } from '../utils/validation'
+	import { validateField, _getSuggestions, sanitizeInput } from '../utils/validation'
 	import { cn } from '$lib/utils'
 	import { fade, slide } from 'svelte/transition'
 	import Input from '$lib/components/ui/input.svelte'

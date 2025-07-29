@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { _page} from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { formatCurrency } from '$lib/utils/currency';
 	import { 
-		Heart, Share2, MapPin, Shield, Eye, Star,
-		ShoppingBag, ChevronLeft, ChevronRight, MessageCircle, 
-		UserPlus, UserMinus, Truck, RotateCcw, Info, FileText,
-		Ruler, Palette, Tag, Package, X, ZoomIn, Maximize2
+		Heart, Share2, MapPin, _Shield, Eye, Star,
+		_ShoppingBag, ChevronLeft, ChevronRight, MessageCircle, 
+		_UserPlus, _UserMinus, Truck, RotateCcw, _Info, _FileText,
+		_Ruler, _Palette, _Tag, _Package, X, _ZoomIn, Maximize2
 	} from 'lucide-svelte';
 	import type { PageData } from './$types';
 	import { cn } from '$lib/utils';
@@ -22,45 +22,45 @@
 	import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator } from '$lib/components/ui/breadcrumb';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import Image from '$lib/components/ui/Image.svelte';
-	import { fade, scale } from 'svelte/transition';
+	import { fade, _scale} from 'svelte/transition';
 	import { onMount } from 'svelte';
 
 	let { data }: { data: PageData } = $props();
 
-	const supabase = $derived(data.supabase);
-	let listing = $derived(data.listing);
-	let currentUser = $derived(data.user);
-	let relatedListings = $derived(data.relatedListings);
-	let isFollowing = $state(data.isFollowing || false);
+	const supabase = $derived(data?.supabase);
+	let listing = $derived(data?.listing);
+	let currentUser = $derived(data?.user);
+	let _relatedListings = $derived(data?.relatedListings);
+	let isFollowing = $state(data?.isFollowing || false);
 
 	let currentImageIndex = $state(0);
-	let isLiked = $state(data.isLiked || false);
+	let isLiked = $state(data?.isLiked || false);
 	let showCheckout = $state(false);
-	let activeTab = $state('description');
+	let _activeTab = $state('description');
 	let isFollowLoading = $state(false);
 	let isLikeLoading = $state(false);
 	let showFullscreenGallery = $state(false);
 	let isDescriptionExpanded = $state(false);
-	let checkoutFlowRef: any;
+	let checkoutFlowRef = $state<any>(null);
 
 	let isOwner = $derived(currentUser?.id === listing?.seller_id);
-	let images = $derived(() => {
+	let images = $derived?.by(() => {
 		if (!listing) return [];
 		
 		// Try images field first (this is what the database actually uses)
-		if (listing.images && Array.isArray(listing.images) && listing.images.length > 0) {
-			return listing.images.filter(img => img && typeof img === 'string');
+		if (listing.images && Array?.isArray(listing.images) && listing.images?.length ?? 0 > 0) {
+			return listing.images?.filter?.((img => img && typeof img === 'string');
 		}
 		
 		// Then try image_urls
-		if (listing.image_urls && Array.isArray(listing.image_urls) && listing.image_urls.length > 0) {
-			return listing.image_urls.filter(url => url && typeof url === 'string');
+		if (listing.image_urls && Array?.isArray(listing.image_urls) && listing.image_urls?.length ?? 0 > 0) {
+			return listing.image_urls?.filter?.(((url: any) => url && typeof url === 'string');
 		}
 		
 		// Handle other formats just in case
 		if (listing.image_urls) {
-			if (typeof listing.image_urls === 'object' && !Array.isArray(listing.image_urls)) {
-				return Object.values(listing.image_urls).filter(url => url && typeof url === 'string');
+			if (typeof listing.image_urls === 'object' && !Array?.isArray(listing.image_urls)) {
+				return Object?.values(listing.image_urls)?.filter?.((url => url && typeof url === 'string');
 			}
 			if (typeof listing.image_urls === 'string') {
 				return [listing.image_urls];
@@ -68,8 +68,8 @@
 		}
 		
 		if (listing.images) {
-			if (typeof listing.images === 'object' && !Array.isArray(listing.images)) {
-				return Object.values(listing.images).filter(url => url && typeof url === 'string');
+			if (typeof listing.images === 'object' && !Array?.isArray(listing.images)) {
+				return Object?.values(listing.images)?.filter?.((url => url && typeof url === 'string');
 			}
 			if (typeof listing.images === 'string') {
 				return [listing.images];
@@ -81,7 +81,7 @@
 			return [listing.image];
 		}
 		
-		console.log('No images found for listing:', listing?.id, { 
+		console?.log('No images found for listing:', listing?.id, { 
 			images: listing?.images, 
 			image_urls: listing?.image_urls,
 			image: listing?.image 
@@ -89,15 +89,15 @@
 		
 		return [];
 	});
-	let hasMultipleImages = $derived(images.length > 1);
-	let hasImages = $derived(images.length > 0);
+	let hasMultipleImages = $derived(images?.length ?? 0 > 1);
+	let hasImages = $derived(images?.length ?? 0 > 0);
 
 	function nextImage() {
-		currentImageIndex = (currentImageIndex + 1) % images.length;
+		currentImageIndex = (currentImageIndex + 1) % images?.length ?? 0;
 	}
 
 	function prevImage() {
-		currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+		currentImageIndex = (currentImageIndex - 1 + images?.length ?? 0) % images?.length ?? 0;
 	}
 
 	async function handleLike() {
@@ -119,24 +119,24 @@
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ listing_id: listing.id })
+				body: JSON?.stringify({ listing_id: listing.id })
 			});
 			
-			if (!response.ok) {
+			if (!response?.ok) {
 				// Revert on error
 				isLiked = previousLiked;
 				const error = await response.json();
-				toast.error(error.message || 'Failed to update favorites');
+				toast?.error(error?.message || 'Failed to update favorites');
 			} else {
 				// Update favorite count
 				if (listing) {
-					listing.favorite_count = (listing.favorite_count || 0) + (isLiked ? 1 : -1);
+					listing?.favorite_count = (listing?.favorite_count || 0) + (isLiked ? 1 : -1);
 				}
 			}
 		} catch (error) {
 			// Revert on error
 			isLiked = previousLiked;
-			toast.error('Failed to update favorites');
+			toast?.error('Failed to update favorites');
 		} finally {
 			isLikeLoading = false;
 		}
@@ -152,15 +152,15 @@
 
 
 	async function handleShare() {
-		if (navigator.share) {
+		if (navigator?.share) {
 			try {
-				await navigator.share({
+				await navigator?.share({
 					title: listing?.title,
 					text: listing?.description,
-					url: window.location.href
+					url: window?.location.href
 				});
 			} catch (err) {
-				console.log('Error sharing:', err);
+				console?.log('Error sharing:', err);
 			}
 		}
 	}
@@ -170,7 +170,7 @@
 			'bg-blue-400', 'bg-blue-300', 'bg-blue-500', 
 			'bg-cyan-400', 'bg-sky-400', 'bg-indigo-400'
 		];
-		return colors[username.charCodeAt(0) % colors.length];
+		return colors[username?.charCodeAt(0) % colors?.length ?? 0];
 	}
 
 
@@ -189,7 +189,7 @@
 					.eq('follower_id', currentUser.id)
 					.eq('following_id', listing.seller_id);
 				isFollowing = false;
-				toast.success(m.profile_unfollow_success());
+				toast?.success(m?.profile_unfollow_success());
 			} else {
 				await supabase
 					.from('user_follows')
@@ -198,11 +198,11 @@
 						following_id: listing.seller_id
 					});
 				isFollowing = true;
-				toast.success(m.profile_follow_success());
+				toast?.success(m?.profile_follow_success());
 			}
 		} catch (error) {
-			console.error('Follow error:', error);
-			toast.error(m.profile_follow_update_error());
+			console?.error('Follow error:', error);
+			toast?.error(m?.profile_follow_update_error());
 		} finally {
 			isFollowLoading = false;
 		}
@@ -211,22 +211,22 @@
 	function openFullscreenGallery(index: number = currentImageIndex) {
 		currentImageIndex = index;
 		showFullscreenGallery = true;
-		document.body.style.overflow = 'hidden';
+		document?.body.style?.overflow = 'hidden';
 	}
 
 	function closeFullscreenGallery() {
 		showFullscreenGallery = false;
-		document.body.style.overflow = '';
+		document?.body.style?.overflow = '';
 	}
 
 	// Track view for anonymous users on mount
 	onMount(() => {
 		if (!currentUser && listing) {
 			// Generate or get session ID for anonymous users
-			let sessionId = sessionStorage.getItem('session_id');
+			let sessionId = sessionStorage?.getItem('session_id');
 			if (!sessionId) {
-				sessionId = crypto.randomUUID();
-				sessionStorage.setItem('session_id', sessionId);
+				sessionId = crypto?.randomUUID();
+				sessionStorage?.setItem('session_id', sessionId);
 			}
 			
 			// Track the view
@@ -235,7 +235,7 @@
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({
+				body: JSON?.stringify({
 					listing_id: listing.id,
 					session_id: sessionId
 				})
@@ -248,7 +248,7 @@
 	function handleKeydown(e: KeyboardEvent) {
 		if (!showFullscreenGallery) return;
 		
-		switch(e.key) {
+		switch(e?.key) {
 			case 'ArrowLeft':
 				prevImage();
 				break;
@@ -263,7 +263,7 @@
 
 	onMount(() => {
 		return () => {
-			document.body.style.overflow = '';
+			document?.body.style?.overflow = '';
 		};
 	});
 </script>
@@ -281,22 +281,22 @@
 			<!-- Breadcrumb Navigation -->
 			<Breadcrumb class="mb-4">
 				<BreadcrumbItem>
-					<BreadcrumbLink href="/">{m.header_home()}</BreadcrumbLink>
+					<BreadcrumbLink href="/">{m?.header_home()}</BreadcrumbLink>
 				</BreadcrumbItem>
 				<BreadcrumbSeparator />
 				<BreadcrumbItem>
-					<BreadcrumbLink href="/browse">{m.header_browse()}</BreadcrumbLink>
+					<BreadcrumbLink href="/browse">{m?.header_browse()}</BreadcrumbLink>
 				</BreadcrumbItem>
-				{#if listing.category}
+				{#if listing?.category}
 					<BreadcrumbSeparator />
 					<BreadcrumbItem>
-						<BreadcrumbLink href="/browse?category={listing.category}">{listing.category}</BreadcrumbLink>
+						<BreadcrumbLink href="/browse?category={listing?.category}">{listing?.category}</BreadcrumbLink>
 					</BreadcrumbItem>
 				{/if}
-				{#if listing.subcategory}
+				{#if listing?.subcategory}
 					<BreadcrumbSeparator />
 					<BreadcrumbItem>
-						<BreadcrumbLink href="/browse?category={listing.category}&subcategory={listing.subcategory}">{listing.subcategory}</BreadcrumbLink>
+						<BreadcrumbLink href="/browse?category={listing?.category}&subcategory={listing?.subcategory}">{listing?.subcategory}</BreadcrumbLink>
 					</BreadcrumbItem>
 				{/if}
 				<BreadcrumbSeparator />
@@ -337,7 +337,7 @@
 							</div>
 							
 							<!-- Sold Badge Overlay -->
-							{#if listing.status === 'sold'}
+							{#if listing?.status === 'sold'}
 								<div class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium">
 									Sold
 								</div>
@@ -346,14 +346,14 @@
 						{#if hasMultipleImages}
 							<!-- Navigation buttons -->
 							<button
-								onclick={(e) => { e.stopPropagation(); prevImage(); }}
+								onclick={(e) => { e?.stopPropagation(); prevImage(); }}
 								class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center border border-gray-200 hover:bg-white transition-all duration-100"
 								aria-label="Previous image"
 							>
 								<ChevronLeft class="w-4 h-4" />
 							</button>
 							<button
-								onclick={(e) => { e.stopPropagation(); nextImage(); }}
+								onclick={(e) => { e?.stopPropagation(); nextImage(); }}
 								class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center border border-gray-200 hover:bg-white transition-all duration-100"
 								aria-label="Next image"
 							>
@@ -364,7 +364,7 @@
 							<div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
 								{#each images as _, index (index)}
 									<button
-										onclick={(e) => { e.stopPropagation(); currentImageIndex = index; }}
+										onclick={(e) => { e?.stopPropagation(); currentImageIndex = index; }}
 										class={cn("w-1 h-1 rounded-full transition-all", 
 											index === currentImageIndex ? "bg-white w-4" : "bg-white/60"
 										)}
@@ -431,38 +431,38 @@
 						</div>
 						
 						<div class="flex items-center gap-3">
-							<span class="text-xl font-bold text-gray-900">{formatCurrency(listing.price)}</span>
-							{#if listing.original_price && listing.original_price > listing.price}
-								<span class="text-sm text-gray-500 line-through">{formatCurrency(listing.original_price)}</span>
+							<span class="text-xl font-bold text-gray-900">{formatCurrency(listing?.price)}</span>
+							{#if listing?.original_price && listing?.original_price > listing?.price}
+								<span class="text-sm text-gray-500 line-through">{formatCurrency(listing?.original_price)}</span>
 								<Badge variant="destructive" class="text-xs px-1.5 py-0.5">
-									{Math.round((1 - listing.price / listing.original_price) * 100)}% off
+									{Math?.round((1 - listing?.price / listing?.original_price) * 100)}% off
 								</Badge>
 							{/if}
 						</div>
 
 						<!-- Quick info badges -->
 						<div class="flex items-center gap-2 flex-wrap">
-							{#if listing.condition}
-								<ConditionBadge condition={listing.condition} size="md" />
+							{#if listing?.condition}
+								<ConditionBadge condition={listing?.condition} size="md" />
 							{/if}
-							{#if listing.size}
-								<SizeBadge size={listing.size} badgeSize="md" />
+							{#if listing?.size}
+								<SizeBadge size={listing?.size} badgeSize="md" />
 							{/if}
-							{#if listing.category}
-								<CategoryBadge category={listing.category.name} size="md" />
+							{#if listing?.category}
+								<CategoryBadge category={listing?.category.name} size="md" />
 							{/if}
-							{#if listing.brand}
-								<BrandBadge brand={listing.brand} size="md" isVerified={false} />
+							{#if listing?.brand}
+								<BrandBadge brand={listing?.brand} size="md" isVerified={false} />
 							{/if}
 						</div>
 
 						<!-- Compact description -->
 						<div class="text-sm text-gray-600">
-							{#if isDescriptionExpanded || listing.description.length <= 100}
+							{#if isDescriptionExpanded || listing.description?.length ?? 0 <= 100}
 								<p>{listing.description}</p>
 							{:else}
 								<p>
-									{listing.description.slice(0, 100)}...
+									{listing.description?.slice?.((0, 100)}...
 									<button 
 										onclick={() => isDescriptionExpanded = true}
 										class="text-primary hover:underline ml-1"
@@ -488,7 +488,7 @@
 									/>
 								{:else}
 									<div class={cn("w-8 h-8 rounded-full flex items-center justify-center", getAvatarColor(listing.seller.username))}>
-										<span class="text-white text-xs font-medium">{listing.seller.username.charAt(0).toUpperCase()}</span>
+										<span class="text-white text-xs font-medium">{listing.seller.username?.charAt(0).toUpperCase()}</span>
 									</div>
 								{/if}
 								<div>
@@ -546,42 +546,42 @@
 						
 						<TabsContent value="details" class="mt-4 space-y-4">
 							<div class="grid grid-cols-1 gap-3">
-								{#if listing.materials && listing.materials.length > 0}
+								{#if listing?.materials && listing?.materials?.length ?? 0 > 0}
 									<div class="flex justify-between items-center py-2 border-b border-gray-100">
 										<span class="text-sm text-gray-500">Materials</span>
-										<span class="text-sm text-gray-900 font-medium">{listing.materials.join(', ')}</span>
+										<span class="text-sm text-gray-900 font-medium">{listing?.materials.join(', ')}</span>
 									</div>
 								{/if}
-								{#if listing.category}
+								{#if listing?.category}
 									<div class="flex justify-between items-center py-2 border-b border-gray-100">
 										<span class="text-sm text-gray-500">Category</span>
-										<span class="text-sm text-gray-900 font-medium">{listing.category.name}</span>
+										<span class="text-sm text-gray-900 font-medium">{listing?.category.name}</span>
 									</div>
 								{/if}
-								{#if listing.subcategory}
+								{#if listing?.subcategory}
 									<div class="flex justify-between items-center py-2 border-b border-gray-100">
 										<span class="text-sm text-gray-500">Subcategory</span>
-										<span class="text-sm text-gray-900 font-medium">{listing.subcategory?.name}</span>
+										<span class="text-sm text-gray-900 font-medium">{listing?.subcategory?.name}</span>
 									</div>
 								{/if}
 								<div class="flex justify-between items-center py-2 border-b border-gray-100">
 									<span class="text-sm text-gray-500">Listed</span>
-									<span class="text-sm text-gray-900 font-medium">{new Date(listing.created_at).toLocaleDateString()}</span>
+									<span class="text-sm text-gray-900 font-medium">{new Date(listing?.created_at).toLocaleDateString()}</span>
 								</div>
-								{#if listing.view_count}
+								{#if listing?.view_count}
 									<div class="flex justify-between items-center py-2 border-b border-gray-100">
 										<span class="text-sm text-gray-500">Views</span>
 										<span class="text-sm text-gray-900 font-medium flex items-center gap-1">
 											<Eye class="w-3 h-3" />
-											{listing.view_count}
+											{listing?.view_count}
 										</span>
 									</div>
 								{/if}
 							</div>
 							
-							{#if listing.tags && listing.tags.length > 0}
+							{#if listing?.tags && listing?.tags?.length ?? 0 > 0}
 								<div class="flex flex-wrap gap-1.5 pt-2">
-									{#each listing.tags as tag (tag)}
+									{#each listing?.tags as tag (tag)}
 										<Badge variant="secondary" size="sm">
 											#{tag}
 										</Badge>
@@ -598,7 +598,7 @@
 										<p class="text-sm font-medium text-gray-900">Standard Shipping</p>
 										<p class="text-sm text-gray-600">3-5 business days</p>
 										<p class="text-sm font-medium text-gray-900 mt-1">
-											{listing.shipping_cost > 0 ? formatCurrency(listing.shipping_cost) : 'Free'}
+											{listing?.shipping_cost > 0 ? formatCurrency(listing?.shipping_cost) : 'Free'}
 										</p>
 									</div>
 								</div>
@@ -612,12 +612,12 @@
 									</div>
 								</div>
 								
-								{#if listing.location_city}
+								{#if listing?.location_city}
 									<div class="flex items-start gap-3 p-3 bg-gray-50 rounded-sm">
 										<MapPin class="w-5 h-5 text-gray-600 mt-0.5" />
 										<div class="flex-1">
 											<p class="text-sm font-medium text-gray-900">Ships from</p>
-											<p class="text-sm text-gray-600">{listing.location_city}</p>
+											<p class="text-sm text-gray-600">{listing?.location_city}</p>
 										</div>
 									</div>
 								{/if}
@@ -636,7 +636,7 @@
 									/>
 								{:else}
 									<div class={cn("w-12 h-12 rounded-full flex items-center justify-center", getAvatarColor(listing.seller.username))}>
-										<span class="text-white font-medium">{listing.seller.username.charAt(0).toUpperCase()}</span>
+										<span class="text-white font-medium">{listing.seller.username?.charAt(0).toUpperCase()}</span>
 									</div>
 								{/if}
 								<div class="flex-1">
@@ -654,7 +654,7 @@
 										<span>•</span>
 										<span>{listing.seller.sales_count || 0} sales</span>
 										<span>•</span>
-										<span>Joined {new Date(listing.seller.created_at || Date.now()).getFullYear()}</span>
+										<span>Joined {new Date(listing.seller.created_at || Date?.now()).getFullYear()}</span>
 									</div>
 									<div class="flex gap-2 mt-3">
 										<a 
@@ -685,8 +685,8 @@
 	<div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 z-50">
 		<div class="max-w-7xl mx-auto flex items-center gap-2">
 			<div class="flex-1">
-				<div class="text-base font-bold text-gray-900">{formatCurrency(listing.price)}</div>
-				<div class="text-xs text-gray-500">{listing.shipping_cost > 0 ? `+ ${formatCurrency(listing.shipping_cost)} shipping` : 'Free shipping'}</div>
+				<div class="text-base font-bold text-gray-900">{formatCurrency(listing?.price)}</div>
+				<div class="text-xs text-gray-500">{listing?.shipping_cost > 0 ? `+ ${formatCurrency(listing?.shipping_cost)} shipping` : 'Free shipping'}</div>
 			</div>
 			{#if !isOwner}
 				<button
@@ -779,7 +779,7 @@
 			</button>
 
 			<!-- Image container -->
-			<div class="relative max-w-full max-h-full" onclick={(e) => e.stopPropagation()}>
+			<div class="relative max-w-full max-h-full" onclick={(e) => e?.stopPropagation()}>
 				{#if hasImages && images[currentImageIndex]}
 					<Image
 						src={images[currentImageIndex]}
@@ -799,13 +799,13 @@
 				{#if hasMultipleImages}
 					<!-- Navigation buttons -->
 					<button
-						onclick={(e) => { e.stopPropagation(); prevImage(); }}
+						onclick={(e) => { e?.stopPropagation(); prevImage(); }}
 						class="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors duration-100"
 					>
 						<ChevronLeft class="w-6 h-6" />
 					</button>
 					<button
-						onclick={(e) => { e.stopPropagation(); nextImage(); }}
+						onclick={(e) => { e?.stopPropagation(); nextImage(); }}
 						class="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors duration-100"
 					>
 						<ChevronRight class="w-6 h-6" />
@@ -818,7 +818,7 @@
 				<div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
 					{#each images as _, index (index)}
 						<button
-							onclick={(e) => { e.stopPropagation(); currentImageIndex = index; }}
+							onclick={(e) => { e?.stopPropagation(); currentImageIndex = index; }}
 							class={cn("w-12 h-12 rounded-sm overflow-hidden border-2 transition-all",
 								index === currentImageIndex ? "border-white" : "border-white/30 opacity-60 hover:opacity-100"
 							)}

@@ -5,7 +5,8 @@ export { default as UserMenu } from './UserMenu.svelte';
 export { default as NotificationBell } from './NotificationBell.svelte';
 export { default as DesktopNav } from './DesktopNav.svelte';
 export { default as MobileActions } from './MobileActions.svelte';
-export { default as CategoryMenu } from './CategoryMenu.svelte';
+import CategoryMenu from './CategoryMenu.svelte';
+export { CategoryMenu };
 
 // Hook exports
 export { useSearch } from './hooks/useSearch';

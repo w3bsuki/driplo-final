@@ -2,12 +2,12 @@
   import type { Category } from '$lib/types';
   import HeroSearch from '$lib/components/home/HeroSearch.svelte';
   import ListingGrid from '$lib/components/listings/ListingGrid.svelte';
-  import ReusableFilters from '$lib/components/shared/ReusableFilters.svelte';
+  import UnifiedFilter from '$lib/components/shared/UnifiedFilter.svelte';
   import LazyAvatar from '$lib/components/common/LazyAvatar.svelte';
   import { cn } from '$lib/utils';
-  import { ChevronRight } from 'lucide-svelte';
+  import { _ChevronRight} from 'lucide-svelte';
   import type { SupabaseClient } from '@supabase/supabase-js';
-  import type { Database } from '$lib/types/database';
+  import type { Database } from '$lib/types';
   import { getFiltersForCategory } from '$lib/config/categoryFilters';
   import { browser } from '$app/environment';
   import { onMount } from 'svelte';
@@ -164,7 +164,7 @@
   const hasActiveFilters = $derived(() => {
     if (selectedSubcategory !== 'all' || searchQuery !== '') return true;
     
-    return Object.entries(selectedFilters).some(([key, value]) => {
+    return Object.entries(selectedFilters).some(([_key, value]) => {
       if (Array.isArray(value)) return value.length > 0;
       return value !== '';
     });
@@ -196,7 +196,7 @@
         const observer = new IntersectionObserver(
           (entries) => {
             if (entries[0].isIntersecting) {
-              visibleSections[stateKey] = true;
+              (visibleSections as any)[stateKey] = true;
               observer.disconnect();
               placeholder.remove();
             }
@@ -317,7 +317,8 @@
 <!-- Category Filters -->
 <div data-section="category-filters">
   {#if visibleSections.filters}
-    <ReusableFilters 
+    <UnifiedFilter 
+      mode="generic"
       filters={filterGroups}
       {selectedFilters}
       {subcategories}
@@ -400,7 +401,7 @@
   {:else}
     <!-- Loading skeleton for products -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-3">
-      {#each Array(10) as _, i}
+      {#each Array(10) as _, _i}
         <div class="animate-pulse">
           <div class="aspect-[3/4] bg-gray-200 rounded-t-sm"></div>
           <div class="p-3 space-y-2 bg-white rounded-b-sm border border-gray-200">

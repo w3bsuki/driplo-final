@@ -1,8 +1,8 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { formatDistanceToNow } from 'date-fns';
-    import type { Database } from '$lib/types/database';
-    import { Package, ShoppingBag, Clock, ChevronRight, Check, X, Truck, AlertCircle, MoreVertical } from 'lucide-svelte';
+    import type { _Database} from '$lib/types';
+    import { Package, _ShoppingBag, Clock, ChevronRight, Check, X, Truck, AlertCircle, MoreVertical } from 'lucide-svelte';
     import Spinner from '$lib/components/ui/Spinner.svelte';
     
     type Transaction = {
@@ -223,7 +223,7 @@
 
         <div class="space-y-3">
             {#each transactions as transaction (transaction.id)}
-                {@const config = statusConfig[transaction.status] || statusConfig.pending}
+                {@const config = (statusConfig as any)[transaction.status] || statusConfig.pending}
                 {@const Icon = config.icon}
                 <div class="bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200 overflow-hidden">
                     <div class="p-4">

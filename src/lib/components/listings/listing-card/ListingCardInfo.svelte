@@ -58,7 +58,7 @@
 	
 	// Derived values
 	const formattedPrice = $derived(formatPrice(price));
-	const avatarGradient = $derived(getAvatarGradient(seller.username));
+	const _avatarGradient = $derived(getAvatarGradient(seller.username));
 </script>
 
 <div class="p-[var(--spacing-2)] space-y-[var(--spacing-1)]">

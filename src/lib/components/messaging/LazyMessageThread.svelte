@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import type { Database } from '$lib/types/database';
+    import type { Database } from '$lib/types';
     import type { SupabaseClient } from '@supabase/supabase-js';
     import Spinner from '$lib/components/ui/Spinner.svelte';
     import ErrorBoundary from '$lib/components/shared/ErrorBoundary.svelte';

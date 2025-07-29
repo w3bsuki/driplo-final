@@ -3,8 +3,8 @@ import { browseListings } from '$lib/server/browse'
 import { getCachedData, cacheKeys, cacheTTL } from '$lib/server/cache'
 import { apiError, apiSuccess, ApiErrorType, getPagination } from '$lib/server/api-utils'
 import { z } from 'zod'
-import type { BrowseListingsResponse } from '$lib/types/api'
-import type { BrowseLoadMoreResponse } from '$lib/types/api.types' // Keep for backward compatibility
+// import type { BrowseListingsResponse } from '$lib/types/api'
+import type { BrowseLoadMoreResponse } from '$lib/types/api';
 
 const filterSchema = z.object({
 	category: z.string().optional().default(''),
@@ -63,7 +63,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 		)
 
 		// Transform listings to match expected format
-		const enrichedListings = browseResult.listings.map(listing => ({
+		const enrichedListings = browseResult.listings?.map?.((listing => ({
 			id: listing.id,
 			title: listing.title,
 			price: listing.price,
@@ -80,13 +80,13 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 			...listing,
 			is_negotiable: false,
 			shipping_included: false
-		}))
+		});
 
 		const response: BrowseLoadMoreResponse = {
 			listings: enrichedListings,
 			hasMore: browseResult.hasMore,
 			nextPage: browseResult.hasMore ? page + 1 : null
-		}
+		};
 
 		return apiSuccess(response, 200, requestId)
 	} catch (err) {

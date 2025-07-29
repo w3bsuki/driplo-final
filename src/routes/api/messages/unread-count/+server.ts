@@ -1,6 +1,6 @@
 import type { RequestHandler } from './$types';
 import { apiError, apiSuccess, ApiErrorType, requireAuth } from '$lib/server/api-utils';
-import type { UnreadCountResponse } from '$lib/types/api.types';
+import type { UnreadCountResponse } from '$lib/types/api';
 
 export const GET: RequestHandler = async ({ locals }) => {
     const requestId = crypto.randomUUID();
@@ -28,7 +28,7 @@ export const GET: RequestHandler = async ({ locals }) => {
             );
         }
 
-        const conversationIds = conversations?.map(c => c.id) || [];
+        const conversationIds = conversations.map(c => c.id) || [];
 
         if (conversationIds.length === 0) {
             const response: UnreadCountResponse = { count: 0 };

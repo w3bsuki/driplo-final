@@ -1,20 +1,253 @@
-// Core database types
-export type { Database, Tables, Enums } from './database';
+// Core database types - explicit exports to avoid conflicts
+export type {
+  Json,
+  Database,
+  Tables,
+  TablesInsert,
+  TablesUpdate,
+  Enums,
+  CompositeTypes,
+  ExtendedProfile,
+  Profile as DbProfile,
+  ExtendedSubcategory,
+  BrandVerificationRequest,
+  AdminApproval
+} from './db';
 
-// Enhanced component and API types (NEW)
-export type * from './components';
-export type * from './api';
-export type * from './forms';
-export type * from './ui';
+// Enhanced component and API types - explicit exports to avoid conflicts
+export type {
+  ListingCardProps,
+  ComponentSize,
+  ComponentVariant,
+  LoadingState,
+  ButtonProps,
+  InputProps,
+  BadgeProps,
+  UserProfile,
+  ListingData,
+  MessageThreadProps,
+  CheckoutFlowProps,
+  ShippingAddress,
+  HeaderProps,
+  ErrorBoundaryProps,
+  FormFieldProps,
+  CreateListingFormProps,
+  PaginationProps,
+  ClickHandler,
+  ChangeHandler,
+  SubmitHandler
+} from './components';
 
-// Legacy types (to be migrated)
-export * from './listing';
-export * from './transaction';
-export * from './category';
-export * from './filter';
-export * from './unified';
+export type {
+  LoginFormData,
+  RegisterFormData,
+  CreateListingFormData,
+  EditListingFormData,
+  ProfileSettingsFormData,
+  ProfileOnboardingFormData,
+  FormFieldState,
+  FormState,
+  ValidationRule,
+  FieldValidationSchema,
+  TwoFactorSetupFormData,
+  TwoFactorVerifyFormData,
+  PasswordResetFormData,
+  NewPasswordFormData,
+  CheckoutFormData,
+  PaymentMethodFormData,
+  ShippingFormData,
+  SendMessageFormData,
+  MessageSearchFormData,
+  BrowseFiltersFormData,
+  AdvancedSearchFormData,
+  UserModerationFormData,
+  ListingModerationFormData,
+  CategoryFormData,
+  ValidationErrors,
+  FileUploadConstraints,
+  FormStep,
+  MultiStepFormConfig,
+  FormSubmissionResult,
+  FormActionResult,
+  ActionRequest,
+  ListingDraftData
+} from './forms';
 
-// Extended database types
-export type * from './database.extended';
-export type * from './api.types';
-export type * from './rpc.types';
+// UI types with explicit exports to avoid ComponentSize conflict
+export type {
+  ColorVariant,
+  VisualVariant,
+  BorderRadius,
+  ShadowVariant,
+  ButtonVariant,
+  ButtonSize,
+  ButtonState,
+  InputVariant,
+  InputSize,
+  InputState,
+  BadgeVariant,
+  BadgeSize,
+  AlertVariant,
+  AlertSize,
+  SpinnerVariant,
+  SpinnerSize,
+  SkeletonVariant,
+  ModalSize,
+  ModalVariant,
+  BackdropVariant,
+  NavigationVariant,
+  NavigationItemState,
+  TableVariant,
+  TableSize,
+  CardVariant,
+  CardSize,
+  ListingCardVariant,
+  ConditionVariant,
+  BrandBadgeVariant,
+  AnimationTiming,
+  AnimationEasing,
+  TransitionType,
+  Breakpoint,
+  ResponsiveProperty,
+  ThemeMode,
+  ColorScheme,
+  ScreenReaderText,
+  FocusVisible,
+  ReducedMotion,
+  FlexDirection,
+  FlexAlign,
+  FlexJustify,
+  GridTemplate,
+  ComponentPropsBase,
+  InteractiveComponentProps,
+  StyleProps,
+  ComponentSize as UiComponentSize
+} from './ui';
+
+// API types with explicit naming to avoid conflicts
+export type {
+  ApiResponse,
+  ApiSuccessResponse,
+  ApiErrorResponse,
+  PaginatedResponse,
+  LoginRequest,
+  LoginResponse,
+  RegisterRequest,
+  RegisterResponse,
+  TwoFactorSetupResponse,
+  TwoFactorVerifyRequest,
+  BrowseListingsParams,
+  BrowseListingsResponse,
+  CreateListingRequest,
+  CreateListingResponse,
+  UpdateListingRequest,
+  OrderData,
+  CreateOrderRequest,
+  CreateOrderResponse,
+  OrderListResponse,
+  MessageData,
+  MessageAttachment,
+  ConversationData,
+  SendMessageRequest,
+  SendMessageResponse,
+  ConversationListResponse,
+  CreatePaymentIntentRequest,
+  CreatePaymentIntentResponse,
+  PaymentMethodData,
+  SearchSuggestionsParams,
+  SearchSuggestionsResponse,
+  UserAnalyticsData,
+  SellerAnalyticsResponse,
+  FileUploadRequest,
+  FileUploadResponse,
+  HealthCheckResponse,
+  RequestId,
+  ApiMethod,
+  SortOrder,
+  CurrencyCode,
+  PaginationInfo,
+  BrowseLoadMoreResponse,
+  TopSellersResponse,
+  MessageSendResponse,
+  UnreadCountResponse,
+  OrderResponse,
+  OrderCreateRequest,
+  WishlistToggleResponse
+} from './api';
+
+// Legacy types - explicit exports to avoid conflicts
+export type {
+  Listing,
+  Category as LegacyCategory,
+  Condition,
+  Price,
+  ListingImage,
+  Measurements,
+  ListingStatus,
+  ListingAnalytics,
+  ShippingOptions,
+  ShippingMethod
+} from './listing';
+
+// Transaction types - explicit exports to avoid ShippingAddress conflict
+export type {
+  Transaction,
+  Money,
+  TransactionStatus as LegacyTransactionStatus,
+  TransactionShipping,
+  ShippingAddress as TransactionShippingAddress,
+  EscrowDetails,
+  TransactionEvent
+} from './transaction';
+
+// Filter types - explicit exports
+export type {
+  FilterOption,
+  FilterGroup,
+  SelectedFilters,
+  SortOption
+} from './filter';
+
+// Unified types - explicit to avoid Profile conflicts
+export type {
+  Profile as UnifiedProfile,
+  Listing as UnifiedListing,
+  Category as UnifiedCategory,
+  Transaction as UnifiedTransaction,
+  UserRating,
+  Message,
+  Favorite,
+  UserFollow,
+  ProfileInsert,
+  ListingInsert,
+  TransactionInsert,
+  ProfileUpdate,
+  ListingUpdate,
+  TransactionUpdate,
+  ListingStatus as UnifiedListingStatus,
+  ListingCondition,
+  TransactionStatus,
+  RatingType,
+  PaginationParams,
+  SortParams as UnifiedSortParams,
+  FilterParams as UnifiedFilterParams,
+  ApiResponse as UnifiedApiResponse,
+  PaginatedResponse as UnifiedPaginatedResponse,
+  ProfileWithStats,
+  ListingWithDetails,
+  TransactionWithDetails,
+  MessageThread,
+  ProfileFormData as UnifiedProfileFormData,
+  ListingFormData as UnifiedListingFormData,
+  AchievementLevel,
+  AchievementDefinition
+} from './unified';
+
+// RPC types - explicit exports
+export type {
+  RPCFunctions,
+  RPCFunctionName,
+  RPCArgs,
+  RPCReturns,
+  TypedRPC
+} from './rpc.types';

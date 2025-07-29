@@ -1,6 +1,6 @@
 <script lang="ts" generics="T extends import('svelte').Component">
 	import { cn } from '$lib/utils';
-	import type { ComponentProps } from 'svelte';
+	import type { _ComponentProps} from 'svelte';
 	
 	interface Props {
 		icon: T;

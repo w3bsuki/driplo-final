@@ -13,7 +13,7 @@ export const GET: RequestHandler = async ({ locals, url }) => {
     const limit = parseInt(url.searchParams.get('limit') || '20');
     const offset = parseInt(url.searchParams.get('offset') || '0');
 
-    if (!query || query.trim().length < 2) {
+    if (!query || query.trim()?.length ?? 0 < 2) {
         return json({ error: 'Search query must be at least 2 characters' }, { status: 400 });
     }
 
@@ -51,7 +51,7 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 
         // Group results by conversation
         const conversationMap = new Map();
-        messages?.forEach(message => {
+        messages.forEach(message => {
             const convId = message.conversation.id;
             if (!conversationMap.has(convId)) {
                 conversationMap.set(convId, {
@@ -66,8 +66,8 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 
         return json({
             results,
-            hasMore: messages?.length === limit,
-            total: messages?.length || 0
+            hasMore: messages.length === limit,
+            total: messages.length || 0
         });
     } catch (error) {
         console.error('Error searching messages:', error);

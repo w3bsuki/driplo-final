@@ -11,10 +11,10 @@
 	let searchQuery = $state('')
 	
 	const filteredUsers = $derived(
-		data.users.filter(user => 
-			user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-			user.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-			user.full_name?.toLowerCase().includes(searchQuery.toLowerCase())
+		data?.users??.filter?.((user => 
+			user?.email.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+			user?.username?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+			user?.full_name?.toLowerCase().includes(searchQuery?.toLowerCase())
 		)
 	)
 </script>
@@ -64,45 +64,45 @@
 							<td class="px-6 py-4 whitespace-nowrap">
 								<div class="flex items-center">
 									<div class="flex-shrink-0 h-10 w-10">
-										{#if user.avatar_url}
-											<img class="h-10 w-10 rounded-full" src={user.avatar_url} alt="">
+										{#if user?.avatar_url}
+											<img class="h-10 w-10 rounded-full" src={user?.avatar_url} alt="">
 										{:else}
 											<div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
 												<span class="text-gray-600 font-medium">
-													{(user.username || user.email).charAt(0).toUpperCase()}
+													{(user?.username || user?.email).charAt(0).toUpperCase()}
 												</span>
 											</div>
 										{/if}
 									</div>
 									<div class="ml-4">
 										<div class="text-sm font-medium text-gray-900">
-											{user.username || 'No username'}
+											{user?.username || 'No username'}
 										</div>
 										<div class="text-sm text-gray-500">
-											{user.email}
+											{user?.email}
 										</div>
 									</div>
 								</div>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap">
 								<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-									{user.account_type === 'brand' ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'}">
-									{user.account_type || 'personal'}
+									{user?.account_type === 'brand' ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'}">
+									{user?.account_type || 'personal'}
 								</span>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap">
 								<div class="flex gap-2">
-									{#if user.is_admin}
+									{#if (user as any)?.is_admin || (user as any)?.account_type === 'admin'}
 										<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
 											Admin
 										</span>
 									{/if}
-									{#if user.is_verified}
+									{#if user?.is_verified}
 										<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
 											Verified
 										</span>
 									{/if}
-									{#if user.is_seller}
+									{#if user?.is_seller}
 										<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
 											Seller
 										</span>
@@ -110,7 +110,7 @@
 								</div>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-								{new Date(user.created_at).toLocaleDateString()}
+								{new Date(user?.created_at || new Date()).toLocaleDateString()}
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
 								<div class="flex gap-2">
@@ -120,7 +120,7 @@
 									>
 										View
 									</button>
-									{#if !user.is_admin}
+									{#if !user?.is_admin}
 										<button
 											class="text-yellow-600 hover:text-yellow-900"
 											title="Make Admin"

@@ -9,15 +9,15 @@
 		FileText, 
 		Settings,
 		LogOut,
-		Shield,
-		TrendingUp,
-		AlertCircle
+		Shield
 	} from 'lucide-svelte';
 	import { Toaster } from 'svelte-sonner';
-	import Spinner from '$lib/components/ui/Spinner.svelte';
+	// Removed unused imports: TrendingUp, AlertCircle, Spinner
 	import type { LayoutData } from './$types';
 
-	let { data, children }: { data: LayoutData; children: any } = $props();
+	import type { Snippet } from 'svelte';
+	
+	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
 	const navigation = [
 		{ name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -31,13 +31,13 @@
 	// Check if current path matches nav item
 	function isActive(href: string): boolean {
 		if (href === '/dashboard') {
-			return $page.url.pathname === '/dashboard';
+			return $page?.url.pathname === '/dashboard';
 		}
-		return $page.url.pathname.startsWith(href);
+		return $page?.url.pathname?.startsWith(href);
 	}
 
 	async function handleLogout() {
-		await data.supabase.auth.signOut();
+		await data?.supabase.auth?.signOut();
 		goto('/');
 	}
 </script>
@@ -46,7 +46,7 @@
 	<title>Admin Dashboard | Driplo</title>
 </svelte:head>
 
-{#if !data.isAdmin}
+{#if !data?.isAdmin}
 	<!-- Not Authorized -->
 	<div class="min-h-screen bg-background flex items-center justify-center">
 		<div class="text-center">
@@ -73,7 +73,7 @@
 
 				<div class="flex items-center gap-4">
 					<span class="text-sm text-muted-foreground">
-						{data.profile?.full_name || data.user?.email}
+						{data?.profile?.full_name || data?.user?.email}
 					</span>
 					<button
 						onclick={handleLogout}
@@ -92,18 +92,18 @@
 				<div class="p-4 space-y-1">
 					{#each navigation as item}
 						<a
-							href={item.href}
+							href={item?.href}
 							class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors
-								{isActive(item.href)
+								{isActive(item?.href)
 									? 'bg-primary/10 text-primary font-medium'
 									: 'text-foreground hover:bg-muted'}"
 						>
-							<item.icon class="w-5 h-5" />
-							<span>{item.name}</span>
+							<svelte:component this={item.icon} class="w-5 h-5" />
+							<span>{item?.name}</span>
 							
-							{#if item.name === 'Brand Approvals' && data.pendingBrands > 0}
+							{#if item?.name === 'Brand Approvals' && data?.pendingBrands > 0}
 								<span class="ml-auto bg-destructive text-destructive-foreground text-xs px-2 py-0.5 rounded-full">
-									{data.pendingBrands}
+									{data?.pendingBrands}
 								</span>
 							{/if}
 						</a>
@@ -118,15 +118,15 @@
 					<div class="space-y-3">
 						<div class="flex justify-between items-center">
 							<span class="text-sm text-muted-foreground">Total Users</span>
-							<span class="text-sm font-medium">{data.stats?.totalUsers || 0}</span>
+							<span class="text-sm font-medium">{data?.stats?.totalUsers || 0}</span>
 						</div>
 						<div class="flex justify-between items-center">
 							<span class="text-sm text-muted-foreground">Active Listings</span>
-							<span class="text-sm font-medium">{data.stats?.activeListings || 0}</span>
+							<span class="text-sm font-medium">{data?.stats?.activeListings || 0}</span>
 						</div>
 						<div class="flex justify-between items-center">
 							<span class="text-sm text-muted-foreground">Today's Sales</span>
-							<span class="text-sm font-medium">${data.stats?.todaySales || 0}</span>
+							<span class="text-sm font-medium">${data?.stats?.todaySales || 0}</span>
 						</div>
 					</div>
 				</div>

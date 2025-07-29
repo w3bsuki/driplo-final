@@ -15,7 +15,7 @@
 
 	let { form }: Props = $props();
 
-	const supabase = $derived($page.data.supabase);
+	const supabase = $derived($page?.data.supabase);
 
 	let email = $state('');
 	let loading = $state(false);
@@ -25,25 +25,25 @@
 	// CAPTCHA state
 	let captchaToken = $state<string | null>(null);
 	let showCaptchaError = $state(false);
-	let captchaRef: TurnstileWrapper;
+	let captchaRef = $state<TurnstileWrapper | null>(null);
 
-	const emailSchema = z.string().email('Please enter a valid email address');
+	const emailSchema = z?.string().email('Please enter a valid email address');
 
 	async function handleSubmit() {
 		error = '';
 		
 		// Check CAPTCHA in production
-		if (import.meta.env.MODE === 'production' && !captchaToken) {
+		if (import?.meta.env?.MODE === 'production' && !captchaToken) {
 			showCaptchaError = true;
 			error = 'Please complete the CAPTCHA verification';
 			return;
 		}
 		
 		try {
-			emailSchema.parse(email);
+			emailSchema?.parse(email);
 		} catch (e) {
-			if (e instanceof z.ZodError) {
-				error = e.errors[0].message;
+			if (e instanceof z?.ZodError) {
+				error = e?.errors[0].message;
 				return;
 			}
 		}
@@ -51,17 +51,17 @@
 		loading = true;
 
 		try {
-			const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-				redirectTo: `${window.location.origin}/reset-password`
+			const { error: resetError } = await supabase?.auth.resetPasswordForEmail(email, {
+				redirectTo: `${window?.location.origin}/reset-password`
 			});
 
 			if (resetError) {
-				error = resetError.message;
+				error = resetError?.message;
 			} else {
 				success = true;
 				// Reset CAPTCHA for security
 				if (captchaRef) {
-					captchaRef.reset();
+					captchaRef?.reset();
 				}
 				captchaToken = null;
 			}
@@ -114,7 +114,7 @@
 					</Alert>
 				{/if}
 
-				<form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }} class="space-y-4">
+				<form onsubmit={(e) => { e?.preventDefault(); handleSubmit(); }} class="space-y-4">
 					<div>
 						<label for="email" class="block text-sm font-medium mb-2">
 							Email address
@@ -123,7 +123,7 @@
 							id="email"
 							type="email"
 							bind:value={email}
-							placeholder="you@example.com"
+							placeholder="you@example?.com"
 							required
 							disabled={loading}
 						/>
@@ -152,7 +152,7 @@
 						{/if}
 					</div>
 
-					<Button type="submit" class="w-full" disabled={loading || !email || (import.meta.env.MODE === 'production' && !captchaToken)}>
+					<Button type="submit" class="w-full" disabled={loading || !email || (import?.meta.env?.MODE === 'production' && !captchaToken)}>
 						{loading ? 'Sending...' : 'Send reset instructions'}
 					</Button>
 				</form>

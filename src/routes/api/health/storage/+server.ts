@@ -19,7 +19,7 @@ export const GET: RequestHandler = async ({ locals }) => {
 
     // Check if our required buckets exist
     const requiredBuckets = ['avatars', 'listings'];
-    const existingBuckets = data.map(b => b.name);
+    const existingBuckets = data?.map(b => b.name);
     const missingBuckets = requiredBuckets.filter(b => !existingBuckets.includes(b));
 
     if (missingBuckets.length > 0) {

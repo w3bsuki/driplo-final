@@ -8,7 +8,7 @@
 		TableHeader,
 		TableRow
 	} from '$lib/components/ui/table';
-	import type { Snippet } from 'svelte';
+	import type { _Snippet} from 'svelte';
 
 	interface Column<T> {
 		key: keyof T | string;
@@ -31,15 +31,15 @@
 		columns,
 		class: className,
 		onRowClick,
-		getRowKey = (item, index) => index.toString(),
+		_getRowKey= (item: T, index: number) => index?.toString(),
 		emptyMessage = 'No data available'
 	}: Props<T> = $props();
 
 	function getCellValue(item: T, column: Column<T>): string {
-		if (column.cell) {
-			return column.cell(item);
+		if (column?.cell) {
+			return column?.cell(_item);
 		}
-		const value = item[column.key as keyof T];
+		const value = item[column?.key as keyof T];
 		return value != null ? String(value) : '';
 	}
 </script>
@@ -49,8 +49,8 @@
 		<TableHeader>
 			<TableRow>
 				{#each columns as column}
-					<TableHead class={column.className}>
-						{column.header}
+					<TableHead class={column?.className}>
+						{column?.header}
 					</TableHead>
 				{/each}
 			</TableRow>
@@ -66,16 +66,16 @@
 					</TableCell>
 				</TableRow>
 			{:else}
-				{#each data as item, index}
+				{#each data as _item, _index}
 					<TableRow
 						class={cn(
 							onRowClick && 'cursor-pointer'
 						)}
-						onclick={() => onRowClick?.(item)}
+						onclick={() => onRowClick?.(_item)}
 					>
 						{#each columns as column}
-							<TableCell class={column.className}>
-								{getCellValue(item, column)}
+							<TableCell class={column?.className}>
+								{getCellValue(_item, column)}
 							</TableCell>
 						{/each}
 					</TableRow>

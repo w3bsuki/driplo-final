@@ -8,7 +8,7 @@
 	import * as m from '$lib/paraglide/messages.js'
 	import Spinner from '$lib/components/ui/Spinner.svelte'
 	import { cn } from '$lib/utils'
-	import { onMount } from 'svelte'
+	import { _onMount} from 'svelte'
 	import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public'
 	import { createBrowserClient } from '@supabase/ssr'
 	import TurnstileWrapper from '$lib/components/auth/TurnstileWrapper.svelte'
@@ -36,29 +36,29 @@
 	// CAPTCHA state
 	let captchaToken = $state<string | null>(null)
 	let showCaptchaError = $state(false)
-	let captchaRef: TurnstileWrapper
+	let captchaRef = $state<TurnstileWrapper | null>(null)
 	
 	// Check if showing success message
-	let showSuccess = $derived($page.url.searchParams.get('success') === 'true')
+	let showSuccess = $derived($page?.url.searchParams?.get('success') === 'true')
 
-	const registerSchema = z.object({
-		email: z.string().email('Please enter a valid email address'),
-		password: z.string().min(8, 'Password must be at least 8 characters'),
-		confirmPassword: z.string(),
-		agreedToTerms: z.boolean().refine(val => val === true, 'You must agree to the terms of service'),
-		accountType: z.enum(['personal', 'brand']),
-		brandName: z.string().optional(),
-		brandCategory: z.string().optional(),
-		brandWebsite: z.string().optional().refine(
-			(val) => !val || val === '' || z.string().url().safeParse(val).success,
+	const registerSchema = z?.object({
+		email: z?.string().email('Please enter a valid email address'),
+		password: z?.string().min(8, 'Password must be at least 8 characters'),
+		confirmPassword: z?.string(),
+		agreedToTerms: z?.boolean().refine(val => val === true, 'You must agree to the terms of service'),
+		accountType: z?.enum(['personal', 'brand']),
+		brandName: z?.string().optional(),
+		brandCategory: z?.string().optional(),
+		brandWebsite: z?.string().optional().refine(
+			(val) => !val || val === '' || z?.string().url().safeParse(val).success,
 			{ message: 'Must be a valid URL' }
 		)
-	}).refine(data => data.password === data.confirmPassword, {
+	}).refine(data => data?.password === data?.confirmPassword, {
 		message: "Passwords don't match",
 		path: ["confirmPassword"]
 	}).refine(data => {
-		if (data.accountType === 'brand') {
-			return data.brandName && data.brandName.length >= 2
+		if (data?.accountType === 'brand') {
+			return data?.brandName && data?.brandName.length >= 2
 		}
 		return true
 	}, {
@@ -69,25 +69,25 @@
 	async function handleRegister(e?: Event) {
 		
 		// Prevent default form submission
-		if (e && e.preventDefault) {
-			e.preventDefault();
+		if (e && e?.preventDefault) {
+			e?.preventDefault();
 		}
 		
 		// Check CAPTCHA
 		if (!captchaToken) {
 			showCaptchaError = true
-			toast.error('Please complete the CAPTCHA verification')
+			toast?.error('Please complete the CAPTCHA verification')
 			return
 		}
 		
 		// Check if we have supabase client
 		if (!supabaseClient) {
-			toast.error('Authentication service not available. Please refresh the page.');
+			toast?.error('Authentication service not available. Please refresh the page.');
 			return;
 		}
 		
 		try {
-			const validatedData = registerSchema.parse({
+			const _validatedData = registerSchema?.parse({
 				email,
 				password,
 				confirmPassword,
@@ -101,8 +101,8 @@
 			loading = true
 			
 			// Use direct Supabase client for signup
-			const tempUsername = email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '') + Math.floor(Math.random() * 1000)
-			const { data, error } = await supabaseClient.auth.signUp({
+			const tempUsername = email?.split('@')[0].replace(/[^a-zA-Z0-9]/g, '') + Math?.floor(Math?.random() * 1000)
+			const { _data, error } = await supabaseClient?.auth.signUp({
 					email,
 					password,
 					options: {
@@ -115,7 +115,7 @@
 							brand_website: accountType === 'brand' ? brandWebsite : undefined,
 							needs_username_setup: true
 						},
-						emailRedirectTo: `${window.location.origin}/auth/confirm`,
+						emailRedirectTo: `${window?.location.origin}/auth/confirm`,
 						captchaToken: captchaToken
 					}
 				})
@@ -125,38 +125,38 @@
 				}
 			
 			// Show success message
-			toast.success('Account created! Please check your email to verify your account.')
+			toast?.success('Account created! Please check your email to verify your account.')
 			
 			// Reset CAPTCHA for security
 			if (captchaRef) {
-				captchaRef.reset()
+				captchaRef?.reset()
 			}
 			captchaToken = null
 			
 			goto('/auth/register?success=true')
 		} catch (error) {
-			if (error instanceof z.ZodError) {
+			if (error instanceof z?.ZodError) {
 				// Zod validation errors
-				error.issues.forEach((issue) => {
-					toast.error(issue.message)
+				error?.issues.forEach((issue) => {
+					toast?.error(issue?.message)
 				})
 			} else if (error instanceof Error) {
 				// Handle specific Supabase auth errors
-				if (error.message.includes('duplicate key') || error.message.includes('already registered')) {
-					toast.error('An account with this email already exists. Please login instead.')
-				} else if (error.message.includes('username') && error.message.includes('unique')) {
-					toast.error('This username is already taken. Please choose another.')
-				} else if (error.message.includes('rate limit')) {
-					toast.error('Too many signup attempts. Please try again later.')
-				} else if (error.message.includes('invalid email')) {
-					toast.error('Please enter a valid email address.')
-				} else if (error.message.includes('weak password')) {
-					toast.error('Password is too weak. Please use a stronger password.')
+				if (error?.message.includes('duplicate key') || error?.message.includes('already registered')) {
+					toast?.error('An account with this email already exists. Please login instead.')
+				} else if (error?.message.includes('username') && error?.message.includes('unique')) {
+					toast?.error('This username is already taken. Please choose another.')
+				} else if (error?.message.includes('rate limit')) {
+					toast?.error('Too many signup attempts. Please try again later.')
+				} else if (error?.message.includes('invalid email')) {
+					toast?.error('Please enter a valid email address.')
+				} else if (error?.message.includes('weak password')) {
+					toast?.error('Password is too weak. Please use a stronger password.')
 				} else {
-					toast.error(error.message || 'Registration failed')
+					toast?.error(error?.message || 'Registration failed')
 				}
 			} else {
-				toast.error('Registration failed')
+				toast?.error('Registration failed')
 			}
 		} finally {
 			loading = false
@@ -168,15 +168,15 @@
 		try {
 			// Store account type preference in localStorage for OAuth callback
 			if (accountType === 'brand') {
-				localStorage.setItem('pending_account_type', 'brand')
+				localStorage?.setItem('pending_account_type', 'brand')
 			}
 			// Redirect to OAuth endpoint
-			window.location.href = `/auth/${provider}`
+			window?.location.href = `/auth/${provider}`
 		} catch (error) {
 			if (error instanceof Error) {
-				toast.error(error.message || 'OAuth registration failed')
+				toast?.error(error?.message || 'OAuth registration failed')
 			} else {
-				toast.error('OAuth registration failed')
+				toast?.error('OAuth registration failed')
 			}
 			loading = false
 		}
@@ -287,7 +287,7 @@
 					<svg class="w-4 h-4" viewBox="0 0 24 24">
 						<path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
 						<path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-						<path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+						<path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s?.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
 						<path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
 					</svg>
 					Continue with Google
@@ -317,7 +317,7 @@
 			<form 
 				method="POST"
 				onsubmit={(e) => {
-					e.preventDefault();
+					e?.preventDefault();
 					handleRegister(e);
 				}}
 				class="space-y-3"
@@ -390,7 +390,7 @@
 								name="brandWebsite"
 								type="url"
 								bind:value={brandWebsite}
-								placeholder="https://yourbrand.com"
+								placeholder="https://yourbrand?.com"
 								disabled={loading}
 								class="w-full px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary focus:border-primary text-sm bg-white"
 							/>
@@ -493,7 +493,7 @@
 						}}
 						onError={() => {
 							captchaToken = null
-							toast.error('CAPTCHA verification failed. Please try again.')
+							toast?.error('CAPTCHA verification failed. Please try again.')
 						}}
 						theme="light"
 						size="normal"
@@ -510,7 +510,7 @@
 				<button 
 					type="submit" 
 					class="w-full py-2 bg-brand-500 text-white font-medium rounded-sm hover:bg-brand-600 transition-colors duration-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center mt-3"
-					disabled={loading || !agreedToTerms || (import.meta.env.MODE === 'production' && !captchaToken)}
+					disabled={loading || !agreedToTerms || (import?.meta.env?.MODE === 'production' && !captchaToken)}
 				>
 					{#if loading}
 						<Spinner size="sm" color="white" />

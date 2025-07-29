@@ -1,14 +1,6 @@
 <script lang="ts">
-	import { Star } from 'lucide-svelte'
-	
-	interface Props {
-		rating: number
-		maxRating?: number
-		size?: 'sm' | 'md' | 'lg'
-		interactive?: boolean
-		showText?: boolean
-		onRate?: (rating: number) => void
-	}
+	import { Star } from 'lucide-svelte';
+	import type { RatingStarsProps } from '$lib/types/components';
 	
 	let {
 		rating,
@@ -16,8 +8,9 @@
 		size = 'md',
 		interactive = false,
 		showText = false,
-		onRate
-	}: Props = $props()
+		onRate,
+		class: className = ''
+	}: RatingStarsProps = $props()
 	
 	let hoverRating = $state(0)
 	
@@ -74,7 +67,7 @@
 </script>
 
 <div 
-	class="flex items-center gap-1"
+	class="flex items-center gap-1 {className}"
 	role={interactive ? 'radiogroup' : 'img'}
 	aria-label={interactive ? 'Rate this item' : `Rating: ${rating} out of ${maxRating} stars`}
 	onmouseleave={handleMouseLeave}

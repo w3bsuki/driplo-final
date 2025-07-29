@@ -8,3 +8,6 @@ export function cn(...inputs: ClassValue[]) {
 // Type helper for components
 export type WithElementRef<T> = T & { ref?: HTMLElement }
 
+// Type helper to remove children property
+export type WithoutChild<T> = Omit<T, 'children'>
+

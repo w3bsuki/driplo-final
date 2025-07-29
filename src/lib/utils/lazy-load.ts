@@ -3,15 +3,9 @@ import type { ComponentType, SvelteComponent } from 'svelte';
 /**
  * Creates a lazy-loaded component wrapper that loads the component on demand
  * @param loader Function that imports the component
- * @param options Configuration for lazy loading behavior
  */
 export function createLazyComponent<T extends SvelteComponent>(
-    loader: () => Promise<{ default: ComponentType<T> }>,
-    options?: {
-        preloadOnHover?: boolean;
-        preloadOnFocus?: boolean;
-        preloadDelay?: number;
-    }
+    loader: () => Promise<{ default: ComponentType<T> }>
 ) {
     let component: ComponentType<T> | null = null;
     let loading = false;

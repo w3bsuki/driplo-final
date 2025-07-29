@@ -1,14 +1,17 @@
 <script lang="ts">
 	import { cn } from '$lib/utils.js';
 	import type { HTMLAttributes } from 'svelte/elements';
+	import type { Snippet } from 'svelte';
 
-	type $$Props = HTMLAttributes<HTMLHeadingElement>;
+	interface AlertTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+		children?: Snippet;
+	}
 
 	let { 
 		class: className = undefined,
 		children,
 		...restProps
-	} = $props<$$Props & { children?: any }>();
+	}: AlertTitleProps = $props();
 </script>
 
 <h5

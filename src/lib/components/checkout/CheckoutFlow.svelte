@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	// import { onMount } from 'svelte';
 	import { formatCurrency } from '$lib/utils/currency';
 	import { X, CreditCard, Lock, Truck, Check, ChevronRight, ChevronLeft } from 'lucide-svelte';
 	import { fade, scale, slide } from 'svelte/transition';
@@ -7,6 +7,8 @@
 	import { getStripe } from '$lib/stores/stripe';
 	import * as m from '$lib/paraglide/messages.js';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
+	import { enhance } from '$app/forms';
+	// import { goto } from '$app/navigation';
 
 	interface Props {
 		listing: any;
@@ -21,9 +23,11 @@
 	let isProcessing = $state(false);
 	
 	// Stripe elements
+	let stripe: any;
 	let elements: any;
 	let cardElement: any;
 	let clientSecret = $state('');
+	let paymentMethodId = $state('');
 	
 	// Form data
 	let shippingAddress = $state({
@@ -38,6 +42,7 @@
 	
 	let paymentProvider = $state<'stripe' | 'revolut_manual'>('stripe');
 	let orderData = $state<any>(null);
+	let formElement: HTMLFormElement;
 	
 	// Calculated values
 	let itemPrice = $derived(listing?.price || 0);
@@ -52,10 +57,21 @@
 	
 	function handleNextStep() {
 		if (currentStep === 1 && validateShipping()) {
-			goToStep(2);
-			initializePayment();
+			// Submit form to create payment intent
+			if (formElement) {
+				const submitButton = formElement.querySelector('button[name="action"][value="createPaymentIntent"]') as HTMLButtonElement;
+				if (submitButton) {
+					submitButton.click();
+				}
+			}
 		} else if (currentStep === 2) {
-			processPayment();
+			// Process payment will be handled by form submission
+			if (formElement) {
+				const submitButton = formElement.querySelector('button[name="action"][value="confirmPayment"]') as HTMLButtonElement;
+				if (submitButton) {
+					submitButton.click();
+				}
+			}
 		}
 	}
 	
@@ -85,42 +101,16 @@
 		return true;
 	}
 	
-	async function initializePayment() {
-		if (paymentProvider === 'stripe') {
-			await initializeStripePayment();
+	// Initialize Stripe Elements when we have a client secret
+	$effect(() => {
+		if (clientSecret && currentStep === 2 && paymentProvider === 'stripe') {
+			initializeStripeElements();
 		}
-	}
+	});
 	
-	async function initializeStripePayment() {
+	async function initializeStripeElements() {
 		try {
-			isProcessing = true;
-			
-			const response = await fetch('/api/payment/create-intent', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					listing_id: listing.id,
-					shipping_address: shippingAddress
-				})
-			});
-			
-			let result;
-			try {
-				result = await response.json();
-			} catch (e) {
-				console.error('Failed to parse response:', e);
-				throw new Error('Server error - invalid response');
-			}
-			
-			if (!response.ok) {
-				console.error('Payment error:', result);
-				throw new Error(result.error || result.message || 'Failed to initialize payment');
-			}
-			
-			clientSecret = result.data.client_secret;
-			
-			// Initialize Stripe Elements
-			const stripe = await getStripe();
+			stripe = await getStripe();
 			if (!stripe) throw new Error('Stripe not loaded');
 			
 			elements = stripe.elements({ clientSecret });
@@ -141,110 +131,123 @@
 					}
 				});
 				cardElement.mount(cardElementContainer);
+				
+				// Listen for changes to get payment method
+				cardElement.on('change', (event: any) => {
+					if (event.error) {
+						console.error('Card element error:', event.error);
+					}
+				});
 			}
 		} catch (error) {
-			console.error('Payment initialization error:', error);
-			toast.error('Failed to initialize payment');
-			goToStep(1);
-		} finally {
-			isProcessing = false;
+			console.error('Stripe initialization error:', error);
+			toast.error('Failed to load payment form');
 		}
 	}
 	
-	async function processPayment() {
-		if (paymentProvider === 'stripe') {
-			await processStripePayment();
-		} else {
-			await processManualPayment();
+	// Handle payment confirmation before form submission
+	async function handlePaymentSubmit() {
+		if (!stripe || !cardElement || !clientSecret) {
+			toast.error('Payment system not ready');
+			return false;
 		}
-	}
-	
-	async function processStripePayment() {
-		if (!cardElement || !clientSecret) return;
 		
 		try {
 			isProcessing = true;
-			const stripe = await getStripe();
-			if (!stripe) throw new Error('Stripe not loaded');
 			
-			const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-				payment_method: {
-					card: cardElement,
-					billing_details: {
-						name: shippingAddress.name,
-						address: {
-							line1: shippingAddress.address_line1,
-							line2: shippingAddress.address_line2,
-							city: shippingAddress.city,
-							state: shippingAddress.state,
-							postal_code: shippingAddress.postal_code,
-							country: shippingAddress.country
-						}
+			// Create payment method
+			const { error, paymentMethod } = await stripe.createPaymentMethod({
+				type: 'card',
+				card: cardElement,
+				billing_details: {
+					name: shippingAddress.name,
+					address: {
+						line1: shippingAddress.address_line1,
+						line2: shippingAddress.address_line2,
+						city: shippingAddress.city,
+						state: shippingAddress.state,
+						postal_code: shippingAddress.postal_code,
+						country: shippingAddress.country
 					}
 				}
 			});
 			
 			if (error) {
-				throw error;
+				toast.error(error.message || 'Payment method creation failed');
+				return false;
 			}
 			
-			// Payment successful
-			orderData = {
-				orderId: paymentIntent.id,
-				amount: totalAmount,
-				paymentMethod: 'card'
-			};
-			
-			goToStep(3);
-			toast.success('Payment successful!');
-			
-			// Redirect after delay
-			setTimeout(() => {
-				window.location.href = '/orders';
-			}, 3000);
-			
-		} catch (error: any) {
-			console.error('Payment error:', error);
-			toast.error(error.message || 'Payment failed');
+			paymentMethodId = paymentMethod.id;
+			return true;
+		} catch (error) {
+			console.error('Payment method error:', error);
+			toast.error('Failed to process payment method');
+			return false;
 		} finally {
 			isProcessing = false;
 		}
 	}
 	
-	async function processManualPayment() {
-		try {
-			isProcessing = true;
-			
-			const response = await fetch('/api/payment/revolut/manual-payment', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					listing_id: listing.id,
-					shipping_address: shippingAddress
-				})
-			});
-			
-			const data = await response.json();
-			
-			if (!response.ok) {
-				throw new Error(data.error || 'Failed to create order');
+	// Handle form enhancement for progressive enhancement
+	function handleFormEnhance() {
+		return async ({ formData, action, cancel }: any) => {
+			if (action.search.includes('confirmPayment') && paymentProvider === 'stripe') {
+				// Create payment method before submitting
+				const success = await handlePaymentSubmit();
+				if (!success) {
+					cancel();
+					return;
+				}
+				
+				// Add payment method ID to form data
+				formData.set('payment_method_id', paymentMethodId);
+				formData.set('client_secret', clientSecret);
 			}
 			
-			orderData = {
-				orderId: data.order_id,
-				amount: data.total_amount,
-				paymentMethod: 'revolut_manual',
-				paymentInstructions: data.payment_instructions
+			isProcessing = true;
+			
+			return async ({ result, update }: any) => {
+				isProcessing = false;
+				
+				if (result.type === 'success') {
+					if (result.data?.clientSecret) {
+						// Payment intent created, move to payment step
+						clientSecret = result.data.clientSecret;
+						orderData = {
+							orderId: result.data.orderId,
+							totalAmount: result.data.totalAmount
+						};
+						goToStep(2);
+					} else if (result.data?.requiresAction) {
+						// 3D Secure required
+						if (result.data.actionUrl) {
+							window.location.href = result.data.actionUrl;
+						}
+					} else if (result.data?.success && paymentProvider === 'revolut_manual') {
+						// Manual payment created
+						orderData = {
+							orderId: result.data.orderId,
+							amount: result.data.totalAmount,
+							paymentMethod: 'revolut_manual',
+							paymentInstructions: result.data.paymentInstructions,
+							sellerRevtag: result.data.sellerRevtag
+						};
+						goToStep(3);
+					}
+				} else if (result.type === 'failure') {
+					toast.error(result.data?.error || 'Operation failed');
+					if (result.data?.fieldErrors) {
+						console.error('Field errors:', result.data.fieldErrors);
+					}
+				} else if (result.type === 'redirect') {
+					// Let SvelteKit handle the redirect
+					return;
+				}
+				
+				// Prevent default update to handle manually
+				update({ reset: false });
 			};
-			
-			goToStep(3);
-			
-		} catch (error: any) {
-			console.error('Manual payment error:', error);
-			toast.error(error.message || 'Failed to create order');
-		} finally {
-			isProcessing = false;
-		}
+		};
 	}
 	
 	function handleClose() {
@@ -274,8 +277,13 @@
 {#if isOpen}
 	<div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-[var(--spacing-4)]" transition:fade={{ duration: 200 }}>
 		<div class="bg-[var(--color-surface-primary)] rounded-[var(--border-radius-2xl)] max-w-lg w-full max-h-[90vh] overflow-hidden" transition:scale={{ duration: 200 }}>
-			<!-- Header -->
-			<div class="bg-[var(--color-surface-primary)] border-b border-[var(--color-border-primary)] p-[var(--spacing-6)] flex items-center justify-between">
+			<form 
+				method="POST" 
+				use:enhance={handleFormEnhance}
+				bind:this={formElement}
+			>
+				<!-- Header -->
+				<div class="bg-[var(--color-surface-primary)] border-b border-[var(--color-border-primary)] p-[var(--spacing-6)] flex items-center justify-between">
 				<div class="flex items-center gap-[var(--spacing-4)]">
 					<h2 class="text-[var(--font-size-xl)] font-bold text-[var(--color-text-primary)]">
 						{#if currentStep === 1}
@@ -516,6 +524,32 @@
 				{/if}
 			</div>
 
+			<!-- Hidden submit buttons for form actions -->
+			<button
+				type="submit"
+				name="action"
+				value="createPaymentIntent"
+				formaction="?/createPaymentIntent"
+				style="display: none;"
+				aria-hidden="true"
+			/>
+			<button
+				type="submit"
+				name="action"
+				value="confirmPayment"
+				formaction="?/confirmPayment"
+				style="display: none;"
+				aria-hidden="true"
+			/>
+			<button
+				type="submit"
+				name="action"
+				value="createRevolutPayment"
+				formaction="?/createRevolutPayment"
+				style="display: none;"
+				aria-hidden="true"
+			/>
+
 			<!-- Footer -->
 			<div class="border-t border-[var(--color-border-primary)] p-[var(--spacing-6)] bg-[var(--color-surface-secondary)]">
 				<div class="flex items-center justify-between">
@@ -557,6 +591,7 @@
 					{/if}
 				</div>
 			</div>
+			</form>
 		</div>
 	</div>
 {/if}

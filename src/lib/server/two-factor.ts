@@ -1,7 +1,7 @@
 import * as OTPAuth from 'otpauth';
 import { randomBytes } from 'crypto';
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { Database } from '$lib/types/database';
+import type { Database } from '$lib/types/db';
 
 // Constants
 const TOTP_ISSUER = 'Driplo Marketplace';
@@ -224,7 +224,7 @@ export async function useBackupCode(
     }
     
     const currentCodes = data?.backup_codes || [];
-    const newCodes = currentCodes.filter(code => code !== usedCode);
+    const newCodes = currentCodes.filter((code: string) => code !== usedCode);
     
     // Update with removed code
     const { error: updateError } = await supabase

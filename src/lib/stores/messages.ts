@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
 import type { SupabaseClient, RealtimeChannel } from '@supabase/supabase-js';
-import type { Database } from '$lib/types/database';
+import type { Database } from '$lib/types';
 
 // Store for global unread message count
 export const unreadCount = writable<number>(0);

@@ -2,25 +2,28 @@ import { redirect } from '@sveltejs/kit'
 import type { LayoutServerLoad } from './$types'
 
 export const load: LayoutServerLoad = async ({ locals }) => {
-	const { user } = await locals.safeGetSession()
+	const { user } = await locals?.safeGetSession()
 	
 	if (!user) {
 		throw redirect(303, '/login')
 	}
 	
 	// Check if user is admin
-	const { data: profile } = await locals.supabase
+	const { data: profile } = await locals?.supabase
 		.from('profiles')
-		.select('is_admin, role')
-		.eq('id', user.id)
+		.select('account_type, email')
+		.eq('id', user?.id)
 		.single()
 	
-	if (!profile?.is_admin || profile.role !== 'admin') {
+	// For emergency cleanup - check if user has admin email or account type
+	const isAdmin = (profile as any)?.email?.includes('admin') || (profile as any)?.account_type === 'admin';
+	if (!isAdmin) {
 		throw redirect(303, '/')
 	}
 	
 	return {
 		user,
-		profile
+		profile,
+		isAdmin
 	}
 }

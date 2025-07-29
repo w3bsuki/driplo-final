@@ -57,7 +57,7 @@
 	}
 	
 	let { 
-		title = m.home_featured_title(), 
+		title = m?.home_featured_title(), 
 		listings = [],
 		showLoading = false,
 		infiniteScroll = false,
@@ -65,7 +65,7 @@
 		onLoadMore,
 		userFavorites = [],
 		useVirtualScrolling = false,
-		virtualScrollHeight = 600,
+		_virtualScrollHeight= 600,
 		showEmptyState = true,
 		isLoading = false,
 		error = null
@@ -80,15 +80,15 @@
 		
 		// Use requestAnimationFrame to update after hydration completes
 		requestAnimationFrame(() => {
-			windowWidth = window.innerWidth;
+			windowWidth = window?.innerWidth;
 		});
 		
 		const handleResize = () => {
-			windowWidth = window.innerWidth;
+			windowWidth = window?.innerWidth;
 		};
 		
-		window.addEventListener('resize', handleResize);
-		return () => window.removeEventListener('resize', handleResize);
+		window?.addEventListener('resize', handleResize);
+		return () => window?.removeEventListener('resize', handleResize);
 	});
 	
 	// Derived values
@@ -96,23 +96,23 @@
 	const shouldUseVirtualScrolling = $derived(useVirtualScrolling && transformedListings.length > VIRTUAL_SCROLL_THRESHOLD);
 	const columns = $derived(getResponsiveColumns(windowWidth));
 	const loadingStrategy = $derived(getLoadingStrategy());
-	const eagerLoadCount = $derived(loadingStrategy.eagerCount);
+	const eagerLoadCount = $derived(loadingStrategy?.eagerCount);
 	const loading = $derived(isLoading || showLoading);
 	
 	// Functions
 	function getResponsiveColumns(width: number): number {
 		// Sort breakpoints by width descending to get correct order
-		const sortedBreakpoints = Object.entries(RESPONSIVE_BREAKPOINTS)
-			.sort(([, a], [, b]) => b.width - a.width);
+		const sortedBreakpoints = Object?.entries(RESPONSIVE_BREAKPOINTS)
+			.sort(([, a], [, b]) => b?.width - a?.width);
 			
 		for (const [_, config] of sortedBreakpoints) {
-			if (width >= config.width) return config.columns;
+			if (width >= config?.width) return config?.columns;
 		}
-		return RESPONSIVE_BREAKPOINTS.default.columns;
+		return RESPONSIVE_BREAKPOINTS?.default.columns;
 	}
 	
 	function transformListings(rawListings: any[]): any[] {
-		debug.log('transformListings called', { 
+		debug?.log('transformListings called', { 
 			component: 'ListingGrid', 
 			data: { 
 				rawListingsCount: rawListings?.length || 0,
@@ -121,44 +121,44 @@
 		});
 		
 		if (!rawListings || rawListings.length === 0) {
-			debug.warn('No listings to transform', { component: 'ListingGrid' });
+			debug?.warn('No listings to transform', { component: 'ListingGrid' });
 			return [];
 		}
 		
-		const transformed = rawListings.map((listing, index) => {
-			debug.log(`Transforming listing ${index}`, {
+		const transformed = rawListings?.map((listing, index) => {
+			debug?.log(`Transforming listing ${index}`, {
 				component: 'ListingGrid',
 				data: {
-					id: listing.id,
-					title: listing.title,
-					image_urls: listing.image_urls,
-					images: listing.images,
-					seller: listing.seller,
-					profiles: listing.profiles
+					id: listing?.id,
+					title: listing?.title,
+					image_urls: listing?.image_urls,
+					images: listing?.images,
+					seller: listing?.seller,
+					profiles: listing?.profiles
 				}
 			});
 			
 			const result = {
-				id: listing.id,
-				title: listing.title,
-				price: listing.price,
-				size: listing.size,
-				brand: listing.brand,
-				image: listing.image_urls || listing.images || [],
-				imageUrls: listing.image_urls || listing.images || [],
+				id: listing?.id,
+				title: listing?.title,
+				price: listing?.price,
+				size: listing?.size,
+				brand: listing?.brand,
+				image: listing?.image_urls || listing?.images || [],
+				imageUrls: listing?.image_urls || listing?.images || [],
 				seller: {
-					username: listing.seller?.username || listing.profiles?.username || 'user',
-					avatar: listing.seller?.avatar_url || listing.profiles?.avatar_url,
-					account_type: listing.seller?.account_type || listing.profiles?.account_type,
-					is_verified: listing.seller?.is_verified || listing.profiles?.is_verified
+					username: listing?.seller?.username || listing?.profiles?.username || 'user',
+					avatar: listing?.seller?.avatar_url || listing?.profiles?.avatar_url,
+					account_type: listing?.seller?.account_type || listing?.profiles?.account_type,
+					is_verified: listing?.seller?.is_verified || listing?.profiles?.is_verified
 				},
-				likes: listing.favorite_count || 0,
-				isLiked: userFavorites.includes(listing.id),
-				condition: listing.condition
+				likes: listing?.favorite_count || 0,
+				isLiked: userFavorites?.includes(listing?.id),
+				condition: listing?.condition
 			};
 			
 			if (index === 0) {
-				debug.log('First transformed listing', {
+				debug?.log('First transformed listing', {
 					component: 'ListingGrid',
 					data: result
 				});
@@ -167,7 +167,7 @@
 			return result;
 		});
 		
-		debug.log('Transformation complete', {
+		debug?.log('Transformation complete', {
 			component: 'ListingGrid',
 			data: {
 				transformedCount: transformed.length
@@ -192,7 +192,7 @@
 				<div class="flex items-start gap-[var(--spacing-2)]">
 					<span class="text-[var(--font-size-2xl)]" aria-hidden="true">⚠️</span>
 					<div class="flex-1">
-						<h3 class="font-medium text-[var(--color-error-600)]">{m.listing_error_title()}</h3>
+						<h3 class="font-medium text-[var(--color-error-600)]">{m?.listing_error_title()}</h3>
 						<p class="text-[var(--font-size-xs)] text-[var(--color-error-500)]/80 mt-[var(--spacing-1)]">{error}</p>
 					</div>
 				</div>
@@ -203,7 +203,7 @@
 				class="grid gap-[var(--spacing-2)]"
 				style:grid-template-columns="repeat({columns}, minmax(0, 1fr))"
 				aria-busy="true"
-				aria-label={m.listing_loading()}
+				aria-label={m?.listing_loading()}
 			>
 				{#each Array(SKELETON_COUNT) as _, i (i)}
 					<div class="animate-pulse">
@@ -229,7 +229,7 @@
 					style:grid-template-columns="repeat({columns}, minmax(0, 1fr))"
 					role="list"
 				>
-					{#each transformedListings as listing, index (listing.id)}
+					{#each transformedListings as listing, index (listing?.id)}
 						<div role="listitem">
 							<ListingCard {...listing} eagerLoading={index < eagerLoadCount} />
 						</div>
@@ -249,13 +249,13 @@
 			<!-- Empty state -->
 			<div class="text-center py-[var(--spacing-8)]">
 				<div class="text-[var(--font-size-5xl)] mb-[var(--spacing-3)]" aria-hidden="true">🛍️</div>
-				<h3 class="text-[var(--font-size-sm)] font-medium text-[var(--color-text-primary)] mb-[var(--spacing-2)]">{m.listing_empty_title()}</h3>
-				<p class="text-[var(--font-size-xs)] text-[var(--color-text-tertiary)] mb-[var(--spacing-3)]">{m.listing_empty_description()}</p>
+				<h3 class="text-[var(--font-size-sm)] font-medium text-[var(--color-text-primary)] mb-[var(--spacing-2)]">{m?.listing_empty_title()}</h3>
+				<p class="text-[var(--font-size-xs)] text-[var(--color-text-tertiary)] mb-[var(--spacing-3)]">{m?.listing_empty_description()}</p>
 				<a 
 					href="/sell" 
 					class="inline-flex items-center px-[var(--spacing-3)] py-[var(--spacing-1-5)] bg-[var(--color-brand-500)] hover:bg-[var(--color-brand-600)] text-[var(--color-white)] font-medium rounded-[var(--border-radius-sm)] transition-colors duration-[var(--transition-duration-100)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-500)] focus:ring-offset-2"
 				>
-					{m.listing_start_selling()}
+					{m?.listing_start_selling()}
 				</a>
 			</div>
 		{/if}

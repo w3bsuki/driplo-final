@@ -1,5 +1,5 @@
 import { json, type RequestEvent } from '@sveltejs/kit';
-import { logError, getErrorMessage, type AppError } from '$lib/utils/error-handling';
+import { logError, getErrorMessage } from '$lib/utils/error-handling';
 import { dev } from '$app/environment';
 
 /**
@@ -26,7 +26,7 @@ export interface ApiResponse<T = any> {
  */
 export class ApiError extends Error {
   constructor(
-    public message: string,
+    public override message: string,
     public status: number = 500,
     public code?: string,
     public details?: any
@@ -113,7 +113,7 @@ export function apiError(
 /**
  * Wrapper for API route handlers with automatic error handling
  */
-export function withErrorHandling<T = any>(
+export function withErrorHandling(
   handler: (event: RequestEvent) => Promise<Response>
 ) {
   return async (event: RequestEvent): Promise<Response> => {
@@ -153,7 +153,7 @@ export function withErrorHandling<T = any>(
       // Generic error handling
       console.error('Unhandled API error:', error);
       return apiError(
-        dev ? error : 'Internal server error',
+        dev ? getErrorMessage(error) : 'Internal server error',
         500,
         event,
         dev ? { stack: (error as Error)?.stack } : undefined
@@ -222,14 +222,14 @@ export async function validateAuth(event: RequestEvent): Promise<{ user: any; se
  */
 export async function checkRateLimit(
   event: RequestEvent,
-  identifier: string,
-  limit: number = 60,
-  window: number = 60000
+  _identifier: string,
+  _limit: number = 60,
+  _window: number = 60000
 ): Promise<void> {
   // This would integrate with your database rate limiter
   // For now, just a placeholder
-  const userAgent = event.request.headers.get('user-agent') || 'unknown';
-  const ip = event.getClientAddress();
+  const _userAgent = event.request.headers.get('user-agent') || 'unknown';
+  const _ip = event.getClientAddress();
   
   // In a real implementation, you'd check against your rate limiting storage
   // and throw an ApiError if limit exceeded
@@ -243,7 +243,7 @@ export function setCorsHeaders(response: Response, origins: string[] = ['*']): R
     response.headers.set('Access-Control-Allow-Origin', '*');
   } else {
     // In production, you'd check the Origin header against allowed origins
-    response.headers.set('Access-Control-Allow-Origin', origins[0]);
+    response.headers.set('Access-Control-Allow-Origin', origins[0] || '*');
   }
   
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');

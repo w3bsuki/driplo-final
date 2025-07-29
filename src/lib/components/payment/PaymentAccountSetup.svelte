@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import { toast } from 'svelte-sonner';
 	import { Check, User, AlertCircle, CreditCard, Building, Mail } from 'lucide-svelte';
 	import { fade } from 'svelte/transition';
 
-	const dispatch = createEventDispatcher();
+	let { onsuccess }: { onsuccess?: (data: any) => void } = $props();
 
 	let payoutMethod = $state('bank_transfer');
 	let isSubmitting = $state(false);
@@ -83,7 +82,7 @@
 			}
 
 			toast.success(data.message || 'Payment account set up successfully!');
-			dispatch('success', data.payment_account);
+			onsuccess?.(data.payment_account);
 		} catch (error) {
 			console.error('Payment account setup error:', error);
 			toast.error('Failed to set up payment account');
@@ -134,7 +133,7 @@
 						type="radio"
 						name="payout_method"
 						value="bank_transfer"
-						bind:group={selectedPayoutMethod}
+						bind:group={payoutMethod}
 						class="sr-only"
 					/>
 					<div class="flex items-center p-3 border-2 rounded-lg transition-all {payoutMethod === 'bank_transfer' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}">
@@ -154,7 +153,7 @@
 						type="radio"
 						name="payout_method"
 						value="paypal"
-						bind:group={selectedPayoutMethod}
+						bind:group={payoutMethod}
 						class="sr-only"
 					/>
 					<div class="flex items-center p-3 border-2 rounded-lg transition-all {payoutMethod === 'paypal' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}">
@@ -174,7 +173,7 @@
 						type="radio"
 						name="payout_method"
 						value="revolut"
-						bind:group={selectedPayoutMethod}
+						bind:group={payoutMethod}
 						class="sr-only"
 					/>
 					<div class="flex items-center p-3 border-2 rounded-lg transition-all {payoutMethod === 'revolut' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}">

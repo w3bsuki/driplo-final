@@ -9,17 +9,17 @@ const stripe = new Stripe(STRIPE_SECRET_KEY, {
 });
 
 export const POST: RequestHandler = async ({ locals, params, request }) => {
-  const supabase = locals.supabase;
-  const { session } = await locals.safeGetSession();
+  const supabase = locals?.supabase;
+  const { session } = await locals?.safeGetSession();
 
   if (!session) {
     return json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const orderId = params.id;
+  const orderId = params?.id;
   const { reason, refund_type = 'full' } = await request.json();
 
-  if (!reason || reason.trim().length < 10) {
+  if (!reason || reason?.trim()?.length ?? 0 < 10) {
     return json({ error: 'Please provide a detailed reason for the refund request' }, { status: 400 });
   }
 
@@ -65,12 +65,12 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
     }
 
     // Check if user is the buyer
-    if (session.user.id !== order.buyer_id) {
+    if (session.user?.id !== order?.buyer_id) {
       return json({ error: 'Only the buyer can request a refund' }, { status: 403 });
     }
 
     // Check if order is eligible for refund
-    if (!['delivered', 'completed', 'shipped'].includes(order.status)) {
+    if (!['delivered', 'completed', 'shipped'].includes(order?.status)) {
       return json({ error: 'Order is not eligible for refund in current status' }, { status: 400 });
     }
 
@@ -83,7 +83,7 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
 
     if (existingRefund) {
       return json({ 
-        error: `Refund request already exists with status: ${existingRefund.status}` 
+        error: `Refund request already exists with status: ${existingRefund?.status}` 
       }, { status: 400 });
     }
 
@@ -92,11 +92,11 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
       .from('refund_requests')
       .insert({
         order_id: orderId,
-        buyer_id: order.buyer_id,
-        seller_id: order.seller_id,
-        transaction_id: order.transaction?.id,
-        amount: order.transaction?.amount || 0,
-        currency: order.transaction?.currency || 'usd',
+        buyer_id: order?.buyer_id,
+        seller_id: order?.seller_id,
+        transaction_id: order?.transaction?.id,
+        amount: order?.transaction?.amount || 0,
+        currency: order?.transaction?.currency || 'usd',
         reason,
         refund_type,
         status: 'pending',
@@ -106,15 +106,15 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
       .single();
 
     if (refundError) {
-      console.error('Error creating refund request:', refundError);
+      console?.error('Error creating refund request:', refundError);
       return json({ error: 'Failed to create refund request' }, { status: 500 });
     }
 
     // Send email notification to seller
     if (order.seller?.email) {
-      await emailService.sendRefundRequestNotification(
+      await emailService?.sendRefundRequestNotification(
         order.seller,
-        order.buyer,
+        order?.buyer,
         order,
         refundRequest
       );
@@ -136,15 +136,15 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
     });
 
   } catch (error) {
-    console.error('Error processing refund request:', error);
+    console?.error('Error processing refund request:', error);
     return json({ error: 'Failed to process refund request' }, { status: 500 });
   }
 };
 
 // Seller responds to refund request
 export const PATCH: RequestHandler = async ({ locals, params, request }) => {
-  const supabase = locals.supabase;
-  const { session } = await locals.safeGetSession();
+  const supabase = locals?.supabase;
+  const { session } = await locals?.safeGetSession();
 
   if (!session) {
     return json({ error: 'Unauthorized' }, { status: 401 });
@@ -193,7 +193,7 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
     }
 
     // Check if user is the seller
-    if (session.user.id !== refundRequest.seller_id) {
+    if (session?.user.id !== refundRequest?.seller_id) {
       return json({ error: 'Only the seller can respond to this refund request' }, { status: 403 });
     }
 
@@ -207,18 +207,18 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
           seller_response_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         })
-        .eq('id', refundRequest.id);
+        .eq('id', refundRequest?.id);
 
       // Process refund via Stripe
-      if (refundRequest.order.transaction?.stripe_payment_intent_id) {
+      if (refundRequest?.order?.transaction?.stripe_payment_intent_id) {
         try {
-          const refund = await stripe.refunds.create({
-            payment_intent: refundRequest.order.transaction.stripe_payment_intent_id,
-            amount: refundRequest.refund_type === 'full' ? undefined : refundRequest.amount,
+          const refund = await stripe?.refunds.create({
+            payment_intent: refundRequest?.order?.transaction.stripe_payment_intent_id,
+            amount: refundRequest?.refund_type === 'full' ? undefined : refundRequest?.amount,
             reason: 'requested_by_customer',
             metadata: {
               order_id: orderId,
-              refund_request_id: refundRequest.id
+              refund_request_id: refundRequest?.id
             }
           });
 
@@ -226,10 +226,10 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
           await supabase
             .from('refund_requests')
             .update({
-              stripe_refund_id: refund.id,
+              stripe_refund_id: refund?.id,
               updated_at: new Date().toISOString()
             })
-            .eq('id', refundRequest.id);
+            .eq('id', refundRequest?.id);
 
           // Update order status
           await supabase
@@ -241,26 +241,26 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
             .eq('id', orderId);
 
         } catch (stripeError) {
-          console.error('Stripe refund error:', stripeError);
+          console?.error('Stripe refund error:', stripeError);
           // Update refund request to failed
           await supabase
             .from('refund_requests')
             .update({
               status: 'failed',
-              error_message: stripeError.message,
+              error_message: stripeError?.message,
               updated_at: new Date().toISOString()
             })
-            .eq('id', refundRequest.id);
+            .eq('id', refundRequest?.id);
 
           return json({ error: 'Failed to process refund payment' }, { status: 500 });
         }
       }
 
       // Send approval email to buyer
-      if (refundRequest.order.buyer?.email) {
-        await emailService.sendRefundApprovalNotification(
-          refundRequest.order.buyer,
-          refundRequest.order,
+      if (refundRequest?.order?.buyer?.email) {
+        await emailService?.sendRefundApprovalNotification(
+          refundRequest?.order?.buyer,
+          refundRequest?.order,
           refundRequest
         );
       }
@@ -280,7 +280,7 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
           seller_response_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         })
-        .eq('id', refundRequest.id);
+        .eq('id', refundRequest?.id);
 
       // Update order status back to completed
       await supabase
@@ -292,10 +292,10 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
         .eq('id', orderId);
 
       // Send rejection email to buyer
-      if (refundRequest.order.buyer?.email) {
-        await emailService.sendRefundRejectionNotification(
-          refundRequest.order.buyer,
-          refundRequest.order,
+      if (refundRequest?.order?.buyer?.email) {
+        await emailService?.sendRefundRejectionNotification(
+          refundRequest?.order?.buyer,
+          refundRequest?.order,
           refundRequest
         );
       }
@@ -307,7 +307,7 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
     }
 
   } catch (error) {
-    console.error('Error responding to refund request:', error);
+    console?.error('Error responding to refund request:', error);
     return json({ error: 'Failed to respond to refund request' }, { status: 500 });
   }
 };

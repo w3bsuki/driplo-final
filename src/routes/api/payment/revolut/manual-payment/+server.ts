@@ -42,7 +42,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		}
 
 		// Get seller's payment account (optional - we'll contact them later for payout)
-		const { data: sellerPaymentAccount, error: paymentError } = await locals.supabase
+		const { data: sellerPaymentAccount, error: _paymentError} = await locals.supabase
 			.from('payment_accounts')
 			.select('*')
 			.eq('user_id', listing.seller_id)
@@ -68,7 +68,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		const sellerPayoutAmount = subtotal;
 
 		// Generate unique order reference
-		const orderRef = `DRIPLO-${Date.now()}-${listing_id.slice(-4)}`;
+		const orderRef = `DRIPLO-${Date.now()}-${listing_id?.slice(-4)}`;
 
 		// Create transaction record with escrow system
 		const { data: transaction, error: transactionError } = await locals.supabase

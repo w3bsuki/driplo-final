@@ -15,19 +15,19 @@
 	// Get user from store
 	
 	// Get supabase client from page data
-	const supabase = $derived(data.supabase)
+	const supabase = $derived(data?.supabase)
 
-	let profile = $state(data.profile)
+	let profile = $state(data?.profile)
 	let saving = $state(false)
 	let uploadingAvatar = $state(false)
 	let uploadingCover = $state(false)
 
 	// Form fields initialized from server data
-	let fullName = $state(data.profile.full_name || '')
-	let username = $state(data.profile.username || '')
-	let bio = $state(data.profile.bio || '')
-	let location = $state(data.profile.location || '')
-	let website = $state(data.profile.website || '')
+	let fullName = $state(data?.profile.(full_name ?? ''))
+	let username = $state(data.(profile && typeof profile === 'object' && 'username' in profile) ? profile?.username : (null ?? ''))
+	let bio = $state(data?.profile.(bio ?? ''))
+	let location = $state(data?.profile.(location ?? ''))
+	let website = $state(data?.profile.(website ?? ''))
 	
 	// Social media fields
 	let socialMedia = $state({
@@ -51,26 +51,26 @@
 				const { data: socialAccounts } = await supabase
 					.from('social_media_accounts')
 					.select('*')
-					.eq('user_id', $user.id)
+					.eq('user_id', $(user && typeof user === 'object' && 'id' in user) ? user.id : null)
 				
 				if (socialAccounts) {
-					socialAccounts.forEach(account => {
-						if (account.platform in socialMedia) {
-							socialMedia[account.platform as keyof typeof socialMedia] = account.username || ''
+					socialAccounts??.forEach?.((account => {
+						if (account?.platform in socialMedia) {
+							socialMedia[account?.platform as keyof typeof socialMedia] = account?.(username ?? '')
 						}
 					})
 				}
 			} catch (error) {
-				console.error('Error loading social media accounts:', error)
+				console?.error('Error loading social media accounts:', error)
 			}
 			
 			// Load 2FA status
 			try {
 				const response = await fetch('/api/auth/2fa/backup-codes')
-				if (response.ok) {
+				if (response?.ok) {
 					const result = await response.json()
 					twoFactorEnabled = true
-					backupCodesCount = result.count || 0
+					backupCodesCount = result?.count || 0
 				} else {
 					// 2FA not enabled or error
 					twoFactorEnabled = false
@@ -80,7 +80,7 @@
 				// Check if 2FA is required based on profile data
 				is2FARequired = profile?.account_type === 'brand' || profile?.role === 'admin'
 			} catch (error) {
-				console.error('Error loading 2FA status:', error)
+				console?.error('Error loading 2FA status:', error)
 				// Default to false on error
 				twoFactorEnabled = false
 				backupCodesCount = 0
@@ -93,24 +93,24 @@
 
 		try {
 			const formData = new FormData()
-			formData.append('file', event.detail.file)
-			formData.append('type', 'avatar')
+			formData?.append('file', event?.detail.file)
+			formData?.append('type', 'avatar')
 
 			const response = await fetch('/api/upload/image', {
 				method: 'POST',
 				body: formData
 			})
 
-			if (!response.ok) {
+			if (!response?.ok) {
 				throw new Error('Upload failed')
 			}
 
 			const result = await response.json()
-			profile.avatar_url = result.url
-			toast.success(m.settings_avatar_updated())
+			profile?.avatar_url = result?.url
+			toast?.success(m?.settings_avatar_updated())
 		} catch (error) {
-			console.error('Avatar upload error:', error)
-			toast.error(m.settings_avatar_error())
+			console?.error('Avatar upload error:', error)
+			toast?.error(m?.settings_avatar_error())
 		} finally {
 			uploadingAvatar = false
 		}
@@ -121,32 +121,32 @@
 
 		try {
 			const formData = new FormData()
-			formData.append('file', event.detail.file)
-			formData.append('type', 'cover')
+			formData?.append('file', event?.detail.file)
+			formData?.append('type', 'cover')
 
 			const response = await fetch('/api/upload/image', {
 				method: 'POST',
 				body: formData
 			})
 
-			if (!response.ok) {
+			if (!response?.ok) {
 				throw new Error('Upload failed')
 			}
 
 			const result = await response.json()
-			profile.cover_url = result.url
-			toast.success(m.settings_cover_updated())
+			profile?.cover_url = result?.url
+			toast?.success(m?.settings_cover_updated())
 		} catch (error) {
-			console.error('Cover upload error:', error)
-			toast.error(m.settings_cover_error())
+			console?.error('Cover upload error:', error)
+			toast?.error(m?.settings_cover_error())
 		} finally {
 			uploadingCover = false
 		}
 	}
 
 	async function saveProfile() {
-		if (!username.trim()) {
-			toast.error(m.settings_username_required())
+		if (!username?.trim()) {
+			toast?.error(m?.settings_username_required())
 			return
 		}
 
@@ -157,11 +157,11 @@
 			const { error: profileError } = await supabase
 				.from('profiles')
 				.update({
-					full_name: fullName.trim() || null,
-					username: username.trim(),
-					bio: bio.trim() || null,
-					location: location.trim() || null,
-					website: website.trim() || null,
+					full_name: fullName?.trim() || null,
+					username: username?.trim(),
+					bio: bio?.trim() || null,
+					location: location?.trim() || null,
+					website: website?.trim() || null,
 					updated_at: new Date().toISOString()
 				})
 				.eq('id', $user?.id)
@@ -169,8 +169,8 @@
 			if (profileError) throw profileError
 
 			// Update social media accounts
-			for (const [platform, username] of Object.entries(socialMedia)) {
-				if (username.trim()) {
+			for (const [platform, username] of Object?.entries(socialMedia)) {
+				if (username?.trim()) {
 					// First check if account exists
 					const { data: existing } = await supabase
 						.from('social_media_accounts')
@@ -184,11 +184,11 @@
 						await supabase
 							.from('social_media_accounts')
 							.update({
-								username: username.trim(),
-								url: getSocialMediaUrl(platform, username.trim()),
+								username: username?.trim(),
+								url: getSocialMediaUrl(platform, username?.trim()),
 								updated_at: new Date().toISOString()
 							})
-							.eq('id', existing.id)
+							.eq('id', existing?.id)
 					} else {
 						// Insert new
 						await supabase
@@ -196,8 +196,8 @@
 							.insert({
 								user_id: $user?.id,
 								platform,
-								username: username.trim(),
-								url: getSocialMediaUrl(platform, username.trim())
+								username: username?.trim(),
+								url: getSocialMediaUrl(platform, username?.trim())
 							})
 					}
 				} else {
@@ -210,14 +210,14 @@
 				}
 			}
 
-			toast.success(m.settings_profile_updated())
+			toast?.success(m?.settings_profile_updated())
 			goto(`/profile/${username}`)
 		} catch (error: any) {
-			console.error('Save profile error:', error)
-			if (error.code === '23505') {
-				toast.error(m.settings_username_taken())
+			console?.error('Save profile error:', error)
+			if (error?.code === '23505') {
+				toast?.error(m?.settings_username_taken())
 			} else {
-				toast.error(m.settings_save_error())
+				toast?.error(m?.settings_save_error())
 			}
 		} finally {
 			saving = false
@@ -225,28 +225,28 @@
 	}
 
 	function getSocialMediaUrl(platform: string, username: string): string {
-		const cleanUsername = username.replace('@', '')
+		const cleanUsername = username?.replace('@', '')
 		switch (platform) {
 			case 'instagram':
-				return `https://instagram.com/${cleanUsername}`
+				return `https://instagram?.com/${cleanUsername}`
 			case 'tiktok':
-				return `https://tiktok.com/@${cleanUsername}`
+				return `https://tiktok?.com/@${cleanUsername}`
 			case 'facebook':
-				return `https://facebook.com/${cleanUsername}`
+				return `https://facebook?.com/${cleanUsername}`
 			case 'twitter':
-				return `https://twitter.com/${cleanUsername}`
+				return `https://twitter?.com/${cleanUsername}`
 			case 'youtube':
-				return `https://youtube.com/@${cleanUsername}`
+				return `https://youtube?.com/@${cleanUsername}`
 			case 'pinterest':
-				return `https://pinterest.com/${cleanUsername}`
+				return `https://pinterest?.com/${cleanUsername}`
 			default:
 				return ''
 		}
 	}
 
 	function goBack() {
-		if (profile.username) {
-			goto(`/profile/${profile.username}`)
+		if (profile?.username) {
+			goto(`/profile/${profile?.username}`)
 		} else {
 			goto('/')
 		}
@@ -254,7 +254,7 @@
 </script>
 
 <svelte:head>
-	<title>{m.settings_page_title()}</title>
+	<title>{m?.settings_page_title()}</title>
 </svelte:head>
 
 <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -267,7 +267,7 @@
 			>
 				<ArrowLeft class="w-5 h-5 text-gray-600 group-hover:text-gray-900 transition-colors" />
 			</button>
-			<h1 class="ml-3 text-lg font-semibold text-gray-900">{m.settings_header_title()}</h1>
+			<h1 class="ml-3 text-lg font-semibold text-gray-900">{m?.settings_header_title()}</h1>
 		</div>
 	</div>
 
@@ -277,17 +277,17 @@
 			<!-- Cover Image -->
 			<div class="relative">
 				<div class="h-32 sm:h-48 bg-gradient-to-br from-primary/20 to-primary/10 overflow-hidden">
-					{#if profile.cover_url}
-						<img src={profile.cover_url} alt="Cover" class="w-full h-full object-cover" />
+					{#if profile?.cover_url}
+						<img src={profile?.cover_url} alt="Cover" class="w-full h-full object-cover" />
 					{/if}
 				</div>
 				<div class="absolute inset-0 flex items-center justify-center">
 					<div class="bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-lg">
 						<ImageIcon class="w-6 h-6 text-gray-700 mb-2" />
-						<p class="text-sm font-medium text-gray-700 mb-3">{m.settings_cover_image()}</p>
+						<p class="text-sm font-medium text-gray-700 mb-3">{m?.settings_cover_image()}</p>
 						<ImageUpload
-							currentImage={profile.cover_url}
-							placeholder={m.settings_cover_image()}
+							currentImage={profile?.cover_url}
+							placeholder={m?.settings_cover_image()}
 							aspectRatio="cover"
 							disabled={uploadingCover}
 							onupload={handleCoverUpload}
@@ -302,19 +302,19 @@
 				<div class="flex items-end gap-6 -mt-16 sm:-mt-20">
 					<div class="relative">
 						<div class="w-32 h-32 sm:w-40 sm:h-40 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl overflow-hidden border-4 border-white shadow-lg">
-							{#if profile.avatar_url}
-								<img src={profile.avatar_url} alt="Profile" class="w-full h-full object-cover" />
+							{#if profile?.avatar_url}
+								<img src={profile?.avatar_url} alt="Profile" class="w-full h-full object-cover" />
 							{/if}
 						</div>
 						<div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-200 rounded-2xl">
 							<div class="text-center">
 								<Camera class="w-8 h-8 text-white mx-auto mb-2" />
-								<p class="text-xs text-white font-medium">{m.settings_profile_picture()}</p>
+								<p class="text-xs text-white font-medium">{m?.settings_profile_picture()}</p>
 							</div>
 						</div>
 						<div class="absolute bottom-2 right-2">
 							<ImageUpload
-								currentImage={profile.avatar_url}
+								currentImage={profile?.avatar_url}
 								placeholder=""
 								aspectRatio="square"
 								disabled={uploadingAvatar}
@@ -338,14 +338,14 @@
 			<div class="p-6 sm:p-8">
 				<h2 class="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
 					<User class="w-5 h-5 text-primary" />
-					{m.settings_profile_info()}
+					{m?.settings_profile_info()}
 				</h2>
 				
 				<div class="space-y-6">
 					<!-- Full Name Field -->
 					<div class="space-y-2">
 						<label for="fullName" class="block text-sm font-medium text-gray-700">
-							{m.settings_full_name()}
+							{m?.settings_full_name()}
 						</label>
 						<div class="relative">
 							<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -355,7 +355,7 @@
 								id="fullName"
 								type="text"
 								bind:value={fullName}
-								placeholder={m.settings_full_name_placeholder()}
+								placeholder={m?.settings_full_name_placeholder()}
 								class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 placeholder-gray-400"
 							/>
 						</div>
@@ -364,7 +364,7 @@
 					<!-- Username Field -->
 					<div class="space-y-2">
 						<label for="username" class="block text-sm font-medium text-gray-700">
-							{m.settings_username()} <span class="text-red-500">*</span>
+							{m?.settings_username()} <span class="text-red-500">*</span>
 						</label>
 						<div class="relative">
 							<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -374,18 +374,18 @@
 								id="username"
 								type="text"
 								bind:value={username}
-								placeholder={m.settings_username_placeholder()}
+								placeholder={m?.settings_username_placeholder()}
 								required
 								class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 placeholder-gray-400"
 							/>
 						</div>
-						<p class="text-xs text-gray-500 mt-1">driplo.com/profile/{username || 'username'}</p>
+						<p class="text-xs text-gray-500 mt-1">driplo?.com/profile/{username || 'username'}</p>
 					</div>
 
 					<!-- Bio Field -->
 					<div class="space-y-2">
 						<label for="bio" class="block text-sm font-medium text-gray-700">
-							{m.settings_bio()}
+							{m?.settings_bio()}
 						</label>
 						<div class="relative">
 							<div class="absolute top-3 left-3 pointer-events-none">
@@ -394,18 +394,18 @@
 							<textarea
 								id="bio"
 								bind:value={bio}
-								placeholder={m.settings_bio_placeholder()}
+								placeholder={m?.settings_bio_placeholder()}
 								rows="4"
 								class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 resize-none placeholder-gray-400"
 							></textarea>
 						</div>
-						<p class="text-xs text-gray-500">{bio.length}/500 characters</p>
+						<p class="text-xs text-gray-500">{bio?.length ?? 0}/500 characters</p>
 					</div>
 
 					<!-- Location Field -->
 					<div class="space-y-2">
 						<label for="location" class="block text-sm font-medium text-gray-700">
-							{m.settings_location()}
+							{m?.settings_location()}
 						</label>
 						<div class="relative">
 							<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -415,7 +415,7 @@
 								id="location"
 								type="text"
 								bind:value={location}
-								placeholder={m.settings_location_placeholder()}
+								placeholder={m?.settings_location_placeholder()}
 								class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 placeholder-gray-400"
 							/>
 						</div>
@@ -424,7 +424,7 @@
 					<!-- Website Field -->
 					<div class="space-y-2">
 						<label for="website" class="block text-sm font-medium text-gray-700">
-							{m.settings_website()}
+							{m?.settings_website()}
 						</label>
 						<div class="relative">
 							<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -434,7 +434,7 @@
 								id="website"
 								type="url"
 								bind:value={website}
-								placeholder={m.settings_website_placeholder()}
+								placeholder={m?.settings_website_placeholder()}
 								class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 placeholder-gray-400"
 							/>
 						</div>
@@ -461,7 +461,7 @@
 								<input
 									id="instagram"
 									type="text"
-									bind:value={socialMedia.instagram}
+									bind:value={socialMedia?.instagram}
 									placeholder="@username"
 									class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 placeholder-gray-400"
 								/>
@@ -480,7 +480,7 @@
 								<input
 									id="tiktok"
 									type="text"
-									bind:value={socialMedia.tiktok}
+									bind:value={socialMedia?.tiktok}
 									placeholder="@username"
 									class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 placeholder-gray-400"
 								/>
@@ -499,7 +499,7 @@
 								<input
 									id="facebook"
 									type="text"
-									bind:value={socialMedia.facebook}
+									bind:value={socialMedia?.facebook}
 									placeholder="username or page"
 									class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 placeholder-gray-400"
 								/>
@@ -518,7 +518,7 @@
 								<input
 									id="twitter"
 									type="text"
-									bind:value={socialMedia.twitter}
+									bind:value={socialMedia?.twitter}
 									placeholder="@username"
 									class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 placeholder-gray-400"
 								/>
@@ -537,7 +537,7 @@
 								<input
 									id="youtube"
 									type="text"
-									bind:value={socialMedia.youtube}
+									bind:value={socialMedia?.youtube}
 									placeholder="@channel"
 									class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 placeholder-gray-400"
 								/>
@@ -558,7 +558,7 @@
 								<input
 									id="pinterest"
 									type="text"
-									bind:value={socialMedia.pinterest}
+									bind:value={socialMedia?.pinterest}
 									placeholder="username"
 									class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 placeholder-gray-400"
 								/>
@@ -574,7 +574,7 @@
 			<div class="px-6 sm:px-8 py-6 bg-gray-50 border-t border-gray-100">
 				<div class="flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center">
 					<p class="text-sm text-gray-500">
-						{m.settings_required_fields ? m.settings_required_fields() : 'Fields marked with * are required'}
+						{m?.settings_required_fields ? m?.settings_required_fields() : 'Fields marked with * are required'}
 					</p>
 					<div class="flex gap-3">
 						<button
@@ -585,7 +585,7 @@
 						</button>
 						<button
 							onclick={saveProfile}
-							disabled={saving || !username.trim()}
+							disabled={saving || !username?.trim()}
 							class="flex-1 sm:flex-initial bg-primary text-white py-3 px-8 rounded-xl font-medium hover:bg-primary/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 min-w-[140px]"
 						>
 							{#if saving}
@@ -593,7 +593,7 @@
 								<span>Saving...</span>
 							{:else}
 								<Save class="w-4 h-4" />
-								<span>{m.settings_save_changes()}</span>
+								<span>{m?.settings_save_changes()}</span>
 							{/if}
 						</button>
 					</div>

@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		supabase.from('profiles').select('*', { count: 'exact', head: true }),
 		supabase.from('listings').select('*', { count: 'exact', head: true }),
 		supabase.from('orders').select('*', { count: 'exact', head: true }),
-		supabase.from('brand_verification_requests' as any)
+		supabase.from('brand_verification_requests' )
 			.select('*', { count: 'exact', head: true })
 			.eq('status', 'pending')
 	])

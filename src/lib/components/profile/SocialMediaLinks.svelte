@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Instagram, Globe, Link2, ShoppingBag } from 'lucide-svelte';
-	import type { Database } from '$lib/types/database';
-	import type { ExtendedProfile } from '$lib/types/database.extended';
+	import type { Database } from '$lib/types';
+	import type { ExtendedProfile } from '$lib/types';
 
 	type Profile = ExtendedProfile;
 	type SocialMediaAccount = Database['public']['Tables']['social_media_accounts']['Row'];
@@ -43,7 +43,7 @@
 
 	function formatUsername(username: string, platform: string): string {
 		// Remove @ if present
-		let formatted = username.replace('@', '');
+		let formatted = username?.replace('@', '');
 		
 		// Add @ for social platforms
 		if (['instagram', 'tiktok', 'twitter'].includes(platform)) {
@@ -54,32 +54,32 @@
 	}
 
 	// Get brand social links from profile
-	const brandSocialLinks = $derived.by(() => {
-		if (!profile.account_type || profile.account_type !== 'brand') return [];
+	const brandSocialLinks = $derived?.by(() => {
+		if (!profile?.account_type || profile?.account_type !== 'brand') return [];
 		
 		const links = [];
 		
-		if (profile.brand_instagram) {
-			links.push({
+		if (profile?.brand_instagram) {
+			links?.push({
 				platform: 'instagram',
-				username: profile.brand_instagram,
-				url: `https://instagram.com/${profile.brand_instagram.replace('@', '')}`
+				username: profile?.brand_instagram,
+				url: `https://instagram?.com/${profile?.brand_instagram.replace('@', '')}`
 			});
 		}
 		
-		if (profile.brand_facebook) {
-			links.push({
+		if (profile?.brand_facebook) {
+			links?.push({
 				platform: 'facebook',
-				username: profile.brand_facebook,
-				url: `https://facebook.com/${profile.brand_facebook}`
+				username: profile?.brand_facebook,
+				url: `https://facebook?.com/${profile?.brand_facebook}`
 			});
 		}
 		
-		if (profile.brand_website) {
-			links.push({
+		if (profile?.brand_website) {
+			links?.push({
 				platform: 'website',
-				username: new URL(profile.brand_website).hostname,
-				url: profile.brand_website
+				username: new URL(profile?.brand_website).hostname,
+				url: profile?.brand_website
 			});
 		}
 		
@@ -88,11 +88,11 @@
 
 	// Combine all social links
 	const allSocialLinks = $derived([
-		...socialAccounts.map(acc => ({
-			platform: acc.platform,
-			username: acc.username,
-			url: acc.url || '#',
-			isVerified: acc.is_verified
+		...socialAccounts?.map(acc => ({
+			platform: acc?.platform,
+			username: acc?.username,
+			url: acc?.url || '#',
+			isVerified: acc?.is_verified
 		})),
 		...brandSocialLinks
 	]);
@@ -104,16 +104,16 @@
 		
 		<div class="flex flex-wrap gap-2">
 			{#each allSocialLinks as link}
-				{@const Icon = getPlatformIcon(link.platform)}
+				{@const Icon = getPlatformIcon(link?.platform)}
 				<a
-					href={link.url}
+					href={link?.url}
 					target="_blank"
 					rel="noopener noreferrer"
 					class="group relative flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 
 						hover:shadow-md transition-all duration-200 hover:scale-105"
 				>
 					<!-- Gradient background on hover -->
-					<div class="absolute inset-0 rounded-full bg-gradient-to-r {getPlatformColor(link.platform)} 
+					<div class="absolute inset-0 rounded-full bg-gradient-to-r {getPlatformColor(link?.platform)} 
 						opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
 					
 					<!-- Content -->
@@ -122,9 +122,9 @@
 							class="w-4 h-4 text-gray-700 group-hover:text-white transition-colors"
 						/>
 						<span class="text-sm font-medium text-gray-700 group-hover:text-white transition-colors">
-							{formatUsername(link.username, link.platform)}
+							{formatUsername(link?.username, link?.platform)}
 						</span>
-						{#if link.isVerified}
+						{#if link?.isVerified}
 							<div class="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
 								<svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
 									<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -138,14 +138,14 @@
 	</div>
 {/if}
 
-{#if profile.account_type === 'brand' && profile.brand_description}
+{#if profile?.account_type === 'brand' && profile?.brand_description}
 	<div class="mt-6 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg">
 		<h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-2">About</h3>
-		<p class="text-sm text-gray-700 leading-relaxed">{profile.brand_description}</p>
+		<p class="text-sm text-gray-700 leading-relaxed">{profile?.brand_description}</p>
 		
-		{#if profile.brand_values && profile.brand_values.length > 0}
+		{#if profile?.brand_values && profile?.brand_values.length > 0}
 			<div class="mt-3 flex flex-wrap gap-2">
-				{#each profile.brand_values as value}
+				{#each profile?.brand_values as value}
 					<span class="px-3 py-1 bg-white/70 rounded-full text-xs font-medium text-purple-700">
 						{value}
 					</span>

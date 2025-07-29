@@ -1,15 +1,14 @@
 <script lang="ts">
 	import Badge from '$lib/components/ui/badge.svelte';
-	import { getConditionConfig, type ListingCondition } from '$lib/config/conditions';
+	import { getConditionConfig, type _ListingCondition} from '$lib/config/conditions';
 	import * as m from '$lib/paraglide/messages.js';
+	import type { ConditionBadgeProps } from '$lib/types/components';
 	
-	interface Props {
-		condition: string | null | undefined;
-		size?: 'sm' | 'md' | 'lg';
-		class?: string;
-	}
-	
-	let { condition, size = 'sm', class: className }: Props = $props();
+	let { 
+		condition, 
+		size = 'sm', 
+		class: className = ''
+	}: ConditionBadgeProps = $props();
 	
 	const config = $derived(getConditionConfig(condition));
 	

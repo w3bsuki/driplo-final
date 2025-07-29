@@ -2,11 +2,14 @@
   import { onMount, onDestroy } from 'svelte';
   import { page } from '$app/stores';
   import { browser } from '$app/environment';
-  import { getErrorMessage, logError, type AppError } from '$lib/utils/error-handling';
+  import { getErrorMessage, logError, type _AppError} from '$lib/utils/error-handling';
   import { captureSentryException } from '$lib/config/sentry';
   import * as m from '$lib/paraglide/messages.js';
 
-  // Component props
+  import type { _Snippet} from 'svelte';
+  import type { ErrorBoundaryProps } from '$lib/types/components';
+
+  // Component props with proper typing
   let { 
     error = null,
     reset = null,
@@ -16,16 +19,7 @@
     onError = null,
     resetKeys = [],
     children
-  }: {
-    error?: any;
-    reset?: (() => void) | null;
-    fallback?: string | null;
-    level?: 'minimal' | 'detailed' | 'custom';
-    isolate?: boolean;
-    onError?: ((error: any, errorInfo: any) => void) | null;
-    resetKeys?: any[];
-    children?: any;
-  } = $props();
+  }: ErrorBoundaryProps = $props();
 
   // Internal state
   let errorMessage = $state('');

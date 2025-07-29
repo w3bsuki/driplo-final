@@ -2,14 +2,14 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({ locals, params, request }) => {
-    const supabase = locals.supabase;
-    const { session } = await locals.safeGetSession();
+    const supabase = locals?.supabase;
+    const { session } = await locals?.safeGetSession();
 
     if (!session) {
         return json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const orderId = params.id;
+    const orderId = params?.id;
     const { reason } = await request.json();
 
     // Get order details
@@ -52,21 +52,21 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
     }
 
     // Check permissions - only buyer can mark as delivered
-    if (session.user.id !== order.buyer_id) {
+    if (session.user?.id !== order?.buyer_id) {
         return json({ error: 'Only the buyer can mark an order as delivered' }, { status: 403 });
     }
 
     // Check if order can be completed
-    if (order.status !== 'shipped') {
+    if (order?.status !== 'shipped') {
         return json({ error: 'Order must be shipped before it can be marked as delivered' }, { status: 400 });
     }
 
     try {
         // Update order status to delivered
-        await supabase.rpc('update_order_status', {
+        await supabase?.rpc('update_order_status', {
             p_order_id: orderId,
             p_new_status: 'delivered',
-            p_user_id: session.user.id,
+            p_user_id: session?.user.id,
             p_reason: reason || 'Order delivered and confirmed by buyer',
             p_metadata: {
                 delivered_by: 'buyer'
@@ -99,20 +99,20 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
             });
 
         // Create payout for seller if transaction exists
-        if (order.transaction && order.transaction.seller_amount) {
-            const payoutAmount = order.transaction.seller_amount;
+        if (order?.transaction && order?.transaction?.seller_amount) {
+            const payoutAmount = order?.transaction?.seller_amount;
             
             // Create payout record
             await supabase
                 .from('payouts')
                 .insert({
-                    seller_id: order.seller_id,
+                    seller_id: order?.seller_id,
                     order_id: orderId,
-                    transaction_id: order.transaction.id,
+                    transaction_id: order?.transaction.id,
                     amount: payoutAmount,
                     currency: 'usd',
                     status: 'pending',
-                    description: `Payout for order #${order.order_number}`,
+                    description: `Payout for order #${order?.order_number}`,
                     scheduled_for: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString() // 2 days delay
                 });
 
@@ -124,7 +124,7 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
                     payout_eligible_at: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
                     updated_at: new Date().toISOString()
                 })
-                .eq('id', order.transaction.id);
+                .eq('id', order?.transaction.id);
         }
 
         // TODO: Send email notifications when email service is configured
@@ -132,10 +132,10 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
         return json({ 
             success: true,
             message: 'Order marked as delivered successfully',
-            payout_scheduled: !!order.transaction
+            payout_scheduled: !!order?.transaction
         });
     } catch (error) {
-        console.error('Error completing order:', error);
+        console?.error('Error completing order:', error);
         return json({ error: 'Failed to complete order' }, { status: 500 });
     }
 };

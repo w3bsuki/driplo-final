@@ -1,0 +1,60 @@
+name: Claude Security Analysis
+
+on:
+  # Run on PRs that touch sensitive files
+  pull_request:
+    paths:
+      - '**/auth/**'
+      - '**/payment/**'
+      - '**/api/**'
+      - '**/*server.ts'
+      - '**/supabase/**'
+      - '.env*'
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  security-review:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Claude Security Analysis
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          direct_prompt: |
+            SECURITY REVIEW - This PR touches sensitive code. Check for:
+            
+            🔒 Authentication & Authorization:
+            - Proper session validation
+            - CSRF protection
+            - Rate limiting implementation
+            - Secure cookie settings
+            
+            💳 Payment Security:
+            - PCI compliance (no card data in logs/client)
+            - Secure API key handling
+            - Server-side validation
+            - Webhook signature verification
+            
+            🛡️ API Security:
+            - Input validation and sanitization
+            - SQL injection prevention
+            - XSS protection
+            - Proper error handling (no stack traces)
+            
+            🔑 Secrets Management:
+            - No hardcoded credentials
+            - Environment variable usage
+            - Secure key rotation practices
+            
+            Mark any security issues as "🚨 CRITICAL" in your review.

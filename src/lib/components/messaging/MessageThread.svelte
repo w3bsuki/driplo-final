@@ -1,11 +1,18 @@
 <script lang="ts">
     import { onMount, onDestroy } from 'svelte';
     import { formatDistanceToNow } from 'date-fns';
-    import type { Database } from '$lib/types/database';
-    import type { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
+    import type { Database } from '$lib/types';
+    import type { RealtimeChannel } from '@supabase/supabase-js';
     import { decrementUnreadCount } from '$lib/stores/messages';
     // import VirtualList from '$lib/components/ui/VirtualList.svelte';
     
+    type MessageAttachment = {
+        url: string;
+        name?: string;
+        type: string;
+        size?: number;
+    };
+
     type Message = Database['public']['Tables']['messages']['Row'] & {
         sender: {
             id: string;
@@ -22,28 +29,23 @@
         conversationId,
         userId,
         supabase,
-        useVirtualScrolling = false,
-        autoFocus = false,
-        initialMessageLimit = 50,
-        enableAttachments = true,
-        onMessageSent,
-        onClose
+        useVirtualScrolling: _useVirtualScrolling = false
     }: Props = $props();
     
-    let messages: Message[] = [];
-    let newMessage = '';
-    let loading = true;
-    let sending = false;
-    let hasMore = false;
+    let messages = $state<Message[]>([]);
+    let newMessage = $state('');
+    let loading = $state(true);
+    let sending = $state(false);
+    let hasMore = $state(false);
     let messagesContainer: HTMLDivElement;
     let realtimeChannel: RealtimeChannel;
-    let attachments: { file: File; preview: string; type: string }[] = [];
-    let uploading = false;
+    let attachments = $state<{ file: File; preview: string; type: string }[]>([]);
+    let uploading = $state(false);
     let fileInput: HTMLInputElement;
     // let virtualListRef: VirtualList;
     
-    // Virtual scrolling configuration
-    let shouldUseVirtualScrolling = $derived(useVirtualScrolling && messages.length > 100);
+    // Virtual scrolling configuration (currently unused but kept for future implementation)
+    // let _shouldUseVirtualScrolling = $derived(useVirtualScrolling && messages.length > 100);
 
     async function loadMessages(before?: string) {
         try {
@@ -53,17 +55,17 @@
             const response = await fetch(url);
             const data = await response.json();
             
-            if (response.ok) {
-                messages = before ? [...data.messages, ...messages] : data.messages;
-                hasMore = data.hasMore;
+            if (response?.ok) {
+                messages = before ? [...data?.messages, ...messages] : data?.messages;
+                hasMore = data?.hasMore;
                 
                 if (!before) {
                     // Scroll to bottom for initial load
                     setTimeout(scrollToBottom, 100);
                     
                     // Decrement unread count for messages that will be marked as read
-                    const unreadMessages = data.messages.filter(msg => 
-                        !msg.is_read && msg.sender_id !== userId
+                    const unreadMessages = data?.messages.filter((msg: Message) => 
+                        !msg?.is_read && msg?.sender_id !== userId
                     );
                     if (unreadMessages.length > 0) {
                         decrementUnreadCount(unreadMessages.length);
@@ -71,14 +73,14 @@
                 }
             }
         } catch (error) {
-            console.error('Error loading messages:', error);
+            console?.error('Error loading messages:', error);
         } finally {
             loading = false;
         }
     }
 
     async function sendMessage() {
-        if ((!newMessage.trim() && attachments.length === 0) || sending) return;
+        if ((!newMessage?.trim() && attachments.length === 0) || sending) return;
         
         sending = true;
         uploading = true;
@@ -91,9 +93,9 @@
             // Upload attachments first
             const uploadedAttachments = [];
             for (const attachment of messageAttachments) {
-                const uploaded = await uploadAttachment(attachment.file);
+                const uploaded = await uploadAttachment(attachment?.file);
                 if (uploaded) {
-                    uploadedAttachments.push(uploaded);
+                    uploadedAttachments?.push(uploaded);
                 }
             }
             
@@ -102,7 +104,7 @@
             const response = await fetch('/api/messages/send', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
+                body: JSON?.stringify({
                     conversation_id: conversationId,
                     content: messageContent,
                     attachments: uploadedAttachments
@@ -111,19 +113,19 @@
             
             const data = await response.json();
             
-            if (response.ok) {
+            if (response?.ok) {
                 // Message will be added via realtime subscription
                 scrollToBottom();
             } else {
                 // Restore message and attachments on error
                 newMessage = messageContent;
                 attachments = messageAttachments;
-                console.error('Error sending message:', data.error);
+                console?.error('Error sending message:', data?.error);
             }
         } catch (error) {
             newMessage = messageContent;
             attachments = messageAttachments;
-            console.error('Error sending message:', error);
+            console?.error('Error sending message:', error);
         } finally {
             sending = false;
             uploading = false;
@@ -149,10 +151,10 @@
                 },
                 async (payload) => {
                     // Fetch the complete message with sender info
-                    const response = await fetch(`/api/messages/${payload.new.id}`);
-                    if (response.ok) {
+                    const response = await fetch(`/api/messages/${payload?.new['id']}`);
+                    if (response?.ok) {
                         const data = await response.json();
-                        messages = [...messages, data.message];
+                        messages = [...messages, data?.message];
                         setTimeout(scrollToBottom, 100);
                     }
                 }
@@ -167,10 +169,10 @@
                 },
                 (payload) => {
                     // Update read status in real-time
-                    if (payload.new.is_read !== payload.old.is_read) {
-                        messages = messages.map(msg => 
-                            msg.id === payload.new.id 
-                                ? { ...msg, is_read: payload.new.is_read, read_at: payload.new.read_at }
+                    if (payload?.new['is_read'] !== payload?.old['is_read']) {
+                        messages = messages?.map(msg => 
+                            msg?.id === payload?.new['id'] 
+                                ? { ...msg, is_read: payload?.new['is_read'], read_at: payload?.new['read_at'] }
                                 : msg
                         );
                     }
@@ -180,15 +182,15 @@
     }
 
     function handleKeydown(event: KeyboardEvent) {
-        if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault();
+        if (event?.key === 'Enter' && !event?.shiftKey) {
+            event?.preventDefault();
             sendMessage();
         }
     }
 
     function handleFileSelect(event: Event) {
-        const target = event.target as HTMLInputElement;
-        const files = target.files;
+        const target = event?.target as HTMLInputElement;
+        const files = target?.files;
         if (files) {
             for (const file of files) {
                 addAttachment(file);
@@ -203,55 +205,55 @@
         }
 
         // Validate file size (5MB limit)
-        if (file.size > 5 * 1024 * 1024) {
+        if (file?.size > 5 * 1024 * 1024) {
             alert('File size must be less than 5MB');
             return;
         }
 
         // Validate file type (images only for now)
-        if (!file.type.startsWith('image/')) {
+        if (!file?.type.startsWith('image/')) {
             alert('Only image files are supported');
             return;
         }
 
         const reader = new FileReader();
         reader.onload = (e) => {
-            const preview = e.target?.result as string;
+            const preview = e?.target?.result as string;
             attachments = [...attachments, {
                 file,
                 preview,
                 type: 'image'
             }];
         };
-        reader.readAsDataURL(file);
+        reader?.readAsDataURL(file);
     }
 
     function removeAttachment(index: number) {
-        attachments = attachments.filter((_, i) => i !== index);
+        attachments = attachments?.filter((_, i) => i !== index);
     }
 
     async function uploadAttachment(file: File): Promise<{ url: string; name: string; size: number; type: string } | null> {
         try {
             const formData = new FormData();
-            formData.append('file', file);
-            formData.append('type', 'general');
+            formData?.append('file', file);
+            formData?.append('type', 'general');
 
             const response = await fetch('/api/upload/image', {
                 method: 'POST',
                 body: formData
             });
 
-            if (response.ok) {
+            if (response?.ok) {
                 const data = await response.json();
                 return {
-                    url: data.publicUrl,
-                    name: file.name,
-                    size: file.size,
+                    url: data?.publicUrl,
+                    name: file?.name,
+                    size: file?.size,
                     type: 'image'
                 };
             }
         } catch (error) {
-            console.error('Error uploading attachment:', error);
+            console?.error('Error uploading attachment:', error);
         }
         return null;
     }
@@ -263,7 +265,7 @@
 
     onDestroy(() => {
         if (realtimeChannel) {
-            supabase.removeChannel(realtimeChannel);
+            supabase?.removeChannel(realtimeChannel);
         }
     });
 </script>
@@ -283,14 +285,14 @@
             {#if hasMore}
                 <button
                     class="btn btn-sm btn-ghost w-full"
-                    onclick={() => loadMessages(messages[0]?.created_at)}
+                    onclick={() => loadMessages(messages[0]?.created_at || '')}
                 >
                     Load earlier messages
                 </button>
             {/if}
             
-            {#each messages as message (message.id)}
-                {@const isOwnMessage = message.sender_id === userId}
+            {#each messages as message (message?.id)}
+                {@const isOwnMessage = message?.sender_id === userId}
                 
                 <div class="flex {isOwnMessage ? 'justify-end' : 'justify-start'}">
                     <div class="max-w-[70%] {isOwnMessage ? 'order-2' : 'order-1'}">
@@ -298,34 +300,34 @@
                             <div class="flex items-center gap-2 mb-1">
                                 <div class="avatar">
                                     <div class="w-6 h-6 rounded-full bg-gray-200">
-                                        {#if message.sender.avatar_url}
-                                            <img src={message.sender.avatar_url} alt={message.sender.username} width="24" height="24" class="w-full h-full rounded-full object-cover" />
+                                        {#if message?.sender.avatar_url}
+                                            <img src={message?.sender.avatar_url} alt={message?.sender.username} width="24" height="24" class="w-full h-full rounded-full object-cover" />
                                         {:else}
                                             <div class="flex items-center justify-center h-full text-xs">
-                                                {message.sender.username[0].toUpperCase()}
+                                                {message?.sender?.username?.[0]?.toUpperCase() || '?'}
                                             </div>
                                         {/if}
                                     </div>
                                 </div>
-                                <span class="text-sm font-medium">{message.sender.username}</span>
+                                <span class="text-sm font-medium">{message?.sender.username}</span>
                             </div>
                         {/if}
                         
                         <div class="flex items-end gap-2">
                             <div class="px-4 py-2 rounded-2xl {isOwnMessage ? 'bg-primary text-primary-content' : 'bg-gray-100 text-gray-900'}">
-                                <p class="whitespace-pre-wrap break-words">{message.message_text}</p>
+                                <p class="whitespace-pre-wrap break-words">{message?.message_text}</p>
                                 
                                 <!-- Display attachments -->
-                                {#if message.attachments && Array.isArray(message.attachments) && message.attachments.length > 0}
+                                {#if message?.attachments && Array?.isArray(message?.attachments) && message?.attachments.length > 0}
                                     <div class="mt-2 space-y-2">
-                                        {#each message.attachments as attachment (attachment.url)}
-                                            {#if attachment.type === 'image'}
+                                        {#each (message?.attachments as MessageAttachment[]) as attachment (attachment?.url)}
+                                            {#if attachment?.type === 'image'}
                                                 <div class="rounded-lg overflow-hidden max-w-xs">
                                                     <img 
-                                                        src={attachment.url} 
-                                                        alt={attachment.name || 'Image attachment'}
+                                                        src={attachment?.url} 
+                                                        alt={attachment?.name || 'Image attachment'}
                                                         class="w-full h-auto cursor-pointer hover:opacity-90 transition-opacity"
-                                                        onclick={() => window.open(attachment.url, '_blank')}
+                                                        onclick={() => window?.open(attachment?.url, '_blank')}
                                                     />
                                                 </div>
                                             {:else}
@@ -336,14 +338,14 @@
                                                         </svg>
                                                     </div>
                                                     <div class="flex-1 min-w-0">
-                                                        <p class="text-sm font-medium truncate">{attachment.name || 'File'}</p>
-                                                        {#if attachment.size}
-                                                            <p class="text-xs opacity-75">{Math.round(attachment.size / 1024)} KB</p>
+                                                        <p class="text-sm font-medium truncate">{attachment?.name || 'File'}</p>
+                                                        {#if attachment?.size}
+                                                            <p class="text-xs opacity-75">{Math?.round(attachment?.size / 1024)} KB</p>
                                                         {/if}
                                                     </div>
                                                     <button
                                                         class="btn btn-xs btn-ghost"
-                                                        onclick={() => window.open(attachment.url, '_blank')}
+                                                        onclick={() => window?.open(attachment?.url, '_blank')}
                                                     >
                                                         Download
                                                     </button>
@@ -355,11 +357,11 @@
                             </div>
                             <div class="flex items-center gap-1">
                                 <span class="text-xs text-gray-500">
-                                    {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
+                                    {message?.created_at ? formatDistanceToNow(new Date(message?.created_at), { addSuffix: true }) : 'Unknown time'}
                                 </span>
                                 {#if isOwnMessage}
-                                    <div class="flex items-center" title={message.is_read ? 'Read' : 'Sent'}>
-                                        {#if message.is_read}
+                                    <div class="flex items-center" title={message?.is_read ? 'Read' : 'Sent'}>
+                                        {#if message?.is_read}
                                             <!-- Double checkmark for read -->
                                             <svg class="w-3 h-3 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                                                 <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
@@ -392,7 +394,7 @@
                     {#each attachments as attachment, index (index)}
                         <div class="relative">
                             <img 
-                                src={attachment.preview} 
+                                src={attachment?.preview} 
                                 alt="Attachment preview" 
                                 class="w-16 h-16 object-cover rounded-lg"
                             />
@@ -412,7 +414,7 @@
             </div>
         {/if}
 
-        <form onsubmit={(e) => { e.preventDefault(); sendMessage(); }} class="flex gap-2">
+        <form onsubmit={(e) => { e?.preventDefault(); sendMessage(); }} class="flex gap-2">
             <div class="flex-1">
                 <textarea
                     bind:value={newMessage}
@@ -435,18 +437,18 @@
                 <button
                     type="button"
                     class="btn btn-ghost btn-square"
-                    onclick={() => fileInput.click()}
+                    onclick={() => fileInput?.click()}
                     disabled={sending || attachments.length >= 5}
                     title="Add image"
                 >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h?.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                 </button>
                 <button
                     type="submit"
                     class="btn btn-primary"
-                    disabled={(!newMessage.trim() && attachments.length === 0) || sending}
+                    disabled={(!newMessage?.trim() && attachments.length === 0) || sending}
                 >
                     {#if uploading}
                         <span class="loading loading-spinner loading-xs"></span>

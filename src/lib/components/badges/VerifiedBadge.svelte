@@ -1,13 +1,8 @@
 <script lang="ts">
 	import { Check } from 'lucide-svelte';
+	import type { VerifiedBadgeProps } from '$lib/types/components';
 
-	interface Props {
-		verified: boolean;
-		size?: 'sm' | 'md' | 'lg';
-		showText?: boolean;
-	}
-
-	let { verified, size = 'md', showText = true }: Props = $props();
+	let { verified, size = 'md', showText = true }: VerifiedBadgeProps = $props();
 
 	const sizeClasses = {
 		sm: 'text-xs px-1.5 py-0.5',

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { _onMount} from 'svelte';
 	import { goto } from '$app/navigation';
 	import { onboarding } from '$lib/stores/onboarding.svelte';
 	import { Dialog, DialogContent } from '$lib/components/ui/Dialog';
@@ -7,7 +7,7 @@
 	import * as m from '$lib/paraglide/messages';
 	import type { User } from '@supabase/supabase-js';
 	
-	let { user }: { user: User } = $props();
+	let { _user}: { user: User } = $props();
 	
 	let currentSlide = $state(0);
 	
@@ -30,7 +30,7 @@
 	];
 	
 	function nextSlide() {
-		if (currentSlide < slides.length - 1) {
+		if (currentSlide < slides?.length - 1) {
 			currentSlide++;
 		} else {
 			completeOnboarding();
@@ -44,8 +44,8 @@
 	}
 	
 	async function completeOnboarding() {
-		await onboarding.completeStep('hasSeenWelcome');
-		onboarding.showWelcomeModal = false;
+		await onboarding?.completeStep('hasSeenWelcome');
+		onboarding?.showWelcomeModal = false;
 		
 		// Profile completion check moved to profile page
 		// The profile page will check if profile is complete
@@ -54,12 +54,12 @@
 	}
 	
 	function skip() {
-		onboarding.completeStep('hasSeenWelcome');
-		onboarding.showWelcomeModal = false;
+		onboarding?.completeStep('hasSeenWelcome');
+		onboarding?.showWelcomeModal = false;
 	}
 </script>
 
-<Dialog bind:open={onboarding.showWelcomeModal}>
+<Dialog bind:open={onboarding?.showWelcomeModal}>
 	<DialogContent class="max-w-md bg-white border-2 border-blue-100">
 		<div class="text-center">
 			<!-- Progress Dots -->

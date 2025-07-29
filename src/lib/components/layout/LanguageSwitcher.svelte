@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/stores'
-	import { goto, invalidateAll } from '$app/navigation'
-	import { i18n } from '$lib/i18n'
+	// import { page } from '$app/stores'
+	import { invalidateAll } from '$app/navigation'
+	// import { i18n } from '$lib/i18n'
 	import { getLocale, setLocale } from '$lib/paraglide/runtime.js'
 	import { setCookie } from '$lib/utils/cookies'
 	

@@ -1,11 +1,11 @@
 <script lang="ts">
   import type { Category, Product } from '$lib/types';
   import ListingGrid from '$lib/components/listings/ListingGrid.svelte';
-  import FilterBar from '$lib/components/browse/FilterBar.svelte';
+  import UnifiedFilter from '$lib/components/shared/UnifiedFilter.svelte';
   import { Button } from '$lib/components/ui';
   import { ChevronRight } from 'lucide-svelte';
   import type { SupabaseClient } from '@supabase/supabase-js';
-  import type { Database } from '$lib/types/database';
+  import type { Database } from '$lib/types';
   
   interface Props {
     category: Category;
@@ -62,7 +62,8 @@
     <div class="flex gap-3">
       <!-- Filters Sidebar -->
       <aside class="hidden sm:block w-64 flex-shrink-0">
-        <FilterBar 
+        <UnifiedFilter 
+          mode="sidebar"
           category={category.slug}
           subcategory={subcategory.slug}
           {filters}
@@ -101,7 +102,8 @@
             Close
           </Button>
         </div>
-        <FilterBar 
+        <UnifiedFilter 
+          mode="sidebar"
           category={category.slug}
           subcategory={subcategory.slug}
           {filters}

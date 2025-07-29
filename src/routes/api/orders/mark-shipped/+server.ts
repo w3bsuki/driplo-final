@@ -3,23 +3,23 @@ import type { RequestHandler } from './$types';
 import { emailService } from '$lib/server/email';
 
 export const POST: RequestHandler = async ({ request, locals }) => {
-	const supabase = locals.supabase;
+	const supabase = locals?.supabase;
 	try {
 		const { transaction_id, tracking_number } = await request.json();
 
 		// Check if user is authenticated with secure validation
-		const { data: { session } } = await locals.supabase.auth.getSession();
+		const { data: { session } } = await locals?.supabase.auth?.getSession();
 		if (!session) {
 			return json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
 		// Validate the JWT by calling getUser()
-		const { data: { user }, error: userError } = await locals.supabase.auth.getUser();
+		const { data: { user }, error: userError } = await locals?.supabase.auth?.getUser();
 		if (userError || !user) {
 			return json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const userId = user.id;
+		const userId = user?.id;
 
 		// Get transaction details and verify seller
 		const { data: transaction, error: transactionError } = await supabase
@@ -34,12 +34,12 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		}
 
 		// Check if transaction is paid
-		if (transaction.status !== 'paid') {
+		if (transaction?.status !== 'paid') {
 			return json({ error: 'Transaction must be paid before marking as shipped' }, { status: 400 });
 		}
 
 		// Check if already shipped
-		if (transaction.item_shipped_at) {
+		if (transaction?.item_shipped_at) {
 			return json({ error: 'Item already marked as shipped' }, { status: 400 });
 		}
 
@@ -56,7 +56,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			.single();
 
 		if (updateError) {
-			console.error('Transaction update error:', updateError);
+			console?.error('Transaction update error:', updateError);
 			return json({ error: 'Failed to update transaction' }, { status: 500 });
 		}
 
@@ -70,7 +70,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			.eq('transaction_id', transaction_id);
 
 		if (payoutUpdateError) {
-			console.error('Payout update error:', payoutUpdateError);
+			console?.error('Payout update error:', payoutUpdateError);
 			// Don't fail the request, just log the error
 		}
 
@@ -81,10 +81,10 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 				status: 'sold',
 				sold_at: new Date().toISOString()
 			})
-			.eq('id', transaction.listing_id);
+			.eq('id', transaction?.listing_id);
 
 		if (listingError) {
-			console.error('Listing update error:', listingError);
+			console?.error('Listing update error:', listingError);
 			// Don't fail the request, just log the error
 		}
 
@@ -99,10 +99,10 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			.eq('id', transaction_id)
 			.single();
 
-		if (shippingData && shippingData.buyer && shippingData.listing) {
-			await emailService.sendShippingUpdate(
-				shippingData.buyer,
-				shippingData.listing,
+		if (shippingData && shippingData?.buyer && shippingData?.listing) {
+			await emailService?.sendShippingUpdate(
+				shippingData?.buyer,
+				shippingData?.listing,
 				tracking_number
 			);
 		}
@@ -114,7 +114,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		});
 
 	} catch (error) {
-		console.error('Mark shipped error:', error);
+		console?.error('Mark shipped error:', error);
 		return json({ error: 'Internal server error' }, { status: 500 });
 	}
 };

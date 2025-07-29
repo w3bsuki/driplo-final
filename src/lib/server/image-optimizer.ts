@@ -1,6 +1,6 @@
 import sharp from 'sharp';
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { Database } from '$lib/types/database';
+import type { Database } from '$lib/types/db';
 
 export interface ImageSize {
 	width: number;
@@ -38,7 +38,7 @@ export class ImageOptimizer {
 	private supabase: SupabaseClient<Database>;
 
 	constructor(supabase: SupabaseClient<Database>) {
-		this.supabase = supabase;
+		this?.supabase = supabase;
 	}
 
 	/**
@@ -50,7 +50,7 @@ export class ImageOptimizer {
 		bucket: 'avatars' | 'covers' | 'listings' | 'brand-logos',
 		userId?: string
 	): Promise<OptimizationResult> {
-		const baseFileName = fileName.split('.')[0];
+		const baseFileName = fileName?.split('.')[0];
 		const results: Partial<OptimizationResult> = {
 			responsive: {} as any
 		};
@@ -61,10 +61,10 @@ export class ImageOptimizer {
 			.toBuffer();
 
 		const originalMetadata = await sharp(file).metadata();
-		const originalPath = this.getFilePath(`${baseFileName}.webp`, bucket, userId);
+		const originalPath = this?.getFilePath(`${baseFileName}.webp`, bucket, userId);
 
 		// Upload original
-		const { data: originalData, error: originalError } = await this.supabase.storage
+		const { data: originalData, error: originalError } = await this?.supabase.storage
 			.from(bucket)
 			.upload(originalPath, originalWebP, {
 				contentType: 'image/webp',
@@ -74,36 +74,36 @@ export class ImageOptimizer {
 
 		if (originalError) throw originalError;
 
-		const { data: { publicUrl: originalUrl } } = this.supabase.storage
+		const { data: { publicUrl: originalUrl } } = this?.supabase.storage
 			.from(bucket)
-			.getPublicUrl(originalData.path);
+			.getPublicUrl(originalData?.path);
 
-		results.original = {
+		results?.original = {
 			url: originalUrl,
-			path: originalData.path,
-			width: originalMetadata.width || 0,
-			height: originalMetadata.height || 0
+			path: originalData?.path,
+			width: originalMetadata?.width || 0,
+			height: originalMetadata?.height || 0
 		};
 
 		// Generate responsive sizes
 		const srcSetParts: string[] = [];
 
-		for (const [sizeName, size] of Object.entries(IMAGE_SIZES)) {
+		for (const [sizeName, size] of Object?.entries(IMAGE_SIZES)) {
 			const resizedBuffer = await sharp(file)
-				.resize(size.width, size.height, {
+				.resize(size?.width, size?.height, {
 					fit: 'inside',
 					withoutEnlargement: true
 				})
 				.webp({ quality: 80 })
 				.toBuffer();
 
-			const resizedPath = this.getFilePath(
-				`${baseFileName}_${size.suffix}.webp`,
+			const resizedPath = this?.getFilePath(
+				`${baseFileName}_${size?.suffix}.webp`,
 				bucket,
 				userId
 			);
 
-			const { data: resizedData, error: resizedError } = await this.supabase.storage
+			const { data: resizedData, error: resizedError } = await this?.supabase.storage
 				.from(bucket)
 				.upload(resizedPath, resizedBuffer, {
 					contentType: 'image/webp',
@@ -113,9 +113,9 @@ export class ImageOptimizer {
 
 			if (resizedError) throw resizedError;
 
-			const { data: { publicUrl } } = this.supabase.storage
+			const { data: { publicUrl } } = this?.supabase.storage
 				.from(bucket)
-				.getPublicUrl(resizedData.path);
+				.getPublicUrl(resizedData?.path);
 
 			const resizedMetadata = await sharp(resizedBuffer).metadata();
 
@@ -126,10 +126,10 @@ export class ImageOptimizer {
 				height: resizedMetadata.height || size.height
 			};
 
-			srcSetParts.push(`${publicUrl} ${resizedMetadata.width}w`);
+			srcSetParts?.push(`${publicUrl} ${resizedMetadata?.width}w`);
 		}
 
-		results.srcSet = srcSetParts.join(', ');
+		results?.srcSet = srcSetParts?.join(', ');
 
 		return results as OptimizationResult;
 	}
@@ -141,17 +141,17 @@ export class ImageOptimizer {
 		basePath: string,
 		bucket: 'avatars' | 'covers' | 'listings' | 'brand-logos'
 	): Promise<void> {
-		const baseFileName = basePath.split('/').pop()?.split('.')[0];
+		const baseFileName = basePath?.split('/').pop()?.split('.')[0];
 		if (!baseFileName) return;
 
 		const filesToDelete = [
 			basePath, // Original
-			...Object.values(IMAGE_SIZES).map(size =>
-				basePath.replace(/\.[^.]+$/, `_${size.suffix}.webp`)
+			...Object?.values(IMAGE_SIZES).map(size =>
+				basePath?.replace(/\.[^.]+$/, `_${size?.suffix}.webp`)
 			)
 		];
 
-		await this.supabase.storage
+		await this?.supabase.storage
 			.from(bucket)
 			.remove(filesToDelete);
 	}
@@ -179,12 +179,12 @@ export class ImageOptimizer {
 		};
 
 		// If it's already a WebP, generate responsive URLs
-		if (baseUrl.includes('.webp')) {
-			const baseWithoutExt = baseUrl.replace('.webp', '');
-			urls['thumb'] = `${baseWithoutExt}_thumb.webp`;
-			urls['small'] = `${baseWithoutExt}_small.webp`;
-			urls['medium'] = `${baseWithoutExt}_medium.webp`;
-			urls['large'] = `${baseWithoutExt}_large.webp`;
+		if (baseUrl?.includes('.webp')) {
+			const baseWithoutExt = baseUrl?.replace('.webp', '');
+			urls['thumb'] = `${baseWithoutExt}_thumb?.webp`;
+			urls['small'] = `${baseWithoutExt}_small?.webp`;
+			urls['medium'] = `${baseWithoutExt}_medium?.webp`;
+			urls['large'] = `${baseWithoutExt}_large?.webp`;
 		}
 
 		return urls;
