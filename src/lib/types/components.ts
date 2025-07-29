@@ -9,7 +9,7 @@
 
 import type { Snippet } from 'svelte';
 import type { HTMLButtonAttributes, HTMLInputAttributes } from 'svelte/elements';
-import type { Database } from './database';
+import type { Database } from './db';
 
 // =============================================================================
 // CORE UI COMPONENT INTERFACES

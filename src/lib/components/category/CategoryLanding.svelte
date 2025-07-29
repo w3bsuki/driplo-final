@@ -2,7 +2,7 @@
   import type { Category } from '$lib/types';
   import HeroSearch from '$lib/components/home/HeroSearch.svelte';
   import ListingGrid from '$lib/components/listings/ListingGrid.svelte';
-  import ReusableFilters from '$lib/components/shared/ReusableFilters.svelte';
+  import UnifiedFilter from '$lib/components/shared/UnifiedFilter.svelte';
   import LazyAvatar from '$lib/components/common/LazyAvatar.svelte';
   import { cn } from '$lib/utils';
   import { ChevronRight } from 'lucide-svelte';
@@ -317,7 +317,8 @@
 <!-- Category Filters -->
 <div data-section="category-filters">
   {#if visibleSections.filters}
-    <ReusableFilters 
+    <UnifiedFilter 
+      mode="generic"
       filters={filterGroups}
       {selectedFilters}
       {subcategories}

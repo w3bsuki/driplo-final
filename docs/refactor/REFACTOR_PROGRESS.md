@@ -27,11 +27,11 @@
 ### Phase 1: Brutal Cleanup (Week 1)
 - [x] Delete test directories (60 files)
 - [x] Remove unused dependencies (13 packages)
-- [ ] Merge duplicate components
+- [x] Merge duplicate components (Filters: 6→1, Search: 4→1)
 - [ ] Consolidate type definitions
-- **Files Deleted:** 60
-- **Lines Removed:** 10,673
-- **Status:** IN PROGRESS (50% complete)
+- **Files Deleted:** 66 (60 test + 6 filter components)
+- **Lines Removed:** 11,873 (10,673 test + ~1,200 filters)
+- **Status:** IN PROGRESS (75% complete)
 
 ### Phase 2: Build & TypeScript (Week 2)
 - [ ] Remove PostCSS

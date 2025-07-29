@@ -1,3 +1,16 @@
+/**
+ * Consolidated Database Types
+ * Single source of truth for all database-related types
+ * 
+ * @fileoverview Merges all database type definitions into one file
+ * @version 1.0.0
+ * @created 2025-01-29
+ */
+
+// =============================================================================
+// CORE DATABASE TYPES
+// =============================================================================
+
 export type Json =
   | string
   | number
@@ -267,6 +280,32 @@ export type Database = {
           two_factor_enabled: boolean | null
           two_factor_secret: string | null
           backup_codes: string[] | null
+          // Extended brand account fields
+          brand_name?: string | null
+          brand_description?: string | null
+          brand_established_date?: string | null
+          brand_category?: string | null
+          is_local_brand?: boolean | null
+          brand_story?: string | null
+          brand_values?: string[] | null
+          brand_certifications?: Json | null
+          brand_logo_url?: string | null
+          brand_cover_url?: string | null
+          brand_contact_email?: string | null
+          brand_contact_phone?: string | null
+          brand_instagram?: string | null
+          brand_facebook?: string | null
+          brand_website?: string | null
+          has_completed_onboarding?: boolean | null
+          onboarding_step?: number | null
+          onboarding_completed_at?: string | null
+          setup_started_at?: string | null
+          setup_completed_at?: string | null
+          avatar_style?: string | null
+          avatar_seed?: string | null
+          custom_avatar_url?: string | null
+          brand_onboarding_completed?: boolean | null
+          brand_mission?: string | null
         }
         Insert: {
           avatar_url?: string | null
@@ -304,6 +343,32 @@ export type Database = {
           two_factor_enabled?: boolean | null
           two_factor_secret?: string | null
           backup_codes?: string[] | null
+          // Extended brand account fields
+          brand_name?: string | null
+          brand_description?: string | null
+          brand_established_date?: string | null
+          brand_category?: string | null
+          is_local_brand?: boolean | null
+          brand_story?: string | null
+          brand_values?: string[] | null
+          brand_certifications?: Json | null
+          brand_logo_url?: string | null
+          brand_cover_url?: string | null
+          brand_contact_email?: string | null
+          brand_contact_phone?: string | null
+          brand_instagram?: string | null
+          brand_facebook?: string | null
+          brand_website?: string | null
+          has_completed_onboarding?: boolean | null
+          onboarding_step?: number | null
+          onboarding_completed_at?: string | null
+          setup_started_at?: string | null
+          setup_completed_at?: string | null
+          avatar_style?: string | null
+          avatar_seed?: string | null
+          custom_avatar_url?: string | null
+          brand_onboarding_completed?: boolean | null
+          brand_mission?: string | null
         }
         Update: {
           avatar_url?: string | null
@@ -341,6 +406,32 @@ export type Database = {
           two_factor_enabled?: boolean | null
           two_factor_secret?: string | null
           backup_codes?: string[] | null
+          // Extended brand account fields
+          brand_name?: string | null
+          brand_description?: string | null
+          brand_established_date?: string | null
+          brand_category?: string | null
+          is_local_brand?: boolean | null
+          brand_story?: string | null
+          brand_values?: string[] | null
+          brand_certifications?: Json | null
+          brand_logo_url?: string | null
+          brand_cover_url?: string | null
+          brand_contact_email?: string | null
+          brand_contact_phone?: string | null
+          brand_instagram?: string | null
+          brand_facebook?: string | null
+          brand_website?: string | null
+          has_completed_onboarding?: boolean | null
+          onboarding_step?: number | null
+          onboarding_completed_at?: string | null
+          setup_started_at?: string | null
+          setup_completed_at?: string | null
+          avatar_style?: string | null
+          avatar_seed?: string | null
+          custom_avatar_url?: string | null
+          brand_onboarding_completed?: boolean | null
+          brand_mission?: string | null
         }
         Relationships: []
       }
@@ -1115,6 +1206,19 @@ export type Database = {
           reviewed_at: string | null
           created_at: string
           updated_at: string
+          // Extended fields from database.extended.ts
+          user_id?: string
+          brand_name?: string
+          brand_category?: string
+          business_registration_number?: string | null
+          tax_id?: string | null
+          legal_representative_name?: string | null
+          company_address?: string | null
+          verification_documents?: Json | null
+          verification_status?: 'pending' | 'approved' | 'rejected'
+          rejection_reason?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
         }
         Insert: {
           id?: string
@@ -1127,6 +1231,19 @@ export type Database = {
           reviewed_at?: string | null
           created_at?: string
           updated_at?: string
+          // Extended fields
+          user_id?: string
+          brand_name?: string
+          brand_category?: string
+          business_registration_number?: string | null
+          tax_id?: string | null
+          legal_representative_name?: string | null
+          company_address?: string | null
+          verification_documents?: Json | null
+          verification_status?: 'pending' | 'approved' | 'rejected'
+          rejection_reason?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
         }
         Update: {
           id?: string
@@ -1139,6 +1256,19 @@ export type Database = {
           reviewed_at?: string | null
           created_at?: string
           updated_at?: string
+          // Extended fields
+          user_id?: string
+          brand_name?: string
+          brand_category?: string
+          business_registration_number?: string | null
+          tax_id?: string | null
+          legal_representative_name?: string | null
+          company_address?: string | null
+          verification_documents?: Json | null
+          verification_status?: 'pending' | 'approved' | 'rejected'
+          rejection_reason?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
         }
         Relationships: [
           {
@@ -1161,6 +1291,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "brand_verification_requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -1173,6 +1310,9 @@ export type Database = {
           action: 'approved' | 'rejected'
           notes: string | null
           created_at: string
+          // Extended fields from database.extended.ts
+          reason?: string | null
+          metadata?: Json | null
         }
         Insert: {
           id?: string
@@ -1182,6 +1322,9 @@ export type Database = {
           action: 'approved' | 'rejected'
           notes?: string | null
           created_at?: string
+          // Extended fields
+          reason?: string | null
+          metadata?: Json | null
         }
         Update: {
           id?: string
@@ -1191,6 +1334,9 @@ export type Database = {
           action?: 'approved' | 'rejected'
           notes?: string | null
           created_at?: string
+          // Extended fields
+          reason?: string | null
+          metadata?: Json | null
         }
         Relationships: [
           {
@@ -1198,6 +1344,89 @@ export type Database = {
             columns: ["admin_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      // Additional tables that might exist
+      listing_images?: {
+        Row: {
+          id: string
+          listing_id: string
+          url: string
+          display_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          listing_id: string
+          url: string
+          display_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          listing_id?: string
+          url?: string
+          display_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_images_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      payments?: {
+        Row: {
+          id: string
+          order_id: string
+          amount: number
+          currency: string
+          status: string
+          payment_method: string
+          stripe_payment_intent_id: string | null
+          stripe_charge_id: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          order_id: string
+          amount: number
+          currency: string
+          status: string
+          payment_method: string
+          stripe_payment_intent_id?: string | null
+          stripe_charge_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          order_id?: string
+          amount?: number
+          currency?: string
+          status?: string
+          payment_method?: string
+          stripe_payment_intent_id?: string | null
+          stripe_charge_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
             referencedColumns: ["id"]
           }
         ]
@@ -1229,6 +1458,10 @@ export type Database = {
     }
   }
 }
+
+// =============================================================================
+// HELPER TYPES
+// =============================================================================
 
 type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
@@ -1347,11 +1580,42 @@ export type CompositeTypes<
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
 
+// =============================================================================
+// CONSTANTS
+// =============================================================================
+
 export const Constants = {
   public: {
     Enums: {
-      rating_type: ["seller", "buyer"],
-      order_status: ["pending", "confirmed", "processing", "shipped", "delivered", "cancelled", "refunded", "disputed"],
+      rating_type: ["seller", "buyer"] as const,
+      order_status: ["pending", "confirmed", "processing", "shipped", "delivered", "cancelled", "refunded", "disputed"] as const,
     },
   },
 } as const
+
+// =============================================================================
+// EXTENDED TYPES (from database.extended.ts)
+// =============================================================================
+
+// Extended profile type with brand account fields (convenience type)
+export type ExtendedProfile = Tables<'profiles'>
+
+// Alias for profile type
+export type Profile = ExtendedProfile
+
+// Extended subcategory type
+export interface ExtendedSubcategory {
+  id: string
+  name: string
+  slug: string
+  parent_id: string | null
+  icon?: string | null
+  description?: string | null
+  [key: string]: any
+}
+
+// Brand verification request type (convenience)
+export type BrandVerificationRequest = Tables<'brand_verification_requests'>
+
+// Admin approval type (convenience)
+export type AdminApproval = Tables<'admin_approvals'>

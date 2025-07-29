@@ -4,7 +4,7 @@
 	import { cn } from '$lib/utils/cn';
 	import { debounce } from '$lib/utils/performance';
 	import CategoryDropdown from '$lib/components/shared/CategoryDropdownFixed.svelte';
-	import QuickFilterPills from '$lib/components/search/QuickFilterPills.svelte';
+	import UnifiedFilter from '$lib/components/shared/UnifiedFilter.svelte';
 	import TrendingSearches from '$lib/components/search/TrendingSearches.svelte';
 	import type { Category } from '$lib/types';
 	import * as m from '$lib/paraglide/messages.js';
@@ -331,7 +331,7 @@
 										<span class="text-xs text-gray-500 flex-shrink-0">
 											{m.search_trending?.() || 'Trending'}:
 										</span>
-										<QuickFilterPills
+										<UnifiedFilter mode="pills"
 											filters={quickFilters.slice(0, maxQuickFilters)}
 											onFilterClick={handleQuickFilter}
 											class="flex-1"
@@ -407,7 +407,7 @@
 								<div class="border-t border-gray-200 py-2 px-4">
 									<div class="overflow-x-auto">
 										<div class="flex items-center gap-2">
-											<QuickFilterPills
+											<UnifiedFilter mode="pills"
 												filters={quickFilters}
 												onFilterClick={handleQuickFilter}
 												class="flex-shrink-0"

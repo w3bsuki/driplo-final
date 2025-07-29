@@ -1,7 +1,7 @@
-// Core database types
-export type { Database, Tables, Enums } from './database';
+// Core database types - CONSOLIDATED
+export type * from './db';
 
-// Enhanced component and API types (NEW)
+// Enhanced component and API types
 export type * from './components';
 export type * from './api';
 export type * from './forms';
@@ -14,7 +14,5 @@ export * from './category';
 export * from './filter';
 export * from './unified';
 
-// Extended database types
-export type * from './database.extended';
-// Types consolidated into api.ts
+// RPC types (if still needed)
 export type * from './rpc.types';

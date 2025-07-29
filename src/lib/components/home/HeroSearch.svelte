@@ -5,7 +5,7 @@
 	import { debounce } from '$lib/utils/performance';
 	import CategoryDropdown from '$lib/components/shared/CategoryDropdownFixed.svelte';
 	import { debug } from '$lib/utils/debug-logger';
-	import QuickFilterPills from '$lib/components/search/QuickFilterPills.svelte';
+	import UnifiedFilter from '$lib/components/shared/UnifiedFilter.svelte';
 	import TrendingSearches from '$lib/components/search/TrendingSearches.svelte';
 	import type { Category } from '$lib/types';
 	import { onMount } from 'svelte';
@@ -276,7 +276,7 @@
 								<span class="text-xs text-gray-500 flex-shrink-0 hidden md:block">{search_trending()}:</span>
 								
 								<!-- Quick Filters Component -->
-								<QuickFilterPills
+								<UnifiedFilter mode="pills"
 									filters={quickFilters.slice(0, DESKTOP_QUICK_FILTERS_LIMIT)}
 									onFilterClick={handleQuickFilter}
 									class="flex-1"
@@ -286,7 +286,7 @@
 								<div class="w-px h-5 bg-border flex-shrink-0" aria-hidden="true"></div>
 								
 								<!-- More Filters -->
-								<QuickFilterPills
+								<UnifiedFilter mode="pills"
 									filters={quickFilters.slice(DESKTOP_QUICK_FILTERS_LIMIT)}
 									onFilterClick={handleQuickFilter}
 									class="flex-1"
@@ -395,7 +395,7 @@
 								<div class="overflow-x-auto relative">
 									<div class="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
 										<!-- Use QuickFilterPills component for consistent styling -->
-										<QuickFilterPills
+										<UnifiedFilter mode="pills"
 											filters={quickFilters}
 											onFilterClick={handleQuickFilter}
 											class="flex-shrink-0"
