@@ -6,6 +6,14 @@
 
 ## 📊 Current Progress
 
+### Database Types Consolidation ✅ COMPLETE
+- **Merged Files**: 
+  - `database.ts` → `db.ts`
+  - `database.extended.ts` → `db.ts`
+- **Updated Imports**: Fixed all imports in api.ts, components.ts, index.ts
+- **Result**: Single source of truth for all database types
+- **Benefit**: No more type conflicts or confusion
+
 ### UnifiedFilter.svelte Consolidation ✅ COMPLETE
 - **Phase 1**: ✅ Analyzed all 6 filter components
 - **Phase 2**: ✅ Designed UnifiedFilter with 6 modes
@@ -57,7 +65,7 @@
 ## 📁 Key Locations
 - **Components**: `src/lib/components/` (massive duplication)
 - **Routes**: `src/routes/` (50+ unnecessary API routes)
-- **Types**: `src/lib/types/` (5 files → consolidate to 1)
+- **Types**: `src/lib/types/` (db.ts is now the single source for database types)
 - **Utils**: `src/lib/utils/` (many duplicates)
 - **Build Config**: `vite.config.ts`, `postcss.config.js` (remove!)
 

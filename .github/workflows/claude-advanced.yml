@@ -26,6 +26,11 @@ on:
         required: false
         default: 'Review this code for best practices'
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   claude-analysis:
     runs-on: ubuntu-latest

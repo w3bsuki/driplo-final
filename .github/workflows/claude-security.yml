@@ -11,6 +11,11 @@ on:
       - '**/supabase/**'
       - '.env*'
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   security-review:
     runs-on: ubuntu-latest
