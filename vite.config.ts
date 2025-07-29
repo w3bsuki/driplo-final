@@ -8,12 +8,12 @@ export default defineConfig({
 	plugins: [
 		// SvelteKit must be before Tailwind for proper file handling
 		sveltekit(),
-		// Tailwind v4 with CSS-first configuration
-		tailwindcss(),
 		paraglideVitePlugin({
 			project: "./project.inlang",
 			outdir: "./src/lib/paraglide",
 		}),
+		// Tailwind v4 with CSS-first configuration - moved after paraglide
+		tailwindcss(),
 		// Enhanced bundle analyzer
 		visualizer({
 			emitFile: true,
