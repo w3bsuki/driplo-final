@@ -62,7 +62,7 @@ export const GET: RequestHandler = async ({ locals, url }) => {
     }
 
     // Get unread message counts
-    const conversationIds = conversations?.map(c => c.id) || [];
+    const conversationIds = conversations.map(c => c.id) || [];
     const { data: unreadCounts } = await supabase
         .from('messages')
         .select('conversation_id')
@@ -72,13 +72,13 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 
     // Count unread messages per conversation
     const unreadMap = new Map<string, number>();
-    unreadCounts?.forEach(msg => {
+    unreadCounts.forEach(msg => {
         const count = unreadMap.get(msg.conversation_id) || 0;
         unreadMap.set(msg.conversation_id, count + 1);
     });
 
     // Add unread counts to conversations
-    const conversationsWithUnread = conversations?.map(conv => ({
+    const conversationsWithUnread = conversations.map(conv => ({
         ...conv,
         unread_count: unreadMap.get(conv.id) || 0,
         last_message: conv.last_message?.[0] || null
@@ -86,7 +86,7 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 
     return json({
         conversations: conversationsWithUnread || [],
-        hasMore: conversations?.length === limit
+        hasMore: conversations.length === limit
     });
 };
 

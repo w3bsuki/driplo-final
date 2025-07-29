@@ -4,22 +4,21 @@
 		ShoppingBag, 
 		Trash2, 
 		X, 
-		ChevronRight, 
+		_ChevronRight, 
 		Sparkles, 
-		TrendingUp,
+		_TrendingUp,
 		Clock,
-		Filter,
+		_Filter,
 		Grid3x3,
 		List,
 		Package,
 		Check,
 		Star,
-		Tag,
-		AlertCircle
-	} from 'lucide-svelte'
+		_Tag,
+		_AlertCircle} from 'lucide-svelte'
 	import ListingCard from '$lib/components/listings/ListingCard.svelte'
 	import type { PageData } from './$types'
-	import { onMount } from 'svelte'
+	import { _onMount} from 'svelte'
 	import { formatDistanceToNow } from 'date-fns'
 	import { cn } from '$lib/utils'
 	import { toast } from 'svelte-sonner'
@@ -28,7 +27,7 @@
 	let { data }: { data: PageData } = $props()
 
 	let favorites = $state(data.favorites)
-	let loading = $state(false)
+	let _loading = $state(false)
 	let selectedItems = $state<Set<string>>(new Set())
 	let bulkActionLoading = $state(false)
 	let viewMode = $state<'grid' | 'list'>('grid')
@@ -49,19 +48,19 @@
 
 	// Stats
 	const totalValue = $derived(
-		favorites.reduce((sum, fav) => sum + (fav.listings?.price || 0), 0)
+		favorites.reduce((sum: number, fav: any) => sum + (fav.listings?.price || 0), 0)
 	)
 
 	const avgPrice = $derived(
-		favorites.length > 0 ? totalValue / favorites.length : 0
+		favorites?.length ?? 0 > 0 ? totalValue / favorites?.length ?? 0 : 0
 	)
 
 	const lowestPrice = $derived(
-		favorites.length > 0 ? Math.min(...favorites.map(f => f.listings?.price || 0)) : 0
+		favorites?.length ?? 0 > 0 ? Math.min(...favorites?.map?.(((f: any) => f.listings?.price || 0)) : 0
 	)
 
 	const highestPrice = $derived(
-		favorites.length > 0 ? Math.max(...favorites.map(f => f.listings?.price || 0)) : 0
+		favorites?.length ?? 0 > 0 ? Math.max(...favorites?.map?.(((f: any) => f.listings?.price || 0)) : 0
 	)
 
 	async function removeFavorite(listingId: string) {
@@ -76,7 +75,7 @@
 			})
 
 			if (response.ok) {
-				favorites = favorites.filter(fav => fav.listing_id !== listingId)
+				favorites = favorites?.filter?.(((fav: any) => fav.listing_id !== listingId)
 				selectedItems.delete(listingId)
 				selectedItems = new Set(selectedItems)
 				toast.success('Removed from wishlist')
@@ -101,10 +100,10 @@
 	}
 
 	function toggleAllItems() {
-		if (selectedItems.size === favorites.length) {
+		if (selectedItems.size === favorites?.length ?? 0) {
 			selectedItems.clear()
 		} else {
-			selectedItems = new Set(favorites.map(f => f.listing_id))
+			selectedItems = new Set(favorites?.map?.(((f: any) => f.listing_id))
 		}
 		selectedItems = new Set(selectedItems)
 	}
@@ -119,11 +118,11 @@
 		
 		try {
 			// Remove items one by one for now
-			const promises = Array.from(selectedItems).map(itemId => removeFavorite(itemId))
+			const promises = Array.from(selectedItems)?.map?.((itemId => removeFavorite(itemId))
 			await Promise.all(promises)
 			selectedItems.clear()
 			selectedItems = new Set()
-			toast.success(`Removed ${promises.length} items`)
+			toast.success(`Removed ${promises?.length ?? 0} items`)
 		} catch (error) {
 			// Error already handled with toast
 			toast.error('Failed to remove some items')
@@ -170,7 +169,7 @@
 						</div>
 						<div>
 							<h1 class="text-xl font-bold text-gray-900">{m.nav_wishlist()}</h1>
-							<p class="text-sm text-gray-500">{favorites.length} items saved</p>
+							<p class="text-sm text-gray-500">{favorites?.length ?? 0} items saved</p>
 						</div>
 					</div>
 					
@@ -205,7 +204,7 @@
 			</div>
 			
 			<!-- Stats Bar (only show when items exist) -->
-			{#if favorites.length > 0}
+			{#if favorites?.length ?? 0 > 0}
 				<div class="py-3 grid grid-cols-4 gap-4 text-center">
 					<div>
 						<p class="text-xs text-gray-500">Total Value</p>
@@ -230,7 +229,7 @@
 
 	<!-- Content -->
 	<div class="container mx-auto px-4 py-6">
-		{#if favorites.length === 0}
+		{#if favorites?.length ?? 0 === 0}
 			<!-- Empty State with Beautiful Design -->
 			<div class="max-w-md mx-auto">
 				<div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-8 text-center">
@@ -288,7 +287,7 @@
 							<input 
 								type="checkbox" 
 								class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-								checked={selectedItems.size === favorites.length && favorites.length > 0}
+								checked={selectedItems.size === favorites?.length ?? 0 && favorites?.length ?? 0 > 0}
 								onchange={handleToggleAllItems}
 							/>
 							<span class="text-sm font-medium text-gray-700">

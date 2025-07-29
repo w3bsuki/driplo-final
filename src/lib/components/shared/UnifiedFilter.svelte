@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { X, Search, Filter, Sparkles, ChevronRight, Check, ChevronDown } from 'lucide-svelte';
+	import { X, Search, _Filter, Sparkles, _ChevronRight, Check, _ChevronDown} from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { cn } from '$lib/utils';
@@ -199,7 +199,7 @@
 		if (selectedCategory) count++;
 		if (selectedSubcategory && selectedSubcategory !== 'all') count++;
 		
-		Object.entries(selectedFilters).forEach(([key, value]) => {
+		Object.entries(selectedFilters).forEach(([_key, value]) => {
 			if (Array.isArray(value)) {
 				count += value.length;
 			} else if (value && value !== 'recent' && value !== '') {
@@ -214,7 +214,7 @@
 		searchQuery || activeFilterCount > 0
 	);
 	
-	const currentPriceRange = $derived(() => {
+	const _currentPriceRange = $derived(() => {
 		const price = selectedFilters['price'];
 		if (typeof price === 'string') return price;
 		const min = selectedFilters['min_price'];
@@ -264,7 +264,7 @@
 				if (response.ok) {
 					const data = await response.json();
 					if (data.brands?.length > 0) {
-						dynamicBrands = data.brands.map(b => ({
+						dynamicBrands = data.brands.map((b: any) => ({
 							label: b.brand || b.label,
 							value: (b.brand || b.value).toLowerCase().replace(/\s+/g, '-')
 						}));
@@ -337,11 +337,11 @@
 			}
 			
 			// Add filters
-			Object.entries(selectedFilters).forEach(([key, value]) => {
+			Object.entries(selectedFilters).forEach(([_key, value]) => {
 				if (Array.isArray(value) && value.length > 0) {
 					params.set(key === 'size' ? 'sizes' : key === 'condition' ? 'conditions' : key + 's', value.join(','));
 				} else if (value && value !== 'recent' && value !== '') {
-					params.set(key, value as string);
+					params.set(_key, value as string);
 				}
 			});
 			
@@ -361,9 +361,9 @@
 			if (searchQuery.trim()) {
 				params.set('q', searchQuery.trim());
 			}
-			Object.entries(selectedFilters).forEach(([key, value]) => {
+			Object.entries(selectedFilters).forEach(([_key, value]) => {
 				if (value && value !== '') {
-					params.set(key, value as string);
+					params.set(_key, value as string);
 				}
 			});
 			onSearch(params);

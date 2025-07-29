@@ -80,8 +80,8 @@ export const POST: RequestHandler = async ({ request, locals: { supabase, safeGe
 			
 			// Delete old images if they exist
 			if (profile && profile[updateField]) {
-				const oldPath = profile[updateField].split('/').slice(-2).join('/')
-				await optimizer.deleteAllVersions(oldPath, bucket)
+				const oldPath = profile[updateField].split('/').slice(-2).join('/');
+				await optimizer.deleteAllVersions(oldPath, bucket);
 			}
 			
 			const { error: profileError } = await supabase

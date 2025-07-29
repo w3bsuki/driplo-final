@@ -2,7 +2,7 @@ import type { PageServerLoad, Actions } from './$types';
 import { error, fail, redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const { session } = await locals.safeGetSession();
+	const { session } = await locals?.safeGetSession();
 	
 	if (!session) {
 		throw redirect(303, '/login?redirect=/messages');
@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	try {
 		// Load initial conversations with proper pagination
-		const { data: conversations, error: conversationsError } = await locals.supabase
+		const { data: conversations, error: conversationsError } = await locals?.supabase
 			.from('conversations')
 			.select(`
 				*,
@@ -37,54 +37,53 @@ export const load: PageServerLoad = async ({ locals }) => {
 					sender_id
 				)
 			`)
-			.or(`buyer_id.eq.${session.user.id},seller_id.eq.${session.user.id}`)
+			.or(`buyer_id?.eq.${session?.user.id},seller_id?.eq.${session?.user.id}`)
 			.eq('archived_by_buyer', false)
 			.eq('archived_by_seller', false)
 			.order('updated_at', { ascending: false })
 			.limit(20);
 
 		if (conversationsError) {
-			console.error('Error loading conversations:', conversationsError);
+			console?.error('Error loading conversations:', conversationsError);
 			throw error(500, 'Failed to load conversations');
 		}
 
 		// Get unread count for each conversation
 		const conversationsWithUnread = await Promise.all(
 			(conversations || []).map(async (conversation) => {
-				const { count } = await locals.supabase
+				const { count } = await locals?.supabase
 					.from('messages')
 					.select('*', { count: 'exact', head: true })
-					.eq('conversation_id', conversation.id)
+					.eq('conversation_id', conversation?.id)
 					.eq('is_read', false)
-					.neq('sender_id', session.user.id);
+					.neq('sender_id', session?.user.id);
 
 				return {
 					...conversation,
 					unread_count: count || 0
 				};
-			})
-		);
+			}));
 
 		return {
 			conversations: conversationsWithUnread,
-			user: session.user
+			user: session?.user
 		};
 	} catch (err) {
-		console.error('Error in messages load:', err);
+		console?.error('Error in messages load:', err);
 		throw error(500, 'Failed to load messages');
 	}
 };
 
 export const actions: Actions = {
-	archive: async ({ request, locals, params }) => {
-		const { session } = await locals.safeGetSession();
+	archive: async ({ request, locals, _params}) => {
+		const { session } = await locals?.safeGetSession();
 		
 		if (!session) {
 			return fail(401, { error: 'Unauthorized' });
 		}
 
-		const formData = await request.formData();
-		const conversationId = formData.get('conversationId')?.toString();
+		const formData = await request?.formData();
+		const conversationId = formData?.get('conversationId')?.toString();
 
 		if (!conversationId) {
 			return fail(400, { error: 'Conversation ID is required' });
@@ -92,11 +91,11 @@ export const actions: Actions = {
 
 		try {
 			// Get conversation to check user access
-			const { data: conversation, error: convError } = await locals.supabase
+			const { data: conversation, error: convError } = await locals?.supabase
 				.from('conversations')
 				.select('buyer_id, seller_id')
 				.eq('id', conversationId)
-				.or(`buyer_id.eq.${session.user.id},seller_id.eq.${session.user.id}`)
+				.or(`buyer_id?.eq.${session?.user.id},seller_id?.eq.${session?.user.id}`)
 				.single();
 
 			if (convError || !conversation) {
@@ -104,11 +103,11 @@ export const actions: Actions = {
 			}
 
 			// Determine which field to update based on user role
-			const isBuyer = session.user.id === conversation.buyer_id;
+			const isBuyer = session?.user.id === conversation?.buyer_id;
 			const archiveField = isBuyer ? 'archived_by_buyer' : 'archived_by_seller';
 
 			// Archive the conversation
-			const { error: updateError } = await locals.supabase
+			const { error: updateError } = await locals?.supabase
 				.from('conversations')
 				.update({
 					[archiveField]: true,
@@ -117,26 +116,26 @@ export const actions: Actions = {
 				.eq('id', conversationId);
 
 			if (updateError) {
-				console.error('Error archiving conversation:', updateError);
+				console?.error('Error archiving conversation:', updateError);
 				return fail(500, { error: 'Failed to archive conversation' });
 			}
 
 			return { success: true, action: 'archive', conversationId };
 		} catch (err) {
-			console.error('Error archiving conversation:', err);
+			console?.error('Error archiving conversation:', err);
 			return fail(500, { error: 'Internal server error' });
 		}
 	},
 
 	unarchive: async ({ request, locals }) => {
-		const { session } = await locals.safeGetSession();
+		const { session } = await locals?.safeGetSession();
 		
 		if (!session) {
 			return fail(401, { error: 'Unauthorized' });
 		}
 
-		const formData = await request.formData();
-		const conversationId = formData.get('conversationId')?.toString();
+		const formData = await request?.formData();
+		const conversationId = formData?.get('conversationId')?.toString();
 
 		if (!conversationId) {
 			return fail(400, { error: 'Conversation ID is required' });
@@ -144,11 +143,11 @@ export const actions: Actions = {
 
 		try {
 			// Get conversation to check user access
-			const { data: conversation, error: convError } = await locals.supabase
+			const { data: conversation, error: convError } = await locals?.supabase
 				.from('conversations')
 				.select('buyer_id, seller_id')
 				.eq('id', conversationId)
-				.or(`buyer_id.eq.${session.user.id},seller_id.eq.${session.user.id}`)
+				.or(`buyer_id?.eq.${session?.user.id},seller_id?.eq.${session?.user.id}`)
 				.single();
 
 			if (convError || !conversation) {
@@ -156,11 +155,11 @@ export const actions: Actions = {
 			}
 
 			// Determine which field to update based on user role
-			const isBuyer = session.user.id === conversation.buyer_id;
+			const isBuyer = session?.user.id === conversation?.buyer_id;
 			const archiveField = isBuyer ? 'archived_by_buyer' : 'archived_by_seller';
 
 			// Unarchive the conversation
-			const { error: updateError } = await locals.supabase
+			const { error: updateError } = await locals?.supabase
 				.from('conversations')
 				.update({
 					[archiveField]: false,
@@ -169,13 +168,13 @@ export const actions: Actions = {
 				.eq('id', conversationId);
 
 			if (updateError) {
-				console.error('Error unarchiving conversation:', updateError);
+				console?.error('Error unarchiving conversation:', updateError);
 				return fail(500, { error: 'Failed to unarchive conversation' });
 			}
 
 			return { success: true, action: 'unarchive', conversationId };
 		} catch (err) {
-			console.error('Error unarchiving conversation:', err);
+			console?.error('Error unarchiving conversation:', err);
 			return fail(500, { error: 'Internal server error' });
 		}
 	}

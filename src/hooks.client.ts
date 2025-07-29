@@ -42,9 +42,6 @@ if (PUBLIC_SENTRY_DSN) {
         // Track interactions
         enableInteractions: true,
         
-        // Custom routing instrumentation for SvelteKit
-        routingInstrumentation: Sentry.svelteKitRoutingInstrumentation(),
-        
         // Track Web Vitals as part of transactions
         _experiments: {
           enableInteractions: true,

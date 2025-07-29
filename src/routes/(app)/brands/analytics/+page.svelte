@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { _page} from '$app/stores';
 	import { 
 		TrendingUp, Package, DollarSign, Star, ShoppingBag, 
-		Eye, Heart, Calendar, ArrowUp, ArrowDown, Minus,
-		Download, Filter
-	} from 'lucide-svelte';
+		Eye, Heart, _Calendar, ArrowUp, _ArrowDown, Minus,
+		Download, _Filter} from 'lucide-svelte';
 	import type { PageData } from './$types';
 	import * as m from '$lib/paraglide/messages.js';
 	import { formatCurrency } from '$lib/utils/currency';
@@ -16,11 +15,11 @@
 
 	let { data }: Props = $props();
 
-	const brandProfile = $derived(data.brandProfile);
-	const orders = $derived(data.orders);
-	const salesStats = $derived(data.salesStats);
-	const listingStats = $derived(data.listingStats);
-	const reviewStats = $derived(data.reviewStats);
+	const brandProfile = $derived(data?.brandProfile);
+	const orders = $derived(data?.orders);
+	const salesStats = $derived(data?.salesStats);
+	const listingStats = $derived(data?.listingStats);
+	const reviewStats = $derived(data?.reviewStats);
 
 	let selectedPeriod = $state('30d');
 	let activeTab = $state<'overview' | 'orders' | 'listings' | 'reviews'>('overview');
@@ -33,28 +32,28 @@
 			delivered: { color: 'bg-green-100 text-green-800', label: 'Delivered' },
 			cancelled: { color: 'bg-red-100 text-red-800', label: 'Cancelled' }
 		};
-		return statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
+		return statusConfig[status as keyof typeof statusConfig] || statusConfig?.pending;
 	}
 
 	function getRelativeTime(date: string) {
 		const now = new Date();
 		const past = new Date(date);
-		const diffInMs = now.getTime() - past.getTime();
-		const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+		const diffInMs = now?.getTime() - past?.getTime();
+		const diffInHours = Math?.floor(diffInMs / (1000 * 60 * 60));
 		
 		if (diffInHours < 1) return 'Just now';
 		if (diffInHours < 24) return `${diffInHours}h ago`;
 		
-		const diffInDays = Math.floor(diffInHours / 24);
+		const diffInDays = Math?.floor(diffInHours / 24);
 		if (diffInDays < 7) return `${diffInDays}d ago`;
-		if (diffInDays < 30) return `${Math.floor(diffInDays / 7)}w ago`;
+		if (diffInDays < 30) return `${Math?.floor(diffInDays / 7)}w ago`;
 		
-		return past.toLocaleDateString();
+		return past?.toLocaleDateString();
 	}
 </script>
 
 <svelte:head>
-	<title>Brand Analytics - {brandProfile.brand_name} | Driplo</title>
+	<title>Brand Analytics - {brandProfile?.brand_name} | Driplo</title>
 </svelte:head>
 
 <div class="min-h-screen bg-gray-50">
@@ -96,7 +95,7 @@
 						+12%
 					</span>
 				</div>
-				<h3 class="text-2xl font-bold text-gray-900">{formatCurrency(salesStats.total_revenue, 'en')}</h3>
+				<h3 class="text-2xl font-bold text-gray-900">{formatCurrency(salesStats?.total_revenue, 'en')}</h3>
 				<p class="text-sm text-gray-600 mt-1">Total Revenue</p>
 			</div>
 
@@ -110,7 +109,7 @@
 						0%
 					</span>
 				</div>
-				<h3 class="text-2xl font-bold text-gray-900">{salesStats.total_orders}</h3>
+				<h3 class="text-2xl font-bold text-gray-900">{salesStats?.total_orders}</h3>
 				<p class="text-sm text-gray-600 mt-1">Total Orders</p>
 			</div>
 
@@ -124,7 +123,7 @@
 						+5%
 					</span>
 				</div>
-				<h3 class="text-2xl font-bold text-gray-900">{formatCurrency(salesStats.avg_order_value, 'en')}</h3>
+				<h3 class="text-2xl font-bold text-gray-900">{formatCurrency(salesStats?.avg_order_value, 'en')}</h3>
 				<p class="text-sm text-gray-600 mt-1">Avg Order Value</p>
 			</div>
 
@@ -133,9 +132,9 @@
 					<div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
 						<Star class="w-6 h-6 text-yellow-600" />
 					</div>
-					<span class="text-sm font-medium text-gray-600">{reviewStats.totalReviews} reviews</span>
+					<span class="text-sm font-medium text-gray-600">{reviewStats?.totalReviews} reviews</span>
 				</div>
-				<h3 class="text-2xl font-bold text-gray-900">{reviewStats.averageRating.toFixed(1)}</h3>
+				<h3 class="text-2xl font-bold text-gray-900">{reviewStats?.averageRating.toFixed(1)}</h3>
 				<p class="text-sm text-gray-600 mt-1">Average Rating</p>
 			</div>
 		</div>
@@ -156,7 +155,7 @@
 						class="px-6 py-4 font-medium text-sm border-b-2 transition-colors
 							{activeTab === 'orders' ? 'border-purple-600 text-purple-600' : 'border-transparent text-gray-500 hover:text-gray-700'}"
 					>
-						Orders ({orders.length})
+						Orders ({orders?.length ?? 0})
 					</button>
 					<button
 						onclick={() => activeTab = 'listings'}
@@ -194,23 +193,23 @@
 						<div>
 							<h3 class="text-lg font-semibold mb-4">Top Performing Listings</h3>
 							<div class="space-y-3">
-								{#each listingStats.slice(0, 5) as listing}
+								{#each listingStats??.slice?.((0, 5) as listing}
 									<div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
 										<div class="flex items-center gap-4">
 											<div class="w-12 h-12 bg-gray-200 rounded-lg"></div>
 											<div>
-												<h4 class="font-medium text-gray-900">{listing.title}</h4>
-												<p class="text-sm text-gray-600">{formatCurrency(listing.price, 'en')}</p>
+												<h4 class="font-medium text-gray-900">{listing?.title}</h4>
+												<p class="text-sm text-gray-600">{formatCurrency(listing?.price, 'en')}</p>
 											</div>
 										</div>
 										<div class="text-right text-sm">
 											<div class="flex items-center gap-2 text-gray-600">
 												<Eye class="w-4 h-4" />
-												{listing.views} views
+												{listing?.views} views
 											</div>
 											<div class="flex items-center gap-2 text-gray-600">
 												<Heart class="w-4 h-4" />
-												{listing.favorites_count} likes
+												{listing?.favorites_count} likes
 											</div>
 										</div>
 									</div>
@@ -221,7 +220,7 @@
 				{:else if activeTab === 'orders'}
 					<!-- Orders List -->
 					<div class="space-y-4">
-						{#if orders.length === 0}
+						{#if orders?.length ?? 0 === 0}
 							<div class="text-center py-12">
 								<ShoppingBag class="w-16 h-16 text-gray-300 mx-auto mb-4" />
 								<h3 class="text-lg font-medium text-gray-900 mb-2">No orders yet</h3>
@@ -229,29 +228,29 @@
 							</div>
 						{:else}
 							{#each orders as order}
-								{@const status = getOrderStatusBadge(order.status)}
+								{@const status = getOrderStatusBadge(order?.status)}
 								<div class="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
 									<div class="flex items-start justify-between">
 										<div class="flex gap-4">
 											<img 
-												src={order.listing.images[0]?.image_url || '/placeholder.jpg'}
-												alt={order.listing.title}
+												src={order?.listing?.images[0]?.image_url || '/placeholder?.jpg'}
+												alt={order?.listing?.title}
 												class="w-16 h-16 object-cover rounded-lg"
 											/>
 											<div>
-												<h4 class="font-medium text-gray-900">{order.listing.title}</h4>
+												<h4 class="font-medium text-gray-900">{order?.listing?.title}</h4>
 												<p class="text-sm text-gray-600 mt-1">
-													Buyer: @{order.buyer.username}
+													Buyer: @{order?.buyer.username}
 												</p>
 												<p class="text-sm text-gray-500">
-													{getRelativeTime(order.created_at)}
+													{getRelativeTime(order?.created_at)}
 												</p>
 											</div>
 										</div>
 										<div class="text-right">
-											<p class="font-semibold text-gray-900">{formatCurrency(order.total_amount, 'en')}</p>
-											<span class={`inline-block px-3 py-1 rounded-full text-xs font-medium mt-2 ${status.color}`}>
-												{status.label}
+											<p class="font-semibold text-gray-900">{formatCurrency(order?.total_amount, 'en')}</p>
+											<span class={`inline-block px-3 py-1 rounded-full text-xs font-medium mt-2 ${status?.color}`}>
+												{status?.label}
 											</span>
 										</div>
 									</div>
@@ -276,14 +275,14 @@
 								{#each listingStats as listing}
 									<tr class="border-b hover:bg-gray-50">
 										<td class="py-3 px-4">
-											<div class="font-medium text-gray-900">{listing.title}</div>
+											<div class="font-medium text-gray-900">{listing?.title}</div>
 										</td>
-										<td class="py-3 px-4">{formatCurrency(listing.price, 'en')}</td>
-										<td class="py-3 px-4">{listing.views}</td>
-										<td class="py-3 px-4">{listing.favorites_count}</td>
+										<td class="py-3 px-4">{formatCurrency(listing?.price, 'en')}</td>
+										<td class="py-3 px-4">{listing?.views}</td>
+										<td class="py-3 px-4">{listing?.favorites_count}</td>
 										<td class="py-3 px-4">
 											<span class={`inline-block px-2 py-1 rounded text-xs font-medium
-												${listing.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+												${listing?.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
 												{listing.status}
 											</span>
 										</td>
@@ -301,8 +300,8 @@
 								<h3 class="text-lg font-semibold mb-4">Rating Distribution</h3>
 								<div class="space-y-3">
 									{#each [5, 4, 3, 2, 1] as rating}
-										{@const count = reviewStats.distribution[rating]}
-										{@const percentage = reviewStats.totalReviews > 0 ? (count / reviewStats.totalReviews) * 100 : 0}
+										{@const count = (reviewStats?.distribution )[rating] || 0}
+										{@const percentage = reviewStats?.totalReviews > 0 ? (count / reviewStats?.totalReviews) * 100 : 0}
 										<div class="flex items-center gap-3">
 											<div class="flex items-center gap-1 w-20">
 												<span class="text-sm font-medium">{rating}</span>
@@ -324,16 +323,16 @@
 							<!-- Review Summary -->
 							<div class="bg-gray-50 rounded-lg p-6 text-center">
 								<div class="text-4xl font-bold text-gray-900 mb-2">
-									{reviewStats.averageRating.toFixed(1)}
+									{reviewStats?.averageRating.toFixed(1)}
 								</div>
 								<div class="flex justify-center gap-1 mb-2">
 									{#each Array(5) as _, i}
 										<Star 
-											class="w-5 h-5 {i < Math.round(reviewStats.averageRating) ? 'text-yellow-500 fill-current' : 'text-gray-300'}"
+											class="w-5 h-5 {i < Math?.round(reviewStats?.averageRating) ? 'text-yellow-500 fill-current' : 'text-gray-300'}"
 										/>
 									{/each}
 								</div>
-								<p class="text-gray-600">Based on {reviewStats.totalReviews} reviews</p>
+								<p class="text-gray-600">Based on {reviewStats?.totalReviews} reviews</p>
 							</div>
 						</div>
 					</div>
@@ -367,12 +366,12 @@
 					class="flex flex-col items-center gap-2 p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors text-center"
 				>
 					<svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h?.01M12 12h?.01M16 12h?.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
 					</svg>
 					<span class="text-sm font-medium text-gray-900">Messages</span>
 				</a>
 				<a 
-					href={`/brands/${brandProfile.brand_slug}`}
+					href={`/brands/${brandProfile?.brand_slug}`}
 					class="flex flex-col items-center gap-2 p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors text-center"
 				>
 					<Eye class="w-8 h-8 text-yellow-600" />

@@ -62,15 +62,16 @@ function sendToSentry(metric: Metric & Partial<WebVitalMetric>) {
 
   const rating = getRating(metric.name as WebVitalName, metric.value);
   
-  // Create a custom measurement
-  const transaction = Sentry.getCurrentScope().getTransaction();
-  if (transaction) {
-    transaction.setMeasurement(
-      `web_vital_${metric.name.toLowerCase()}`,
-      metric.value,
-      metric.name === 'CLS' ? '' : 'millisecond'
-    );
-  }
+  // Create a custom measurement using addBreadcrumb
+  Sentry.addBreadcrumb({
+    category: 'web-vitals-measurement',
+    message: `web_vital_${metric.name.toLowerCase()}`,
+    level: 'info',
+    data: {
+      value: metric.value,
+      unit: metric.name === 'CLS' ? '' : 'millisecond'
+    }
+  });
 
   // Send as custom event with context
   Sentry.addBreadcrumb({
@@ -219,10 +220,12 @@ export function reportCustomMetric(
     }
 
     if (window.Sentry) {
-      const transaction = Sentry.getCurrentScope().getTransaction();
-      if (transaction) {
-        transaction.setMeasurement(name, value, unit);
-      }
+      Sentry.addBreadcrumb({
+        category: 'custom-metric-measurement',
+        message: name,
+        level: 'info',
+        data: { value, unit }
+      });
 
       Sentry.addBreadcrumb({
         category: 'custom-metric',

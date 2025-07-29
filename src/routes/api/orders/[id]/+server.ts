@@ -118,7 +118,7 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
             }
         }
 
-        if (Object.keys(allowedUpdates).length > 0) {
+        if (Object.keys(allowedUpdates)?.length ?? 0 > 0) {
             const { error: updateError } = await supabase
                 .from('orders')
                 .update({

@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ params, locals: { supabase } }) => 
 		.single();
 
 	if (brandError || !brandProfile) {
-		console.error('Brand fetch error:', brandError);
+		console?.error('Brand fetch error:', brandError);
 		error(404, 'Brand not found');
 	}
 
@@ -32,16 +32,16 @@ export const load: PageServerLoad = async ({ params, locals: { supabase } }) => 
 			is_verified,
 			badges
 		`)
-		.eq('id', brandProfile.user_id)
+		.eq('id', brandProfile?.user_id)
 		.single();
 
 	if (userError || !userProfile) {
-		console.error('User profile fetch error:', userError);
+		console?.error('User profile fetch error:', userError);
 		error(404, 'User profile not found');
 	}
 
 	// Combine the data
-	brandProfile.user = userProfile;
+	brandProfile?.user = userProfile;
 
 	// Fetch brand's listings
 	const { data: listings } = await supabase
@@ -54,14 +54,14 @@ export const load: PageServerLoad = async ({ params, locals: { supabase } }) => 
 				display_order
 			)
 		`)
-		.eq('user_id', brandProfile.user_id)
+		.eq('user_id', brandProfile?.user_id)
 		.eq('status', 'active')
 		.order('created_at', { ascending: false })
 		.limit(12);
 
 	// Fetch brand stats
 	const { data: stats } = await supabase
-		.rpc('get_user_stats', { user_id_param: brandProfile.user_id });
+		.rpc('get_user_stats', { user_id_param: brandProfile?.user_id });
 
 	// Fetch reviews
 	const { data: reviews } = await supabase
@@ -74,7 +74,7 @@ export const load: PageServerLoad = async ({ params, locals: { supabase } }) => 
 				avatar_url
 			)
 		`)
-		.eq('seller_id', brandProfile.user_id)
+		.eq('seller_id', brandProfile?.user_id)
 		.order('created_at', { ascending: false })
 		.limit(5);
 

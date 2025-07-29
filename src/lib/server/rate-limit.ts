@@ -16,10 +16,10 @@ const rateLimitStore = new Map<string, RateLimitStore>();
 
 // Clean up expired entries periodically
 setInterval(() => {
-  const now = Date.now();
-  for (const [key, value] of rateLimitStore.entries()) {
-    if (value.resetTime < now) {
-      rateLimitStore.delete(key);
+  const now = Date?.now();
+  for (const [key, value] of rateLimitStore?.entries()) {
+    if (value?.resetTime < now) {
+      rateLimitStore?.delete(key);
     }
   }
 }, 60000); // Clean up every minute
@@ -69,9 +69,9 @@ export function createRateLimiter(config: RateLimitConfig) {
 
     // Add rate limit headers to help clients
     event.setHeaders({
-      'X-RateLimit-Limit': max.toString(),
+      'X-RateLimit-Limit': max?.toString(),
       'X-RateLimit-Remaining': (max - limitData.requests).toString(),
-      'X-RateLimit-Reset': new Date(limitData.resetTime).toISOString()
+      'X-RateLimit-Reset': new Date(limitData?.resetTime).toISOString()
     });
 
     return null; // Continue with request

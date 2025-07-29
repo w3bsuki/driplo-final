@@ -1,14 +1,11 @@
 <script lang="ts">
 	import { cn } from '$lib/utils'
-	import { fade, scale } from 'svelte/transition'
+	import { scale } from 'svelte/transition'
 	import { flip } from 'svelte/animate'
-	import { Upload, X, Image as ImageIcon, Loader2, AlertCircle, Move } from 'lucide-svelte'
+	import { Upload, X, Image as ImageIcon, Loader2, _AlertCircle, Move } from 'lucide-svelte'
 	import ProgressBar from '$lib/components/ui/ProgressBar.svelte'
 	import { 
 		validateImageFile, 
-		compressImage, 
-		formatFileSize,
-		createImagePreview,
 		processImages,
 		isDuplicateImage,
 		generateImageHash
@@ -35,7 +32,6 @@
 	let uploadingFiles = $state<Map<string, { name: string; progress: number }>>(new Map())
 	let imageHashes = $state<Set<string>>(new Set())
 	let fileInput: HTMLInputElement
-	let dropZone: HTMLDivElement
 	
 	// Drag state for reordering
 	let draggedIndex = $state<number | null>(null)
@@ -93,7 +89,7 @@
 			maxWidth: 2000,
 			maxHeight: 2000,
 			quality: 0.85
-		}, (processed, total) => {
+		}, () => {
 			// Update UI during processing
 		})
 		
@@ -256,7 +252,6 @@
 <div class="space-y-4">
 	<!-- Upload area -->
 	<div
-		bind:this={dropZone}
 		class={cn(
 			"relative border-2 border-dashed rounded-lg transition-all duration-200",
 			isDragging 
@@ -382,7 +377,7 @@
 			{/each}
 			
 			<!-- Uploading files -->
-			{#each [...uploadingFiles.entries()] as [id, file]}
+			{#each [...uploadingFiles.entries()] as [_id, file]}
 				<div 
 					class="relative aspect-square bg-gray-100 rounded-lg flex flex-col items-center justify-center p-4"
 					transition:scale

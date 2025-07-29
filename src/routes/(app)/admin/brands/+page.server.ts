@@ -2,7 +2,7 @@ import type { PageServerLoad, Actions } from './$types'
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { data: requests } = await locals.supabase
-		.from('brand_verification_requests' as any)
+		.from('brand_verification_requests' )
 		.select(`
 			*,
 			profiles!inner(
@@ -27,7 +27,7 @@ export const actions = {
 		
 		// Update verification request
 		await locals.supabase
-			.from('brand_verification_requests' as any)
+			.from('brand_verification_requests' )
 			.update({
 				status: 'approved',
 				reviewed_at: new Date().toISOString(),
@@ -47,7 +47,7 @@ export const actions = {
 			
 		// Create admin approval record
 		await locals.supabase
-			.from('admin_approvals' as any)
+			.from('admin_approvals' )
 			.insert({
 				admin_id: (await locals.safeGetSession()).user?.id,
 				action_type: 'brand_verification',
@@ -66,7 +66,7 @@ export const actions = {
 		
 		// Update verification request
 		await locals.supabase
-			.from('brand_verification_requests' as any)
+			.from('brand_verification_requests' )
 			.update({
 				status: 'rejected',
 				rejection_reason: reason,
@@ -77,7 +77,7 @@ export const actions = {
 			
 		// Create admin approval record
 		await locals.supabase
-			.from('admin_approvals' as any)
+			.from('admin_approvals' )
 			.insert({
 				admin_id: (await locals.safeGetSession()).user?.id,
 				action_type: 'brand_verification',

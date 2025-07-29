@@ -9,7 +9,7 @@
 	import { useNotifications } from './hooks/useNotifications';
 	import type { HeaderProps } from '$lib/types/components';
 	import type { SupabaseClient } from '@supabase/supabase-js';
-	import type { Database } from '$lib/types/database';
+	import type { Database } from '$lib/types';
 
 	type Props = Omit<HeaderProps, 'supabase'> & {
 		supabase: SupabaseClient<Database>;
@@ -65,21 +65,21 @@
 
 			if (error) {
 				// Handle specific error cases
-				if (error.code === 'PGRST116') {
+				if (error?.code === 'PGRST116') {
 					// No brand profile found - this is expected for new brand accounts
 					brandSlugError = 'No brand profile found';
 				} else {
-					brandSlugError = `Database error: ${error.message}`;
-					console.error('Brand slug fetch error:', error);
+					brandSlugError = `Database error: ${error?.message}`;
+					console?.error('Brand slug fetch error:', error);
 				}
 			} else if (data?.brand_slug) {
-				brandSlug = data.brand_slug;
+				brandSlug = (data && typeof data === 'object' && 'brand_slug' in data) ? (data && typeof data === 'object' && 'brand_slug' in data) ? data.brand_slug : null : null;
 			} else {
 				brandSlugError = 'Brand slug not available';
 			}
 		} catch (error) {
-			brandSlugError = error instanceof Error ? error.message : 'Unknown error occurred';
-			console.error('Failed to fetch brand slug:', error);
+			brandSlugError = error instanceof Error ? error?.message : 'Unknown error occurred';
+			console?.error('Failed to fetch brand slug:', error);
 		} finally {
 			brandSlugFetched = true;
 			brandSlugLoading = false;
@@ -110,12 +110,12 @@
 		if (user) {
 			// Debounce notifications initialization to prevent rapid toggling
 			notificationTimeout = setTimeout(() => {
-				notifications.updateContext(effectiveSupabase, user.id);
-				notifications.initialize();
+				notifications?.updateContext(effectiveSupabase, user.id);
+				notifications?.initialize();
 			}, 100);
 		} else {
 			// Immediate cleanup when user logs out
-			notifications.cleanup();
+			notifications?.cleanup();
 		}
 	});
 
@@ -133,7 +133,7 @@
 		} catch (error) {
 			console.error('Sign out error:', error);
 			// Still attempt cleanup even if sign out fails
-			notifications.cleanup();
+			notifications?.cleanup();
 		}
 	}
 
@@ -142,7 +142,7 @@
 		if (notificationTimeout) {
 			clearTimeout(notificationTimeout);
 		}
-		notifications.cleanup();
+		notifications?.cleanup();
 	});
 </script>
 

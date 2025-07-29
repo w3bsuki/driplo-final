@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { CheckCircle, Sparkles, Package, Camera, Shield, TrendingUp, Users, MessageCircle, ExternalLink } from 'lucide-svelte';
-	import { goto } from '$app/navigation';
+	import { _goto} from '$app/navigation';
 	import Confetti from '$lib/components/ui/Confetti.svelte';
 	import type { PageData } from './$types';
 	
 	let { data }: { data: PageData } = $props();
 	
-	const brandProfile = $derived(data.brandProfile);
-	const profile = $derived(data.profile);
+	const brandProfile = $derived(data?.brandProfile);
+	const profile = $derived(data?.profile);
 	
 	const nextSteps = $derived([
 		{
@@ -24,7 +24,7 @@
 			description: 'Add more photos and details to your brand page',
 			action: 'Edit Profile',
 			href: '/brands/settings',
-			completed: brandProfile.brand_logo_url && brandProfile.brand_cover_url
+			completed: brandProfile?.brand_logo_url && brandProfile?.brand_cover_url
 		},
 		{
 			icon: Shield,
@@ -32,14 +32,14 @@
 			description: 'Apply for brand verification to build trust',
 			action: 'Apply Now',
 			href: '/brands/settings?tab=verification',
-			completed: profile.is_verified
+			completed: profile?.is_verified
 		},
 		{
 			icon: Users,
 			title: 'Build Your Audience',
 			description: 'Share your brand page to attract followers',
 			action: 'View Profile',
-			href: `/brands/${brandProfile.brand_slug}`,
+			href: `/brands/${brandProfile?.brand_slug}`,
 			completed: false
 		}
 	]);
@@ -68,24 +68,24 @@
 	];
 	
 	function handleShare() {
-		const brandUrl = `${window.location.origin}/brands/${brandProfile.brand_slug}`;
+		const brandUrl = `${window?.location.origin}/brands/${brandProfile?.brand_slug}`;
 		
-		if (navigator.share) {
-			navigator.share({
-				title: brandProfile.brand_name,
-				text: `Check out ${brandProfile.brand_name} on Driplo!`,
+		if (navigator?.share) {
+			navigator?.share({
+				title: brandProfile?.brand_name,
+				text: `Check out ${brandProfile?.brand_name} on Driplo!`,
 				url: brandUrl
 			});
 		} else {
 			// Fallback to copying to clipboard
-			navigator.clipboard.writeText(brandUrl);
+			navigator?.clipboard.writeText(brandUrl);
 			// You might want to show a toast here
 		}
 	}
 </script>
 
 <svelte:head>
-	<title>Welcome to Driplo Brands | {brandProfile.brand_name}</title>
+	<title>Welcome to Driplo Brands | {brandProfile?.brand_name}</title>
 </svelte:head>
 
 <div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
@@ -95,10 +95,10 @@
 		<!-- Success Header -->
 		<div class="text-center mb-12">
 			<div class="relative inline-block mb-6">
-				{#if brandProfile.brand_logo_url}
+				{#if brandProfile?.brand_logo_url}
 					<img 
-						src={brandProfile.brand_logo_url} 
-						alt="{brandProfile.brand_name} logo"
+						src={brandProfile?.brand_logo_url} 
+						alt="{brandProfile?.brand_name} logo"
 						class="w-32 h-32 rounded-2xl object-cover shadow-xl"
 					/>
 				{:else}
@@ -115,7 +115,7 @@
 				Welcome to Driplo Brands! 🎉
 			</h1>
 			<p class="text-xl text-gray-600 max-w-2xl mx-auto">
-				Congratulations! <span class="font-semibold">{brandProfile.brand_name}</span> is now a professional brand on Driplo.
+				Congratulations! <span class="font-semibold">{brandProfile?.brand_name}</span> is now a professional brand on Driplo.
 			</p>
 		</div>
 		
@@ -127,7 +127,7 @@
 						<p class="text-sm text-gray-600 mb-2">Your brand page is live at:</p>
 						<div class="flex items-center gap-2">
 							<code class="text-purple-600 font-mono text-sm bg-purple-50 px-3 py-1 rounded">
-								driplo.com/brands/{brandProfile.brand_slug}
+								driplo?.com/brands/{brandProfile?.brand_slug}
 							</code>
 						</div>
 					</div>
@@ -139,7 +139,7 @@
 							Share
 						</button>
 						<a
-							href="/brands/{brandProfile.brand_slug}"
+							href="/brands/{brandProfile?.brand_slug}"
 							class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium text-sm flex items-center gap-2"
 						>
 							View Profile
@@ -157,30 +157,30 @@
 				<h2 class="text-2xl font-bold text-gray-900 mb-6">Next Steps</h2>
 				<div class="space-y-4">
 					{#each nextSteps as step}
-						<div class="flex gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors {step.completed ? 'opacity-60' : ''}">
+						<div class="flex gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors {step?.completed ? 'opacity-60' : ''}">
 							<div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-								<step.icon class="w-6 h-6 text-purple-600" />
+								<step?.icon class="w-6 h-6 text-purple-600" />
 							</div>
 							<div class="flex-1">
 								<div class="flex items-start justify-between">
 									<div>
 										<h3 class="font-semibold text-gray-900 mb-1">
-											{step.title}
-											{#if step.completed}
+											{step?.title}
+											{#if step?.completed}
 												<span class="inline-flex items-center gap-1 ml-2 text-green-600 text-sm">
 													<CheckCircle class="w-4 h-4" />
 													Done
 												</span>
 											{/if}
 										</h3>
-										<p class="text-sm text-gray-600">{step.description}</p>
+										<p class="text-sm text-gray-600">{step?.description}</p>
 									</div>
-									{#if !step.completed}
+									{#if !step?.completed}
 										<a
-											href={step.href}
+											href={step?.href}
 											class="ml-4 text-purple-600 hover:text-purple-700 font-medium text-sm whitespace-nowrap"
 										>
-											{step.action} →
+											{step?.action} →
 										</a>
 									{/if}
 								</div>
@@ -195,14 +195,14 @@
 				<h2 class="text-2xl font-bold text-gray-900 mb-6">Your Brand Benefits</h2>
 				<div class="space-y-4">
 					{#each brandBenefits as benefit}
-						{@const Icon = benefit.icon}
+						{@const Icon = benefit?.icon}
 						<div class="flex gap-4 p-4">
 							<div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
 								<Icon class="w-6 h-6 text-blue-600" />
 							</div>
 							<div>
-								<h3 class="font-semibold text-gray-900 mb-1">{benefit.title}</h3>
-								<p class="text-sm text-gray-600">{benefit.description}</p>
+								<h3 class="font-semibold text-gray-900 mb-1">{benefit?.title}</h3>
+								<p class="text-sm text-gray-600">{benefit?.description}</p>
 							</div>
 						</div>
 					{/each}
@@ -244,7 +244,7 @@
 		<!-- CTA Buttons -->
 		<div class="flex flex-col sm:flex-row gap-4 justify-center mt-12">
 			<a
-				href="/brands/{brandProfile.brand_slug}"
+				href="/brands/{brandProfile?.brand_slug}"
 				class="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg text-center"
 			>
 				View Your Brand Profile

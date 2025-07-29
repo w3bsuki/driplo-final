@@ -1,26 +1,17 @@
 <script lang="ts">
 	import { Progress } from 'bits-ui';
 	import { cn } from '$lib/utils';
-	
-	interface Props {
-		value: number;
-		max?: number;
-		class?: string;
-		showLabel?: boolean;
-		label?: string;
-		size?: 'xs' | 'sm' | 'md' | 'lg';
-		variant?: 'default' | 'success' | 'warning' | 'error';
-	}
+	import type { ProgressBarProps } from '$lib/types/components';
 	
 	let {
 		value = 0,
 		max = 100,
 		class: className = '',
-		showLabel = false,
+		showValue = false,
 		label = '',
 		size = 'md',
 		variant = 'default'
-	}: Props = $props();
+	}: ProgressBarProps = $props();
 	
 	let percentage = $derived(Math.min(Math.max((value / max) * 100, 0), 100));
 	let displayLabel = $derived(label || `${Math.round(percentage)}%`);
@@ -48,7 +39,7 @@
 </script>
 
 <div class={cn("w-full", className)}>
-	{#if showLabel}
+	{#if showValue}
 		<div class="flex justify-between items-center mb-1">
 			<span class="text-sm font-medium text-gray-700">{displayLabel}</span>
 		</div>

@@ -11,7 +11,7 @@
 </script>
 
 <div
-	bind:this={ref}
+	bind:this={ref!}
 	data-slot="card"
 	class={cn(
 		"bg-card text-card-foreground flex flex-col gap-4 rounded-lg border border-gray-200 p-6 transition-all duration-fast",

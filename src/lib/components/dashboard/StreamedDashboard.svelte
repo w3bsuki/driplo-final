@@ -10,7 +10,7 @@
 		detailedData: {}
 	})
 	
-	let loading = $state(true)
+	let _loading = $state(true)
 	let error = $state<Error | null>(null)
 	
 	onMount(() => {
@@ -33,21 +33,21 @@
 	<div class="stats-grid">
 		<div class="stat-card">
 			<h3>Total Users</h3>
-			<p class="stat-value">{stats.quickCounts.totalUsers ?? '—'}</p>
+			<p class="stat-value">{stats?.quickCounts.totalUsers ?? '—'}</p>
 		</div>
 		<div class="stat-card">
 			<h3>Active Listings</h3>
-			<p class="stat-value">{stats.quickCounts.activeListings ?? '—'}</p>
+			<p class="stat-value">{stats?.quickCounts.activeListings ?? '—'}</p>
 		</div>
 		<div class="stat-card">
 			<h3>Verified Brands</h3>
-			<p class="stat-value">{stats.quickCounts.verifiedBrands ?? '—'}</p>
+			<p class="stat-value">{stats?.quickCounts.verifiedBrands ?? '—'}</p>
 		</div>
 		<div class="stat-card">
 			<h3>Monthly Revenue</h3>
 			<p class="stat-value">
-				{#if stats.detailedData.monthlyRevenue !== undefined}
-					£{stats.detailedData.monthlyRevenue.toLocaleString()}
+				{#if stats?.detailedData.monthlyRevenue !== undefined}
+					£{stats?.detailedData.monthlyRevenue?.toLocaleString()}
 				{:else}
 					<span class="loading-placeholder">Loading...</span>
 				{/if}
@@ -57,16 +57,16 @@
 	
 	<!-- Detailed sections stream in -->
 	<div class="detailed-sections">
-		{#if stats.detailedData.pendingBrands}
+		{#if stats?.detailedData.pendingBrands}
 			<section class="pending-brands">
 				<h2>Pending Brand Verifications</h2>
 				<div class="brands-list">
-					{#each stats.detailedData.pendingBrands as request}
+					{#each stats?.detailedData.pendingBrands as request}
 						<div class="brand-request">
-							<img src={request.profile?.avatar_url || '/default-avatar.png'} alt={request.profile?.username}>
+							<img src={request?.profile?.avatar_url || '/default-avatar?.png'} alt={request?.profile?.username}>
 							<div>
-								<h4>{request.profile?.full_name || request.profile?.username}</h4>
-								<p>Submitted {new Date(request.submitted_at).toLocaleDateString()}</p>
+								<h4>{request?.profile?.full_name || request?.profile?.username}</h4>
+								<p>Submitted {new Date(request?.submitted_at).toLocaleDateString()}</p>
 							</div>
 						</div>
 					{/each}
@@ -79,16 +79,16 @@
 			</section>
 		{/if}
 		
-		{#if stats.detailedData.topSellers}
+		{#if stats?.detailedData.topSellers}
 			<section class="top-sellers">
 				<h2>Top Sellers</h2>
 				<div class="sellers-grid">
-					{#each stats.detailedData.topSellers as seller}
+					{#each stats?.detailedData.topSellers as seller}
 						<div class="seller-card">
-							<img src={seller.avatar_url || '/default-avatar.png'} alt={seller.username}>
-							<h4>{seller.shop_name || seller.username}</h4>
-							<p>{seller.total_orders} sales</p>
-							<p>⭐ {seller.seller_rating?.toFixed(1) || '—'}</p>
+							<img src={seller?.avatar_url || '/default-avatar?.png'} alt={seller?.username}>
+							<h4>{seller?.shop_name || seller?.username}</h4>
+							<p>{seller?.total_orders} sales</p>
+							<p>⭐ {seller?.seller_rating?.toFixed(1) || '—'}</p>
 						</div>
 					{/each}
 				</div>
@@ -100,16 +100,16 @@
 			</section>
 		{/if}
 		
-		{#if stats.detailedData.popularProducts}
+		{#if stats?.detailedData.popularProducts}
 			<section class="popular-products">
 				<h2>Trending Products</h2>
 				<div class="products-grid">
-					{#each stats.detailedData.popularProducts as product}
+					{#each stats?.detailedData.popularProducts as product}
 						<div class="product-card">
-							<img src={product.images?.[0] || '/placeholder.jpg'} alt={product.title}>
-							<h4>{product.title}</h4>
-							<p>£{product.price}</p>
-							<p>{product.order_count} sold</p>
+							<img src={product?.images?.[0] || '/placeholder?.jpg'} alt={product?.title}>
+							<h4>{product?.title}</h4>
+							<p>£{product?.price}</p>
+							<p>{product?.order_count} sold</p>
 						</div>
 					{/each}
 				</div>
@@ -124,7 +124,7 @@
 	
 	{#if error}
 		<div class="error-message">
-			Error loading dashboard data: {error.message}
+			Error loading dashboard data: {error?.message}
 		</div>
 	{/if}
 </div>

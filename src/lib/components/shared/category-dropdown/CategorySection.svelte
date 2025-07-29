@@ -132,7 +132,7 @@
 	{:else}
 		<!-- Items Grid -->
 		<div class={getGridClasses()}>
-			{#each items as item, index}
+			{#each items as item, _index}
 				{@const display = getItemDisplay(item)}
 				{@const isActive = isItemActive(item)}
 				{@const isHovered = isItemHovered(item)}

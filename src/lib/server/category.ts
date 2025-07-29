@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { Database } from '$lib/types/database';
+import type { Database } from '$lib/types/db';
 
 export async function loadCategoryPage(categorySlug: string, supabase: SupabaseClient<Database>) {
   // Get category info
@@ -117,8 +117,8 @@ export async function loadSubcategoryPage(categorySlug: string, subcategorySlug:
     p_offset: offset,
     p_sort_by: sortBy,
     p_sort_order: sortOrder,
-    p_min_price: filters['min_price'] ? parseFloat(filters['min_price']) : null,
-    p_max_price: filters['max_price'] ? parseFloat(filters['max_price']) : null,
+    p_min_price: filters['min_price'] ? parseFloat(filters['min_price'] || '0') : null,
+    p_max_price: filters['max_price'] ? parseFloat(filters['max_price'] || '0') : null,
     p_brands: filters['brand'] ? [filters['brand']] : null,
     p_sizes: filters['size'] ? [filters['size']] : null,
     p_conditions: filters['condition'] ? [filters['condition']] : null,
@@ -137,7 +137,7 @@ export async function loadSubcategoryPage(categorySlug: string, subcategorySlug:
     subcategory: item.listing_data.subcategory
   }));
 
-  const totalCount = productsData?.[0]?.total_count || 0;
+  const totalCount = (productsData?.[0] as any)?.total_count || 0;
 
   return {
     category,

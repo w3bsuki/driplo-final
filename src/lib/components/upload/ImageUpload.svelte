@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Upload, X, Camera, Loader2, AlertCircle } from 'lucide-svelte'
-	import { Button } from '$lib/components/ui'
+	import { Upload, X, Camera, Loader2, _AlertCircle} from 'lucide-svelte'
+	import { _Button} from '$lib/components/ui'
 	import { cn } from '$lib/utils'
 	import * as m from '$lib/paraglide/messages.js'
 	import { toast } from 'svelte-sonner'

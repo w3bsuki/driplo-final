@@ -107,7 +107,7 @@ export function isValidCreditCard(cardNumber: string): boolean {
 	let isEven = false;
 	
 	for (let i = cleaned.length - 1; i >= 0; i--) {
-		let digit = parseInt(cleaned[i]);
+		let digit = parseInt(cleaned[i] || '0');
 		
 		if (isEven) {
 			digit *= 2;
@@ -127,7 +127,7 @@ export function isValidCreditCard(cardNumber: string): boolean {
  * Validates date is not in the past
  */
 export function isFutureDate(date: Date | string): boolean {
-	const inputDate = typeof date === 'string' ? new Date(date) : date;
+	const inputDate = typeof date === 'string' ? new Date(date || new Date()) : date;
 	const now = new Date();
 	now.setHours(0, 0, 0, 0);
 	inputDate.setHours(0, 0, 0, 0);
@@ -138,7 +138,7 @@ export function isFutureDate(date: Date | string): boolean {
  * Validates age is within range
  */
 export function isValidAge(birthDate: Date | string, minAge = 18, maxAge = 120): boolean {
-	const birth = typeof birthDate === 'string' ? new Date(birthDate) : birthDate;
+	const birth = typeof birthDate === 'string' ? new Date(birthDate || new Date()) : birthDate;
 	const today = new Date();
 	
 	let age = today.getFullYear() - birth.getFullYear();

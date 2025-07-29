@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
+	import { _goto} from '$app/navigation';
 	import { cn } from '$lib/utils/cn';
 	import UnifiedFilter from '$lib/components/shared/UnifiedFilter.svelte';
 	import * as m from '$lib/paraglide/messages.js';

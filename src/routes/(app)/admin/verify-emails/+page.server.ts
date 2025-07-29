@@ -12,10 +12,10 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const { data: adminData } = await supabase
 		.from('admin_users')
 		.select('*')
-		.eq('user_id', user.id)
+		.eq('user_id', user?.id)
 		.single();
 	
-	if (!adminData || !adminData.can_verify_emails) {
+	if (!adminData || !adminData?.can_verify_emails) {
 		throw error(403, 'Unauthorized');
 	}
 	
@@ -24,7 +24,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		.rpc('get_unverified_users_for_admin');
 	
 	if (usersError) {
-		console.error('Error fetching unverified users:', usersError);
+		console?.error('Error fetching unverified users:', usersError);
 		return {
 			unverifiedUsers: []
 		};
@@ -43,8 +43,8 @@ export const actions = {
 			throw error(401, 'Unauthorized');
 		}
 		
-		const formData = await request.formData();
-		const targetUserId = formData.get('userId') as string;
+		const formData = await request?.formData();
+		const targetUserId = formData?.get('userId') as string;
 		
 		if (!targetUserId) {
 			throw error(400, 'User ID required');
@@ -52,18 +52,18 @@ export const actions = {
 		
 		try {
 			// Call the admin function to verify email
-			const { data, error: verifyError } = await supabase
+			const { _data, error: verifyError } = await supabase
 				.rpc('admin_verify_user_email', {
 					target_user_id: targetUserId
 				});
 			
 			if (verifyError) {
-				throw error(500, verifyError.message);
+				throw error(500, verifyError?.message);
 			}
 			
 			return { success: true };
 		} catch (err) {
-			console.error('Error verifying email:', err);
+			console?.error('Error verifying email:', err);
 			throw error(500, 'Failed to verify email');
 		}
 	}

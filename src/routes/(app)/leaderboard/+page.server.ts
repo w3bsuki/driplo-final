@@ -5,7 +5,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	// Later we can add filters for top performers only
 	
 	// Fetch all sellers (personal accounts)
-	const sellersResult = await locals.supabase
+	const sellersResult = await locals?.supabase
 		.from('profiles')
 		.select(`
 			id,
@@ -29,7 +29,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		.order('total_sales', { ascending: false });
 		
 	// Fetch brand profiles with profile data in a single JOIN query
-	const brandsResult = await locals.supabase
+	const brandsResult = await locals?.supabase
 		.from('brand_profiles')
 		.select(`
 			id,
@@ -51,39 +51,39 @@ export const load: PageServerLoad = async ({ locals }) => {
 		`);
 	
 	// Handle any errors
-	if (sellersResult.error) {
-		console.error('Error fetching sellers:', sellersResult.error);
+	if (sellersResult?.error) {
+		console?.error('Error fetching sellers:', sellersResult?.error);
 	}
-	if (brandsResult.error) {
-		console.error('Error fetching brands:', brandsResult.error);
+	if (brandsResult?.error) {
+		console?.error('Error fetching brands:', brandsResult?.error);
 	}
 	
 	// Process brand data with joined profile data
-	const brands = (brandsResult.data || []).map(brand => {
-		const profile = brand.profiles || {};
+	const brands = (brandsResult?.data || [])?.map((brand) => {
+		const profile = brand?.profiles || {};
 		return {
-			brand_id: brand.id,
-			brand_name: brand.brand_name,
-			brand_slug: brand.brand_slug,
-			brand_logo_url: brand.brand_logo_url,
-			verification_status: brand.verification_status,
-			created_at: brand.created_at,
-			username: profile.username,
-			avatar_url: profile.avatar_url,
-			total_sales: profile.total_sales || 0,
-			average_rating: profile.seller_rating || 0,
-			rating_count: profile.seller_rating_count || 0,
-			total_revenue: profile.total_earned || 0,
-			followers_count: profile.followers_count || 0,
-			badges: profile.badges || []
+			brand_id: brand?.id,
+			brand_name: brand?.brand_name,
+			brand_slug: brand?.brand_slug,
+			brand_logo_url: brand?.brand_logo_url,
+			verification_status: brand?.verification_status,
+			created_at: brand?.created_at,
+			username: profile?.username,
+			avatar_url: profile?.avatar_url,
+			total_sales: profile?.total_sales || 0,
+			average_rating: profile?.seller_rating || 0,
+			rating_count: profile?.seller_rating_count || 0,
+			total_revenue: profile?.total_earned || 0,
+			followers_count: profile?.followers_count || 0,
+			badges: profile?.badges || []
 		};
 	});
 	
-	console.log('Processed brands:', brands);
+	console?.log('Processed brands:', brands);
 	
 	// For now, we'll use the same data structure as before but with all sellers
 	return {
-		topSellers: sellersResult.data || [],
+		topSellers: sellersResult?.data || [],
 		topBrands: brands,
 		recentReviews: [], // We can add this later if needed
 		initialTimePeriod: 'all'

@@ -3,7 +3,7 @@
 	import { DropdownMenu } from '$lib/components/ui';
 	import ProfileDropdownContent from '../ProfileDropdownContent.svelte';
 	import type { User, Session } from '@supabase/supabase-js';
-	import type { ExtendedProfile } from '$lib/types/database.extended';
+	import type { ExtendedProfile } from '$lib/types';
 	import { cn } from '$lib/utils/cn';
 	
 	interface UserMenuProps {
@@ -48,8 +48,8 @@
 	>
 		{#if user}
 			<img 
-				src={profile?.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile?.username || user.email}`} 
-				alt={`${profile?.username || user.email} profile`} 
+				src={profile?.avatar_url || `https://api?.dicebear.com/7?.x/avataaars/svg?seed=${profile?.username || user?.email}`} 
+				alt={`${profile?.username || user?.email} profile`} 
 				width={avatarSize}
 				height={avatarSize}
 				class={cn(

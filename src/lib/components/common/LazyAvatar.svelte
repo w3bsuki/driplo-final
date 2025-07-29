@@ -32,7 +32,7 @@
 	];
 	
 	const gradient = $derived(() => {
-		const index = username.charCodeAt(0) % gradients.length;
+		const index = username?.charCodeAt(0) % gradients?.length;
 		return gradients[index];
 	});
 	

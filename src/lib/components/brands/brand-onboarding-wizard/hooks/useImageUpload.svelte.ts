@@ -175,7 +175,7 @@ export function useImageUpload(supabase: any, config: ImageUploadConfig) {
 			const filePath = `${config.folder}/${uniqueFileName}`;
 
 			// Upload to Supabase storage
-			const { data, error: uploadError } = await supabase.storage
+			const { _data, error: uploadError } = await supabase.storage
 				.from(config.bucket)
 				.upload(filePath, file, {
 					cacheControl: '3600',

@@ -17,7 +17,7 @@
 
 	let { form, data }: Props = $props();
 
-	const supabase = $derived(data.supabase);
+	const supabase = $derived(data?.supabase);
 
 	let password = $state('');
 	let confirmPassword = $state('');
@@ -41,10 +41,10 @@
 
 	$effect(() => {
 		// Check if we have the necessary tokens/codes in the URL
-		const hashParams = new URLSearchParams(window.location.hash.slice(1));
-		const queryParams = $page.url.searchParams;
+		const hashParams = new URLSearchParams(window?.location.hash?.slice(1));
+		const queryParams = $page?.url.searchParams;
 		
-		if (!hashParams.get('access_token') && !queryParams.get('code')) {
+		if (!hashParams?.get('access_token') && !queryParams?.get('code')) {
 			error = 'Invalid or expired reset link. Please request a new password reset.';
 		}
 	});
@@ -53,7 +53,7 @@
 		error = '';
 		
 		// Check CAPTCHA in production
-		if (import.meta.env.MODE === 'production' && !captchaToken) {
+		if (import?.meta.env?.MODE === 'production' && !captchaToken) {
 			showCaptchaError = true;
 			error = 'Please complete the CAPTCHA verification';
 			return;
@@ -66,10 +66,10 @@
 		}
 
 		try {
-			passwordSchema.parse(password);
+			passwordSchema?.parse(password);
 		} catch (e) {
-			if (e instanceof z.ZodError) {
-				error = e.errors[0].message;
+			if (e instanceof z?.ZodError) {
+				error = e?.errors[0].message;
 				return;
 			}
 		}
@@ -77,17 +77,17 @@
 		loading = true;
 
 		try {
-			const { error: updateError } = await supabase.auth.updateUser({
+			const { error: updateError } = await supabase?.auth.updateUser({
 				password: password
 			});
 
 			if (updateError) {
-				error = updateError.message;
+				error = updateError?.message;
 			} else {
 				success = true;
 				// Reset CAPTCHA for security
 				if (captchaRef) {
-					captchaRef.reset();
+					captchaRef?.reset();
 				}
 				captchaToken = null;
 				// Redirect to login after 3 seconds
@@ -134,7 +134,7 @@
 					</Alert>
 				{/if}
 
-				<form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }} class="space-y-4">
+				<form onsubmit={(e) => { e?.preventDefault(); handleSubmit(); }} class="space-y-4">
 					<div>
 						<label for="password" class="block text-sm font-medium mb-2">
 							New password
@@ -226,7 +226,7 @@
 						{/if}
 					</div>
 
-					<Button type="submit" class="w-full" disabled={loading || !password || !confirmPassword || (import.meta.env.MODE === 'production' && !captchaToken)}>
+					<Button type="submit" class="w-full" disabled={loading || !password || !confirmPassword || (import?.meta.env?.MODE === 'production' && !captchaToken)}>
 						{loading ? 'Resetting...' : 'Reset password'}
 					</Button>
 				</form>

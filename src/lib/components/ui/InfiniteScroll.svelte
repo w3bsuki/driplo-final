@@ -26,7 +26,7 @@
 		const observer = new IntersectionObserver(
 			(entries) => {
 				const [entry] = entries
-				if (entry.isIntersecting && hasMore && !loading) {
+				if (entry?.isIntersecting && hasMore && !loading) {
 					onLoadMore()
 				}
 			},
@@ -35,10 +35,10 @@
 			}
 		)
 
-		observer.observe(sentinelElement)
+		observer?.observe(sentinelElement)
 
 		return () => {
-			observer.disconnect()
+			observer?.disconnect()
 		}
 	})
 

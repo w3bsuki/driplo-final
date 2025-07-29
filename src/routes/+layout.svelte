@@ -30,7 +30,7 @@
 	
 	// Reactive state based on server data
 	let user = $derived(data.user);
-	let session = $derived(data.session);
+	let _session = $derived(data.session);
 	let profile = $derived(data.profile);
 	
 	// Define pages where bottom nav should be hidden
@@ -61,7 +61,7 @@
 		// Initialize Web Vitals monitoring
 		if (browser) {
 			initWebVitals({
-				sendToAnalytics: (metric) => {
+				sendToAnalytics: (_metric) => {
 					// In production, send to your analytics service
 					if (!dev) {
 						// Example: Google Analytics

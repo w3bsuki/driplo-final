@@ -63,14 +63,14 @@
 	let {
 		variant = 'inline',
 		value = $bindable(''),
-		placeholder = m.browse_search_placeholder?.() || 'Search...',
+		placeholder = m?.browse_search_placeholder?.() || 'Search...',
 		onSearch,
 		debounceDelay = 300,
 		categories = [],
 		showCategoryButton = true,
 		categoryButtonType = 'icon',
 		onCategorySelect,
-		activeCategory = '',
+		_activeCategory= '',
 		quickFilters = [],
 		onQuickFilterClick,
 		showQuickFilters = true,
@@ -85,13 +85,13 @@
 		searchClass = '',
 		visible = true,
 		stickyOffset = 0,
-		mobileLayout = 'compact'
+		_mobileLayout= 'compact'
 	}: Props = $props();
 
 	// State management
 	let isFocused = $state(false);
 	let isCategoryDropdownOpen = $state(false);
-	let isSticky = $state(false);
+	let _isSticky = $state(false);
 	let searchRef: HTMLInputElement;
 
 	// Theme configuration
@@ -145,11 +145,11 @@
 	// Debounced search handler
 	const debouncedSearch = debounce(() => {
 		if (onSearch) {
-			onSearch(value.trim());
+			onSearch(value?.trim());
 		} else {
 			// Default navigation behavior
-			if (value.trim()) {
-				goto(`/browse?q=${encodeURIComponent(value.trim())}`);
+			if (value?.trim()) {
+				goto(`/browse?q=${encodeURIComponent(value?.trim())}`);
 			} else {
 				goto('/browse');
 			}
@@ -162,8 +162,8 @@
 	}
 
 	function handleKeyDown(e: KeyboardEvent) {
-		if (e.key === 'Enter') {
-			e.preventDefault();
+		if (e?.key === 'Enter') {
+			e?.preventDefault();
 			handleSearch();
 		}
 	}
@@ -236,7 +236,7 @@
 		
 		switch (variant) {
 			case 'hero':
-				return cn(base, "bg-gradient-to-b from-brand-50 to-white", currentSize.container);
+				return cn(base, "bg-gradient-to-b from-brand-50 to-white", currentSize?.container);
 			case 'sticky':
 				return cn(
 					base, 
@@ -248,7 +248,7 @@
 			case 'modal':
 				return cn(base, "bg-white rounded-lg shadow-lg border p-4");
 			default:
-				return cn(base, "bg-white", currentSize.container);
+				return cn(base, "bg-white", currentSize?.container);
 		}
 	});
 
@@ -256,9 +256,9 @@
 	const searchInputClass = $derived(() => {
 		return cn(
 			"w-full rounded-lg border bg-white transition-all duration-200 focus:outline-none focus:ring-2",
-			currentSize.input,
+			currentSize?.input,
 			isFocused 
-				? cn("border-transparent ring-2", currentTheme.primary)
+				? cn("border-transparent ring-2", currentTheme?.primary)
 				: "border-gray-200 hover:border-gray-300",
 			searchClass
 		);
@@ -283,12 +283,12 @@
 											class={cn(
 												"flex items-center gap-2 px-3 py-2 rounded-md font-medium transition-all",
 												isCategoryDropdownOpen 
-													? currentTheme.accent
+													? currentTheme?.accent
 													: "bg-gray-900 text-white hover:bg-gray-800"
 											)}
 										>
 											{#if categoryButtonType === 'text'}
-												<span class="text-sm">{m.header_categories?.() || 'Categories'}</span>
+												<span class="text-sm">{m?.header_categories?.() || 'Categories'}</span>
 											{/if}
 											<ChevronDown class={cn(
 												"w-4 h-4",
@@ -316,7 +316,7 @@
 										onclick={handleSearch}
 										class={cn(
 											"ml-3 flex items-center justify-center w-10 h-10 rounded-md transition-opacity",
-											currentTheme.accent
+											currentTheme?.accent
 										)}
 									>
 										<Search class="w-5 h-5" />
@@ -329,10 +329,10 @@
 								<div class="border-t border-gray-100 py-3 px-4">
 									<div class="flex items-center gap-2 overflow-x-auto">
 										<span class="text-xs text-gray-500 flex-shrink-0">
-											{m.search_trending?.() || 'Trending'}:
+											{m?.search_trending?.() || 'Trending'}:
 										</span>
 										<UnifiedFilter mode="pills"
-											filters={quickFilters.slice(0, maxQuickFilters)}
+											filters={quickFilters?.slice(0, maxQuickFilters)}
 											onFilterClick={handleQuickFilter}
 											class="flex-1"
 										/>
@@ -422,7 +422,7 @@
 					<!-- Trending Searches -->
 					{#if showTrending && trendingSearches.length > 0}
 						<TrendingSearches
-							searches={trendingSearches.slice(0, maxTrending)}
+							searches={trendingSearches?.slice(0, maxTrending)}
 							onSearchClick={handleTrendingClick}
 							class="mt-3"
 						/>
@@ -461,7 +461,7 @@
 							onclick={handleSearch}
 							class="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-brand-500 text-white rounded-md text-xs font-medium hover:bg-brand-600 transition-colors"
 						>
-							{m.quick_filter_search_button?.() || 'Search'}
+							{m?.quick_filter_search_button?.() || 'Search'}
 						</button>
 					</div>
 				</div>
@@ -469,7 +469,7 @@
 
 		{:else}
 			<!-- Inline/Header Layout -->
-			<div class={cn("flex items-center", currentSize.gap)}>
+			<div class={cn("flex items-center", currentSize?.gap)}>
 				{#if showCategoryButton && categoryButtonType === 'dropdown'}
 					<CategoryDropdown 
 						{categories}

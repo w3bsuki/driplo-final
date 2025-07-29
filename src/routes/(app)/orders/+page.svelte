@@ -4,12 +4,12 @@
     import type { PageData } from './$types';
     import { Package, ShoppingBag, TrendingUp, Calendar, Filter, Download, ChevronDown, BarChart3 } from 'lucide-svelte';
     
-    let { data }: { data: PageData } = $props();
+    let { _data}: { data: PageData } = $props();
     
-    let activeTab = $derived($page.url.searchParams.get('tab') || 'all');
-    let statusFilter = $derived($page.url.searchParams.get('status') || null);
-    let dateFrom = $derived($page.url.searchParams.get('from') || '');
-    let dateTo = $derived($page.url.searchParams.get('to') || '');
+    let activeTab = $derived($page?.url.searchParams?.get('tab') || 'all');
+    let statusFilter = $derived($page?.url.searchParams?.get('status') || null);
+    let dateFrom = $derived($page?.url.searchParams?.get('from') || '');
+    let dateTo = $derived($page?.url.searchParams?.get('to') || '');
     
     const tabs = [
         { id: 'all', label: 'All Orders', icon: Package },
@@ -29,24 +29,24 @@
     ];
 
     async function exportOrders(format: 'csv' | 'pdf') {
-        const params = new URLSearchParams($page.url.searchParams);
-        params.set('format', format);
+        const params = new URLSearchParams($page?.url.searchParams);
+        params?.set('format', format);
         
         try {
             const response = await fetch(`/api/orders/export?${params}`);
-            if (response.ok) {
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `orders-${new Date().toISOString().split('T')[0]}.${format}`;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
+            if (response?.ok) {
+                const blob = await response?.blob();
+                const url = window?.URL.createObjectURL(blob);
+                const a = document?.createElement('a');
+                a?.href = url;
+                a?.download = `orders-${new Date().toISOString().split('T')[0]}.${format}`;
+                document?.body.appendChild(a);
+                a?.click();
+                window?.URL.revokeObjectURL(url);
+                document?.body.removeChild(a);
             }
         } catch (error) {
-            console.error('Export failed:', error);
+            console?.error('Export failed:', error);
         }
     }
 
@@ -56,21 +56,21 @@
     
     async function loadStats() {
         const params = new URLSearchParams();
-        params.set('role', activeTab);
+        params?.set('role', activeTab);
         
         try {
             const response = await fetch(`/api/orders/stats?${params}`);
-            if (response.ok) {
+            if (response?.ok) {
                 stats = await response.json();
                 showStats = true;
             }
         } catch (error) {
-            console.error('Failed to load stats:', error);
+            console?.error('Failed to load stats:', error);
         }
     }
 
     function formatPrice(cents: number) {
-        return new Intl.NumberFormat('en-US', {
+        return new Intl?.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD'
         }).format(cents / 100);
@@ -91,15 +91,15 @@
         
         <!-- Tabs -->
         <div class="flex space-x-1 bg-gray-100/80 p-1 rounded-xl mb-6 overflow-x-auto">
-            {#each tabs as tab (tab.id)}
-                {@const Icon = tab.icon}
+            {#each tabs as tab (tab?.id)}
+                {@const Icon = tab?.icon}
                 <a 
-                    href="?tab={tab.id}{statusFilter ? `&status=${statusFilter}` : ''}"
-                    class="flex-1 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap min-w-fit {activeTab === tab.id ? 'bg-white text-primary shadow-sm' : 'text-gray-600 hover:text-gray-900'}"
+                    href="?tab={tab?.id}{statusFilter ? `&status=${statusFilter}` : ''}"
+                    class="flex-1 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap min-w-fit {activeTab === tab?.id ? 'bg-white text-primary shadow-sm' : 'text-gray-600 hover:text-gray-900'}"
                 >
                     <Icon class="w-4 h-4" />
-                    <span class="hidden sm:inline">{tab.label}</span>
-                    <span class="sm:hidden">{tab.label.split(' ')[0]}</span>
+                    <span class="hidden sm:inline">{tab?.label}</span>
+                    <span class="sm:hidden">{tab?.label.split(' ')[0]}</span>
                 </a>
             {/each}
         </div>
@@ -116,18 +116,18 @@
                             class="pl-10 pr-10 py-2 w-full bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer"
                             value={statusFilter || ''}
                             onchange={(e) => {
-                                const status = e.currentTarget.value;
-                                const params = new URLSearchParams($page.url.searchParams);
+                                const status = e?.currentTarget.value;
+                                const params = new URLSearchParams($page?.url.searchParams);
                                 if (status) {
-                                    params.set('status', status);
+                                    params?.set('status', status);
                                 } else {
-                                    params.delete('status');
+                                    params?.delete('status');
                                 }
-                                window.location.href = `?${params.toString()}`;
+                                window?.location.href = `?${params?.toString()}`;
                             }}
                         >
-                            {#each statuses as status (status.value)}
-                                <option value={status.value}>{status.label}</option>
+                            {#each statuses as status (status?.value)}
+                                <option value={status?.value}>{status?.label}</option>
                             {/each}
                         </select>
                         <ChevronDown class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -144,14 +144,14 @@
                             class="pl-10 pr-3 py-2 w-full bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                             value={dateFrom}
                             onchange={(e) => {
-                                const from = e.currentTarget.value;
-                                const params = new URLSearchParams($page.url.searchParams);
+                                const from = e?.currentTarget.value;
+                                const params = new URLSearchParams($page?.url.searchParams);
                                 if (from) {
-                                    params.set('from', from);
+                                    params?.set('from', from);
                                 } else {
-                                    params.delete('from');
+                                    params?.delete('from');
                                 }
-                                window.location.href = `?${params.toString()}`;
+                                window?.location.href = `?${params?.toString()}`;
                             }}
                         />
                     </div>
@@ -167,14 +167,14 @@
                             class="pl-10 pr-3 py-2 w-full bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                             value={dateTo}
                             onchange={(e) => {
-                                const to = e.currentTarget.value;
-                                const params = new URLSearchParams($page.url.searchParams);
+                                const to = e?.currentTarget.value;
+                                const params = new URLSearchParams($page?.url.searchParams);
                                 if (to) {
-                                    params.set('to', to);
+                                    params?.set('to', to);
                                 } else {
-                                    params.delete('to');
+                                    params?.delete('to');
                                 }
-                                window.location.href = `?${params.toString()}`;
+                                window?.location.href = `?${params?.toString()}`;
                             }}
                         />
                     </div>
@@ -185,11 +185,11 @@
                     <button 
                         class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors sm:flex-1 md:flex-initial min-h-[44px]"
                         onclick={() => {
-                            const params = new URLSearchParams($page.url.searchParams);
-                            params.delete('status');
-                            params.delete('from');
-                            params.delete('to');
-                            window.location.href = `?${params.toString()}`;
+                            const params = new URLSearchParams($page?.url.searchParams);
+                            params?.delete('status');
+                            params?.delete('from');
+                            params?.delete('to');
+                            window?.location.href = `?${params?.toString()}`;
                         }}
                     >
                         Clear
@@ -228,7 +228,7 @@
                         <span class="text-xs text-gray-500">All Time</span>
                     </div>
                     <h3 class="text-sm font-medium text-gray-600">Total Orders</h3>
-                    <p class="text-2xl font-semibold text-gray-900 mt-1">{stats.totalOrders}</p>
+                    <p class="text-2xl font-semibold text-gray-900 mt-1">{stats?.totalOrders}</p>
                 </div>
                 
                 <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
@@ -239,7 +239,7 @@
                         <span class="text-xs text-gray-500">All Time</span>
                     </div>
                     <h3 class="text-sm font-medium text-gray-600">Total Revenue</h3>
-                    <p class="text-2xl font-semibold text-gray-900 mt-1">{formatPrice(stats.totalRevenue)}</p>
+                    <p class="text-2xl font-semibold text-gray-900 mt-1">{formatPrice(stats?.totalRevenue)}</p>
                 </div>
                 
                 <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
@@ -250,15 +250,15 @@
                         <span class="text-xs text-gray-500">Average</span>
                     </div>
                     <h3 class="text-sm font-medium text-gray-600">Order Value</h3>
-                    <p class="text-2xl font-semibold text-gray-900 mt-1">{formatPrice(stats.averageOrderValue)}</p>
+                    <p class="text-2xl font-semibold text-gray-900 mt-1">{formatPrice(stats?.averageOrderValue)}</p>
                 </div>
                 
                 <!-- Orders by Status -->
                 <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
                     <h3 class="text-sm font-medium text-gray-900 mb-4">Orders by Status</h3>
                     <div class="space-y-3">
-                        {#each Object.entries(stats.ordersByStatus) as [status, count] (status)}
-                            {@const statusConfig = statuses.find(s => s.value === status)}
+                        {#each Object?.entries(stats?.ordersByStatus) as [status, count] (status)}
+                            {@const statusConfig = statuses?.find(s => s?.value === status)}
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <span class="inline-flex px-2 py-1 text-xs font-medium rounded-full {statusConfig?.color || 'bg-gray-100 text-gray-800'}">
@@ -275,14 +275,14 @@
                 <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow col-span-full md:col-span-2">
                     <h3 class="text-sm font-medium text-gray-900 mb-4">Monthly Trends</h3>
                     <div class="space-y-3">
-                        {#each stats.monthlyTrends as trend (trend.month)}
+                        {#each stats?.monthlyTrends as trend (trend?.month)}
                             <div class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors">
                                 <span class="text-sm text-gray-600">
-                                    {new Date(trend.month).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
+                                    {new Date(trend?.month).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
                                 </span>
                                 <div class="text-right">
-                                    <div class="text-sm font-medium text-gray-900">{trend.orders} orders</div>
-                                    <div class="text-xs text-gray-500">{formatPrice(trend.revenue)}</div>
+                                    <div class="text-sm font-medium text-gray-900">{trend?.orders} orders</div>
+                                    <div class="text-xs text-gray-500">{formatPrice(trend?.revenue)}</div>
                                 </div>
                             </div>
                         {/each}

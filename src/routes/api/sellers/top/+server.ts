@@ -15,7 +15,7 @@ export const GET: RequestHandler = async ({ locals, url }) => {
     // Validate query parameters
     const parseResult = querySchema.safeParse({
       period: url.searchParams.get('period') || 'month',
-      limit: parseInt(url.searchParams.get('limit') || '12')
+      limit: parseInt(url.searchParams.get('limit' || '0') || '12')
     });
     
     if (!parseResult.success) {
@@ -48,7 +48,7 @@ export const GET: RequestHandler = async ({ locals, url }) => {
     }
     
     // Add ranking to sellers
-    const sellersWithRank = (data || []).map((seller, index) => ({
+    const sellersWithRank = (data || []).map((seller: any, index: number) => ({
       ...seller,
       rank: index + 1
     }));
@@ -56,7 +56,7 @@ export const GET: RequestHandler = async ({ locals, url }) => {
     const response: TopSellersResponse = {
       sellers: sellersWithRank,
       period,
-      totalCount: sellersWithRank.length
+      totalCount: sellersWithRank?.length ?? 0
     };
     
     return apiSuccess(response, 200, requestId);

@@ -4,16 +4,16 @@ import { z } from 'zod'
 import type { WishlistToggleResponse } from '$lib/types/api'
 
 export const GET: RequestHandler = async ({ locals }) => {
-	const requestId = crypto.randomUUID()
+	const requestId = crypto?.randomUUID()
 	
 	try {
 		// Check authentication
 		const auth = await requireAuth(locals)
 		if (!auth) {
-			return apiError('Unauthorized', 401, ApiErrorType.AUTHENTICATION, undefined, requestId)
+			return apiError('Unauthorized', 401, ApiErrorType?.AUTHENTICATION, undefined, requestId)
 		}
 
-		const { data: favorites, error: favoritesError } = await locals.supabase
+		const { data: favorites, error: favoritesError } = await locals?.supabase
 			.from('favorites')
 			.select(`
 				id,
@@ -34,14 +34,14 @@ export const GET: RequestHandler = async ({ locals }) => {
 					)
 				)
 			`)
-			.eq('user_id', auth.userId)
+			.eq('user_id', auth?.userId)
 			.order('created_at', { ascending: false })
 
 		if (favoritesError) {
 			return apiError(
 				'Failed to fetch favorites',
 				500,
-				ApiErrorType.DATABASE,
+				ApiErrorType?.DATABASE,
 				undefined,
 				requestId
 			)
@@ -52,50 +52,50 @@ export const GET: RequestHandler = async ({ locals }) => {
 		return apiError(
 			'An unexpected error occurred',
 			500,
-			ApiErrorType.INTERNAL,
+			ApiErrorType?.INTERNAL,
 			undefined,
 			requestId
 		)
 	}
 }
 
-const wishlistSchema = z.object({
-	listing_id: z.string().uuid()
+const wishlistSchema = z?.object({
+	listing_id: z?.string().uuid()
 })
 
 export const POST: RequestHandler = async ({ request, locals }) => {
-	const requestId = crypto.randomUUID()
+	const requestId = crypto?.randomUUID()
 	
 	try {
 		// Check authentication
 		const auth = await requireAuth(locals)
 		if (!auth) {
-			return apiError('Unauthorized', 401, ApiErrorType.AUTHENTICATION, undefined, requestId)
+			return apiError('Unauthorized', 401, ApiErrorType?.AUTHENTICATION, undefined, requestId)
 		}
 		
 		// Validate request body
 		const { listing_id } = await validateRequest(request, wishlistSchema)
 
 		// Check if already favorited
-		const { data: existing } = await locals.supabase
+		const { data: existing } = await locals?.supabase
 			.from('favorites')
 			.select('id')
-			.eq('user_id', auth.userId)
+			.eq('user_id', auth?.userId)
 			.eq('listing_id', listing_id)
 			.maybeSingle()
 
 		if (existing) {
 			const response: WishlistToggleResponse = {
 				added: false,
-				favorite_id: existing.id
+				favorite_id: existing?.id
 			}
 			return apiSuccess(response, 200, requestId)
 		}
 
-		const { data, error: insertError } = await locals.supabase
+		const { data, error: insertError } = await locals?.supabase
 			.from('favorites')
 			.insert({
-				user_id: auth.userId,
+				user_id: auth?.userId,
 				listing_id
 			})
 			.select()
@@ -105,7 +105,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			return apiError(
 				'Failed to add to favorites',
 				500,
-				ApiErrorType.DATABASE,
+				ApiErrorType?.DATABASE,
 				undefined,
 				requestId
 			)
@@ -113,17 +113,17 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 		const response: WishlistToggleResponse = {
 			added: true,
-			favorite_id: data.id
+			favorite_id: data?.id
 		}
 		return apiSuccess(response, 201, requestId)
 	} catch (error) {
 		if (error instanceof Error) {
-			return apiError(error.message, 500, ApiErrorType.INTERNAL_ERROR, { error: error.name }, requestId)
+			return apiError(error?.message, 500, ApiErrorType?.INTERNAL_ERROR, { error: error?.name }, requestId)
 		}
 		return apiError(
 			'An unexpected error occurred',
 			500,
-			ApiErrorType.INTERNAL,
+			ApiErrorType?.INTERNAL,
 			undefined,
 			requestId
 		)
@@ -131,29 +131,29 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 }
 
 export const DELETE: RequestHandler = async ({ request, locals }) => {
-	const requestId = crypto.randomUUID()
+	const requestId = crypto?.randomUUID()
 	
 	try {
 		// Check authentication
 		const auth = await requireAuth(locals)
 		if (!auth) {
-			return apiError('Unauthorized', 401, ApiErrorType.AUTHENTICATION, undefined, requestId)
+			return apiError('Unauthorized', 401, ApiErrorType?.AUTHENTICATION, undefined, requestId)
 		}
 		
 		// Validate request body
 		const { listing_id } = await validateRequest(request, wishlistSchema)
 
-		const { error: deleteError } = await locals.supabase
+		const { error: deleteError } = await locals?.supabase
 			.from('favorites')
 			.delete()
-			.eq('user_id', auth.userId)
+			.eq('user_id', auth?.userId)
 			.eq('listing_id', listing_id)
 
 		if (deleteError) {
 			return apiError(
 				'Failed to remove from favorites',
 				500,
-				ApiErrorType.DATABASE,
+				ApiErrorType?.DATABASE,
 				undefined,
 				requestId
 			)
@@ -165,12 +165,12 @@ export const DELETE: RequestHandler = async ({ request, locals }) => {
 		return apiSuccess(response, 200, requestId)
 	} catch (error) {
 		if (error instanceof Error) {
-			return apiError(error.message, 500, ApiErrorType.INTERNAL_ERROR, { error: error.name }, requestId)
+			return apiError(error?.message, 500, ApiErrorType?.INTERNAL_ERROR, { error: error?.name }, requestId)
 		}
 		return apiError(
 			'An unexpected error occurred',
 			500,
-			ApiErrorType.INTERNAL,
+			ApiErrorType?.INTERNAL,
 			undefined,
 			requestId
 		)

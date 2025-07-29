@@ -13,7 +13,7 @@ export class FocusTrap {
     escapeDeactivates?: boolean
     onDeactivate?: () => void
   } = {}) {
-    this.element = element
+    this?.element = element
     const { 
       initialFocus, 
       returnFocus = true, 
@@ -23,11 +23,11 @@ export class FocusTrap {
     
     // Store currently focused element
     if (returnFocus) {
-      this.previouslyFocusedElement = document.activeElement as HTMLElement
+      this?.previouslyFocusedElement = document?.activeElement as HTMLElement
     }
     
     // Find all focusable elements
-    this.updateFocusableElements()
+    this?.updateFocusableElements()
     
     // Set initial focus
     if (initialFocus) {
@@ -45,7 +45,7 @@ export class FocusTrap {
     }
     
     // Handle keyboard navigation
-    this.handleKeyDown = (e: KeyboardEvent) => {
+    this._onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Tab') {
         this.handleTab(e)
       } else if (e.key === 'Escape' && escapeDeactivates) {
@@ -54,7 +54,7 @@ export class FocusTrap {
       }
     }
     
-    document.addEventListener('keydown', this.handleKeyDown)
+    document.addEventListener('keydown', this._onKeyDown)
   }
   
   private updateFocusableElements(): void {
@@ -94,7 +94,7 @@ export class FocusTrap {
   }
   
   public deactivate(): void {
-    document.removeEventListener('keydown', this.handleKeyDown)
+    document.removeEventListener('keydown', this._onKeyDown)
     
     if (this.previouslyFocusedElement) {
       this.previouslyFocusedElement.focus()
@@ -102,11 +102,11 @@ export class FocusTrap {
   }
   
   public pause(): void {
-    document.removeEventListener('keydown', this.handleKeyDown)
+    document.removeEventListener('keydown', this._onKeyDown)
   }
   
   public unpause(): void {
-    document.addEventListener('keydown', this.handleKeyDown)
+    document.addEventListener('keydown', this._onKeyDown)
   }
   
   public updateElements(): void {

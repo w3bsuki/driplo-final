@@ -2,10 +2,10 @@
 	import { goto } from '$app/navigation';
 	// User icon not used, removed import
 	import LanguageSwitcher from './LanguageSwitcher.svelte';
-	import * as m from '$lib/paraglide/messages.js';
+	// import * as m from '$lib/paraglide/messages.js';
 	import type { User, Session } from '@supabase/supabase-js';
-	import type { ExtendedProfile } from '$lib/types/database.extended';
-	import { DropdownMenu, Button } from '$lib/components/ui';
+	import type { ExtendedProfile } from '$lib/types';
+	import { DropdownMenu, _Button} from '$lib/components/ui';
 	
 	interface Props {
 		user: User | null;
@@ -16,7 +16,7 @@
 		open?: boolean;
 	}
 	
-	let { user, session, profile, brandSlug = null, onSignOut, open }: Props = $props();
+	let { user, _session, profile, brandSlug = null, onSignOut, _open}: Props = $props();
 	
 	// Badge mapping
 	const badgeConfig: Record<string, { emoji: string; label: string }> = {
@@ -37,7 +37,7 @@
 	>
 		<div class="relative">
 			<img 
-				src={profile?.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile?.username || user.email}`} 
+				src={profile?.avatar_url || `https://api?.dicebear.com/7?.x/avataaars/svg?seed=${profile?.username || user?.email}`} 
 				alt="Profile" 
 				class="h-8 w-8 rounded-sm object-cover" 
 			/>

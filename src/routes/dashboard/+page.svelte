@@ -20,7 +20,7 @@
 	const stats = [
 		{
 			name: 'Total Users',
-			value: data.stats.totalUsers.toLocaleString(),
+			value: data?.stats.totalUsers?.toLocaleString(),
 			change: '+12%',
 			changeType: 'positive',
 			icon: Users,
@@ -28,7 +28,7 @@
 		},
 		{
 			name: 'Active Listings',
-			value: data.stats.activeListings.toLocaleString(),
+			value: data?.stats.activeListings?.toLocaleString(),
 			change: '+5%',
 			changeType: 'positive',
 			icon: Package,
@@ -36,7 +36,7 @@
 		},
 		{
 			name: 'Verified Brands',
-			value: data.stats.verifiedBrands.toLocaleString(),
+			value: data?.stats.verifiedBrands?.toLocaleString(),
 			change: '+23%',
 			changeType: 'positive',
 			icon: Building2,
@@ -44,7 +44,7 @@
 		},
 		{
 			name: 'Revenue (30d)',
-			value: `$${data.stats.monthlyRevenue.toLocaleString()}`,
+			value: `$${data?.stats.monthlyRevenue?.toLocaleString()}`,
 			change: '+18%',
 			changeType: 'positive',
 			icon: DollarSign,
@@ -59,7 +59,7 @@
 			purple: 'bg-purple-100 text-purple-600',
 			yellow: 'bg-yellow-100 text-yellow-600'
 		};
-		return colors[color as keyof typeof colors] || colors.blue;
+		return colors[color as keyof typeof colors] || colors?.blue;
 	}
 </script>
 
@@ -73,18 +73,18 @@
 	<!-- Stats Grid -->
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 		{#each stats as stat}
-			{@const Icon = stat.icon}
+			{@const Icon = stat?.icon}
 			<div class="bg-white rounded-lg shadow-sm p-6">
 				<div class="flex items-center justify-between mb-4">
-					<div class={`p-3 rounded-lg ${getColorClasses(stat.color)}`}>
+					<div class={`p-3 rounded-lg ${getColorClasses(stat?.color)}`}>
 						<Icon class="w-6 h-6" />
 					</div>
-					<span class="text-sm font-medium {stat.changeType === 'positive' ? 'text-green-600' : 'text-red-600'}">
-						{stat.change}
+					<span class="text-sm font-medium {stat?.changeType === 'positive' ? 'text-green-600' : 'text-red-600'}">
+						{stat?.change}
 					</span>
 				</div>
-				<h3 class="text-2xl font-bold text-gray-900">{stat.value}</h3>
-				<p class="text-sm text-gray-600 mt-1">{stat.name}</p>
+				<h3 class="text-2xl font-bold text-gray-900">{stat?.value}</h3>
+				<p class="text-sm text-gray-600 mt-1">{stat?.name}</p>
 			</div>
 		{/each}
 	</div>
@@ -96,33 +96,33 @@
 			<div class="p-6 border-b">
 				<div class="flex items-center justify-between">
 					<h2 class="text-lg font-semibold text-gray-900">Pending Brand Approvals</h2>
-					{#if data.pendingBrands.length > 0}
+					{#if data?.pendingBrands.length > 0}
 						<span class="bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded-full">
-							{data.pendingBrands.length} pending
+							{data?.pendingBrands.length} pending
 						</span>
 					{/if}
 				</div>
 			</div>
 			<div class="p-6">
-				{#if data.pendingBrands.length === 0}
+				{#if data?.pendingBrands.length === 0}
 					<div class="text-center py-8">
 						<ShieldCheck class="w-12 h-12 text-gray-400 mx-auto mb-3" />
 						<p class="text-gray-500">No pending approvals</p>
 					</div>
 				{:else}
 					<div class="space-y-4">
-						{#each data.pendingBrands.slice(0, 5) as request}
+						{#each data?.pendingBrands.slice(0, 5) as request}
 							<div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
 								<div>
-									<h4 class="font-medium text-gray-900">{request.brand_name}</h4>
-									<p class="text-sm text-gray-600">{request.brand_category}</p>
+									<h4 class="font-medium text-gray-900">{(request as any)?.brand_name || 'Unknown Brand'}</h4>
+									<p class="text-sm text-gray-600">{(request as any)?.brand_category || 'No Category'}</p>
 									<p class="text-xs text-gray-500 mt-1">
 										<Clock class="w-3 h-3 inline mr-1" />
-										{new Date(request.submitted_at).toLocaleDateString()}
+										{new Date((request as any)?.submitted_at || Date.now()).toLocaleDateString()}
 									</p>
 								</div>
 								<a
-									href="/dashboard/brands/{request.id}"
+									href="/dashboard/brands/{(request as any)?.id || ''}"
 									class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg
 										hover:bg-blue-700 transition-colors"
 								>
@@ -130,12 +130,12 @@
 								</a>
 							</div>
 						{/each}
-						{#if data.pendingBrands.length > 5}
+						{#if data?.pendingBrands.length > 5}
 							<a 
 								href="/dashboard/brands"
 								class="block text-center text-blue-600 hover:text-blue-700 font-medium text-sm"
 							>
-								View all {data.pendingBrands.length} requests →
+								View all {data?.pendingBrands.length} requests →
 							</a>
 						{/if}
 					</div>
@@ -148,32 +148,32 @@
 			<div class="p-6 border-b">
 				<div class="flex items-center justify-between">
 					<h2 class="text-lg font-semibold text-gray-900">Recent Reports</h2>
-					{#if data.recentReports.length > 0}
+					{#if data?.recentReports.length > 0}
 						<span class="bg-yellow-100 text-yellow-700 text-xs font-medium px-2 py-1 rounded-full">
-							{data.recentReports.length} active
+							{data?.recentReports.length} active
 						</span>
 					{/if}
 				</div>
 			</div>
 			<div class="p-6">
-				{#if data.recentReports.length === 0}
+				{#if data?.recentReports.length === 0}
 					<div class="text-center py-8">
 						<AlertCircle class="w-12 h-12 text-gray-400 mx-auto mb-3" />
 						<p class="text-gray-500">No active reports</p>
 					</div>
 				{:else}
 					<div class="space-y-4">
-						{#each data.recentReports as report}
+						{#each data?.recentReports as report}
 							<div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
 								<div>
-									<h4 class="font-medium text-gray-900">{report.type}</h4>
-									<p class="text-sm text-gray-600">{report.description}</p>
+									<h4 class="font-medium text-gray-900">{(report as any)?.type || 'Unknown'}</h4>
+									<p class="text-sm text-gray-600">{(report as any)?.description || 'No description'}</p>
 									<p class="text-xs text-gray-500 mt-1">
-										Reported by @{report.reporter}
+										Reported by @{(report as any)?.reporter || 'Unknown'}
 									</p>
 								</div>
 								<a
-									href="/dashboard/reports/{report.id}"
+									href="/dashboard/reports/{(report as any)?.id || ''}"
 									class="text-blue-600 hover:text-blue-700 font-medium text-sm"
 								>
 									View →

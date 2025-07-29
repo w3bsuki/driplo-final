@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Building2, Tag, FileText, Link2, Plus, X, Instagram, Globe, ShieldCheck } from 'lucide-svelte';
+	import { Building2, Tag, FileText, Link2, Plus, X, _Instagram, _Globe, ShieldCheck } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 
 	interface SocialMediaAccount {

@@ -28,7 +28,7 @@ export const GET: RequestHandler = async ({ locals }) => {
             );
         }
 
-        const conversationIds = conversations?.map(c => c.id) || [];
+        const conversationIds = conversations.map(c => c.id) || [];
 
         if (conversationIds.length === 0) {
             const response: UnreadCountResponse = { count: 0 };

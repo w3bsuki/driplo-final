@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	// import { onMount } from 'svelte';
 	import { formatCurrency } from '$lib/utils/currency';
 	import { X, CreditCard, Lock, Truck, Check, ChevronRight, ChevronLeft } from 'lucide-svelte';
 	import { fade, scale, slide } from 'svelte/transition';
@@ -8,7 +8,7 @@
 	import * as m from '$lib/paraglide/messages.js';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import { enhance } from '$app/forms';
-	import { goto } from '$app/navigation';
+	// import { goto } from '$app/navigation';
 
 	interface Props {
 		listing: any;
@@ -190,7 +190,7 @@
 	
 	// Handle form enhancement for progressive enhancement
 	function handleFormEnhance() {
-		return async ({ formElement, formData, action, cancel }: any) => {
+		return async ({ formData, action, cancel }: any) => {
 			if (action.search.includes('confirmPayment') && paymentProvider === 'stripe') {
 				// Create payment method before submitting
 				const success = await handlePaymentSubmit();

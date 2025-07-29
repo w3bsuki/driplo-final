@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { X } from 'lucide-svelte';
+	import { _X} from 'lucide-svelte';
 	import { fade, scale } from 'svelte/transition';
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';

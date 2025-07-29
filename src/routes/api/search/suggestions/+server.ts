@@ -4,7 +4,7 @@ import type { RequestHandler } from './$types'
 export const GET: RequestHandler = async ({ url, locals: { supabase } }) => {
 	const query = url.searchParams.get('q')?.trim()
 	
-	if (!query || query.length < 2) {
+	if (!query || query?.length ?? 0 < 2) {
 		return json([])
 	}
 
@@ -29,7 +29,7 @@ export const GET: RequestHandler = async ({ url, locals: { supabase } }) => {
 				.limit(5)
 		])
 
-		const suggestions = []
+		const suggestions: string[] = []
 
 		// Add title suggestions
 		if (titleSuggestions.data) {
@@ -37,7 +37,7 @@ export const GET: RequestHandler = async ({ url, locals: { supabase } }) => {
 				if (item.title && !suggestions.includes(item.title)) {
 					suggestions.push(item.title)
 				}
-			})
+			});
 		}
 
 		// Add brand suggestions
@@ -60,9 +60,9 @@ export const GET: RequestHandler = async ({ url, locals: { supabase } }) => {
 			if (term.toLowerCase().includes(query.toLowerCase()) && !suggestions.includes(term)) {
 				suggestions.push(term)
 			}
-		})
+		});
 
-		return json(suggestions.slice(0, 8))
+		return json(suggestions.slice(0, 8));
 	} catch (error) {
 		console.error('Search suggestions error:', error)
 		return json([])

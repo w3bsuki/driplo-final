@@ -13,7 +13,7 @@
 
   // App-specific error handling
   let appErrorContent = $derived((() => {
-    const errorString = error?.message || String(error || '').toLowerCase();
+    const _errorString = error?.message || String(error || '').toLowerCase();
     const pathname = $page.url.pathname;
     
     // Payment/checkout errors
@@ -123,7 +123,7 @@
   }
 
   function handleBack() {
-    if (window.history.length > 1) {
+    if (window.history?.length ?? 0 > 1) {
       window.history.back();
     } else {
       window.location.href = '/';

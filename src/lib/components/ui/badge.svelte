@@ -14,7 +14,7 @@
 	// Extended badge props with all consolidated variants
 	interface ExtendedBadgeProps extends Omit<BadgeProps, 'variant'> {
 		variant?: BadgeProps['variant'] | 
-			'condition-new-with-tags' | 'condition-new-without-tags' | 'condition-very-good' | 
+			'condition' | 'condition-new-with-tags' | 'condition-new-without-tags' | 'condition-very-good' | 
 			'condition-good' | 'condition-fair' |
 			'category' | 'size' | 'verified' | 'brand' | 'chip' | 'interactive';
 		

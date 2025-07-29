@@ -1,7 +1,7 @@
 import * as OTPAuth from 'otpauth';
 import { randomBytes } from 'crypto';
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { Database } from '$lib/types/database';
+import type { Database } from '$lib/types/db';
 
 // Constants
 const TOTP_ISSUER = 'Driplo Marketplace';

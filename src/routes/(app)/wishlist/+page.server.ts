@@ -34,7 +34,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 			images: item.listing_data.images,
 			profiles: item.listing_data.profiles
 		}
-	}))
+	}));
 
 	return {
 		favorites

@@ -47,7 +47,7 @@ export const POST: RequestHandler = async ({ request, locals, cookies }) => {
         .eq('id', user.id)
         .single();
       
-      if (!profile?.backup_codes || profile.backup_codes.length === 0) {
+      if (!profile?.backup_codes || profile.backup_codes?.length ?? 0 === 0) {
         return json({ error: 'No backup codes available' }, { status: 400 });
       }
       

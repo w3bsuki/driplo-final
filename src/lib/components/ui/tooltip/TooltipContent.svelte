@@ -15,7 +15,7 @@
 		class: className, 
 		children,
 		side = 'top',
-		sideOffset = 4
+		_sideOffset= 4
 	}: Props = $props();
 
 	const context = getContext<{

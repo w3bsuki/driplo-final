@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { Database } from '$lib/types/database'
+import type { Database } from '$lib/types/db'
 import { ImageOptimizer } from '$lib/server/image-optimizer'
 
 export type UploadResult = {
@@ -18,11 +18,11 @@ export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'im
  * Validates an image file
  */
 export function validateImageFile(file: File): string | null {
-	if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
+	if (!ACCEPTED_IMAGE_TYPES?.includes(file?.type)) {
 		return 'Please upload a valid image file (JPEG, PNG, WebP, or GIF)'
 	}
 	
-	if (file.size > MAX_FILE_SIZE) {
+	if (file?.size > MAX_FILE_SIZE) {
 		return 'Image size must be less than 10MB'
 	}
 	
@@ -50,7 +50,7 @@ export async function uploadImage(
 		// For client-side uploads or when optimization is disabled
 		if (!optimize || typeof window !== 'undefined') {
 			// Generate unique filename
-			const fileExt = file.name.split('.').pop()
+			const fileExt = file?.name.split('.').pop()
 			const fileName = `${uuidv4()}.${fileExt}`
 			
 			// Create folder structure based on bucket type
@@ -62,7 +62,7 @@ export async function uploadImage(
 			}
 
 			// Upload to Supabase storage
-			const { data, error } = await supabase.storage
+			const { data, error } = await supabase?.storage
 				.from(bucket)
 				.upload(filePath, file, {
 					cacheControl: 'public, max-age=2592000', // 30 days cache
@@ -70,18 +70,18 @@ export async function uploadImage(
 				})
 
 			if (error) {
-				console.error('Upload error:', error)
-				return { url: '', error: error.message }
+				console?.error('Upload error:', error)
+				return { url: '', error: error?.message }
 			}
 
 			// Get public URL
-			const { data: { publicUrl } } = supabase.storage
+			const { data: { publicUrl } } = supabase?.storage
 				.from(bucket)
-				.getPublicUrl(data.path)
+				.getPublicUrl(data?.path)
 
 			return {
 				url: publicUrl,
-				path: data.path
+				path: data?.path
 			}
 		}
 
@@ -90,7 +90,7 @@ export async function uploadImage(
 		const type = bucket === 'avatars' ? 'avatar' : bucket === 'covers' ? 'cover' : 'listing'
 		
 		// Optimize images
-		const optimizedImages = await optimizer.optimizeImage(file, type)
+		const optimizedImages = await optimizer?.optimizeImage(file, type)
 		
 		if (optimizedImages.length === 0) {
 			return { url: '', error: 'Failed to optimize image' }
@@ -100,7 +100,7 @@ export async function uploadImage(
 		const basePath = userId ? `${bucket}/${userId}` : bucket
 		
 		// Upload optimized images
-		const { urls, mainUrl } = await optimizer.uploadOptimizedImages(
+		const { urls, mainUrl } = await optimizer?.uploadOptimizedImages(
 			optimizedImages,
 			'images', // Using single bucket
 			basePath
@@ -110,7 +110,7 @@ export async function uploadImage(
 			return { url: '', error: 'Failed to upload images' }
 		}
 		
-		const srcSet = optimizer.generateSrcSet(urls)
+		const srcSet = optimizer?.generateSrcSet(urls)
 		
 		return {
 			url: mainUrl,
@@ -118,10 +118,10 @@ export async function uploadImage(
 			srcSet
 		}
 	} catch (error) {
-		console.error('Upload error:', error)
+		console?.error('Upload error:', error)
 		return { 
 			url: '', 
-			error: error instanceof Error ? error.message : 'Failed to upload image' 
+			error: error instanceof Error ? error?.message : 'Failed to upload image' 
 		}
 	}
 }
@@ -141,7 +141,7 @@ export async function uploadMultipleImages(
 	
 	for (let i = 0; i < files.length; i++) {
 		const result = await uploadImage(files[i], bucket, supabase, userId, optimize)
-		results.push(result)
+		results?.push(result)
 		
 		if (onProgress) {
 			onProgress(((i + 1) / files.length) * 100)
@@ -160,18 +160,18 @@ export async function deleteImage(
 	supabase: SupabaseClient<Database>
 ): Promise<boolean> {
 	try {
-		const { error } = await supabase.storage
+		const { error } = await supabase?.storage
 			.from(bucket)
 			.remove([path])
 
 		if (error) {
-			console.error('Delete error:', error)
+			console?.error('Delete error:', error)
 			return false
 		}
 
 		return true
 	} catch (error) {
-		console.error('Delete error:', error)
+		console?.error('Delete error:', error)
 		return false
 	}
 }
@@ -182,8 +182,8 @@ export async function deleteImage(
 export function fileToBase64(file: File): Promise<string> {
 	return new Promise((resolve, reject) => {
 		const reader = new FileReader()
-		reader.readAsDataURL(file)
-		reader.onload = () => resolve(reader.result as string)
-		reader.onerror = error => reject(error)
+		reader?.readAsDataURL(file)
+		reader?.onload = () => resolve(reader?.result as string)
+		reader?.onerror = error => reject(error)
 	})
 }

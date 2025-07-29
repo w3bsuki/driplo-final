@@ -1,8 +1,8 @@
 <script lang="ts">
     import { formatDistanceToNow } from 'date-fns';
-    import type { Database } from '$lib/types/database';
+    import type { Database } from '$lib/types';
     
-    type Message = Database['public']['Tables']['messages']['Row'] & {
+    type Message = Database?.['public']['Tables']['messages']['Row'] & {
         sender: {
             id: string;
             username: string;
@@ -30,7 +30,7 @@
 
     let { 
         isOpen = false, 
-        userId,
+        _userId,
         onclose,
         onselectconversation
     }: { 
@@ -43,10 +43,10 @@
     let searchQuery = $state('');
     let searchResults = $state<SearchResult[]>([]);
     let searching = $state(false);
-    let searchTimeout: NodeJS.Timeout;
+    let searchTimeout: NodeJS?.Timeout;
 
     $effect(() => {
-        if (searchQuery.trim().length >= 2) {
+        if (searchQuery?.trim().length >= 2) {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
                 performSearch();
@@ -57,20 +57,20 @@
     });
 
     async function performSearch() {
-        if (searchQuery.trim().length < 2) return;
+        if (searchQuery?.trim().length < 2) return;
 
         searching = true;
         try {
             const response = await fetch(`/api/messages/search?q=${encodeURIComponent(searchQuery)}`);
             const data = await response.json();
 
-            if (response.ok) {
-                searchResults = data.results;
+            if (response?.ok) {
+                searchResults = data?.results;
             } else {
-                console.error('Search failed:', data.error);
+                console?.error('Search failed:', data?.error);
             }
         } catch (error) {
-            console.error('Search error:', error);
+            console?.error('Search error:', error);
         } finally {
             searching = false;
         }
@@ -80,7 +80,7 @@
         if (!query) return text;
         
         const regex = new RegExp(`(${query})`, 'gi');
-        return text.replace(regex, '<mark class="bg-yellow-200">$1</mark>');
+        return text?.replace(regex, '<mark class="bg-yellow-200">$1</mark>');
     }
 
     function selectConversation(conversationId: string) {
@@ -89,7 +89,7 @@
     }
 
     function handleKeydown(event: KeyboardEvent) {
-        if (event.key === 'Escape') {
+        if (event?.key === 'Escape') {
             onclose?.();
         }
     }
@@ -138,7 +138,7 @@
 
             <!-- Search results -->
             <div class="flex-1 overflow-y-auto p-4">
-                {#if searchQuery.trim().length < 2}
+                {#if searchQuery?.trim().length < 2}
                     <div class="text-center text-gray-500 py-8">
                         <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -161,15 +161,15 @@
                     <div class="space-y-4">
                         {#each searchResults as result}
                             <div class="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors"
-                                 onclick={() => selectConversation(result.conversation.id)}>
+                                 onclick={() => selectConversation(result?.conversation.id)}>
                                 
                                 <!-- Conversation header -->
                                 <div class="flex items-center gap-3 mb-3">
                                     <div class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center">
-                                        {#if result.conversation.listing.images && result.conversation.listing.images.length > 0}
+                                        {#if result?.conversation.listing?.images && result?.conversation.listing?.images.length > 0}
                                             <img 
-                                                src={result.conversation.listing.images[0]} 
-                                                alt={result.conversation.listing.title}
+                                                src={result?.conversation.listing?.images[0]} 
+                                                alt={result?.conversation.listing?.title}
                                                 class="w-full h-full object-cover rounded-lg"
                                             />
                                         {:else}
@@ -179,45 +179,45 @@
                                         {/if}
                                     </div>
                                     <div class="flex-1">
-                                        <h3 class="font-medium text-gray-900">{result.conversation.listing.title}</h3>
-                                        <p class="text-sm text-gray-500">{result.messages.length} matching message{result.messages.length > 1 ? 's' : ''}</p>
+                                        <h3 class="font-medium text-gray-900">{result?.conversation.listing?.title}</h3>
+                                        <p class="text-sm text-gray-500">{result?.messages.length} matching message{result?.messages.length > 1 ? 's' : ''}</p>
                                     </div>
                                 </div>
 
                                 <!-- Matching messages -->
                                 <div class="space-y-2">
-                                    {#each result.messages.slice(0, 3) as message}
+                                    {#each result?.messages.slice(0, 3) as message}
                                         <div class="flex items-start gap-2 p-2 bg-gray-50 rounded">
                                             <div class="flex-shrink-0">
-                                                {#if message.sender.avatar_url}
+                                                {#if message?.sender.avatar_url}
                                                     <img 
-                                                        src={message.sender.avatar_url} 
-                                                        alt={message.sender.username}
+                                                        src={message?.sender.avatar_url} 
+                                                        alt={message?.sender.username}
                                                         class="w-6 h-6 rounded-full"
                                                     />
                                                 {:else}
                                                     <div class="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-xs font-medium">
-                                                        {message.sender.username[0].toUpperCase()}
+                                                        {message?.sender.username[0].toUpperCase()}
                                                     </div>
                                                 {/if}
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <div class="flex items-center gap-2">
-                                                    <span class="text-sm font-medium text-gray-900">{message.sender.username}</span>
+                                                    <span class="text-sm font-medium text-gray-900">{message?.sender.username}</span>
                                                     <span class="text-xs text-gray-500">
-                                                        {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
+                                                        {formatDistanceToNow(new Date(message?.created_at), { addSuffix: true })}
                                                     </span>
                                                 </div>
                                                 <p class="text-sm text-gray-600 truncate">
-                                                    {message.message_text}
+                                                    {message?.message_text}
                                                 </p>
                                             </div>
                                         </div>
                                     {/each}
                                     
-                                    {#if result.messages.length > 3}
+                                    {#if result?.messages.length > 3}
                                         <p class="text-sm text-gray-500 text-center">
-                                            +{result.messages.length - 3} more message{result.messages.length - 3 > 1 ? 's' : ''}
+                                            +{result?.messages.length - 3} more message{result?.messages.length - 3 > 1 ? 's' : ''}
                                         </p>
                                     {/if}
                                 </div>

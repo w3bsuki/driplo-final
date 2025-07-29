@@ -20,7 +20,7 @@
   let { sellers = [], category }: Props = $props();
 </script>
 
-{#if sellers.length > 0}
+{#if sellers?.length > 0}
   <div class="bg-white p-4 border-b">
     <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-1">
       <span>🏆</span> Top Sellers in {category.name}
@@ -54,7 +54,7 @@
       {/each}
       
       {#if sellers.length < 3}
-        {#each Array(3 - sellers.length) as _, i}
+        {#each Array(3 - sellers.length) as _, _i}
           <div class="text-center">
             <div class="w-12 h-12 mx-auto mb-1 rounded-full bg-gray-100 flex items-center justify-center">
               <span class="text-xs text-gray-400">?</span>

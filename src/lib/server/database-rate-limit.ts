@@ -36,7 +36,7 @@ export function createDatabaseRateLimiter(config: RateLimitConfig) {
         });
 
       if (error) {
-        console.error('Rate limit check error:', error);
+        console?.error('Rate limit check error:', error);
         // On error, allow the request but log it
         return null;
       }
@@ -44,30 +44,30 @@ export function createDatabaseRateLimiter(config: RateLimitConfig) {
       const result = data as RateLimitResult;
 
       // Check if limit exceeded
-      if (!result.allowed) {
-        return new Response(JSON.stringify({ error: message }), {
+      if (!result?.allowed) {
+        return new Response(JSON?.stringify({ error: message }), {
           status: 429,
           headers: {
             'Content-Type': 'application/json',
-            'Retry-After': result.retryAfterSeconds.toString(),
-            'X-RateLimit-Limit': max.toString(),
+            'Retry-After': result?.retryAfterSeconds.toString(),
+            'X-RateLimit-Limit': max?.toString(),
             'X-RateLimit-Remaining': '0',
-            'X-RateLimit-Reset': result.resetAt
+            'X-RateLimit-Reset': result?.resetAt
           }
         });
       }
 
       // Add rate limit headers to help clients
-      const remaining = Math.max(0, max - result.currentCount);
-      event.setHeaders({
-        'X-RateLimit-Limit': max.toString(),
-        'X-RateLimit-Remaining': remaining.toString(),
-        'X-RateLimit-Reset': result.resetAt
+      const remaining = Math?.max(0, max - result?.currentCount);
+      event?.setHeaders({
+        'X-RateLimit-Limit': max?.toString(),
+        'X-RateLimit-Remaining': remaining?.toString(),
+        'X-RateLimit-Reset': result?.resetAt
       });
 
       return null; // Continue with request
     } catch (err) {
-      console.error('Rate limiter error:', err);
+      console?.error('Rate limiter error:', err);
       // On error, allow the request but log it
       return null;
     }
@@ -121,16 +121,16 @@ export const databaseRateLimiters = {
 export async function cleanupExpiredRateLimits() {
   try {
     const supabaseAdmin = createAdminClient();
-    const { data, error } = await supabaseAdmin.rpc('cleanup_expired_rate_limits');
+    const { data, error } = await supabaseAdmin?.rpc('cleanup_expired_rate_limits');
     
     if (error) {
-      console.error('Failed to cleanup rate limits:', error);
+      console?.error('Failed to cleanup rate limits:', error);
       return 0;
     }
     
     return data || 0;
   } catch (err) {
-    console.error('Cleanup error:', err);
+    console?.error('Cleanup error:', err);
     return 0;
   }
 }

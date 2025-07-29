@@ -1,21 +1,19 @@
 <script lang="ts">
 	import { cn } from '$lib/utils.js';
 	import type { HTMLAttributes } from 'svelte/elements';
+	import type { Snippet } from 'svelte';
 
-	type $$Props = HTMLAttributes<HTMLDivElement> & {
+	interface AlertProps extends HTMLAttributes<HTMLDivElement> {
 		variant?: 'default' | 'destructive' | 'success' | 'warning' | 'info';
-	};
+		children?: Snippet;
+	}
 
 	let { 
 		variant = 'default',
 		class: className = undefined,
 		children,
 		...restProps
-	}: {
-		variant?: $$Props['variant'];
-		class?: $$Props['class'];
-		children?: any;
-	} & HTMLAttributes<HTMLDivElement> = $props();
+	}: AlertProps = $props();
 
 	const variantClasses = {
 		default: 'bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-50 border-gray-200 dark:border-gray-700',

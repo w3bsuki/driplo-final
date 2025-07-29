@@ -1,5 +1,5 @@
 // Auto-generated translation types
-export type TranslationKey = ;
+export type TranslationKey = string;
 
 export type Language = 'bg' | 'en';
 

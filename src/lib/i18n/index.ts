@@ -39,8 +39,8 @@ export function t(
 /**
  * Get all translations for a namespace
  */
-export function getNamespace(namespace: string, lang: Language = 'bg') {
-  return translations[lang]?.[namespace] || {};
+export function getNamespace(namespace: string, lang: Language = 'bg'): Record<string, any> {
+  return (translations[lang] as Record<string, any>)?.[namespace] || {};
 }
 
 /**

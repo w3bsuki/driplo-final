@@ -8,7 +8,7 @@ export type {
   Enums,
   CompositeTypes,
   ExtendedProfile,
-  Profile,
+  Profile as DbProfile,
   ExtendedSubcategory,
   BrandVerificationRequest,
   AdminApproval
@@ -18,25 +18,59 @@ export type {
 export type {
   ListingCardProps,
   ComponentSize,
-  ModalProps,
-  CardProps,
+  ComponentVariant,
   LoadingState,
-  ErrorState,
-  FormState,
-  ValidatedInput,
-  ComponentProps,
-  InteractiveState,
-  NavigationItem
+  ButtonProps,
+  InputProps,
+  BadgeProps,
+  UserProfile,
+  ListingData,
+  MessageThreadProps,
+  CheckoutFlowProps,
+  ShippingAddress,
+  HeaderProps,
+  ErrorBoundaryProps,
+  FormFieldProps,
+  CreateListingFormProps,
+  PaginationProps,
+  ClickHandler,
+  ChangeHandler,
+  SubmitHandler
 } from './components';
 
 export type {
   LoginFormData,
   RegisterFormData,
-  ListingFormData,
-  ProfileFormData,
-  FormFieldError,
-  ValidationResult,
-  FormSubmitState
+  CreateListingFormData,
+  EditListingFormData,
+  ProfileSettingsFormData,
+  ProfileOnboardingFormData,
+  FormFieldState,
+  FormState,
+  ValidationRule,
+  FieldValidationSchema,
+  TwoFactorSetupFormData,
+  TwoFactorVerifyFormData,
+  PasswordResetFormData,
+  NewPasswordFormData,
+  CheckoutFormData,
+  PaymentMethodFormData,
+  ShippingFormData,
+  SendMessageFormData,
+  MessageSearchFormData,
+  BrowseFiltersFormData,
+  AdvancedSearchFormData,
+  UserModerationFormData,
+  ListingModerationFormData,
+  CategoryFormData,
+  ValidationErrors,
+  FileUploadConstraints,
+  FormStep,
+  MultiStepFormConfig,
+  FormSubmissionResult,
+  FormActionResult,
+  ActionRequest,
+  ListingDraftData
 } from './forms';
 
 // UI types with explicit exports to avoid ComponentSize conflict
@@ -168,16 +202,10 @@ export type {
 
 // Filter types - explicit exports
 export type {
-  FilterParams,
-  SortParams,
-  CategoryFilter,
-  PriceFilter,
-  LocationFilter,
-  ConditionFilter,
-  BrandFilter,
   FilterOption,
-  ActiveFilters,
-  FilterCounts
+  FilterGroup,
+  SelectedFilters,
+  SortOption
 } from './filter';
 
 // Unified types - explicit to avoid Profile conflicts
@@ -201,26 +229,25 @@ export type {
   TransactionStatus,
   RatingType,
   PaginationParams,
-  SortParams,
-  FilterParams,
+  SortParams as UnifiedSortParams,
+  FilterParams as UnifiedFilterParams,
   ApiResponse as UnifiedApiResponse,
   PaginatedResponse as UnifiedPaginatedResponse,
   ProfileWithStats,
   ListingWithDetails,
   TransactionWithDetails,
   MessageThread,
-  ProfileFormData,
-  ListingFormData,
+  ProfileFormData as UnifiedProfileFormData,
+  ListingFormData as UnifiedListingFormData,
   AchievementLevel,
-  AchievementDefinition,
-  Database
+  AchievementDefinition
 } from './unified';
 
-// RPC types (if still needed) - explicit exports
+// RPC types - explicit exports
 export type {
-  GetTopCategorySellersArgs,
-  GetTopCategorySellersResponse,
-  DatabaseFunction,
-  RPCParams,
-  RPCResponse
+  RPCFunctions,
+  RPCFunctionName,
+  RPCArgs,
+  RPCReturns,
+  TypedRPC
 } from './rpc.types';

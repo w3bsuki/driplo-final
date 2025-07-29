@@ -73,8 +73,8 @@
 		formats = ['avif', 'webp'],
 		preferredSize = 'medium',
 		customOptions = {},
-		fallbackSrc = '/images/placeholder.jpg',
-		usePlaceholder = true,
+		fallbackSrc = '/images/placeholder?.jpg',
+		_usePlaceholder = true,
 		onload,
 		onerror,
 		onclick
@@ -88,7 +88,7 @@
 	// Determine if this is a Supabase storage URL
 	const isSupabaseUrl = $derived(() => {
 		if (!src || typeof src !== 'string') return false;
-		return src.includes('/storage/v1/object/public/');
+		return src?.includes('/storage/v1/object/public/');
 	});
 
 	// Get the appropriate image URL based on source type
@@ -141,14 +141,14 @@
 				full: 2400
 			};
 
-			for (const [suffix, url] of Object.entries(src)) {
+			for (const [suffix, url] of Object?.entries(src)) {
 				const width = suffixWidths[suffix];
 				if (width && url) {
-					srcSetParts.push(`${url} ${width}w`);
+					srcSetParts?.push(`${url} ${width}w`);
 				}
 			}
 
-			return srcSetParts.length > 0 ? srcSetParts.join(', ') : undefined;
+			return srcSetParts.length > 0 ? srcSetParts?.join(', ') : undefined;
 		}
 		
 		// For Supabase URLs
@@ -171,23 +171,23 @@
 	});
 
 	// Placeholder for lazy loading (currently unused but kept for future use)
-	const _placeholderUrl = $derived(() => {
-		if (!usePlaceholder || isIntersecting) return imageUrl();
-		
-		// Generate a small blurred placeholder for Supabase images
-		if (storageInfo() && isSupabaseUrl()) {
-			return getTransformedImageUrl({
-				bucket: storageInfo()!.bucket,
-				path: storageInfo()!.path,
-				width: 40,
-				quality: 20,
-				format: 'jpg'
-			});
-		}
-		
-		// Use data URL placeholder for non-Supabase images
-		return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ${width || 1} ${height || 1}'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3C/svg%3E`;
-	});
+	// const _placeholderUrl = $derived(() => {
+	// 	if (!usePlaceholder || isIntersecting) return imageUrl();
+	// 	
+	// 	// Generate a small blurred placeholder for Supabase images
+	// 	if (storageInfo() && isSupabaseUrl()) {
+	// 		return getTransformedImageUrl({
+	// 			bucket: storageInfo()!.bucket,
+	// 			path: storageInfo()!.path,
+	// 			width: 40,
+	// 			quality: 20,
+	// 			format: 'jpg'
+	// 		});
+	// 	}
+	// 	
+	// 	// Use data URL placeholder for non-Supabase images
+	// 	return `data:image/svg+xml,%3Csvg xmlns='http://www?.w3.org/2000/svg' viewBox='0 0 ${width || 1} ${height || 1}'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3C/svg%3E`;
+	// });
 
 	function handleLoad() {
 		isLoaded = true;
@@ -195,7 +195,7 @@
 	}
 
 	function handleError(e: Event) {
-		console.error('Image failed to load:', src);
+		console?.error('Image failed to load:', src);
 		hasError = true;
 		onerror?.(e);
 	}
@@ -206,10 +206,10 @@
 		
 		const observer = new IntersectionObserver(
 			(entries) => {
-				entries.forEach(entry => {
-					if (entry.isIntersecting) {
+				entries?.forEach(entry => {
+					if (entry?.isIntersecting) {
 						isIntersecting = true;
-						observer.disconnect();
+						observer?.disconnect();
 					}
 				});
 			},
@@ -219,9 +219,9 @@
 			}
 		);
 		
-		observer.observe(imgElement);
+		observer?.observe(imgElement);
 		
-		return () => observer.disconnect();
+		return () => observer?.disconnect();
 	});
 
 	// Preload high priority images
@@ -267,8 +267,8 @@
 			<picture>
 				{#each pictureSources() as source}
 					<source 
-						type={source.type} 
-						srcset={source.srcset}
+						type={source?.type} 
+						srcset={source?.srcset}
 						{sizes}
 					/>
 				{/each}
@@ -337,7 +337,7 @@
 		<div class="absolute inset-0 flex items-center justify-center bg-[var(--color-surface-tertiary)]">
 			<svg class="w-12 h-12 text-[var(--color-text-tertiary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-					d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+					d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h?.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
 			</svg>
 		</div>
 	{/if}

@@ -102,7 +102,7 @@ export const actions: Actions = {
 			return fail(400, { error: 'Message cannot be empty' });
 		}
 
-		if (messageText.length > 1000) {
+		if (messageText?.length ?? 0 > 1000) {
 			return fail(400, { error: 'Message is too long (max 1000 characters)' });
 		}
 

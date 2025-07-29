@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { page } from '$app/stores';
+  import { _page} from '$app/stores';
   import type { Category } from '$lib/types';
   
   interface Props {

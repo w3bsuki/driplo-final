@@ -1,4 +1,4 @@
-import { onMount, onDestroy } from 'svelte';
+import { _onMount, onDestroy } from 'svelte';
 import { 
 	unreadCount, 
 	initializeUnreadCount, 
@@ -6,7 +6,7 @@ import {
 	unsubscribeFromUnreadUpdates 
 } from '$lib/stores/messages';
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { Database } from '$lib/types/database';
+import type { Database } from '$lib/types';
 
 /**
  * Notification management hook for real-time unread message counts

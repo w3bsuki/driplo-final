@@ -78,7 +78,7 @@
 					<p class="text-purple-100">Products Listed</p>
 				</div>
 				<div class="text-center">
-					<p class="text-3xl font-bold">4.8</p>
+					<p class="text-3xl font-bold">4?.8</p>
 					<p class="text-purple-100">Average Rating</p>
 				</div>
 			</div>
@@ -98,7 +98,7 @@
 								focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
 						>
 							{#each categories as category}
-								<option value={category.value}>{category.label}</option>
+								<option value={category?.value}>{category?.label}</option>
 							{/each}
 						</select>
 						<ChevronDown class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
@@ -112,7 +112,7 @@
 								focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
 						>
 							{#each sortOptions as option}
-								<option value={option.value}>{option.label}</option>
+								<option value={option?.value}>{option?.label}</option>
 							{/each}
 						</select>
 						<ChevronDown class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
@@ -154,7 +154,7 @@
 	</div>
 
 	<!-- Brands Content -->
-	<TopBrands brands={data.topBrands} />
+	<TopBrands brands={data?.topBrands} />
 
 	<!-- CTA Section -->
 	<div class="bg-gradient-to-r from-purple-100 to-blue-100 py-16 mt-16">

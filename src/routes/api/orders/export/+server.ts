@@ -2,20 +2,20 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ locals, url }) => {
-    const { session } = await locals.safeGetSession();
+    const { session } = await locals?.safeGetSession();
     
     if (!session) {
         return json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const format = url.searchParams.get('format') || 'csv';
-    const role = url.searchParams.get('role') || 'all';
-    const status = url.searchParams.get('status');
-    const dateFrom = url.searchParams.get('from');
-    const dateTo = url.searchParams.get('to');
+    const format = url?.searchParams.get('format') || 'csv';
+    const role = url?.searchParams.get('role') || 'all';
+    const status = url?.searchParams.get('status');
+    const dateFrom = url?.searchParams.get('from');
+    const dateTo = url?.searchParams.get('to');
     
     try {
-        let query = locals.supabase
+        let query = locals?.supabase
             .from('orders')
             .select(`
                 *,
@@ -40,27 +40,27 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 
         // Apply role filter
         if (role === 'buyer') {
-            query = query.eq('buyer_id', session.user.id);
+            query = query?.eq('buyer_id', session?.user.id);
         } else if (role === 'seller') {
-            query = query.eq('seller_id', session.user.id);
+            query = query?.eq('seller_id', session?.user.id);
         } else {
-            query = query.or(`buyer_id.eq.${session.user.id},seller_id.eq.${session.user.id}`);
+            query = query?.or(`buyer_id?.eq.${session?.user.id},seller_id?.eq.${session?.user.id}`);
         }
 
         // Apply status filter
         if (status) {
-            query = query.eq('status', status);
+            query = query?.eq('status', status);
         }
 
         // Apply date filters
         if (dateFrom) {
-            query = query.gte('created_at', dateFrom);
+            query = query?.gte('created_at', dateFrom);
         }
         if (dateTo) {
-            query = query.lte('created_at', dateTo);
+            query = query?.lte('created_at', dateTo);
         }
 
-        const { data: orders, error } = await query.order('created_at', { ascending: false });
+        const { data: orders, error } = await query?.order('created_at', { ascending: false });
 
         if (error) {
             return json({ error: 'Failed to fetch orders' }, { status: 500 });
@@ -71,20 +71,20 @@ export const GET: RequestHandler = async ({ locals, url }) => {
             return new Response(csv, {
                 headers: {
                     'Content-Type': 'text/csv',
-                    'Content-Disposition': 'attachment; filename="orders.csv"'
+                    'Content-Disposition': 'attachment; filename="orders?.csv"'
                 }
             });
         } else if (format === 'pdf') {
             // For PDF, we'll return JSON with instructions since we don't have a PDF library
             return json({ 
                 error: 'PDF export not implemented yet. Please use CSV format.',
-                orders: orders.length 
+                orders: orders?.length ?? 0 
             }, { status: 501 });
         }
 
         return json({ error: 'Invalid format' }, { status: 400 });
     } catch (error) {
-        console.error('Export error:', error);
+        console?.error('Export error:', error);
         return json({ error: 'Export failed' }, { status: 500 });
     }
 };
@@ -102,14 +102,14 @@ function generateCSV(orders: any[]): string {
     ];
 
     const rows = orders.map(order => [
-        order.order_number,
-        order.status,
-        (order.total_amount / 100).toFixed(2),
-        order.buyer?.username || '',
-        order.seller?.username || '',
-        order.order_items?.map((item: any) => `${item.listing?.title || 'Unknown'} (${item.quantity})`).join('; ') || '',
-        new Date(order.created_at).toLocaleDateString(),
-        new Date(order.updated_at).toLocaleDateString()
+        order?.order_number,
+        order?.status,
+        (order?.total_amount / 100).toFixed(2),
+        order?.buyer?.username || '',
+        order?.seller?.username || '',
+        order?.order_items?.map((item: any) => `${item?.listing?.title || 'Unknown'} (${item?.quantity})`).join('; ') || '',
+        new Date(order?.created_at || new Date()).toLocaleDateString(),
+        new Date(order?.updated_at || new Date()).toLocaleDateString()
     ]);
 
     return [headers, ...rows]

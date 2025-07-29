@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 	const { data: profile } = await supabase
 		.from('profiles')
 		.select('account_type')
-		.eq('id', user.id)
+		.eq('id', user?.id)
 		.single();
 
 	if (!profile || profile?.account_type !== 'brand') {
@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 	const { data: brandProfile } = await supabase
 		.from('brand_profiles')
 		.select('*')
-		.eq('user_id', user.id)
+		.eq('user_id', user?.id)
 		.single();
 
 	if (!brandProfile) {
@@ -52,14 +52,14 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 				)
 			)
 		`)
-		.eq('seller_id', user.id)
+		.eq('seller_id', user?.id)
 		.order('created_at', { ascending: false })
 		.limit(20);
 
 	// Get sales stats
 	const { data: salesStats } = await supabase
 		.rpc('get_brand_sales_stats', {
-			user_id_param: user.id,
+			user_id_param: user?.id,
 			start_date: thirtyDaysAgo.toISOString()
 		});
 
@@ -67,7 +67,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 	const { data: listingStats } = await supabase
 		.from('listings')
 		.select('id, title, price, views, favorites_count, status')
-		.eq('user_id', user.id)
+		.eq('user_id', user?.id)
 		.order('views', { ascending: false })
 		.limit(10);
 
@@ -75,10 +75,10 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 	const { data: reviewStats } = await supabase
 		.from('reviews')
 		.select('rating')
-		.eq('seller_id', user.id);
+		.eq('seller_id', user?.id);
 
-	const avgRating = reviewStats?.length 
-		? reviewStats.reduce((sum, r) => sum + r.rating, 0) / reviewStats.length 
+	const avgRating = reviewStats && reviewStats.length > 0 
+		? reviewStats.reduce((sum, r) => sum + r.rating, 0) / reviewStats.length
 		: 0;
 
 	const ratingDistribution = {

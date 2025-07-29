@@ -1,15 +1,15 @@
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public'
 import { createServerClient } from '@supabase/ssr'
 import type { Handle, HandleServerError } from '@sveltejs/kit'
-import type { Database } from '$lib/types/database'
+import type { Database } from '$lib/types/db'
 import { sequence } from '@sveltejs/kit/hooks'
 import { setLocale, isLocale } from '$lib/paraglide/runtime.js'
 import { dev } from '$app/environment'
 import { check2FAMiddleware } from '$lib/server/auth-middleware'
-import { logError, createErrorResponse } from '$lib/utils/error-handling'
+import { logError } from '$lib/utils/error-handling'
 import * as Sentry from '@sentry/sveltekit'
 import { SENTRY_CONFIG } from '$lib/config/sentry'
-import { redirect, error } from '@sveltejs/kit'
+import { redirect } from '@sveltejs/kit'
 
 // Try to get Sentry DSN from environment
 const PUBLIC_SENTRY_DSN = import.meta.env.PUBLIC_SENTRY_DSN || '';
@@ -195,15 +195,15 @@ const handleSupabase: Handle = async ({ event, resolve }) => {
 			try {
 				const { data: profile } = await event.locals.supabase
 					.from('profiles')
-					.select('username, needs_username_setup, onboarding_completed, account_type, created_at')
+					.select('username, setup_completed, account_type, created_at')
 					.eq('id', user.id)
 					.single()
 				
 				if (profile) {
 					const needsOnboarding = (
-						profile.needs_username_setup === true ||
-						(!profile.onboarding_completed && 
-						 new Date(profile.created_at).getTime() > Date.now() - 60 * 60 * 1000)
+						!profile.setup_completed ||
+						(!profile.setup_completed && 
+						 new Date(profile.created_at || Date.now()).getTime() > Date.now() - 60 * 60 * 1000)
 					)
 					
 					if (needsOnboarding && !event.url.pathname.startsWith('/login') && 
@@ -367,7 +367,7 @@ export const handleError: HandleServerError = Sentry.handleErrorWithSentry(({ er
 		message,
 		userAgent: event.request.headers.get('user-agent'),
 		errorId,
-		stack: error?.stack
+		stack: error instanceof Error ? error.stack : undefined
 	});
 	
 	// Add context to Sentry
@@ -388,7 +388,7 @@ export const handleError: HandleServerError = Sentry.handleErrorWithSentry(({ er
 		return {
 			message: message || 'Internal server error',
 			errorId,
-			stack: error?.stack
+			stack: error instanceof Error ? error.stack : undefined
 		};
 	} else {
 		// In production, return minimal error info

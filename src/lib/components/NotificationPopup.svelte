@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { notifications } from '$lib/stores/notifications.svelte';
-	import { fly, fade } from 'svelte/transition';
+	import { fly, _fade} from 'svelte/transition';
 	import { CheckCircle, XCircle, Info, AlertTriangle, X } from 'lucide-svelte';
 	
 	let { position = 'top-right' }: { position?: 'top-right' | 'top-center' | 'bottom-right' } = $props();

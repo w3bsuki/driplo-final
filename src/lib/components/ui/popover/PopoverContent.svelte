@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext, onMount, tick } from 'svelte';
+	import { getContext, _onMount, tick } from 'svelte';
 	import { cn } from '$lib/utils';
 	import type { Snippet } from 'svelte';
 	import type { Writable } from 'svelte/store';

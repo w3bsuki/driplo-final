@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import type { Listing } from '$lib/types';
+	import { _onMount} from 'svelte';
+	import type { _Listing} from '$lib/types';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import ErrorBoundary from '$lib/components/shared/ErrorBoundary.svelte';
 	

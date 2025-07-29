@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Badge } from '$lib/components/ui'
 	import ProgressBar from '$lib/components/ui/ProgressBar.svelte'
-	import { TrendingUp, Star, Clock, Package, Award, Eye, DollarSign, Shield } from 'lucide-svelte'
+	import { TrendingUp, Star, Clock, _Package, _Award, Eye, _DollarSign, Shield } from 'lucide-svelte'
 	import type { Profile } from '$lib/types/unified'
 	import * as m from '$lib/paraglide/messages.js'
 	
@@ -205,7 +205,7 @@
 		<!-- Trust Indicators -->
 		<div class="pt-3 border-t border-gray-100">
 			<div class="flex items-center justify-between text-xs">
-				<span class="text-gray-600">{m.profile_stats_member_since({ year: new Date(profile.member_since).getFullYear() })}</span>
+				<span class="text-gray-600">{m.profile_stats_member_since({ year: new Date(profile.member_since || new Date( || new Date())).getFullYear() })}</span>
 				{#if profile.seller_level > 1}
 					<Badge class="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs">
 						{m.profile_stats_level({ level: profile.seller_level })}

@@ -10,7 +10,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     const { action, orderIds } = await request.json();
 
-    if (!action || !Array.isArray(orderIds) || orderIds.length === 0) {
+    if (!action || !Array.isArray(orderIds) || orderIds?.length ?? 0 === 0) {
         return json({ error: 'Invalid request' }, { status: 400 });
     }
 

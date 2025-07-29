@@ -6,7 +6,7 @@ import {
   parseRequestBody,
   validateUUID,
   getPagination,
-  paginatedResponse,
+  // paginatedResponse,
   handleDatabaseError 
 } from '$lib/server/api-utils';
 import { logAdminAction, AdminActions, ResourceTypes } from '$lib/server/audit';

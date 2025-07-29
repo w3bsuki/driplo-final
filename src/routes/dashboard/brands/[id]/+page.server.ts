@@ -9,10 +9,10 @@ export const load: PageServerLoad = async ({ params, locals, parent }) => {
 	}
 	
 	// Get the brand verification request
-	const { data: request, error: requestError } = await locals.supabase
+	const { data: request, error: requestError } = await locals?.supabase
 		.from('brand_verification_requests' as any)
 		.select('*')
-		.eq('id', params.id)
+		.eq('id', params?.id)
 		.single();
 	
 	if (requestError || !request) {
@@ -20,10 +20,10 @@ export const load: PageServerLoad = async ({ params, locals, parent }) => {
 	}
 	
 	// Get the user's profile
-	const { data: profile, error: profileError } = await locals.supabase
+	const { data: profile, error: profileError } = await locals?.supabase
 		.from('profiles')
 		.select('*')
-		.eq('id', request.user_id)
+		.eq('id', request?.user_id)
 		.single();
 	
 	if (profileError || !profile) {
@@ -31,18 +31,18 @@ export const load: PageServerLoad = async ({ params, locals, parent }) => {
 	}
 	
 	// Get social media accounts
-	const { data: socialAccounts } = await locals.supabase
+	const { data: socialAccounts } = await locals?.supabase
 		.from('social_media_accounts')
 		.select('*')
-		.eq('user_id', request.user_id);
+		.eq('user_id', request?.user_id);
 	
 	// Get admin who reviewed (if applicable)
 	let reviewer = null;
-	if (request.reviewed_by) {
-		const { data: reviewerData } = await locals.supabase
+	if (request?.reviewed_by) {
+		const { data: reviewerData } = await locals?.supabase
 			.from('profiles')
 			.select('username, full_name')
-			.eq('id', request.reviewed_by)
+			.eq('id', request?.reviewed_by)
 			.single();
 		
 		reviewer = reviewerData;
@@ -59,16 +59,16 @@ export const load: PageServerLoad = async ({ params, locals, parent }) => {
 
 export const actions: Actions = {
 	approve: async ({ request, params, locals }) => {
-		const formData = await request.formData();
-		const adminNotes = formData.get('adminNotes') as string;
-		const userId = locals.user?.id;
+		const formData = await request?.formData();
+		const adminNotes = formData?.get('adminNotes') as string;
+		const userId = locals?.user?.id;
 
 		if (!userId) {
 			throw error(401, 'Unauthorized');
 		}
 
 		// Update brand verification request
-		const { error: updateError } = await locals.supabase
+		const { error: updateError } = await locals?.supabase
 			.from('brand_verification_requests' as any)
 			.update({
 				verification_status: 'approved',
@@ -76,29 +76,29 @@ export const actions: Actions = {
 				reviewed_by: userId,
 				reviewed_at: new Date().toISOString()
 			})
-			.eq('id', params.id);
+			.eq('id', params?.id);
 
 		if (updateError) {
 			throw error(500, 'Failed to update verification request');
 		}
 
 		// Get request data for profile update
-		const { data: requestData } = await locals.supabase
+		const { data: requestData } = await locals?.supabase
 			.from('brand_verification_requests' as any)
 			.select('user_id, brand_name, brand_category')
-			.eq('id', params.id)
+			.eq('id', params?.id)
 			.single();
 
 		if (requestData) {
-			const { error: profileError } = await locals.supabase
+			const { error: profileError } = await locals?.supabase
 				.from('profiles')
 				.update({
 					is_verified: true,
 					account_type: 'brand',
-					brand_name: requestData.brand_name,
-					brand_category: requestData.brand_category
+					brand_name: (requestData as any)?.brand_name,
+					brand_category: (requestData as any)?.brand_category
 				})
-				.eq('id', requestData.user_id);
+				.eq('id', requestData?.user_id);
 
 			if (profileError) {
 				throw error(500, 'Failed to update profile');
@@ -106,11 +106,11 @@ export const actions: Actions = {
 		}
 
 		// Create admin approval record
-		await locals.supabase
+		await locals?.supabase
 			.from('admin_approvals' as any)
 			.insert({
 				request_type: 'brand_verification',
-				request_id: params.id,
+				request_id: params?.id,
 				admin_id: userId,
 				action: 'approve',
 				notes: adminNotes
@@ -120,9 +120,9 @@ export const actions: Actions = {
 	},
 
 	reject: async ({ request, params, locals }) => {
-		const formData = await request.formData();
-		const adminNotes = formData.get('adminNotes') as string;
-		const userId = locals.user?.id;
+		const formData = await request?.formData();
+		const adminNotes = formData?.get('adminNotes') as string;
+		const userId = locals?.user?.id;
 
 		if (!userId) {
 			throw error(401, 'Unauthorized');
@@ -133,7 +133,7 @@ export const actions: Actions = {
 		}
 
 		// Update brand verification request
-		const { error: updateError } = await locals.supabase
+		const { error: updateError } = await locals?.supabase
 			.from('brand_verification_requests' as any)
 			.update({
 				verification_status: 'rejected',
@@ -141,18 +141,18 @@ export const actions: Actions = {
 				reviewed_by: userId,
 				reviewed_at: new Date().toISOString()
 			})
-			.eq('id', params.id);
+			.eq('id', params?.id);
 
 		if (updateError) {
 			throw error(500, 'Failed to update verification request');
 		}
 
 		// Create admin approval record
-		await locals.supabase
+		await locals?.supabase
 			.from('admin_approvals' as any)
 			.insert({
 				request_type: 'brand_verification',
-				request_id: params.id,
+				request_id: params?.id,
 				admin_id: userId,
 				action: 'reject',
 				notes: adminNotes
@@ -162,9 +162,9 @@ export const actions: Actions = {
 	},
 
 	requestInfo: async ({ request, params, locals }) => {
-		const formData = await request.formData();
-		const infoMessage = formData.get('infoMessage') as string;
-		const userId = locals.user?.id;
+		const formData = await request?.formData();
+		const infoMessage = formData?.get('infoMessage') as string;
+		const userId = locals?.user?.id;
 
 		if (!userId) {
 			throw error(401, 'Unauthorized');
@@ -175,7 +175,7 @@ export const actions: Actions = {
 		}
 
 		// Update status to more_info_needed
-		const { error: updateError } = await locals.supabase
+		const { error: updateError } = await locals?.supabase
 			.from('brand_verification_requests' as any)
 			.update({
 				verification_status: 'more_info_needed',
@@ -183,18 +183,18 @@ export const actions: Actions = {
 				reviewed_by: userId,
 				reviewed_at: new Date().toISOString()
 			})
-			.eq('id', params.id);
+			.eq('id', params?.id);
 
 		if (updateError) {
 			throw error(500, 'Failed to update verification request');
 		}
 
 		// Create admin approval record
-		await locals.supabase
+		await locals?.supabase
 			.from('admin_approvals' as any)
 			.insert({
 				request_type: 'brand_verification',
-				request_id: params.id,
+				request_id: params?.id,
 				admin_id: userId,
 				action: 'request_info',
 				notes: infoMessage

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { _onMount} from 'svelte';
 	import * as m from '$lib/paraglide/messages.js';
 	
 	// Mock data for top sellers

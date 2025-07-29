@@ -5,7 +5,7 @@
 	import { fade, slide } from 'svelte/transition'
 	import Input from '$lib/components/ui/input.svelte'
 	import { Label } from '$lib/components/ui'
-	import { DollarSign, AlertCircle, Info, Sparkles } from 'lucide-svelte'
+	import { DollarSign, AlertCircle, Info } from 'lucide-svelte'
 	
 	const form = getFormContext()
 	
@@ -87,7 +87,7 @@
 		if (parts.length > 2) {
 			value = parts[0] + '.' + parts.slice(1).join('')
 		}
-		if (parts[1]?.length > 2) {
+		if (parts[1] && parts[1].length > 2) {
 			value = parts[0] + '.' + parts[1].substring(0, 2)
 		}
 		
@@ -194,10 +194,10 @@
 				placeholder="0.00"
 				class={cn(
 					"pl-10 text-xl font-medium",
-					form.validationErrors.price && "border-red-300 focus:ring-red-500"
+					form.validationErrors['price'] && "border-red-300 focus:ring-red-500"
 				)}
-				aria-invalid={!!form.validationErrors.price}
-				aria-describedby={form.validationErrors.price ? "price-error" : undefined}
+				aria-invalid={!!form.validationErrors['price']}
+				aria-describedby={form.validationErrors['price'] ? "price-error" : undefined}
 			/>
 			{#if formattedPrice}
 				<span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">
@@ -205,27 +205,28 @@
 				</span>
 			{/if}
 		</div>
-		{#if form.validationErrors.price}
+		{#if form.validationErrors['price']}
 			<p id="price-error" class="mt-1 text-xs text-red-500 flex items-center gap-1" transition:slide>
 				<AlertCircle class="w-3 h-3" />
-				{form.validationErrors.price}
+				{form.validationErrors['price']}
 			</p>
 		{/if}
 		
 		<!-- Smart pricing suggestion -->
-		{#if suggestedPriceRange && form.formData.price > 0}
+		{#if suggestedPriceRange() && form.formData.price > 0}
+			{@const priceRange = suggestedPriceRange()}
 			<div class="mt-2 p-3 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-lg border border-blue-200" transition:slide>
 				<p class="text-sm text-blue-900 font-medium">
 					Price Intelligence
 				</p>
 				<p class="text-sm text-blue-800 mt-1">
-					Similar items sell for <span class="font-semibold">${suggestedPriceRange.min} - ${suggestedPriceRange.max}</span>
+					Similar items sell for <span class="font-semibold">${priceRange.min} - ${priceRange.max}</span>
 				</p>
-				{#if form.formData.price < suggestedPriceRange.min * 0.7}
+				{#if form.formData.price < priceRange.min * 0.7}
 					<p class="text-xs text-blue-700 mt-2">
 						Your price seems low. Consider pricing higher for faster profit.
 					</p>
-				{:else if form.formData.price > suggestedPriceRange.max * 1.5}
+				{:else if form.formData.price > priceRange.max * 1.5}
 					<p class="text-xs text-blue-700 mt-2">
 						Your price is above market average. It might take longer to sell.
 					</p>
@@ -271,10 +272,10 @@
 				</label>
 			{/each}
 		</div>
-		{#if form.validationErrors.condition}
+		{#if form.validationErrors['condition']}
 			<p class="mt-2 text-xs text-red-500 flex items-center gap-1">
 				<AlertCircle class="w-3 h-3" />
-				{form.validationErrors.condition}
+				{form.validationErrors['condition']}
 			</p>
 		{/if}
 	</div>
@@ -350,7 +351,7 @@
 				placeholder="Black, Blue, etc."
 				class={cn(
 					"w-full",
-					form.validationErrors.color && "border-red-300 focus:ring-red-500"
+					form.validationErrors['color'] && "border-red-300 focus:ring-red-500"
 				)}
 			/>
 			{#if showColorSuggestions}
@@ -366,10 +367,10 @@
 					{/each}
 				</div>
 			{/if}
-			{#if form.validationErrors.color}
+			{#if form.validationErrors['color']}
 				<p class="mt-1 text-xs text-red-500 flex items-center gap-1">
 					<AlertCircle class="w-3 h-3" />
-					{form.validationErrors.color}
+					{form.validationErrors['color']}
 				</p>
 			{/if}
 		</div>

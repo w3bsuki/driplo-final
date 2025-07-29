@@ -1,14 +1,17 @@
 <script lang="ts">
 	import { cn } from '$lib/utils.js';
 	import type { HTMLAttributes } from 'svelte/elements';
+	import type { Snippet } from 'svelte';
 
-	type $$Props = HTMLAttributes<HTMLParagraphElement>;
+	interface AlertDescriptionProps extends HTMLAttributes<HTMLDivElement> {
+		children?: Snippet;
+	}
 
 	let { 
 		class: className = undefined,
 		children,
 		...restProps
-	} = $props<$$Props & { children?: any }>();
+	}: AlertDescriptionProps = $props();
 </script>
 
 <div
