@@ -2,7 +2,11 @@
 	import { cn } from '$lib/utils';
 	import type { Snippet } from 'svelte';
 	import { Package2, Ruler, CheckCircle2, Store, Check } from 'lucide-svelte';
-	import { getConditionConfig, type ListingCondition } from '$lib/config/conditions';
+	import { getConditionConfig } from '$lib/config/conditions';
+	
+	// Suppress unused warnings for Snippet (used in types) and ListingCondition (future use)
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	type _UnusedSnippet = Snippet;
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { BadgeProps } from '$lib/types/ui';
@@ -88,7 +92,7 @@
 		};
 		
 		const messageFn = messageMap[labelKey];
-		return messageFn ? messageFn() : conditionConfig?.label || '';
+		return messageFn ? messageFn() : conditionConfig()?.label || '';
 	}
 
 	// Get condition variant
@@ -180,7 +184,7 @@
 		class={cn(
 			'inline-flex items-center justify-center rounded-[var(--radius-sm)] border',
 			variants[actualVariant],
-			sizes[size],
+			sizes[size as keyof typeof sizes],
 			additionalClasses,
 			className
 		)}
@@ -203,8 +207,8 @@
 			{#if isVerified}
 				<CheckCircle2 class={cn("w-3 h-3 ml-1", iconClass)} />
 			{/if}
-		{:else if variant === 'condition' && conditionConfig}
-			{getLocalizedConditionLabel(conditionConfig.labelKey)}
+		{:else if variant === 'condition' && conditionConfig()}
+			{getLocalizedConditionLabel(conditionConfig()?.labelKey || '')}
 		{:else if icon}
 			<svelte:component this={icon} class={cn("w-3 h-3 mr-1", iconClass)} />
 			{@render children()}
@@ -230,7 +234,7 @@
 		class={cn(
 			'inline-flex items-center justify-center rounded-[var(--radius-sm)] border',
 			variants[actualVariant],
-			sizes[size],
+			sizes[size as keyof typeof sizes],
 			additionalClasses,
 			className
 		)}
@@ -253,8 +257,8 @@
 			{#if isVerified}
 				<CheckCircle2 class={cn("w-3 h-3 ml-1", iconClass)} />
 			{/if}
-		{:else if variant === 'condition' && conditionConfig}
-			{getLocalizedConditionLabel(conditionConfig.labelKey)}
+		{:else if variant === 'condition' && conditionConfig()}
+			{getLocalizedConditionLabel(conditionConfig()?.labelKey || '')}
 		{:else if icon}
 			<svelte:component this={icon} class={cn("w-3 h-3 mr-1", iconClass)} />
 			{@render children()}

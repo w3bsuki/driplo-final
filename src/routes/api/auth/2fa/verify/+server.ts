@@ -8,7 +8,7 @@ const verifySchema = z.object({
   type: z.enum(['totp', 'backup']).default('totp')
 });
 
-export const POST: RequestHandler = async ({ request, locals }) => {
+export const POST: RequestHandler = async ({ request, locals, cookies }) => {
   try {
     const supabase = locals.supabase;
     

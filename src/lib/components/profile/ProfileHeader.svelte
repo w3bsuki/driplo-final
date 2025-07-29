@@ -5,7 +5,7 @@
 	import ProgressBar from '$lib/components/ui/ProgressBar.svelte'
 	import { Camera, MapPin, Calendar, ExternalLink, MessageCircle, UserPlus, UserMinus, Award, Star, Building2 } from 'lucide-svelte'
 	import type { Profile } from '$lib/types/unified'
-	import { getAchievementIcon, getAchievementColor } from '$lib/data/achievements'
+	// Removed unused imports: getAchievementIcon, getAchievementColor
 	import * as m from '$lib/paraglide/messages.js'
 	
 	interface Props {

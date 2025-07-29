@@ -7,7 +7,7 @@
  * @created 2025-07-27
  */
 
-import type { Tables, Database } from './db';
+import type { Tables } from './db';
 import type { UserProfile, ListingData } from './components';
 
 // =============================================================================

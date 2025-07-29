@@ -31,7 +31,7 @@
 		columns,
 		class: className,
 		onRowClick,
-		getRowKey = (item, index) => index.toString(),
+		getRowKey = (item: T, index: number) => index.toString(),
 		emptyMessage = 'No data available'
 	}: Props<T> = $props();
 

@@ -224,7 +224,7 @@ export async function useBackupCode(
     }
     
     const currentCodes = data?.backup_codes || [];
-    const newCodes = currentCodes.filter(code => code !== usedCode);
+    const newCodes = currentCodes.filter((code: string) => code !== usedCode);
     
     // Update with removed code
     const { error: updateError } = await supabase

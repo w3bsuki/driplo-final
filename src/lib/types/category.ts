@@ -1,4 +1,4 @@
-import type { Database } from './database';
+import type { Database } from './db';
 
 export type Category = Database['public']['Tables']['categories']['Row'];
 

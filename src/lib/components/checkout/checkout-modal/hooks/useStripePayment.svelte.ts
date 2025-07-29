@@ -7,14 +7,7 @@ import { getStripe } from '$lib/stores/stripe';
 import { logger } from '$lib/services/logger';
 import { toast } from 'svelte-sonner';
 
-interface StripePaymentState {
-	clientSecret: string;
-	cardElement: any;
-	elements: any;
-	isInitializing: boolean;
-	cardElementMounted: boolean;
-	stripe: any;
-}
+// Interface removed - was declared but never used
 
 interface PaymentData {
 	listing: any;

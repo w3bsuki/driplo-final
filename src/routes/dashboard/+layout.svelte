@@ -9,15 +9,15 @@
 		FileText, 
 		Settings,
 		LogOut,
-		Shield,
-		TrendingUp,
-		AlertCircle
+		Shield
 	} from 'lucide-svelte';
 	import { Toaster } from 'svelte-sonner';
-	import Spinner from '$lib/components/ui/Spinner.svelte';
+	// Removed unused imports: TrendingUp, AlertCircle, Spinner
 	import type { LayoutData } from './$types';
 
-	let { data, children }: { data: LayoutData; children: any } = $props();
+	import type { Snippet } from 'svelte';
+	
+	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
 	const navigation = [
 		{ name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },

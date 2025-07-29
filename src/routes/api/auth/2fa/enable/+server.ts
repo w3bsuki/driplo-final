@@ -9,7 +9,7 @@ const enableSchema = z.object({
   code: z.string().optional()
 });
 
-export const POST: RequestHandler = async ({ request, locals }) => {
+export const POST: RequestHandler = async ({ request, locals, cookies }) => {
   try {
     const supabase = locals.supabase;
     

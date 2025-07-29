@@ -117,8 +117,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		}
 		return apiSuccess(response, 201, requestId)
 	} catch (error) {
-		if (error instanceof ApiError) {
-			return apiError(error.message, error.status, error.type, error.details, requestId)
+		if (error instanceof Error) {
+			return apiError(error.message, 500, ApiErrorType.INTERNAL_ERROR, { error: error.name }, requestId)
 		}
 		return apiError(
 			'An unexpected error occurred',
@@ -164,8 +164,8 @@ export const DELETE: RequestHandler = async ({ request, locals }) => {
 		}
 		return apiSuccess(response, 200, requestId)
 	} catch (error) {
-		if (error instanceof ApiError) {
-			return apiError(error.message, error.status, error.type, error.details, requestId)
+		if (error instanceof Error) {
+			return apiError(error.message, 500, ApiErrorType.INTERNAL_ERROR, { error: error.name }, requestId)
 		}
 		return apiError(
 			'An unexpected error occurred',

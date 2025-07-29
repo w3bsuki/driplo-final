@@ -22,10 +22,22 @@
 	// Get supabase client from page data
 	const supabase = $derived(data.supabase)
 	
+	// Define review type
+	type Review = {
+		id: string;
+		rating: number;
+		review_text?: string;
+		created_at: string;
+		rater?: {
+			username: string;
+			avatar_url?: string;
+		};
+	};
+
 	// State from server data
 	let profile = $state(data.profile)
 	let listings = $state(data.listings)
-	let reviews = $state(data.reviews)
+	let reviews = $state<Review[]>(data.reviews || [])
 	let isFollowing = $state(data.isFollowing)
 	let activeTab = $state<'listings' | 'reviews' | 'about'>('listings')
 	

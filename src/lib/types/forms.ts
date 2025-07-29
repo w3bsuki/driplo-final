@@ -7,8 +7,7 @@
  * @created 2025-07-27
  */
 
-import type { Tables } from './database';
-import type { UserProfile, ListingData, ShippingAddress } from './components';
+import type { ShippingAddress } from './components';
 
 // =============================================================================
 // CORE FORM INTERFACES

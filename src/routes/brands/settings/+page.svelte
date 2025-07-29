@@ -11,7 +11,8 @@
 	import { toast } from 'svelte-sonner';
 	import { cn } from '$lib/utils';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
-	import * as m from '$lib/paraglide/messages.js';
+	// Messages import kept for future use
+	// import * as m from '$lib/paraglide/messages.js';
 
 	let { data }: { data: PageData } = $props();
 	
@@ -22,7 +23,7 @@
 	// Form state
 	let loading = $state(false);
 	let activeTab = $state<'info' | 'verification' | 'social'>('info');
-	let uploadingLogo = $state(false);
+	let _uploadingLogo = $state(false);
 	
 	// Brand info
 	let brandName = $state('');
@@ -124,7 +125,7 @@
 		const socialAccounts = data.socialMediaAccounts;
 		
 		if (socialAccounts) {
-			socialAccounts.forEach(account => {
+			socialAccounts.forEach((account: { platform: string; username: string }) => {
 				switch (account.platform) {
 					case 'twitter':
 						brandTwitter = account.username;
@@ -253,7 +254,7 @@
 			if (verificationDocuments.length > 0) {
 				for (const doc of verificationDocuments) {
 					const fileName = `brand-docs/${user.id}/${Date.now()}-${doc.name}`;
-					const { data: uploadData, error: uploadError } = await supabase.storage
+					const { error: uploadError } = await supabase.storage
 						.from('documents')
 						.upload(fileName, doc);
 					

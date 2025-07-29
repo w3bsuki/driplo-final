@@ -1,11 +1,18 @@
 <script lang="ts">
     import { onMount, onDestroy } from 'svelte';
     import { formatDistanceToNow } from 'date-fns';
-    import type { Database } from '$lib/types/database';
-    import type { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
+    import type { Database } from '$lib/types';
+    import type { RealtimeChannel } from '@supabase/supabase-js';
     import { decrementUnreadCount } from '$lib/stores/messages';
     // import VirtualList from '$lib/components/ui/VirtualList.svelte';
     
+    type MessageAttachment = {
+        url: string;
+        name?: string;
+        type: string;
+        size?: number;
+    };
+
     type Message = Database['public']['Tables']['messages']['Row'] & {
         sender: {
             id: string;
@@ -22,12 +29,7 @@
         conversationId,
         userId,
         supabase,
-        useVirtualScrolling = false,
-        autoFocus = false,
-        initialMessageLimit = 50,
-        enableAttachments = true,
-        onMessageSent,
-        onClose
+        useVirtualScrolling = false
     }: Props = $props();
     
     let messages = $state<Message[]>([]);
@@ -42,8 +44,8 @@
     let fileInput: HTMLInputElement;
     // let virtualListRef: VirtualList;
     
-    // Virtual scrolling configuration
-    let shouldUseVirtualScrolling = $derived(useVirtualScrolling && messages.length > 100);
+    // Virtual scrolling configuration (currently unused but kept for future implementation)
+    let _shouldUseVirtualScrolling = $derived(useVirtualScrolling && messages.length > 100);
 
     async function loadMessages(before?: string) {
         try {
@@ -62,7 +64,7 @@
                     setTimeout(scrollToBottom, 100);
                     
                     // Decrement unread count for messages that will be marked as read
-                    const unreadMessages = data.messages.filter(msg => 
+                    const unreadMessages = data.messages.filter((msg: Message) => 
                         !msg.is_read && msg.sender_id !== userId
                     );
                     if (unreadMessages.length > 0) {
@@ -149,7 +151,7 @@
                 },
                 async (payload) => {
                     // Fetch the complete message with sender info
-                    const response = await fetch(`/api/messages/${payload.new.id}`);
+                    const response = await fetch(`/api/messages/${payload.new['id']}`);
                     if (response.ok) {
                         const data = await response.json();
                         messages = [...messages, data.message];
@@ -167,10 +169,10 @@
                 },
                 (payload) => {
                     // Update read status in real-time
-                    if (payload.new.is_read !== payload.old.is_read) {
+                    if (payload.new['is_read'] !== payload.old['is_read']) {
                         messages = messages.map(msg => 
-                            msg.id === payload.new.id 
-                                ? { ...msg, is_read: payload.new.is_read, read_at: payload.new.read_at }
+                            msg.id === payload.new['id'] 
+                                ? { ...msg, is_read: payload.new['is_read'], read_at: payload.new['read_at'] }
                                 : msg
                         );
                     }
@@ -318,7 +320,7 @@
                                 <!-- Display attachments -->
                                 {#if message.attachments && Array.isArray(message.attachments) && message.attachments.length > 0}
                                     <div class="mt-2 space-y-2">
-                                        {#each message.attachments as attachment (attachment.url)}
+                                        {#each (message.attachments as MessageAttachment[]) as attachment (attachment.url)}
                                             {#if attachment.type === 'image'}
                                                 <div class="rounded-lg overflow-hidden max-w-xs">
                                                     <img 

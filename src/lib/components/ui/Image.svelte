@@ -170,8 +170,8 @@
 		return undefined;
 	});
 
-	// Placeholder for lazy loading
-	const placeholderUrl = $derived(() => {
+	// Placeholder for lazy loading (currently unused but kept for future use)
+	const _placeholderUrl = $derived(() => {
 		if (!usePlaceholder || isIntersecting) return imageUrl();
 		
 		// Generate a small blurred placeholder for Supabase images

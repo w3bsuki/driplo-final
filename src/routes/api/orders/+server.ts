@@ -1,7 +1,7 @@
 import type { RequestHandler } from './$types';
 import { apiError, apiSuccess, ApiErrorType, requireAuth, validateRequest, getPagination } from '$lib/server/api-utils';
 import { z } from 'zod';
-import type { OrderResponse, OrderCreateRequest } from '$lib/types/api';
+import type { OrderResponse } from '$lib/types/api';
 
 const orderFiltersSchema = z.object({
     status: z.string().optional(),
@@ -258,8 +258,8 @@ export const POST: RequestHandler = async ({ locals, request }) => {
         const response: OrderResponse = order;
         return apiSuccess(response, 201, requestId);
     } catch (error) {
-        if (error instanceof ApiError) {
-            return apiError(error.message, error.status, error.type, error.details, requestId);
+        if (error instanceof Error) {
+            return apiError(error.message, 500, ApiErrorType.INTERNAL_ERROR, { error: error.name }, requestId);
         }
         return apiError(
             'Failed to create order',

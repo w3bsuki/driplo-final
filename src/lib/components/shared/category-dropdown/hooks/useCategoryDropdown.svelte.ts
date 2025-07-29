@@ -4,7 +4,6 @@
  */
 
 import { goto } from '$app/navigation';
-import type { CategoryHierarchyItem, SubcategoryItem } from '../data/categoryData';
 
 interface CategoryDropdownState {
 	activeMainCategory: string;

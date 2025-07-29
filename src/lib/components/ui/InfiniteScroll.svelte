@@ -62,7 +62,7 @@
 		{:else}
 			<div class="flex items-center justify-center py-8">
 				<button 
-					onclick={handleOnLoadMore}
+					onclick={onLoadMore}
 					class="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
 				>
 					Load More

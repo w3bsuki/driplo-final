@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	// import { goto } from '$app/navigation'; // Removed as unused
 	import { 
 		Building2, 
 		User, 
@@ -41,7 +41,7 @@
 	};
 
 	function handleFormSubmit() {
-		return async ({ formElement, cancel }: { formElement: HTMLFormElement; cancel: () => void }) => {
+		return async ({ formElement: _formElement, cancel: _cancel }: { formElement: HTMLFormElement; cancel: () => void }) => {
 			loading = true;
 			return async ({ result }: { result: any }) => {
 				loading = false;
@@ -207,7 +207,7 @@
 			
 			<div class="space-y-3">
 				{#each data.socialAccounts as account}
-					{@const Icon = socialPlatformIcons[account.platform] || Globe}
+					{@const Icon = socialPlatformIcons[account.platform as keyof typeof socialPlatformIcons] || Globe}
 					<a
 						href={account.url}
 						target="_blank"
