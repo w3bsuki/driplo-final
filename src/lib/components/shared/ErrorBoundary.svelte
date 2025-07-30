@@ -2,11 +2,11 @@
   import { onMount, onDestroy } from 'svelte';
   import { page } from '$app/stores';
   import { browser } from '$app/environment';
-  import { getErrorMessage, logError, type _AppError} from '$lib/utils/error-handling';
+  import { getErrorMessage, logError } from '$lib/utils/error-handling';
   import { captureSentryException } from '$lib/config/sentry';
   import * as m from '$lib/paraglide/messages.js';
+  import Button from '$lib/components/ui/button.svelte';
 
-  import type { _Snippet} from 'svelte';
   import type { ErrorBoundaryProps } from '$lib/types/components';
 
   // Component props with proper typing
@@ -149,12 +149,14 @@
                 d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <p class="text-sm text-red-800">{errorMessage}</p>
-        <button 
+        <Button 
           onclick={handleReset}
-          class="ml-auto text-sm text-red-600 hover:text-red-500 underline"
+          variant="link"
+          size="sm"
+          class="ml-auto text-red-600 hover:text-red-500 p-0 h-auto"
         >
           Try again
-        </button>
+        </Button>
       </div>
     </div>
   {:else if level === 'custom' && fallback}
@@ -198,12 +200,14 @@
         <!-- Development Details -->
         {#if import.meta.env['DEV'] && error}
           <div class="mt-4">
-            <button
+            <Button
               onclick={() => showDetails = !showDetails}
-              class="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400 transition-colors duration-100"
+              variant="link"
+              size="sm"
+              class="text-blue-600 hover:text-blue-500 dark:text-blue-400 p-0 h-auto"
             >
               {showDetails ? 'Hide' : 'Show'} technical details
-            </button>
+            </Button>
             
             {#if showDetails}
               <div class="mt-2 p-3 bg-gray-100 dark:bg-gray-900 rounded-sm">
@@ -230,18 +234,20 @@
 
         <!-- Action Buttons -->
         <div class="mt-6 flex gap-3">
-          <button
+          <Button
             onclick={handleReset}
-            class="flex-1 bg-blue-600 text-white rounded-sm px-4 py-2 hover:bg-blue-700 transition-colors duration-100 text-sm"
+            variant="default"
+            class="flex-1"
           >
             {m.error_boundary_retry()}
-          </button>
-          <button
+          </Button>
+          <Button
             onclick={handleReload}
-            class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-sm px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-100 text-sm"
+            variant="secondary"
+            class="flex-1"
           >
             Reload page
-          </button>
+          </Button>
           <a
             href="/"
             class="flex-1 text-center bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-sm px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-100 text-sm"

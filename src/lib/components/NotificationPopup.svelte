@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { notifications } from '$lib/stores/notifications.svelte';
-	import { fly, _fade} from 'svelte/transition';
+	import { fly, fade } from 'svelte/transition';
 	import { CheckCircle, XCircle, Info, AlertTriangle, X } from 'lucide-svelte';
+	import Button from '$lib/components/ui/button.svelte';
 	
 	let { position = 'top-right' }: { position?: 'top-right' | 'top-center' | 'bottom-right' } = $props();
 	
@@ -51,21 +52,26 @@
 							</p>
 						{/if}
 						{#if notification.action}
-							<button
+							<Button
 								onclick={notification.action.callback}
-								class="text-sm font-medium mt-2 hover:underline"
+								variant="link"
+								size="sm"
+								class="mt-2 p-0 h-auto"
 							>
 								{notification.action.label}
-							</button>
+							</Button>
 						{/if}
 					</div>
 					
-					<button
+					<Button
 						onclick={() => notifications.dismiss(notification.id)}
-						class="text-muted-foreground hover:text-foreground transition-colors p-1 -m-1 rounded touch-safe"
+						variant="ghost"
+						size="icon"
+						class="h-6 w-6 text-muted-foreground hover:text-foreground"
+						aria-label="Dismiss notification"
 					>
 						<X class="w-4 h-4" />
-					</button>
+					</Button>
 				</div>
 			</div>
 		{/each}
