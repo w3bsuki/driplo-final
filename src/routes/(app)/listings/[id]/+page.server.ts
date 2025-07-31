@@ -1,20 +1,21 @@
 import { error, fail, redirect } from '@sveltejs/kit'
-import type { PageServerLoad, Actions } from './$types'
+import type { PageServerLoad, Actions } from './$types.js'
 import { setCacheHeaders, cachePresets } from '$lib/utils/cache-headers'
 import Stripe from 'stripe'
 import { STRIPE_SECRET_KEY } from '$env/static/private'
 import { z } from 'zod'
+import { generateCSRFToken, csrfProtectedAction } from '$lib/server/csrf'
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
-	apiVersion: '2024-06-20'
+	apiVersion: '2025-06-30.basil'
 })
 
-export const load: PageServerLoad = async ({ params, locals: { supabase, safeGetSession }, setHeaders }: Parameters<PageServerLoad>[0]) => {
+export const load: PageServerLoad = async ({ params, locals: { supabase, safeGetSession }, setHeaders }) => {
 	// Get session first to check authentication
 	const { session } = await safeGetSession()
 	
 	// Set cache headers for product pages
-	setCacheHeaders({ setHeaders } , cachePresets?.product)
+	setCacheHeaders({ setHeaders, request: { url: { pathname: `/listings/${params?.id}` } } as any } , cachePresets?.product)
 
 	// First, get the main listing
 	const { data: listing, error: listingError } = await supabase
@@ -129,30 +130,37 @@ export const load: PageServerLoad = async ({ params, locals: { supabase, safeGet
 
 	// Update seller stats
 	if (listing?.seller) {
-		listing?.seller.followers_count = followersResult?.count || 0
-		listing?.seller.listings_count = listingsCountResult?.count || 0
+		if (listing.seller) {
+			listing.seller.followers_count = followersResult?.count || 0
+			listing.seller.listings_count = listingsCountResult?.count || 0
+		}
 	}
 
 	// Track view using our new stored procedure (fire and forget)
 	if (session?.user) {
-		supabase?.rpc('track_listing_view', {
-			p_listing_id: params?.id,
-			p_viewer_id: session.user.id
-		})
-		.then(() => {}) // Silent success
-		.catch(() => {}) // Silent failure - view count is not critical
+		try {
+			await supabase?.rpc('track_listing_view', {
+				p_listing_id: params?.id,
+				p_viewer_id: session.user.id
+			});
+		} catch (error) {
+			// Silent failure - view count is not critical
+			console.debug('View tracking failed:', error);
+		}
 	} else {
 		// For anonymous users, we'd need IP and session tracking
 		// This would require client-side tracking instead
 	}
 
 	return {
+		csrfToken: generateCSRFToken(),
 		listing,
 		sellerListings: sellerListingsResult?.data || [],
 		relatedListings: relatedListingsResult?.data || [],
 		isFollowing: !!followCheckResult?.data,
 		isLiked: !!favoriteCheckResult?.data,
 		user: session?.user || null
+	
 	}
 }
 
@@ -179,7 +187,7 @@ const confirmPaymentSchema = z?.object({
 })
 
 export const actions: Actions = {
-	createPaymentIntent: async ({ request, params, locals: { supabase, safeGetSession } }: Parameters<Actions['createPaymentIntent']>[0]) => {
+	createPaymentIntent: async ({ request, params, locals: { supabase, safeGetSession } }) => {
 		const { session } = await safeGetSession()
 		
 		if (!session) {
@@ -191,13 +199,13 @@ export const actions: Actions = {
 		
 		// Parse shipping address from form data
 		const shipping_address = {
-			name: data?.shipping_name as string,
-			address_line1: data?.shipping_address_line1 as string,
-			address_line2: data?.shipping_address_line2 as string || '',
-			city: data?.shipping_city as string,
-			state: data?.shipping_state as string,
-			postal_code: data?.shipping_postal_code as string,
-			country: data?.shipping_country as string || 'BG'
+			name: data?.['shipping_name'] as string,
+			address_line1: data?.['shipping_address_line1'] as string,
+			address_line2: data?.['shipping_address_line2'] as string || '',
+			city: data?.['shipping_city'] as string,
+			state: data?.['shipping_state'] as string,
+			postal_code: data?.['shipping_postal_code'] as string,
+			country: data?.['shipping_country'] as string || 'BG'
 		}
 
 		// Validate input
@@ -307,7 +315,7 @@ export const actions: Actions = {
 		}
 	},
 
-	confirmPayment: async ({ request, locals: { supabase, safeGetSession } }: Parameters<Actions['confirmPayment']>[0]) => {
+	confirmPayment: async ({ request, locals: { supabase, safeGetSession } }) => {
 		const { session } = await safeGetSession()
 		
 		if (!session) {
@@ -317,18 +325,18 @@ export const actions: Actions = {
 		const formData = await request?.formData()
 		const data = Object?.fromEntries(formData)
 		
-		const payment_method_id = data?.payment_method_id as string
-		const client_secret = data?.client_secret as string
+		const payment_method_id = data?.['payment_method_id'] as string
+		const client_secret = data?.['client_secret'] as string
 		
 		// Parse shipping address
 		const shipping_address = {
-			name: data?.shipping_name as string,
-			address_line1: data?.shipping_address_line1 as string,
-			address_line2: data?.shipping_address_line2 as string || '',
-			city: data?.shipping_city as string,
-			state: data?.shipping_state as string,
-			postal_code: data?.shipping_postal_code as string,
-			country: data?.shipping_country as string || 'BG'
+			name: data?.['shipping_name'] as string,
+			address_line1: data?.['shipping_address_line1'] as string,
+			address_line2: data?.['shipping_address_line2'] as string || '',
+			city: data?.['shipping_city'] as string,
+			state: data?.['shipping_state'] as string,
+			postal_code: data?.['shipping_postal_code'] as string,
+			country: data?.['shipping_country'] as string || 'BG'
 		}
 
 		// Validate input
@@ -350,6 +358,7 @@ export const actions: Actions = {
 			const paymentIntent = await stripe?.paymentIntents.confirm(client_secret, {
 				payment_method: payment_method_id,
 				payment_method_data: {
+					type: 'card',
 					billing_details: {
 						name: shipping_address?.name,
 						address: {
@@ -383,14 +392,14 @@ export const actions: Actions = {
 				const { error: listingUpdateError } = await supabase
 					.from('listings')
 					.update({ status: 'sold' })
-					.eq('id', paymentIntent?.metadata.listing_id)
+					.eq('id', paymentIntent?.metadata['listing_id'])
 
 				if (listingUpdateError) {
 					console?.error('Failed to update listing status:', listingUpdateError)
 				}
 
 				// Redirect to order confirmation
-				throw redirect(303, `/order-confirmation?order_id=${paymentIntent?.metadata.order_id}`)
+				throw redirect(303, `/order-confirmation?order_id=${paymentIntent?.metadata['order_id']}`)
 			} else if (paymentIntent?.status === 'requires_action') {
 				// 3D Secure or other authentication required
 				return {
@@ -413,7 +422,7 @@ export const actions: Actions = {
 		}
 	},
 
-	createRevolutPayment: async ({ request, params, locals: { supabase, safeGetSession } }: Parameters<Actions['createRevolutPayment']>[0]) => {
+	createRevolutPayment: async ({ request, params, locals: { supabase, safeGetSession } }) => {
 		const { session } = await safeGetSession()
 		
 		if (!session) {
@@ -425,13 +434,13 @@ export const actions: Actions = {
 		
 		// Parse shipping address
 		const shipping_address = {
-			full_name: data?.shipping_name as string,
-			street_address: data?.shipping_address_line1 as string,
-			city: data?.shipping_city as string,
-			state_province: data?.shipping_state as string,
-			postal_code: data?.shipping_postal_code as string,
-			country: data?.shipping_country as string || 'BG',
-			phone: data?.shipping_phone as string || ''
+			full_name: data?.['shipping_name'] as string,
+			street_address: data?.['shipping_address_line1'] as string,
+			city: data?.['shipping_city'] as string,
+			state_province: data?.['shipping_state'] as string,
+			postal_code: data?.['shipping_postal_code'] as string,
+			country: data?.['shipping_country'] as string || 'BG',
+			phone: data?.['shipping_phone'] as string || ''
 		}
 
 		// Get listing details

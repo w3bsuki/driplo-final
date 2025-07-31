@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import type { LazyLoadingOptions } from '$lib/utils/lazy-loading';
+import type { LazyLoadingOptions } from '$lib/utils/lazy-load';
 
 /**
  * Svelte action for lazy loading images with advanced features

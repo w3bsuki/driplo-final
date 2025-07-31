@@ -12,6 +12,15 @@
 	import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public'
 	import { createBrowserClient } from '@supabase/ssr'
 	import TurnstileWrapper from '$lib/components/auth/TurnstileWrapper.svelte'
+	
+	interface Props {
+		data: {
+			success?: boolean;
+			csrfToken: string;
+		}
+	}
+	
+	let { data }: Props = $props()
 
 	// Using auth store functions directly
 	
@@ -101,7 +110,7 @@
 			loading = true
 			
 			// Use direct Supabase client for signup
-			const tempUsername = email?.split('@')[0].replace(/[^a-zA-Z0-9]/g, '') + Math?.floor(Math?.random() * 1000)
+			const tempUsername = (email?.split('@')[0] || 'user').replace(/[^a-zA-Z0-9]/g, '') + Math.floor(Math.random() * 1000)
 			const { _data, error } = await supabaseClient?.auth.signUp({
 					email,
 					password,
@@ -171,7 +180,7 @@
 				localStorage?.setItem('pending_account_type', 'brand')
 			}
 			// Redirect to OAuth endpoint
-			window?.location.href = `/auth/${provider}`
+			if (window) window.location.href = `/auth/${provider}`
 		} catch (error) {
 			if (error instanceof Error) {
 				toast?.error(error?.message || 'OAuth registration failed')
@@ -322,6 +331,7 @@
 				}}
 				class="space-y-3"
 			>
+				<input type="hidden" name="csrfToken" value={data.csrfToken} />
 
 				<div>
 					<label for="email" class="block text-xs font-medium text-gray-700 mb-1">
@@ -510,7 +520,7 @@
 				<button 
 					type="submit" 
 					class="w-full py-2 bg-brand-500 text-white font-medium rounded-sm hover:bg-brand-600 transition-colors duration-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center mt-3"
-					disabled={loading || !agreedToTerms || (import?.meta.env?.MODE === 'production' && !captchaToken)}
+					disabled={loading || !agreedToTerms || (import.meta.env.MODE === 'production' && !captchaToken)}
 				>
 					{#if loading}
 						<Spinner size="sm" color="white" />

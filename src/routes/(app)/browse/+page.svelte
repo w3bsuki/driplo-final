@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Button from '$lib/components/ui/button.svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { _Search, X } from 'lucide-svelte';
@@ -101,10 +102,10 @@
 		};
 
 		// Clear existing params and set new ones
-		url?.search = '';
-		Object?.entries(newFilters)?.forEach?.((([key, value]) => {
+		url.search = '';
+		Object.entries(newFilters).forEach(([key, value]) => {
 			if (value && value !== '' && value !== 'recent') {
-				url?.searchParams.set(key, String(value));
+				url.searchParams.set(key, String(value));
 			}
 		});
 
@@ -247,7 +248,7 @@
 			if (response?.ok) {
 				const result = await response.json();
 				
-				if (result?.listings && result?.listings?.length ?? 0 > 0) {
+				if (result?.listings && (result?.listings?.length ?? 0) > 0) {
 					allListings = [...allListings, ...result?.listings];
 					currentPage = nextPage;
 					hasMoreItems = result?.hasMore;
@@ -300,13 +301,13 @@
 						</div>
 					{:else if $topSellersQuery?.error}
 						<!-- Error state - silently fail, don't show section -->
-					{:else if $topSellersQuery?.data?.sellers && $topSellersQuery?.data.sellers?.length ?? 0 > 0}
+					{:else if $topSellersQuery?.data?.sellers && ($topSellersQuery?.data.sellers?.length ?? 0) > 0}
 						<h2 class="text-sm md:text-base font-semibold text-gray-800 mb-3 text-center flex items-center justify-center gap-2">
 							<span>🏆</span>
 							<span>Top Sellers This Month</span>
 						</h2>
 						<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-3">
-							{#each $topSellersQuery?.data.sellers??.slice?.((0, 6) as seller, index (seller?.id)}
+							{#each $topSellersQuery?.data.sellers?.slice?.(0, 6) as seller, index (seller?.id)}
 								<a href="/profile/{seller?.username}" class="text-center group">
 									<div class="relative">
 										{#if index === 0}
@@ -359,12 +360,12 @@
 								class="flex-1 py-2 md:py-3 pr-3 text-sm placeholder:text-gray-400 focus:outline-none bg-transparent"
 							/>
 							
-							<button
-								onclick={() => handleSearch(searchInput)}
+							<Button>
+	handleSearch(searchInput)}
 								class="mr-2 px-3 md:px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-sm text-sm hover:from-blue-600 hover:to-blue-700 transition-all duration-100 active:scale-95"
 							>
 								Search
-							</button>
+</Button>
 						</div>
 						
 						<!-- Quick Search Suggestions -->
@@ -373,13 +374,13 @@
 								<p class="text-sm font-medium text-gray-700 mb-2">Quick searches:</p>
 								<div class="grid grid-cols-2 md:grid-cols-4 gap-2">
 									{#each quickSearchSuggestions as suggestion (suggestion?.text)}
-										<button
-											onmousedown={() => handleQuickSearch(suggestion?.text)}
+										<Button>
+	handleQuickSearch(suggestion?.text)}
 											class="flex items-center gap-2 px-2 py-1.5 bg-gray-50 hover:bg-gray-100 rounded-sm transition-colors duration-100 text-sm"
 										>
 											<span class="text-lg">{suggestion?.emoji}</span>
 											<span class="text-gray-700">{suggestion?.text}</span>
-										</button>
+</Button>
 									{/each}
 								</div>
 							</div>
@@ -414,8 +415,8 @@
 						<h3 class="font-semibold text-gray-900 mb-2 text-sm">{m?.browse_categories()}</h3>
 						<div class="space-y-1">
 							{#each categoriesWithAll as category (category?.slug)}
-								<button
-									onclick={() => updateCategory(category?.slug)}
+								<Button>
+	updateCategory(category?.slug)}
 									class={cn(
 										"w-full text-left px-2 py-2 rounded-sm text-sm transition-all duration-100 flex items-center gap-2",
 										data?.filters.category === category?.slug
@@ -425,7 +426,7 @@
 								>
 									<span class="text-sm">{category?.icon_url || '📦'}</span>
 									<span>{category?.name}</span>
-								</button>
+</Button>
 							{/each}
 						</div>
 					</div>
@@ -451,12 +452,9 @@
 									class="w-full rounded-sm border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent"
 								/>
 							</div>
-							<button
-								onclick={updatePriceRange}
-								class="w-full px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-sm hover:bg-blue-100 transition-colors duration-100"
-							>
-								Apply Price Range
-							</button>
+							<Button variant="link" class="w-full .5 text-blue-600 hover:" onclick={updatePriceRange}>
+	Apply Price Range
+</Button>
 						</div>
 					</div>
 
@@ -465,8 +463,8 @@
 						<h3 class="font-semibold text-gray-900 mb-2 text-sm">{m?.browse_size()}</h3>
 						<div class="grid grid-cols-3 gap-2">
 							{#each sizeOptions as size (size)}
-								<button
-									onclick={() => toggleSize(size)}
+								<Button>
+	toggleSize(size)}
 									class={cn(
 										"px-2 py-1.5 rounded-sm text-sm font-medium transition-all duration-100",
 										selectedSizes?.has(size)
@@ -475,7 +473,7 @@
 									)}
 								>
 									{size}
-								</button>
+</Button>
 							{/each}
 						</div>
 					</div>
@@ -518,12 +516,9 @@
 
 					<!-- Clear Filters Button -->
 					{#if data?.filters.search || data?.filters.category || selectedSizes?.size > 0 || selectedBrands?.size > 0 || selectedConditions?.size > 0 || data?.filters.minPrice || data?.filters.maxPrice}
-						<button
-							onclick={clearAllFilters}
-							class="w-full px-3 py-2 text-sm font-medium text-red-600 bg-white border border-red-300 rounded-sm hover:bg-red-50 transition-colors duration-100"
-						>
-							{m?.browse_clear_filters()}
-						</button>
+						<Button variant="destructive" class="w-full text-red-600 bg-white -300 hover:" onclick={clearAllFilters}>
+	{m?.browse_clear_filters()}
+</Button>
 					{/if}
 				</div>
 			</aside>
@@ -563,60 +558,61 @@
 					<div class="bg-white rounded-sm border border-gray-200 p-3 mb-3">
 						<div class="flex items-center justify-between mb-2">
 							<h3 class="text-sm font-semibold text-gray-900">Active Filters</h3>
-							<button
-								onclick={clearAllFilters}
-								class="text-sm text-blue-600 hover:text-blue-800 font-medium"
-							>
-								{m?.browse_clear_filters()}
-							</button>
+							<Button variant="link" class="text-blue-600 hover:text-blue-800" onclick={clearAllFilters}>
+	{m?.browse_clear_filters()}
+</Button>
 						</div>
 						<div class="flex flex-wrap gap-2">
 							{#if data?.filters.search}
 								<span class="inline-flex items-center gap-1.5 px-2 py-1 bg-blue-50 text-blue-700 rounded-sm text-sm font-medium">
 									Search: "{data?.filters.search}"
-									<button onclick={() => goto(buildFilterUrl({ search: null }))} class="hover:text-blue-900">
+									<Button onclick={() => goto(buildFilterUrl({ search: null }))} class="hover:text-blue-900">
 										<X class="h-3.5 w-3.5" />
-									</button>
+									</Button>
 								</span>
 							{/if}
 							{#if data?.filters.category}
 								<span class="inline-flex items-center gap-1.5 px-2 py-1 bg-blue-50 text-blue-700 rounded-sm text-sm font-medium">
 									{categoriesWithAll?.find(c => c?.slug === data?.filters.category)?.name}
-									<button onclick={() => updateCategory('')} class="hover:text-blue-900">
+									<Button>
+	updateCategory('')} class="hover:text-blue-900">
 										<X class="h-3.5 w-3.5" />
-									</button>
+</Button>
 								</span>
 							{/if}
 							{#each Array?.from(selectedSizes) as size (size)}
 								<span class="inline-flex items-center gap-1.5 px-2 py-1 bg-blue-50 text-blue-700 rounded-sm text-sm font-medium">
 									Size {size}
-									<button onclick={() => toggleSize(size)} class="hover:text-blue-900">
+									<Button>
+	toggleSize(size)} class="hover:text-blue-900">
 										<X class="h-3.5 w-3.5" />
-									</button>
+</Button>
 								</span>
 							{/each}
 							{#each Array?.from(selectedBrands) as brand (brand)}
 								<span class="inline-flex items-center gap-1.5 px-2 py-1 bg-blue-50 text-blue-700 rounded-sm text-sm font-medium">
 									{brand}
-									<button onclick={() => toggleBrand(brand)} class="hover:text-blue-900">
+									<Button>
+	toggleBrand(brand)} class="hover:text-blue-900">
 										<X class="h-3.5 w-3.5" />
-									</button>
+</Button>
 								</span>
 							{/each}
 							{#each Array?.from(selectedConditions) as condition (condition)}
 								<span class="inline-flex items-center gap-1.5 px-2 py-1 bg-blue-50 text-blue-700 rounded-sm text-sm font-medium">
 									{conditionOptions?.find(c => c?.value === condition)?.label}
-									<button onclick={() => toggleCondition(condition)} class="hover:text-blue-900">
+									<Button>
+	toggleCondition(condition)} class="hover:text-blue-900">
 										<X class="h-3.5 w-3.5" />
-									</button>
+</Button>
 								</span>
 							{/each}
 							{#if data?.filters.minPrice || data?.filters.maxPrice}
 								<span class="inline-flex items-center gap-1.5 px-2 py-1 bg-blue-50 text-blue-700 rounded-sm text-sm font-medium">
 									${data?.filters.minPrice || 0} - ${data?.filters.maxPrice || '∞'}
-									<button onclick={() => goto(buildFilterUrl({ minPrice: null, maxPrice: null }))} class="hover:text-blue-900">
+									<Button onclick={() => goto(buildFilterUrl({ minPrice: null, maxPrice: null }))} class="hover:text-blue-900">
 										<X class="h-3.5 w-3.5" />
-									</button>
+									</Button>
 								</span>
 							{/if}
 						</div>
@@ -636,7 +632,7 @@
 				<!-- Items Counter -->
 				{#if allListings?.length ?? 0 > 0}
 					<div class="mt-4 text-center text-sm text-muted-foreground">
-						Showing {allListings?.length ?? 0.toLocaleString()} of {data?.totalCount.toLocaleString()} results
+						Showing {(allListings?.length ?? 0).toLocaleString()} of {data?.totalCount.toLocaleString()} results
 						{#if hasMoreItems}
 							• Scroll down to load more
 						{/if}

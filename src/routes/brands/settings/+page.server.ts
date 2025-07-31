@@ -1,5 +1,6 @@
 import { redirect } from '@sveltejs/kit'
 import type { PageServerLoad, Actions } from './$types'
+import { generateCSRFToken, csrfProtectedAction } from '$lib/server/csrf'
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { user } = await locals.safeGetSession()
@@ -28,16 +29,18 @@ export const load: PageServerLoad = async ({ locals }) => {
 			.single()
 		
 		const { data: socialMediaAccounts } = await locals.supabase
-			.from('social_media_accounts')
+			.from('social_media_accounts' as any)
 			.select('*')
 			.eq('user_id', user.id)
 		
 		return {
+		csrfToken: generateCSRFToken(),
 			user,
 			profile: profileSimple,
 			socialMediaAccounts: socialMediaAccounts || [],
 			verificationRequest: null
-		}
+		
+	}
 	}
 	
 	// Get verification status
@@ -68,9 +71,9 @@ export const actions = {
 		const { error } = await locals.supabase
 			.from('profiles')
 			.update({
-				brand_name: formData.get('brand_name'),
-				brand_description: formData.get('brand_description'),
-				brand_size: formData.get('brand_size'),
+				brand_name: formData.get('brand_name')?.toString(),
+				brand_description: formData.get('brand_description')?.toString(),
+				brand_size: formData.get('brand_size')?.toString(),
 				account_type: 'brand'
 			})
 			.eq('id', user.id)

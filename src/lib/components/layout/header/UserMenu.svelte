@@ -38,7 +38,7 @@
 	
 	const avatarSizeClass = isMobile ? 'h-9 w-9' : 'h-[var(--button-height-lg)] w-[var(--button-height-lg)]';
 	const avatarSize = isMobile ? 36 : 40; // 40px = --button-height-lg
-	const primaryBadge = profile?.badges?.[0];
+	const primaryBadge = (profile as any)?.badges?.[0];
 </script>
 
 <DropdownMenu.Root>

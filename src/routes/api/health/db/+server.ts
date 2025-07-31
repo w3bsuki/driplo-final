@@ -5,7 +5,7 @@ export const GET: RequestHandler = async ({ locals }) => {
   try {
     // Test database connection with a simple query
     const startTime = Date?.now();
-    const { _data, error } = await locals?.supabase
+    const { error } = await locals?.supabase
       .from('profiles')
       .select('count', { count: 'exact', head: true });
     

@@ -17,7 +17,7 @@
 	import ProgressBar from '$lib/components/ui/ProgressBar.svelte'
 	
 	// Import context and components
-	import { createFormStore, setFormContext } from './FormContext.svelte.ts'
+	import { createFormStore, setFormContext } from './FormContext.svelte'
 	import { draftManager } from './utils/draft-manager'
 	import ProductDetailsStep from './steps/ProductDetailsStep.svelte'
 	import MediaUploadStep from './steps/MediaUploadStep.svelte'
@@ -57,7 +57,7 @@
 				// Let SvelteKit handle the redirect naturally
 			} else if (result?.type === 'failure') {
 				// Handle specific error types
-				const error = result?.data?.error
+				const error = result?.data?.['error']
 				if (typeof error === 'string') {
 					if (error?.includes('auth')) {
 						toast?.error('Session expired. Please log in again.')
@@ -75,16 +75,22 @@
 				} else {
 					toast?.error('Failed to create listing. Please try again.')
 				}
-				formStore?.isSubmitting = false
+				if (formStore) {
+					formStore.isSubmitting = false
+				}
 			} else if (result?.type === 'error') {
 				toast?.error('Server error. Please try again later.')
-				formStore?.isSubmitting = false
+				if (formStore) {
+					formStore.isSubmitting = false
+				}
 			}
 		},
 		onError: (error) => {
 			console?.error('Form submission error:', error)
 			toast?.error('An error occurred. Please try again.')
-			formStore?.isSubmitting = false
+			if (formStore) {
+				formStore.isSubmitting = false
+			}
 		}
 	})
 	
@@ -124,11 +130,15 @@
 				const draft = await draftManager?.load()
 				if (draft) {
 					// Merge draft data
-					formStore?.formData = draftManager?.mergeDraft(
-						formStore?.formData, 
-						draft?.formData
-					)
-					formStore?.currentStep = draft?.currentStep || 1
+					if (formStore) {
+						formStore.formData = draftManager?.mergeDraft(
+							formStore?.formData, 
+							draft?.formData
+						) as typeof formStore.formData
+					}
+					if (formStore) {
+						formStore.currentStep = draft?.currentStep || 1
+					}
 					toast?.success('Draft restored successfully')
 				}
 			} else {
@@ -222,7 +232,9 @@
 		}
 		
 		// If we get here, all validations passed
-		formStore?.isSubmitting = true
+		if (formStore) {
+			formStore.isSubmitting = true
+		}
 		// Let the form submit naturally with enhance
 	}
 	

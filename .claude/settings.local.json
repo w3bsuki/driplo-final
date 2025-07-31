@@ -27,7 +27,9 @@
       "Bash(timeout 5 pnpm run dev)",
       "Bash(git checkout:*)",
       "Bash(copy:*)",
-      "Bash(gh auth:*)"
+      "Bash(gh auth:*)",
+      "Bash(npx tsc:*)",
+      "Bash(gemini:*)"
     ],
     "deny": []
   },

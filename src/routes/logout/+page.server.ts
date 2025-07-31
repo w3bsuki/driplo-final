@@ -28,7 +28,7 @@ export const load: PageServerLoad = async ({ locals, cookies }) => {
 	if (user) {
 		try {
 			await locals.supabase.rpc('log_auth_event', {
-				p_user_id: user.id,
+				user_id: user.id,
 				p_action: 'logout',
 				p_ip_address: 'server',
 				p_user_agent: 'server',

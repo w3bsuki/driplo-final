@@ -1,12 +1,7 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
-	import type { Snippet } from 'svelte';
 	import { Package2, Ruler, CheckCircle2, Store, Check } from 'lucide-svelte';
 	import { getConditionConfig } from '$lib/config/conditions';
-	
-	// Suppress unused warnings for Snippet (used in types) and ListingCondition (future use)
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	type _UnusedSnippet = Snippet;
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { BadgeProps } from '$lib/types/ui';
@@ -162,6 +157,12 @@
 		return variant;
 	});
 
+	// Safe variant access with fallback
+	const getVariantClass = $derived(() => {
+		const variantKey = actualVariant();
+		return variants[variantKey as keyof typeof variants] || variants.default;
+	});
+
 	// Determine if this should be interactive
 	const isInteractive = $derived(() => interactive || onclick || dismissible);
 
@@ -170,7 +171,7 @@
 		let classes = '';
 		
 		if (selected) classes += ' ring-2 ring-brand-500 ring-offset-1';
-		if (isInteractive) classes += ' active:scale-95 transition-all duration-100';
+		if (isInteractive()) classes += ' active:scale-95 transition-all duration-100';
 		
 		return classes;
 	});
@@ -178,14 +179,14 @@
 
 {#if variant === 'verified' && !verified}
 	<!-- Don't render verified badge if not verified -->
-{:else if isInteractive}
+{:else if isInteractive()}
 	<button
 		onclick={handleClick}
 		class={cn(
 			'inline-flex items-center justify-center rounded-[var(--radius-sm)] border',
-			variants[actualVariant],
+			getVariantClass(),
 			sizes[size as keyof typeof sizes],
-			additionalClasses,
+			additionalClasses(),
 			className
 		)}
 	>
@@ -233,9 +234,9 @@
 	<span
 		class={cn(
 			'inline-flex items-center justify-center rounded-[var(--radius-sm)] border',
-			variants[actualVariant],
+			getVariantClass(),
 			sizes[size as keyof typeof sizes],
-			additionalClasses,
+			additionalClasses(),
 			className
 		)}
 	>

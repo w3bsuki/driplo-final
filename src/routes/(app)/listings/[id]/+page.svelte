@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { _page} from '$app/stores';
+	import Button from '$lib/components/ui/button.svelte';
+	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { formatCurrency } from '$lib/utils/currency';
 	import { 
@@ -130,7 +131,7 @@
 			} else {
 				// Update favorite count
 				if (listing) {
-					listing?.favorite_count = (listing?.favorite_count || 0) + (isLiked ? 1 : -1);
+					listing.favorite_count = (listing.favorite_count || 0) + (isLiked ? 1 : -1);
 				}
 			}
 		} catch (error) {
@@ -211,12 +212,16 @@
 	function openFullscreenGallery(index: number = currentImageIndex) {
 		currentImageIndex = index;
 		showFullscreenGallery = true;
-		document?.body.style?.overflow = 'hidden';
+		if (document?.body?.style) {
+			document.body.style.overflow = 'hidden';
+		}
 	}
 
 	function closeFullscreenGallery() {
 		showFullscreenGallery = false;
-		document?.body.style?.overflow = '';
+		if (document?.body?.style) {
+			document.body.style.overflow = '';
+		}
 	}
 
 	// Track view for anonymous users on mount
@@ -263,7 +268,9 @@
 
 	onMount(() => {
 		return () => {
-			document?.body.style?.overflow = '';
+			if (document?.body?.style) {
+				document.body.style.overflow = '';
+			}
 		};
 	});
 </script>
@@ -309,7 +316,7 @@
 				<!-- Image Gallery Section -->
 				<div class="space-y-2">
 					<div class="relative bg-white rounded-sm  border border-gray-200/60 p-2">
-						<button 
+						<Button
 							onclick={() => hasImages && openFullscreenGallery()}
 							class="relative aspect-square overflow-hidden rounded-sm bg-gray-50 w-full group cursor-zoom-in"
 							disabled={!hasImages}
@@ -345,25 +352,25 @@
 						
 						{#if hasMultipleImages}
 							<!-- Navigation buttons -->
-							<button
+							<Button
 								onclick={(e) => { e?.stopPropagation(); prevImage(); }}
 								class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center border border-gray-200 hover:bg-white transition-all duration-100"
 								aria-label="Previous image"
 							>
 								<ChevronLeft class="w-4 h-4" />
-							</button>
-							<button
+							</Button>
+							<Button
 								onclick={(e) => { e?.stopPropagation(); nextImage(); }}
 								class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center border border-gray-200 hover:bg-white transition-all duration-100"
 								aria-label="Next image"
 							>
 								<ChevronRight class="w-4 h-4" />
-							</button>
+							</Button>
 
 							<!-- Image indicators -->
 							<div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
 								{#each images as _, index (index)}
-									<button
+									<Button
 										onclick={(e) => { e?.stopPropagation(); currentImageIndex = index; }}
 										class={cn("w-1 h-1 rounded-full transition-all", 
 											index === currentImageIndex ? "bg-white w-4" : "bg-white/60"
@@ -373,14 +380,14 @@
 								{/each}
 							</div>
 						{/if}
-					</button>
+</Button>
 					</div>
 
 					<!-- Thumbnail strip -->
 					{#if hasMultipleImages}
 						<div class="flex gap-1.5 overflow-x-auto scrollbar-hide">
 							{#each images as image, index (index)}
-								<button
+								<Button
 									onclick={() => currentImageIndex = index}
 									class={cn("flex-shrink-0 w-12 h-12 rounded overflow-hidden border transition-all",
 										index === currentImageIndex ? "border-primary " : "border-gray-200 opacity-80 hover:opacity-100"
@@ -398,7 +405,7 @@
 									{:else}
 										<div class="w-full h-full bg-gray-100"></div>
 									{/if}
-								</button>
+</Button>
 							{/each}
 						</div>
 					{/if}
@@ -413,27 +420,19 @@
 								{listing.title}
 							</h1>
 							<div class="flex items-center gap-1">
-								<button
-									onclick={handleLike}
-									class={cn("p-1.5 rounded-sm hover:bg-gray-100 transition-colors duration-100",
-										isLiked ? "text-red-500" : "text-gray-500 hover:text-red-500"
-									)}
-								>
+								<Button variant="secondary" class={cn("p-1.5 hover:bg-gray-100", isLiked ? "text-red-500" : "text-gray-600 hover:text-red-500")} onclick={handleLike}>
 									<Heart class={cn("w-4 h-4", isLiked && "fill-current")} />
-								</button>
-								<button 
-									onclick={handleShare}
-									class="p-1.5 rounded-sm text-gray-500 hover:bg-gray-100 transition-colors duration-100"
-								>
+								</Button>
+								<Button variant="secondary" class="p-1.5 hover:bg-gray-100" onclick={handleShare}>
 									<Share2 class="w-4 h-4" />
-								</button>
+								</Button>
 							</div>
 						</div>
 						
 						<div class="flex items-center gap-3">
-							<span class="text-xl font-bold text-gray-900">{formatCurrency(listing?.price)}</span>
+							<span class="text-xl font-bold text-gray-900">{formatCurrency(listing?.price, "BGN")}</span>
 							{#if listing?.original_price && listing?.original_price > listing?.price}
-								<span class="text-sm text-gray-500 line-through">{formatCurrency(listing?.original_price)}</span>
+								<span class="text-sm text-gray-500 line-through">{formatCurrency(listing?.original_price, "BGN")}</span>
 								<Badge variant="destructive" class="text-xs px-1.5 py-0.5">
 									{Math?.round((1 - listing?.price / listing?.original_price) * 100)}% off
 								</Badge>
@@ -463,12 +462,12 @@
 							{:else}
 								<p>
 									{listing.description?.slice?.((0, 100)}...
-									<button 
+									<Button
 										onclick={() => isDescriptionExpanded = true}
 										class="text-primary hover:underline ml-1"
 									>
 										See more
-									</button>
+									</Button>
 								</p>
 							{/if}
 						</div>
@@ -497,7 +496,7 @@
 											{listing.seller.username}
 										</span>
 										{#if listing.seller.account_type === 'brand'}
-											<BrandBadge size="xs" isVerified={listing.seller.is_verified} showText={false} />
+											<BrandBadge size="sm" isVerified={listing.seller.is_verified} showText={false} />
 										{/if}
 									</div>
 									<div class="flex items-center gap-1 text-xs text-gray-500">
@@ -509,22 +508,13 @@
 								</div>
 							</a>
 							{#if !isOwner}
-								<button
-									onclick={handleFollow}
-									disabled={isFollowLoading}
-									class={cn("px-3 py-1.5 rounded-sm text-xs font-medium transition-all",
-										isFollowing 
-											? "bg-gray-100 text-gray-700 hover:bg-gray-200" 
-											: "bg-primary text-white hover:bg-primary/90",
-										isFollowLoading && "opacity-50 cursor-not-allowed"
-									)}
-								>
+								<Button variant="secondary" size="xs" class={cn("px-3 py-1.5", isFollowing ? "bg-gray-100 hover:bg-gray-200" : "bg-primary text-white hover:bg-primary/90", isFollowLoading && "opacity-50 cursor-not-allowed")} onclick={handleFollow} disabled={isFollowLoading}>
 									{#if isFollowLoading}
 										<Spinner size="sm" color={isFollowing ? "current" : "white"} />
 									{:else}
 										{isFollowing ? "Following" : "Follow"}
 									{/if}
-								</button>
+								</Button>
 							{/if}
 						</div>
 					</div>
@@ -598,7 +588,7 @@
 										<p class="text-sm font-medium text-gray-900">Standard Shipping</p>
 										<p class="text-sm text-gray-600">3-5 business days</p>
 										<p class="text-sm font-medium text-gray-900 mt-1">
-											{listing?.shipping_cost > 0 ? formatCurrency(listing?.shipping_cost) : 'Free'}
+											{listing?.shipping_cost > 0 ? formatCurrency(listing?.shipping_cost, "BGN") : 'Free'}
 										</p>
 									</div>
 								</div>
@@ -643,7 +633,7 @@
 									<div class="flex items-center gap-2">
 										<h3 class="text-sm font-medium text-gray-900">{listing.seller.username}</h3>
 										{#if listing.seller.account_type === 'brand'}
-											<BrandBadge size="xs" isVerified={listing.seller.is_verified} showText={false} />
+											<BrandBadge size="sm" isVerified={listing.seller.is_verified} showText={false} />
 										{/if}
 									</div>
 									<div class="flex items-center gap-3 mt-1 text-sm text-gray-600">
@@ -664,12 +654,9 @@
 											View Profile
 										</a>
 										{#if !isOwner}
-											<button 
-												class="p-2 bg-gray-100 hover:bg-gray-200 rounded-sm transition-colors duration-100"
-												onclick={() => goto(`/messages?user=${listing.seller.username}`)}
-											>
+											<Button variant="secondary" class="p-1.5 hover:bg-gray-100" onclick={() => goto(`/messages?user=${listing.seller.username}`)}>
 												<MessageCircle class="w-4 h-4 text-gray-700" />
-											</button>
+											</Button>
 										{/if}
 									</div>
 								</div>
@@ -685,36 +672,28 @@
 	<div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 z-50">
 		<div class="max-w-7xl mx-auto flex items-center gap-2">
 			<div class="flex-1">
-				<div class="text-base font-bold text-gray-900">{formatCurrency(listing?.price)}</div>
-				<div class="text-xs text-gray-500">{listing?.shipping_cost > 0 ? `+ ${formatCurrency(listing?.shipping_cost)} shipping` : 'Free shipping'}</div>
+				<div class="text-base font-bold text-gray-900">{formatCurrency(listing?.price, "BGN")}</div>
+				<div class="text-xs text-gray-500">{listing?.shipping_cost > 0 ? `+ ${formatCurrency(listing?.shipping_cost, "BGN")} shipping` : 'Free shipping'}</div>
 			</div>
 			{#if !isOwner}
-				<button
-					onclick={handleLike}
-					class={cn(
-						"p-2.5 rounded-sm transition-all duration-200 transform active:scale-[0.98]",
-						isLiked 
-							? "bg-red-50 text-red-600 border border-red-200" 
-							: "bg-gray-100 text-gray-600 hover:bg-gray-200"
-					)}
-				>
+				<Button variant="destructive" class={cn("p-2.5 transform active:scale-[0.98]", isLiked ? "bg-red-100 text-red-600 border-red-200" : "bg-gray-100 hover:bg-red-50")} onclick={handleLike}>
 					<Heart class={cn("w-5 h-5", isLiked && "fill-current")} />
-				</button>
-				<button
+				</Button>
+				<Button
 					onclick={handleBuyNow}
 					onmouseenter={() => checkoutFlowRef?.preload()}
 					onfocus={() => checkoutFlowRef?.preload()}
 					class="bg-primary text-white rounded-sm px-4 py-2 font-medium hover:bg-primary/90 transition-all duration-100 transform active:scale-[0.98]"
 				>
 					Buy Now
-				</button>
+				</Button>
 			{:else}
-				<button
+				<Button
 					onclick={() => goto(`/listings/${listing.id}/edit`)}
 					class="bg-primary text-white rounded-sm px-4 py-2 font-medium hover:bg-primary/90 transition-all duration-100 transform active:scale-[0.98]"
 				>
 					Edit Listing
-				</button>
+				</Button>
 			{/if}
 		</div>
 	</div>
@@ -771,12 +750,9 @@
 	>
 		<div class="relative w-full h-full flex items-center justify-center p-3">
 			<!-- Close button -->
-			<button
-				onclick={closeFullscreenGallery}
-				class="absolute top-3 right-3 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-10"
-			>
-				<X class="w-6 h-6" />
-			</button>
+			<Button class="absolute top-4 right-3 w-10 h-10 bg-white/10 hover:bg-white/20 z-10 rounded-full" onclick={closeFullscreenGallery}>
+				<X class="w-6 h-6 text-white" />
+			</Button>
 
 			<!-- Image container -->
 			<div class="relative max-w-full max-h-full" onclick={(e) => e?.stopPropagation()}>
@@ -798,18 +774,18 @@
 
 				{#if hasMultipleImages}
 					<!-- Navigation buttons -->
-					<button
+					<Button
 						onclick={(e) => { e?.stopPropagation(); prevImage(); }}
 						class="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors duration-100"
 					>
 						<ChevronLeft class="w-6 h-6" />
-					</button>
-					<button
+					</Button>
+					<Button
 						onclick={(e) => { e?.stopPropagation(); nextImage(); }}
 						class="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors duration-100"
 					>
 						<ChevronRight class="w-6 h-6" />
-					</button>
+					</Button>
 				{/if}
 			</div>
 
@@ -817,7 +793,7 @@
 			{#if hasMultipleImages}
 				<div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
 					{#each images as _, index (index)}
-						<button
+						<Button
 							onclick={(e) => { e?.stopPropagation(); currentImageIndex = index; }}
 							class={cn("w-12 h-12 rounded-sm overflow-hidden border-2 transition-all",
 								index === currentImageIndex ? "border-white" : "border-white/30 opacity-60 hover:opacity-100"
@@ -832,7 +808,7 @@
 								preferredSize="thumb"
 								loading="eager"
 							/>
-						</button>
+						</Button>
 					{/each}
 				</div>
 			{/if}

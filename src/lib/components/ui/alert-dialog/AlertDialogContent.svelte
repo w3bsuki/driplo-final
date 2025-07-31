@@ -20,7 +20,7 @@
 
 	const { isOpen, setOpen } = context;
 
-	let dialogEl: HTMLDivElement;
+	let dialogEl: HTMLDivElement | null;
 
 	function handleBackdropClick(e: MouseEvent) {
 		if (e.target === e.currentTarget) {

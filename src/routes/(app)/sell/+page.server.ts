@@ -4,6 +4,7 @@ import { superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { createListingSchema, createListingDefaults } from '$lib/schemas/listing'
 import { serverCache, cacheKeys } from '$lib/server/cache'
+import { generateCSRFToken, csrfProtectedAction } from '$lib/server/csrf'
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { data: { user }, error } = await locals.supabase.auth.getUser()
@@ -41,23 +42,26 @@ export const load: PageServerLoad = async ({ locals }) => {
 			.single()
 		
 		hasPaymentAccount = !!paymentAccount
-	} catch (error) {
+	} catch (error: unknown) {
 		// If error is "no rows returned", that's fine
-		if (error.code !== 'PGRST116') {
+		const dbError = error as { code?: string }
+		if (dbError.code !== 'PGRST116') {
 			console.error('Failed to check payment account:', error)
 		}
 	}
 	
 	return {
+		csrfToken: generateCSRFToken(),
 		form,
 		user, // Return user data explicitly
 		categories: categories || [],
 		hasPaymentAccount
+	
 	}
 }
 
 export const actions: Actions = {
-	create: async ({ request, locals }) => {
+	create: csrfProtectedAction(async ({ request, locals }) => {
 		const { data: { user }, error: authError } = await locals.supabase.auth.getUser()
 		if (authError || !user) {
 			return fail(401, { error: 'Unauthorized' })
@@ -165,5 +169,5 @@ export const actions: Actions = {
 				error: error.message || 'Failed to create listing' 
 			})
 		}
-	}
+	})
 }

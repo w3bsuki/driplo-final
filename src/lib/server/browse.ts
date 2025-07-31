@@ -91,32 +91,32 @@ export async function browseListings(
 		const [listingsResult, countResult] = await Promise.all([
 			// Get listings with all related data in a single query
 			supabase.rpc('get_listings_with_favorites', {
-				p_user_id: userId || null,
+				user_id: userId,
 				p_limit: limit,
 				p_offset: offset,
 				p_status: 'active',
 				p_category_id: categoryId,
-				p_subcategory_id: subcategory || null,
+				p_subcategory_id: subcategory || undefined,
 				p_min_price: minPrice,
 				p_max_price: maxPrice,
-				p_brands: brands.length > 0 ? brands : null,
-				p_sizes: sizes.length > 0 ? sizes : null,
-				p_conditions: conditions.length > 0 ? conditions : null,
+				p_brands: brands.length > 0 ? brands : undefined,
+				p_sizes: sizes.length > 0 ? sizes : undefined,
+				p_conditions: conditions.length > 0 ? conditions : undefined,
 				p_sort_by: sortColumn,
 				p_sort_order: sortOrder,
-				p_search: search || null
+				p_search: search || undefined
 			}),
 			// Get total count
 			supabase.rpc('get_listings_count', {
 				p_status: 'active',
 				p_category_id: categoryId,
-				p_subcategory_id: subcategory || null,
+				p_subcategory_id: subcategory || undefined,
 				p_min_price: minPrice,
 				p_max_price: maxPrice,
-				p_brands: brands.length > 0 ? brands : null,
-				p_sizes: sizes.length > 0 ? sizes : null,
-				p_conditions: conditions.length > 0 ? conditions : null,
-				p_search: search || null
+				p_brands: brands.length > 0 ? brands : undefined,
+				p_sizes: sizes.length > 0 ? sizes : undefined,
+				p_conditions: conditions.length > 0 ? conditions : undefined,
+				p_search: search || undefined
 			})
 		])
 

@@ -7,14 +7,6 @@
 	// Constants
 	const PRICE_CURRENCY = 'GBP';
 	const PRICE_LOCALE = 'en-GB';
-	const AVATAR_GRADIENT_COLORS = [
-		'from-blue-500 to-purple-500',
-		'from-green-500 to-blue-500', 
-		'from-blue-300 to-red-500',
-		'from-purple-500 to-pink-500',
-		'from-yellow-500 to-blue-300',
-		'from-pink-500 to-red-500'
-	];
 	
 	interface Props {
 		title: string;
@@ -51,14 +43,9 @@
 		}).format(price);
 	}
 
-	function getAvatarGradient(username: string): string {
-		const index = username.charCodeAt(0) % AVATAR_GRADIENT_COLORS.length;
-		return AVATAR_GRADIENT_COLORS[index];
-	}
 	
 	// Derived values
 	const formattedPrice = $derived(formatPrice(price));
-	const _avatarGradient = $derived(getAvatarGradient(seller.username));
 </script>
 
 <div class="p-[var(--spacing-2)] space-y-[var(--spacing-1)]">
@@ -88,7 +75,7 @@
 		<LazyAvatar 
 			src={seller.avatar}
 			username={seller.username}
-			size="xs"
+			size="sm"
 			class="rounded-[var(--border-radius-sm)]"
 			eager={eagerLoading}
 		/>
@@ -96,7 +83,7 @@
 			{seller.username}
 		</span>
 		{#if seller.account_type === 'brand'}
-			<BrandBadge size="xs" isVerified={seller.is_verified} showText={false} />
+			<BrandBadge size="sm" isVerified={seller.is_verified} showText={false} />
 		{/if}
 		{#if likeCount > 0}
 			<span class="text-[var(--font-size-sm)] text-[var(--color-text-tertiary)] ml-auto flex items-center gap-[var(--spacing-0-5)] tabular-nums" aria-live="polite">

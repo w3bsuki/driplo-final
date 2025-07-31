@@ -51,9 +51,9 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
     try {
         // Update order status to shipped
         await supabase.rpc('update_order_status', {
-            p_order_id: orderId,
+            order_id: orderId,
             p_new_status: 'shipped',
-            p_user_id: session.user.id,
+            user_id: session.user.id,
             p_reason: 'Order shipped',
             p_metadata: {
                 shipping_carrier,

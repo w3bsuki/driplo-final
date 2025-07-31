@@ -2,7 +2,7 @@
     import { formatDistanceToNow } from 'date-fns';
     import type { Database } from '$lib/types';
     
-    type Message = Database?.['public']['Tables']['messages']['Row'] & {
+    type Message = Database['public']['Tables']['messages']['Row'] & {
         sender: {
             id: string;
             username: string;
@@ -30,12 +30,10 @@
 
     let { 
         isOpen = false, 
-        _userId,
         onclose,
         onselectconversation
     }: { 
         isOpen?: boolean; 
-        userId: string;
         onclose?: () => void;
         onselectconversation?: (data: { conversationId: string }) => void;
     } = $props();
@@ -43,7 +41,7 @@
     let searchQuery = $state('');
     let searchResults = $state<SearchResult[]>([]);
     let searching = $state(false);
-    let searchTimeout: NodeJS?.Timeout;
+    let searchTimeout: NodeJS.Timeout;
 
     $effect(() => {
         if (searchQuery?.trim().length >= 2) {
@@ -76,7 +74,7 @@
         }
     }
 
-    function highlightText(text: string, query: string): string {
+    function _highlightText(text: string, query: string): string {
         if (!query) return text;
         
         const regex = new RegExp(`(${query})`, 'gi');
@@ -189,21 +187,21 @@
                                     {#each result?.messages.slice(0, 3) as message}
                                         <div class="flex items-start gap-2 p-2 bg-gray-50 rounded">
                                             <div class="flex-shrink-0">
-                                                {#if message?.sender.avatar_url}
+                                                {#if message.sender.avatar_url}
                                                     <img 
-                                                        src={message?.sender.avatar_url} 
-                                                        alt={message?.sender.username}
+                                                        src={message.sender.avatar_url} 
+                                                        alt={message.sender.username}
                                                         class="w-6 h-6 rounded-full"
                                                     />
                                                 {:else}
                                                     <div class="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-xs font-medium">
-                                                        {message?.sender.username[0].toUpperCase()}
+                                                        {message.sender.username[0]?.toUpperCase() || '?'}
                                                     </div>
                                                 {/if}
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <div class="flex items-center gap-2">
-                                                    <span class="text-sm font-medium text-gray-900">{message?.sender.username}</span>
+                                                    <span class="text-sm font-medium text-gray-900">{message.sender.username}</span>
                                                     <span class="text-xs text-gray-500">
                                                         {formatDistanceToNow(new Date(message?.created_at), { addSuffix: true })}
                                                     </span>

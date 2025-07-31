@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getFormContext } from '../FormContext.svelte.ts'
+	import { getFormContext } from '../FormContext.svelte'
 	import { validateField, formatPrice } from '../utils/validation'
 	import { cn } from '$lib/utils'
 	import { fade, slide } from 'svelte/transition'
@@ -83,7 +83,7 @@
 		if (parts.length > 2) {
 			value = parts[0] + '.' + parts.slice(1).join('')
 		}
-		if (parts[1]?.length > 2) {
+		if (parts[1] && parts[1].length > 2) {
 			value = parts[0] + '.' + parts[1].substring(0, 2)
 		}
 		
@@ -101,7 +101,7 @@
 	
 	// Shipping type change handler
 	function handleShippingTypeChange(type: string) {
-		form.updateField('shipping_type', type)
+		form.updateField('shipping_type', type as 'standard' | 'express' | 'pickup')
 		
 		// Reset shipping cost for pickup
 		if (type === 'pickup') {
@@ -152,10 +152,10 @@
 				placeholder="Enter your city"
 				class={cn(
 					"w-full",
-					form.validationErrors.location_city && "border-red-300 focus:ring-red-500"
+					form.validationErrors['location_city'] && "border-red-300 focus:ring-red-500"
 				)}
-				aria-invalid={!!form.validationErrors.location_city}
-				aria-describedby={form.validationErrors.location_city ? "location-error" : undefined}
+				aria-invalid={!!form.validationErrors['location_city']}
+				aria-describedby={form.validationErrors['location_city'] ? "location-error" : undefined}
 			/>
 			{#if showCitySuggestions}
 				<div class="absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg" transition:fade>
@@ -172,10 +172,10 @@
 				</div>
 			{/if}
 		</div>
-		{#if form.validationErrors.location_city}
+		{#if form.validationErrors['location_city']}
 			<p id="location-error" class="mt-1 text-xs text-red-500 flex items-center gap-1" transition:slide>
 				<AlertCircle class="w-3 h-3" />
-				{form.validationErrors.location_city}
+				{form.validationErrors['location_city']}
 			</p>
 		{/if}
 		<p class="mt-1 text-xs text-gray-500">
@@ -227,10 +227,10 @@
 				</label>
 			{/each}
 		</div>
-		{#if form.validationErrors.shipping_type}
+		{#if form.validationErrors['shipping_type']}
 			<p class="mt-2 text-xs text-red-500 flex items-center gap-1">
 				<AlertCircle class="w-3 h-3" />
-				{form.validationErrors.shipping_type}
+				{form.validationErrors['shipping_type']}
 			</p>
 		{/if}
 	</div>

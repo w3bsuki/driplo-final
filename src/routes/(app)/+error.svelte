@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { getErrorMessage } from '$lib/utils/error-handling';
-  import Header from '$lib/components/layout/Header.svelte';
+  import Header from '$lib/components/layout/header/Header.svelte';
   import * as m from '$lib/paraglide/messages.js';
 
   let { data }: { data: any } = $props();

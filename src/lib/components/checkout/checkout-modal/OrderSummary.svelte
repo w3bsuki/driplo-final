@@ -49,7 +49,7 @@
 		</div>
 		<div class="text-right">
 			<p class="text-sm font-medium text-gray-900">
-				{formatCurrency(itemPrice)}
+				{formatCurrency(itemPrice, "BGN")}
 			</p>
 		</div>
 	</div>
@@ -58,27 +58,27 @@
 	<div class="space-y-3 border-t pt-4">
 		<div class="flex justify-between text-sm">
 			<span class="text-gray-600">Item price</span>
-			<span class="text-gray-900">{formatCurrency(itemPrice)}</span>
+			<span class="text-gray-900">{formatCurrency(itemPrice, "BGN")}</span>
 		</div>
 		
 		{#if shippingCost > 0}
 			<div class="flex justify-between text-sm">
 				<span class="text-gray-600">Shipping</span>
-				<span class="text-gray-900">{formatCurrency(shippingCost)}</span>
+				<span class="text-gray-900">{formatCurrency(shippingCost, "BGN")}</span>
 			</div>
 		{/if}
 		
 		{#if buyerFee > 0}
 			<div class="flex justify-between text-sm">
 				<span class="text-gray-600">Service fee</span>
-				<span class="text-gray-900">{formatCurrency(buyerFee)}</span>
+				<span class="text-gray-900">{formatCurrency(buyerFee, "BGN")}</span>
 			</div>
 		{/if}
 		
 		<div class="border-t pt-3">
 			<div class="flex justify-between">
 				<span class="text-base font-medium text-gray-900">Total</span>
-				<span class="text-base font-medium text-gray-900">{formatCurrency(totalAmount)}</span>
+				<span class="text-base font-medium text-gray-900">{formatCurrency(totalAmount, "BGN")}</span>
 			</div>
 		</div>
 	</div>

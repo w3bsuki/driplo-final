@@ -44,12 +44,12 @@
 						<tr>
 							<td class="px-6 py-4 whitespace-nowrap">
 								<div class="text-sm font-medium text-gray-900">
-									{request?.profiles?.brand_name || 'N/A'}
+									{(request?.profiles as any)?.brand_name || 'N/A'}
 								</div>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap">
-								<div class="text-sm text-gray-900">{request?.profiles?.username}</div>
-								<div class="text-sm text-gray-500">{request?.profiles?.email}</div>
+								<div class="text-sm text-gray-900">{(request?.profiles as any)?.username}</div>
+								<div class="text-sm text-gray-500">{(request?.profiles as any)?.email}</div>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap">
 								<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 

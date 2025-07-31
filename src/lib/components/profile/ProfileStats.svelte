@@ -165,7 +165,7 @@
 					<ProgressBar 
 						value={metrics.completion_rate}
 						max={100}
-						size="xs"
+						size="sm"
 						variant={getPerformanceBadgeVariant(metrics.completion_rate)}
 					/>
 				</div>
@@ -179,7 +179,7 @@
 					<ProgressBar 
 						value={metrics.repeat_customer_rate}
 						max={100}
-						size="xs"
+						size="sm"
 						variant={getPerformanceBadgeVariant(metrics.repeat_customer_rate)}
 					/>
 				</div>

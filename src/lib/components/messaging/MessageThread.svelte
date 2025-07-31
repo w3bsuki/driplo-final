@@ -37,11 +37,11 @@
     let loading = $state(true);
     let sending = $state(false);
     let hasMore = $state(false);
-    let messagesContainer: HTMLDivElement;
+    let messagesContainer = $state<HTMLDivElement | null>(null);
     let realtimeChannel: RealtimeChannel;
     let attachments = $state<{ file: File; preview: string; type: string }[]>([]);
     let uploading = $state(false);
-    let fileInput: HTMLInputElement;
+    let fileInput = $state<HTMLInputElement | null>(null);
     // let virtualListRef: VirtualList;
     
     // Virtual scrolling configuration (currently unused but kept for future implementation)

@@ -121,7 +121,7 @@ export const databaseRateLimiters = {
 export async function cleanupExpiredRateLimits() {
   try {
     const supabaseAdmin = createAdminClient();
-    const { data, error } = await supabaseAdmin?.rpc('cleanup_expired_rate_limits');
+    const { data, error } = await supabaseAdmin?.rpc('cleanup_expired_rate_limits', {});
     
     if (error) {
       console?.error('Failed to cleanup rate limits:', error);

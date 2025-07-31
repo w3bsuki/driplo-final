@@ -1,0 +1,314 @@
+{
+  "summary": {
+    "arg_string_undefined": {
+      "count": 7,
+      "files": [
+        "src\\lib\\components\\listings\\CreateListingForm\\components\\ImageUploader.svelte",
+        "src\\routes\\(app)\\listings\\[id]\\+page.server.ts",
+        "src\\routes\\api\\stripe\\webhooks\\+server.ts",
+        "src\\lib\\utils\\performance.ts"
+      ]
+    },
+    "other_type": {
+      "count": 23,
+      "files": [
+        "src\\routes\\api\\admin\\payouts\\+server.ts",
+        "src\\routes\\api\\payment\\create-intent\\+server.ts",
+        "src\\routes\\api\\stripe\\webhooks\\+server.ts",
+        "src\\routes\\brands\\settings\\+page.server.ts",
+        "src\\lib\\components\\home\\SellerQuickView.svelte",
+        "src\\routes\\(app)\\orders\\[id]\\+page.svelte",
+        "src\\routes\\api\\orders\\[id]\\refund\\+server.ts",
+        "src\\lib\\components\\payment\\PaymentAccountSetup.svelte",
+        "src\\lib\\server\\image-optimizer.ts",
+        "src\\routes\\api\\health\\stripe\\+server.ts",
+        "src\\lib\\components\\messaging\\LazyMessageThread.svelte",
+        "src\\lib\\components\\layout\\header\\Header.svelte",
+        "src\\routes\\(auth)\\login\\+page.svelte",
+        "src\\lib\\components\\brands\\BrandOnboardingWizard.svelte",
+        "src\\lib\\server\\api-utils.ts",
+        "src\\routes\\(auth)\\+error.svelte",
+        "src\\lib\\components\\onboarding\\LazyProfileSetupWizard.svelte"
+      ]
+    },
+    "string_null": {
+      "count": 1,
+      "files": [
+        "src\\lib\\server\\email.ts"
+      ]
+    },
+    "arg_string_null": {
+      "count": 1,
+      "files": [
+        "src\\routes\\(app)\\listings\\[id]\\+page.server.ts"
+      ]
+    },
+    "array_type": {
+      "count": 9,
+      "files": [
+        "src\\routes\\(app)\\messages\\+page.svelte",
+        "src\\lib\\components\\home\\HeroSearch.svelte",
+        "src\\lib\\components\\shared\\UnifiedSearch.svelte",
+        "src\\lib\\components\\home\\HeroSearchFixed.svelte"
+      ]
+    }
+  },
+  "errors": {
+    "arg_string_undefined": [
+      {
+        "file": "src\\lib\\components\\listings\\CreateListingForm\\components\\ImageUploader.svelte",
+        "line": "212",
+        "column": "31",
+        "message": "Argument of type 'string | undefined' is not assignable to parameter of type 'string'."
+      },
+      {
+        "file": "src\\lib\\utils\\performance.ts",
+        "line": "304",
+        "column": "20",
+        "message": "Argument of type 'string | undefined' is not assignable to parameter of type 'string'."
+      },
+      {
+        "file": "src\\routes\\(app)\\listings\\[id]\\+page.server.ts",
+        "line": "43",
+        "column": "13",
+        "message": "Argument of type 'string | undefined' is not assignable to parameter of type 'string'."
+      },
+      {
+        "file": "src\\routes\\(app)\\listings\\[id]\\+page.server.ts",
+        "line": "89",
+        "column": "15",
+        "message": "Argument of type 'string | undefined' is not assignable to parameter of type 'string'."
+      },
+      {
+        "file": "src\\routes\\(app)\\listings\\[id]\\+page.server.ts",
+        "line": "107",
+        "column": "15",
+        "message": "Argument of type 'string | undefined' is not assignable to parameter of type 'string'."
+      },
+      {
+        "file": "src\\routes\\(app)\\listings\\[id]\\+page.server.ts",
+        "line": "126",
+        "column": "24",
+        "message": "Argument of type 'string | undefined' is not assignable to parameter of type 'string'."
+      },
+      {
+        "file": "src\\routes\\api\\stripe\\webhooks\\+server.ts",
+        "line": "102",
+        "column": "21",
+        "message": "Argument of type 'string | undefined' is not assignable to parameter of type 'string'."
+      }
+    ],
+    "other_type": [
+      {
+        "file": "src\\lib\\components\\brands\\BrandOnboardingWizard.svelte",
+        "line": "138",
+        "column": "18",
+        "message": "Type '{ brandName: string; brandCategory: string; brandDescription: string; onUpdate: (updates: any) => void; disabled: boolean; logoFile?: undefined; logoPreview?: undefined; logoUrl?: undefined; supabase?: undefined; onUploadStateChange?: undefined; } | { ...; } | { ...; }' is not assignable to type '(Props & Props) | undefined'."
+      },
+      {
+        "file": "src\\lib\\components\\layout\\header\\Header.svelte",
+        "line": "171",
+        "column": "5",
+        "message": "Type 'UserProfile | null' is not assignable to type 'User | null'."
+      },
+      {
+        "file": "src\\lib\\components\\layout\\header\\Header.svelte",
+        "line": "186",
+        "column": "5",
+        "message": "Type 'UserProfile | null' is not assignable to type 'User | null'."
+      },
+      {
+        "file": "src\\lib\\server\\api-utils.ts",
+        "line": "408",
+        "column": "9",
+        "message": "Type 'unknown' is not assignable to type 'T[keyof T] | undefined'."
+      },
+      {
+        "file": "src\\lib\\server\\api-utils.ts",
+        "line": "524",
+        "column": "25",
+        "message": "Type 'T | undefined' is not assignable to type 'T'."
+      },
+      {
+        "file": "src\\lib\\server\\image-optimizer.ts",
+        "line": "122",
+        "column": "4",
+        "message": "Type '{ url: string; path: string; width: number; height: number; }' is not assignable to type 'never'."
+      },
+      {
+        "file": "src\\routes\\api\\admin\\payouts\\+server.ts",
+        "line": "99",
+        "column": "14",
+        "message": "Type '({ request, locals }: RequestEvent<RouteParams, \"/api/admin/payouts\">) => Promise<Response | undefined>' is not assignable to type 'RequestHandler'."
+      },
+      {
+        "file": "src\\routes\\api\\health\\stripe\\+server.ts",
+        "line": "7",
+        "column": "3",
+        "message": "Type '\"2024-06-20\"' is not assignable to type '\"2025-06-30.basil\"'."
+      },
+      {
+        "file": "src\\routes\\api\\orders\\[id]\\refund\\+server.ts",
+        "line": "289",
+        "column": "11",
+        "message": "Type '\"completed\"' is not assignable to type '\"pending\" | \"confirmed\" | \"processing\" | \"shipped\" | \"delivered\" | \"cancelled\" | \"refunded\" | \"disputed\" | undefined'."
+      },
+      {
+        "file": "src\\routes\\api\\payment\\create-intent\\+server.ts",
+        "line": "20",
+        "column": "3",
+        "message": "Type '\"2024-06-20\"' is not assignable to type '\"2025-06-30.basil\"'."
+      },
+      {
+        "file": "src\\routes\\api\\stripe\\webhooks\\+server.ts",
+        "line": "9",
+        "column": "3",
+        "message": "Type '\"2024-06-20\"' is not assignable to type '\"2025-06-30.basil\"'."
+      },
+      {
+        "file": "src\\routes\\brands\\settings\\+page.server.ts",
+        "line": "71",
+        "column": "5",
+        "message": "Type 'FormDataEntryValue | null' is not assignable to type 'string | null | undefined'."
+      },
+      {
+        "file": "src\\routes\\brands\\settings\\+page.server.ts",
+        "line": "72",
+        "column": "5",
+        "message": "Type 'FormDataEntryValue | null' is not assignable to type 'string | null | undefined'."
+      },
+      {
+        "file": "src\\lib\\components\\home\\SellerQuickView.svelte",
+        "line": "199",
+        "column": "13",
+        "message": "Type 'Json | undefined' is not assignable to type 'string | null | undefined'."
+      },
+      {
+        "file": "src\\lib\\components\\messaging\\LazyMessageThread.svelte",
+        "line": "24",
+        "column": "15",
+        "message": "Type 'Promise<typeof import(\"k:/driplo.bg-main/src/lib/components/messaging/MessageThread.svelte\")>' is not assignable to type 'Promise<{ default: ComponentType<SvelteComponent<Record<string, any>, any, any>>; }>'."
+      },
+      {
+        "file": "src\\lib\\components\\onboarding\\LazyProfileSetupWizard.svelte",
+        "line": "9",
+        "column": "15",
+        "message": "Type 'Promise<typeof import(\"k:/driplo.bg-main/src/lib/components/onboarding/ProfileSetupWizard.svelte\")>' is not assignable to type 'Promise<{ default: ComponentType<SvelteComponent<Record<string, any>, any, any>>; }>'."
+      },
+      {
+        "file": "src\\lib\\components\\payment\\PaymentAccountSetup.svelte",
+        "line": "43",
+        "column": "4",
+        "message": "Type 'string' is not assignable to type 'boolean'. (ts)"
+      },
+      {
+        "file": "src\\routes\\(app)\\orders\\[id]\\+page.svelte",
+        "line": "22",
+        "column": "13",
+        "message": "Type '{ id: string; order_number: string; buyer_id: string; seller_id: string; transaction_id: string | null; status: \"pending\" | \"confirmed\" | \"processing\" | \"shipped\" | \"delivered\" | \"cancelled\" | \"refunded\" | \"disputed\"; ... 24 more ...; disputes: { ...; }[]; }' is not assignable to type 'Order'."
+      },
+      {
+        "file": "src\\routes\\(auth)\\+error.svelte",
+        "line": "81",
+        "column": "7",
+        "message": "Type 'Timeout' is not assignable to type 'number'. (ts)"
+      },
+      {
+        "file": "src\\routes\\(auth)\\login\\+page.svelte",
+        "line": "179",
+        "column": "12",
+        "message": "Type 'typeof Github' is not assignable to type 'Component<{}, {}, string>'."
+      },
+      {
+        "file": "src\\routes\\(auth)\\login\\+page.svelte",
+        "line": "213",
+        "column": "12",
+        "message": "Type '{}' is not assignable to type 'string | number | undefined'. (ts)"
+      },
+      {
+        "file": "src\\routes\\(auth)\\login\\+page.svelte",
+        "line": "248",
+        "column": "15",
+        "message": "Type 'typeof EyeOff' is not assignable to type 'Component<{}, {}, string>'."
+      },
+      {
+        "file": "src\\routes\\(auth)\\login\\+page.svelte",
+        "line": "250",
+        "column": "15",
+        "message": "Type 'typeof Eye' is not assignable to type 'Component<{}, {}, string>'."
+      }
+    ],
+    "string_null": [
+      {
+        "file": "src\\lib\\server\\email.ts",
+        "line": "468",
+        "column": "7",
+        "message": "Type 'string | null' is not assignable to type 'string'."
+      }
+    ],
+    "arg_string_null": [
+      {
+        "file": "src\\routes\\(app)\\listings\\[id]\\+page.server.ts",
+        "line": "105",
+        "column": "23",
+        "message": "Argument of type 'string | null' is not assignable to parameter of type 'string'."
+      }
+    ],
+    "array_type": [
+      {
+        "file": "src\\lib\\components\\home\\HeroSearch.svelte",
+        "line": "281",
+        "column": "10",
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'FilterGroup[]'."
+      },
+      {
+        "file": "src\\lib\\components\\home\\HeroSearch.svelte",
+        "line": "291",
+        "column": "10",
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'FilterGroup[]'."
+      },
+      {
+        "file": "src\\lib\\components\\home\\HeroSearch.svelte",
+        "line": "400",
+        "column": "12",
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'FilterGroup[]'."
+      },
+      {
+        "file": "src\\lib\\components\\home\\HeroSearchFixed.svelte",
+        "line": "276",
+        "column": "10",
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'FilterGroup[]'."
+      },
+      {
+        "file": "src\\lib\\components\\home\\HeroSearchFixed.svelte",
+        "line": "286",
+        "column": "10",
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'FilterGroup[]'."
+      },
+      {
+        "file": "src\\lib\\components\\home\\HeroSearchFixed.svelte",
+        "line": "392",
+        "column": "12",
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'FilterGroup[]'."
+      },
+      {
+        "file": "src\\lib\\components\\shared\\UnifiedSearch.svelte",
+        "line": "335",
+        "column": "12",
+        "message": "Type 'QuickFilter[]' is not assignable to type 'FilterGroup[]'."
+      },
+      {
+        "file": "src\\lib\\components\\shared\\UnifiedSearch.svelte",
+        "line": "411",
+        "column": "13",
+        "message": "Type 'QuickFilter[]' is not assignable to type 'FilterGroup[]'."
+      },
+      {
+        "file": "src\\routes\\(app)\\messages\\+page.svelte",
+        "line": "63",
+        "column": "29",
+        "message": "Type '{ unread_count: number; id: string; listing_id: string; buyer_id: string; seller_id: string; last_message_at: string | null; archived_by_buyer: boolean | null; archived_by_seller: boolean | null; ... 5 more ...; last_message: { ...; }[]; }[]' is not assignable to type 'Conversation[]'."
+      }
+    ]
+  }
+}

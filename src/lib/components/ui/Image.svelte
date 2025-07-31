@@ -5,7 +5,7 @@
 		parseStorageUrl, 
 		generatePictureSources,
 		getTransformedImageUrl
-	} from '$lib/utils/supabase-image-transform';
+	} from '$lib/utils/supabase-images';
 	import { 
 		getOptimizedImageUrl, 
 		imageSizes,
@@ -46,7 +46,6 @@
 		
 		// Fallback and error handling
 		fallbackSrc?: string;
-		usePlaceholder?: boolean;
 		
 		// Events
 		onload?: () => void;
@@ -74,7 +73,6 @@
 		preferredSize = 'medium',
 		customOptions = {},
 		fallbackSrc = '/images/placeholder?.jpg',
-		_usePlaceholder = true,
 		onload,
 		onerror,
 		onclick
@@ -83,7 +81,7 @@
 	let isLoaded = $state(false);
 	let hasError = $state(false);
 	let isIntersecting = $state(priority || loading === 'eager');
-	let imgElement: HTMLImageElement | HTMLDivElement;
+	let imgElement: HTMLImageElement | HTMLDivElement | null;
 
 	// Determine if this is a Supabase storage URL
 	const isSupabaseUrl = $derived(() => {
@@ -329,7 +327,7 @@
 			)}
 			style:aspect-ratio={aspectRatio}
 			aria-label={alt}
-		/>
+		></div>
 	{/if}
 	
 	{#if hasError}

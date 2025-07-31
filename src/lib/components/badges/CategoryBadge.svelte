@@ -6,13 +6,11 @@
 	let { 
 		category, 
 		size = 'sm', 
-		class: className,
-		_variant= 'default',
-		_clickable= false,
-		_onclick}: CategoryBadgeProps = $props();
+		class: className
+	}: CategoryBadgeProps = $props();
 </script>
 
-<Badge _variant="secondary" {size} class={className}>
+<Badge variant="secondary" {size} class={className}>
 	<Package2 class="w-3 h-3 mr-1" />
 	{category}
 </Badge>

@@ -13,7 +13,7 @@ export class FocusTrap {
     escapeDeactivates?: boolean
     onDeactivate?: () => void
   } = {}) {
-    this?.element = element
+    this.element = element
     const { 
       initialFocus, 
       returnFocus = true, 
@@ -23,11 +23,11 @@ export class FocusTrap {
     
     // Store currently focused element
     if (returnFocus) {
-      this?.previouslyFocusedElement = document?.activeElement as HTMLElement
+      this.previouslyFocusedElement = document?.activeElement as HTMLElement
     }
     
     // Find all focusable elements
-    this?.updateFocusableElements()
+    this.updateFocusableElements()
     
     // Set initial focus
     if (initialFocus) {
@@ -211,12 +211,19 @@ export class RovingTabIndex {
   }
   
   private setActiveIndex(index: number): void {
-    // Update tabindex
-    this.items[this.currentIndex].tabIndex = -1
-    this.items[index].tabIndex = 0
+    if (this.items.length === 0 || index < 0 || index >= this.items.length) return
     
-    // Focus the new item
-    this.items[index].focus()
+    // Update tabindex
+    const currentItem = this.items[this.currentIndex];
+    if (currentItem) {
+      currentItem.tabIndex = -1
+    }
+    const newItem = this.items[index];
+    if (newItem) {
+      newItem.tabIndex = 0
+      // Focus the new item
+      newItem.focus()
+    }
     
     this.currentIndex = index
   }

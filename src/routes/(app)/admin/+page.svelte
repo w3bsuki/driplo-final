@@ -8,11 +8,25 @@
 	
 	let { data }: Props = $props()
 	
+	// Define color classes to avoid dynamic class construction
+	const colorClasses = {
+		blue: { bg: 'bg-blue-100', text: 'text-blue-600' },
+		green: { bg: 'bg-green-100', text: 'text-green-600' },
+		purple: { bg: 'bg-purple-100', text: 'text-purple-600' },
+		orange: { bg: 'bg-orange-100', text: 'text-orange-600' }
+	}
+	
+	// Status color classes for orders
+	const statusClasses = {
+		completed: 'px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800',
+		default: 'px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800'
+	}
+	
 	const statCards = [
-		{ label: 'Total Users', value: data?.stats.totalUsers, icon: Users, color: 'blue' },
-		{ label: 'Total Listings', value: data?.stats.totalListings, icon: ShoppingBag, color: 'green' },
-		{ label: 'Total Orders', value: data?.stats.totalOrders, icon: Package, color: 'purple' },
-		{ label: 'Pending Verifications', value: data?.stats.pendingVerifications, icon: Shield, color: 'orange' }
+		{ label: 'Total Users', value: data?.stats.totalUsers, icon: Users, color: 'blue' as const },
+		{ label: 'Total Listings', value: data?.stats.totalListings, icon: ShoppingBag, color: 'green' as const },
+		{ label: 'Total Orders', value: data?.stats.totalOrders, icon: Package, color: 'purple' as const },
+		{ label: 'Pending Verifications', value: data?.stats.pendingVerifications, icon: Shield, color: 'orange' as const }
 	]
 </script>
 
@@ -28,8 +42,8 @@
 						<p class="text-sm font-medium text-gray-600">{stat?.label}</p>
 						<p class="text-2xl font-bold text-gray-900 mt-2">{stat?.value}</p>
 					</div>
-					<div class="bg-{stat?.color}-100 p-3 rounded-lg">
-						<stat?.icon class="w-6 h-6 text-{stat?.color}-600" />
+					<div class="{colorClasses[stat.color].bg} p-3 rounded-lg">
+						<svelte:component this={stat.icon} class="w-6 h-6 {colorClasses[stat.color].text}" />
 					</div>
 				</div>
 			</div>
@@ -75,10 +89,10 @@
 						{#each data?.recentOrders as order}
 							<div class="flex items-center justify-between">
 								<div>
-									<p class="font-medium text-gray-900">Order #{order?.id?.slice?.((-6)}</p>
+									<p class="font-medium text-gray-900">Order #{order?.id?.slice?.(-6)}</p>
 									<p class="text-sm text-gray-600">${order?.total_amount}</p>
 								</div>
-								<span class="px-2 py-1 text-xs font-medium rounded-full bg-{order?.status === 'completed' ? 'green' : 'yellow'}-100 text-{order?.status === 'completed' ? 'green' : 'yellow'}-800">
+								<span class="{order?.status === 'completed' ? statusClasses.completed : statusClasses.default}">
 									{order?.status}
 								</span>
 							</div>

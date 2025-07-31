@@ -97,7 +97,7 @@ export const GET: RequestHandler = async ({ locals, url }) => {
             return acc;
         }, {}) || {};
 
-        stats.monthlyTrends = Object.keys(monthlyStats)
+        (stats as any).monthlyTrends = Object.keys(monthlyStats)
             .sort()
             .map(month => ({
                 month,

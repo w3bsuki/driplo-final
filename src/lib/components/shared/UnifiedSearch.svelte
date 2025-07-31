@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Button from '$lib/components/ui/button.svelte';
 	import { ChevronDown, Menu, Search } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { cn } from '$lib/utils/cn';
@@ -6,7 +7,7 @@
 	import CategoryDropdown from '$lib/components/shared/CategoryDropdownFixed.svelte';
 	import UnifiedFilter from '$lib/components/shared/UnifiedFilter.svelte';
 	import TrendingSearches from '$lib/components/search/TrendingSearches.svelte';
-	import type { Category } from '$lib/types';
+	import type { UnifiedCategory as Category } from '$lib/types';
 	import * as m from '$lib/paraglide/messages.js';
 
 	interface QuickFilter {
@@ -70,7 +71,7 @@
 		showCategoryButton = true,
 		categoryButtonType = 'icon',
 		onCategorySelect,
-		_activeCategory= '',
+		activeCategory = '',
 		quickFilters = [],
 		onQuickFilterClick,
 		showQuickFilters = true,
@@ -85,14 +86,14 @@
 		searchClass = '',
 		visible = true,
 		stickyOffset = 0,
-		_mobileLayout= 'compact'
+		mobileLayout = 'compact'
 	}: Props = $props();
 
 	// State management
 	let isFocused = $state(false);
 	let isCategoryDropdownOpen = $state(false);
 	let _isSticky = $state(false);
-	let searchRef: HTMLInputElement;
+	let searchRef: HTMLInputElement | null;
 
 	// Theme configuration
 	const themes = {
@@ -278,15 +279,7 @@
 								<!-- Category Button -->
 								{#if showCategoryButton}
 									<div class="relative flex-shrink-0 mr-3">
-										<button
-											onclick={toggleCategoryDropdown}
-											class={cn(
-												"flex items-center gap-2 px-3 py-2 rounded-md font-medium transition-all",
-												isCategoryDropdownOpen 
-													? currentTheme?.accent
-													: "bg-gray-900 text-white hover:bg-gray-800"
-											)}
-										>
+										<Button class={cn("px-3 py-2", isCategoryDropdownOpen ? currentTheme?.accent : "hover:bg-gray-100")} onclick={toggleCategoryDropdown}>
 											{#if categoryButtonType === 'text'}
 												<span class="text-sm">{m?.header_categories?.() || 'Categories'}</span>
 											{/if}
@@ -294,7 +287,7 @@
 												"w-4 h-4",
 												isCategoryDropdownOpen && "rotate-180"
 											)} />
-										</button>
+										</Button>
 									</div>
 								{/if}
 								
@@ -312,15 +305,9 @@
 										oninput={handleSearch}
 										class="flex-1 border-0 focus:ring-0 bg-transparent text-base"
 									/>
-									<button
-										onclick={handleSearch}
-										class={cn(
-											"ml-3 flex items-center justify-center w-10 h-10 rounded-md transition-opacity",
-											currentTheme?.accent
-										)}
-									>
+									<Button size="icon" class={cn("ml-3 text-white", currentTheme?.accent)} onclick={handleSearch}>
 										<Search class="w-5 h-5" />
-									</button>
+									</Button>
 								</div>
 							</div>
 							
@@ -332,8 +319,8 @@
 											{m?.search_trending?.() || 'Trending'}:
 										</span>
 										<UnifiedFilter mode="pills"
-											filters={quickFilters?.slice(0, maxQuickFilters)}
-											onFilterClick={handleQuickFilter}
+											quickFilters={quickFilters?.slice(0, maxQuickFilters)}
+											onQuickFilterClick={handleQuickFilter}
 											class="flex-1"
 										/>
 									</div>
@@ -359,12 +346,9 @@
 							<div class="flex items-center py-3 px-4 gap-3">
 								<!-- Category Button -->
 								{#if showCategoryButton}
-									<button
-										onclick={toggleCategoryDropdown}
-										class="flex-shrink-0 w-10 h-10 bg-gray-900 text-white rounded-md flex items-center justify-center"
-									>
+									<Button size="icon" class="flex-shrink-0" onclick={toggleCategoryDropdown}>
 										<Menu class="w-5 h-5" />
-									</button>
+									</Button>
 								{/if}
 								
 								<!-- Search Input -->
@@ -383,12 +367,9 @@
 									/>
 								</div>
 								
-								<button
-									onclick={handleSearch}
-									class="flex-shrink-0 w-10 h-10 bg-brand-500 text-white rounded-md flex items-center justify-center"
-								>
+								<Button size="icon" class="flex-shrink-0" onclick={handleSearch}>
 									<Search class="w-4 h-4" />
-								</button>
+								</Button>
 							</div>
 							
 							{#if isCategoryDropdownOpen}
@@ -408,8 +389,8 @@
 									<div class="overflow-x-auto">
 										<div class="flex items-center gap-2">
 											<UnifiedFilter mode="pills"
-												filters={quickFilters}
-												onFilterClick={handleQuickFilter}
+												quickFilters={quickFilters}
+												onQuickFilterClick={handleQuickFilter}
 												class="flex-shrink-0"
 											/>
 										</div>
@@ -435,12 +416,9 @@
 			<div class="container mx-auto px-4 py-2">
 				<div class="flex items-center gap-3 max-w-3xl mx-auto">
 					{#if showCategoryButton}
-						<button
-							onclick={toggleCategoryDropdown}
-							class="flex-shrink-0 w-10 h-10 bg-gray-900 text-white rounded-lg flex items-center justify-center"
-						>
+						<Button size="icon" class="flex-shrink-0" onclick={toggleCategoryDropdown}>
 							<Menu class="w-4 h-4" />
-						</button>
+						</Button>
 					{/if}
 					
 					<div class="relative flex-1">
@@ -457,12 +435,9 @@
 							class={searchInputClass}
 							style="padding-left: 2.5rem;"
 						/>
-						<button
-							onclick={handleSearch}
-							class="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-brand-500 text-white rounded-md text-xs font-medium hover:bg-brand-600 transition-colors"
-						>
+						<Button size="xs" class="absolute right-2 top-1/2 -translate-y-1/2 px-2.5 hover:bg-gray-100" onclick={handleSearch}>
 							{m?.quick_filter_search_button?.() || 'Search'}
-						</button>
+						</Button>
 					</div>
 				</div>
 			</div>

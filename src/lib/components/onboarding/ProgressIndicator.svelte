@@ -3,7 +3,6 @@
 	import { goto } from '$app/navigation';
 	import { UserCircle, Plus, ShoppingBag } from 'lucide-svelte';
 	import { ProgressBar } from '$lib/components/ui';
-	import * as m from '$lib/paraglide/messages';
 	
 	let showProgress = $derived(
 		onboarding.progress.completed > 0 && 

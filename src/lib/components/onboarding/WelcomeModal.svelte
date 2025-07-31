@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { _onMount} from 'svelte';
 	import { goto } from '$app/navigation';
 	import { onboarding } from '$lib/stores/onboarding.svelte';
-	import { Dialog, DialogContent } from '$lib/components/ui/Dialog';
+	import { Dialog, DialogContent } from '$lib/components/ui/dialog';
 	import Button from '$lib/components/ui/button.svelte';
-	import * as m from '$lib/paraglide/messages';
 	import type { User } from '@supabase/supabase-js';
 	
-	let { _user}: { user: User } = $props();
+	let { }: { user: User } = $props();
 	
 	let currentSlide = $state(0);
 	
@@ -29,8 +27,10 @@
 		}
 	];
 	
+	const currentSlideData = $derived(slides[currentSlide] || slides[0]);
+	
 	function nextSlide() {
-		if (currentSlide < slides?.length - 1) {
+		if (currentSlide < slides.length - 1) {
 			currentSlide++;
 		} else {
 			completeOnboarding();
@@ -45,7 +45,7 @@
 	
 	async function completeOnboarding() {
 		await onboarding?.completeStep('hasSeenWelcome');
-		onboarding?.showWelcomeModal = false;
+		if (onboarding) onboarding.showWelcomeModal = false;
 		
 		// Profile completion check moved to profile page
 		// The profile page will check if profile is complete
@@ -55,7 +55,7 @@
 	
 	function skip() {
 		onboarding?.completeStep('hasSeenWelcome');
-		onboarding?.showWelcomeModal = false;
+		if (onboarding) onboarding.showWelcomeModal = false;
 	}
 </script>
 
@@ -69,15 +69,15 @@
 						class="w-2 h-2 rounded-full transition-colors duration-300"
 						class:bg-blue-400={index === currentSlide}
 						class:bg-blue-200={index !== currentSlide}
-					/>
+					></div>
 				{/each}
 			</div>
 			
 			<!-- Slide Content -->
 			<div class="mb-6 min-h-[200px] flex flex-col items-center justify-center">
-				<div class="text-6xl mb-4">{slides[currentSlide].emoji}</div>
-				<h2 class="text-2xl font-bold mb-2">{slides[currentSlide].title}</h2>
-				<p class="text-muted-foreground">{slides[currentSlide].description}</p>
+				<div class="text-6xl mb-4">{currentSlideData.emoji}</div>
+				<h2 class="text-2xl font-bold mb-2">{currentSlideData.title}</h2>
+				<p class="text-muted-foreground">{currentSlideData.description}</p>
 			</div>
 			
 			<!-- Actions -->

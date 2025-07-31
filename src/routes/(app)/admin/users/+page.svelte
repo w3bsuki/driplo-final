@@ -11,7 +11,7 @@
 	let searchQuery = $state('')
 	
 	const filteredUsers = $derived(
-		data?.users??.filter?.((user => 
+		data?.users?.filter?.(user => 
 			user?.email.toLowerCase().includes(searchQuery?.toLowerCase()) ||
 			user?.username?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
 			user?.full_name?.toLowerCase().includes(searchQuery?.toLowerCase())
@@ -69,7 +69,7 @@
 										{:else}
 											<div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
 												<span class="text-gray-600 font-medium">
-													{(user?.username || user?.email).charAt(0).toUpperCase()}
+													{(user?.username || user?.email || '?').charAt(0).toUpperCase()}
 												</span>
 											</div>
 										{/if}
@@ -102,7 +102,7 @@
 											Verified
 										</span>
 									{/if}
-									{#if user?.is_seller}
+									{#if (user as any)?.is_seller}
 										<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
 											Seller
 										</span>
@@ -120,7 +120,7 @@
 									>
 										View
 									</button>
-									{#if !user?.is_admin}
+									{#if !(user as any)?.is_admin}
 										<button
 											class="text-yellow-600 hover:text-yellow-900"
 											title="Make Admin"

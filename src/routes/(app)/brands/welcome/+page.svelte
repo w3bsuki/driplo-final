@@ -159,7 +159,7 @@
 					{#each nextSteps as step}
 						<div class="flex gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors {step?.completed ? 'opacity-60' : ''}">
 							<div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-								<step?.icon class="w-6 h-6 text-purple-600" />
+								<svelte:component this={step?.icon} class="w-6 h-6 text-purple-600" />
 							</div>
 							<div class="flex-1">
 								<div class="flex items-start justify-between">

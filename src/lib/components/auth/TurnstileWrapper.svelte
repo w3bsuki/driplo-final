@@ -66,7 +66,7 @@
     retryInterval={8000}
   />
   
-  {#if import?.meta.env?.MODE === 'development' && siteKey === '1x00000000000000000000AA'}
+  {#if import.meta.env?.MODE === 'development' && siteKey === '1x00000000000000000000AA'}
     <p class="text-xs text-gray-500 mt-1">Using Turnstile test keys (always passes)</p>
   {/if}
 </div>
@@ -82,7 +82,7 @@
   /* Ensure Turnstile is responsive on mobile */
   @media (max-width: 480px) {
     :global(.cf-turnstile) {
-      transform: scale(0?.95);
+      transform: scale(0.95);
       transform-origin: center;
     }
   }

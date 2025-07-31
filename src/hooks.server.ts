@@ -12,7 +12,7 @@ import { SENTRY_CONFIG } from '$lib/config/sentry'
 import { redirect } from '@sveltejs/kit'
 
 // Try to get Sentry DSN from environment
-const PUBLIC_SENTRY_DSN = import.meta.env.PUBLIC_SENTRY_DSN || '';
+const PUBLIC_SENTRY_DSN = import.meta.env['PUBLIC_SENTRY_DSN'] || '';
 
 // Initialize Sentry on the server
 if (PUBLIC_SENTRY_DSN) {
@@ -74,7 +74,7 @@ const handleI18n: Handle = async ({ event, resolve }) => {
 		}
 		
 		return response
-	} catch (error) {
+	} catch (error: unknown) {
 		logError(error, {
 			handler: 'handleI18n',
 			url: event.url.pathname,
@@ -164,7 +164,7 @@ const handleSupabase: Handle = async ({ event, resolve }) => {
 			}
 
 			return { session, user }
-		} catch (error) {
+		} catch (error: unknown) {
 			// Log error but don't break the request
 			logError(error, { handler: 'safeGetSession', url: event.url.pathname })
 			return { session: null, user: null }
@@ -261,7 +261,7 @@ const handleSupabase: Handle = async ({ event, resolve }) => {
 	}
 
 	return response
-	} catch (error) {
+	} catch (error: unknown) {
 		logError(error, {
 			handler: 'handleSupabase',
 			url: event.url.pathname,
@@ -285,7 +285,7 @@ const handleSupabase: Handle = async ({ event, resolve }) => {
 			);
 			
 			event.locals.safeGetSession = async () => ({ session: null, user: null });
-		} catch (fallbackError) {
+		} catch (fallbackError: unknown) {
 			logError(fallbackError, { handler: 'handleSupabase-fallback' });
 		}
 		
@@ -342,7 +342,7 @@ const handleCaching: Handle = async ({ event, resolve }) => {
 	response.headers.set('vary', varyHeaders.join(', '))
 	
 	return response
-	} catch (error) {
+	} catch (error: unknown) {
 		logError(error, {
 			handler: 'handleCaching',
 			url: event.url.pathname,

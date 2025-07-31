@@ -165,7 +165,7 @@
 						<div class="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-sm mb-2 mx-auto">
 							<Users class="h-5 w-5 text-blue-600" />
 						</div>
-						<div class="text-lg font-semibold text-gray-900">{formatNumber(seller?.followers_count || 0)}</div>
+						<div class="text-lg font-semibold text-gray-900">{formatNumber((seller as any)?.followers_count || 0)}</div>
 						<div class="text-xs text-gray-500">Followers</div>
 					</div>
 					

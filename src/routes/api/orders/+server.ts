@@ -170,10 +170,9 @@ export const POST: RequestHandler = async ({ locals, request }) => {
         }
 
         const listing = listingResult?.data;
-        const _transaction = transactionResult?.data;
 
         // Generate order number
-        const { data: orderNumber } = await locals?.supabase.rpc('generate_order_number');
+        const { data: orderNumber } = await locals?.supabase.rpc('generate_order_number', {});
 
         // Calculate totals
         const subtotal = listing?.price;

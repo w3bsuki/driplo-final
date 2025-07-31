@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getFormContext } from '../FormContext.svelte.ts'
+	import { getFormContext } from '../FormContext.svelte'
 	import ImageUploader from '../components/ImageUploader.svelte'
 	import { Camera, AlertCircle } from 'lucide-svelte'
 	import { fade } from 'svelte/transition'
@@ -54,10 +54,10 @@
 			onUploadProgress={handleUploadProgress}
 		/>
 		
-		{#if form.validationErrors.images}
+		{#if form.validationErrors['images']}
 			<p class="mt-2 text-sm text-red-500 flex items-center gap-1" transition:fade>
 				<AlertCircle class="w-4 h-4" />
-				{form.validationErrors.images}
+				{form.validationErrors['images']}
 			</p>
 		{/if}
 	</div>

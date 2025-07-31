@@ -1,4 +1,4 @@
-import { _onMount, onDestroy } from 'svelte';
+import { onDestroy } from 'svelte';
 import { 
 	unreadCount, 
 	initializeUnreadCount, 

@@ -23,11 +23,11 @@
 	let uploadingCover = $state(false)
 
 	// Form fields initialized from server data
-	let fullName = $state(data?.profile.(full_name ?? ''))
-	let username = $state(data.(profile && typeof profile === 'object' && 'username' in profile) ? profile?.username : (null ?? ''))
-	let bio = $state(data?.profile.(bio ?? ''))
-	let location = $state(data?.profile.(location ?? ''))
-	let website = $state(data?.profile.(website ?? ''))
+	let fullName = $state(data?.profile?.full_name ?? '')
+	let username = $state(data?.profile?.username ?? '')
+	let bio = $state(data?.profile?.bio ?? '')
+	let location = $state(data?.profile?.location ?? '')
+	let website = $state(data?.profile?.website ?? '')
 	
 	// Social media fields
 	let socialMedia = $state({
@@ -49,14 +49,14 @@
 		if ($user?.id) {
 			try {
 				const { data: socialAccounts } = await supabase
-					.from('social_media_accounts')
+					.from('social_media_accounts' as any)
 					.select('*')
-					.eq('user_id', $(user && typeof user === 'object' && 'id' in user) ? user.id : null)
+					.eq('user_id', $user?.id || '')
 				
 				if (socialAccounts) {
-					socialAccounts??.forEach?.((account => {
-						if (account?.platform in socialMedia) {
-							socialMedia[account?.platform as keyof typeof socialMedia] = account?.(username ?? '')
+					socialAccounts?.forEach((account) => {
+						if ((account as any)?.platform in socialMedia) {
+							socialMedia[(account as any)?.platform as keyof typeof socialMedia] = (account as any)?.handle ?? ''
 						}
 					})
 				}
@@ -78,7 +78,7 @@
 				}
 				
 				// Check if 2FA is required based on profile data
-				is2FARequired = profile?.account_type === 'brand' || profile?.role === 'admin'
+				is2FARequired = (profile as any)?.account_type === 'brand' || (profile as any)?.role === 'admin'
 			} catch (error) {
 				console?.error('Error loading 2FA status:', error)
 				// Default to false on error
@@ -106,7 +106,7 @@
 			}
 
 			const result = await response.json()
-			profile?.avatar_url = result?.url
+			if (profile) profile.avatar_url = result?.url
 			toast?.success(m?.settings_avatar_updated())
 		} catch (error) {
 			console?.error('Avatar upload error:', error)
@@ -134,7 +134,7 @@
 			}
 
 			const result = await response.json()
-			profile?.cover_url = result?.url
+			if (profile) profile.cover_url = result?.url
 			toast?.success(m?.settings_cover_updated())
 		} catch (error) {
 			console?.error('Cover upload error:', error)
@@ -164,7 +164,7 @@
 					website: website?.trim() || null,
 					updated_at: new Date().toISOString()
 				})
-				.eq('id', $user?.id)
+				.eq('id', $user?.id || '')
 
 			if (profileError) throw profileError
 
@@ -173,26 +173,26 @@
 				if (username?.trim()) {
 					// First check if account exists
 					const { data: existing } = await supabase
-						.from('social_media_accounts')
+						.from('social_media_accounts' as any)
 						.select('id')
-						.eq('user_id', $user?.id)
+						.eq('user_id', $user?.id || '')
 						.eq('platform', platform)
 						.single()
 
 					if (existing) {
 						// Update existing
 						await supabase
-							.from('social_media_accounts')
+							.from('social_media_accounts' as any)
 							.update({
 								username: username?.trim(),
 								url: getSocialMediaUrl(platform, username?.trim()),
 								updated_at: new Date().toISOString()
 							})
-							.eq('id', existing?.id)
+							.eq('id', (existing as any)?.id || '')
 					} else {
 						// Insert new
 						await supabase
-							.from('social_media_accounts')
+							.from('social_media_accounts' as any)
 							.insert({
 								user_id: $user?.id,
 								platform,
@@ -203,9 +203,9 @@
 				} else {
 					// Delete if empty
 					await supabase
-						.from('social_media_accounts')
+						.from('social_media_accounts' as any)
 						.delete()
-						.eq('user_id', $user?.id)
+						.eq('user_id', $user?.id || '')
 						.eq('platform', platform)
 				}
 			}
@@ -286,11 +286,11 @@
 						<ImageIcon class="w-6 h-6 text-gray-700 mb-2" />
 						<p class="text-sm font-medium text-gray-700 mb-3">{m?.settings_cover_image()}</p>
 						<ImageUpload
-							currentImage={profile?.cover_url}
+							currentImage={profile?.cover_url || undefined}
 							placeholder={m?.settings_cover_image()}
 							aspectRatio="cover"
 							disabled={uploadingCover}
-							onupload={handleCoverUpload}
+							onupload={(data) => handleCoverUpload({ detail: data } as CustomEvent<{ file: File; preview: string }>)}
 							class="!w-32 !h-20"
 						/>
 					</div>
@@ -314,14 +314,12 @@
 						</div>
 						<div class="absolute bottom-2 right-2">
 							<ImageUpload
-								currentImage={profile?.avatar_url}
+								currentImage={profile?.avatar_url || undefined}
 								placeholder=""
 								aspectRatio="square"
 								disabled={uploadingAvatar}
-								onupload={handleAvatarUpload}
+								onupload={(data) => handleAvatarUpload({ detail: data } as CustomEvent<{ file: File; preview: string }>)}
 								class="!w-10 !h-10 !rounded-full bg-primary hover:bg-primary/90 shadow-lg"
-								buttonClass="!p-2"
-								iconClass="!w-5 !h-5 text-white"
 							/>
 						</div>
 					</div>
@@ -461,7 +459,7 @@
 								<input
 									id="instagram"
 									type="text"
-									bind:value={socialMedia?.instagram}
+									bind:value={socialMedia.instagram}
 									placeholder="@username"
 									class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 placeholder-gray-400"
 								/>

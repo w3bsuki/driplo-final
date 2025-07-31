@@ -264,17 +264,17 @@
                 {#if order?.shipping_address}
                     <div class="space-y-2 mb-4">
                         <p><strong>Ship to:</strong></p>
-                        <p>{order?.shipping_address.name}</p>
-                        <p>{order?.shipping_address.address_line_1}</p>
-                        {#if order?.shipping_address.address_line_2}
-                            <p>{order?.shipping_address.address_line_2}</p>
+                        <p>{(order?.shipping_address as any).name}</p>
+                        <p>{(order?.shipping_address as any).address_line_1}</p>
+                        {#if (order?.shipping_address as any).address_line_2}
+                            <p>{(order?.shipping_address as any).address_line_2}</p>
                         {/if}
                         <p>
-                            {order?.shipping_address.city}, 
-                            {order?.shipping_address.state} 
-                            {order?.shipping_address.postal_code}
+                            {(order?.shipping_address as any).city}, 
+                            {(order?.shipping_address as any).state} 
+                            {(order?.shipping_address as any).postal_code}
                         </p>
-                        <p>{order?.shipping_address.country}</p>
+                        <p>{(order?.shipping_address as any).country}</p>
                     </div>
                 {/if}
                 

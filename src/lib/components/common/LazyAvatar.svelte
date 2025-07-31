@@ -13,7 +13,7 @@
 	let { src, username, size = 'sm', class: className, eager = false }: Props = $props();
 	
 	let isIntersecting = $state(eager);
-	let avatarElement: HTMLElement;
+	let avatarElement: HTMLElement | null;
 	
 	const sizeClasses = {
 		xs: 'h-5 w-5 text-xs',
@@ -43,7 +43,7 @@
 		
 		const observer = new IntersectionObserver(
 			(entries) => {
-				if (entries[0].isIntersecting) {
+				if (entries[0]?.isIntersecting) {
 					isIntersecting = true;
 					observer.disconnect();
 				}

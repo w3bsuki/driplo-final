@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { X, Search, _Filter, Sparkles, _ChevronRight, Check, _ChevronDown} from 'lucide-svelte';
+	import Button from '$lib/components/ui/button.svelte';
+	import { X, Search, Sparkles, Check } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { cn } from '$lib/utils';
@@ -7,7 +8,7 @@
 	import * as m from '$lib/paraglide/messages.js';
 	import { onMount } from 'svelte';
 	import CategoryDropdown from './CategoryDropdown.svelte';
-	import type { Category } from '$lib/types';
+	import type { Category } from '$lib/types/unified';
 	
 	type FilterMode = 'sidebar' | 'horizontal' | 'drawer' | 'pills' | 'section' | 'generic';
 	
@@ -120,7 +121,7 @@
 	let searchQuery = $state(propSearchQuery);
 	let showCategoryModal = $state(false);
 	let categoryDropdownOpen = $state(false);
-	let containerRef: HTMLElement;
+	let containerRef = $state<HTMLElement | null>(null);
 	let showScrollArrow = $state(true);
 	let dynamicBrands = $state<FilterOption[]>([]);
 	let expandedGroups = $state<Record<string, boolean>>({});
@@ -194,7 +195,7 @@
 	});
 	
 	// Computed values
-	const activeFilterCount = $derived(() => {
+	const activeFilterCount = $derived.by(() => {
 		let count = 0;
 		if (selectedCategory) count++;
 		if (selectedSubcategory && selectedSubcategory !== 'all') count++;
@@ -213,16 +214,6 @@
 	const hasActiveFilters = $derived(
 		searchQuery || activeFilterCount > 0
 	);
-	
-	const _currentPriceRange = $derived(() => {
-		const price = selectedFilters['price'];
-		if (typeof price === 'string') return price;
-		const min = selectedFilters['min_price'];
-		const max = selectedFilters['max_price'];
-		if (min && max) return `${min}-${max}`;
-		if (min) return `${min}-`;
-		return '';
-	});
 	
 	// Quick categories for modal
 	const quickCategories = [
@@ -285,7 +276,7 @@
 			if (value) {
 				if (filterType === 'price' && value.includes('-')) {
 					const [min, max] = value.split('-');
-					params.set('min_price', min);
+					if (min) params.set('min_price', min);
 					if (max && max !== '999') params.set('max_price', max);
 					else params.delete('max_price');
 				} else {
@@ -339,7 +330,7 @@
 			// Add filters
 			Object.entries(selectedFilters).forEach(([_key, value]) => {
 				if (Array.isArray(value) && value.length > 0) {
-					params.set(key === 'size' ? 'sizes' : key === 'condition' ? 'conditions' : key + 's', value.join(','));
+					params.set(_key === 'size' ? 'sizes' : _key === 'condition' ? 'conditions' : _key + 's', value.join(','));
 				} else if (value && value !== 'recent' && value !== '') {
 					params.set(_key, value as string);
 				}
@@ -471,12 +462,9 @@
 		{/each}
 		
 		{#if activeFilterCount > 0}
-			<button 
-				onclick={handleClearFilters}
-				class="w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500"
-			>
+			<Button variant="secondary" class="w-full bg-white border-gray-300 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500" onclick={handleClearFilters}>
 				Clear Filters
-			</button>
+			</Button>
 		{/if}
 	</div>
 
@@ -490,7 +478,7 @@
 					{#each activeFilters() as filter}
 						<div class="relative">
 							<select
-								value={Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type][0] || '' : selectedFilters[filter.type] || ''}
+								value={Array.isArray(selectedFilters[filter.type]) ? (selectedFilters[filter.type] as string[])[0] || '' : (selectedFilters[filter.type] as string) || ''}
 								onchange={(e) => updateFilter(filter.type, e.currentTarget.value)}
 								class={cn(
 									"filter-select appearance-none pl-3 pr-7 py-2 rounded-sm text-xs font-medium border cursor-pointer transition-all duration-100 min-w-[80px] focus:outline-none focus:ring-1 focus:ring-brand-300/20 focus:border-brand-500",
@@ -505,12 +493,12 @@
 								{/each}
 							</select>
 							{#if !isFilterActive(filter.type, '')}
-								<button
+								<Button
 									onclick={() => clearFilter(filter.type)}
 									class="absolute right-2 top-1/2 -translate-y-1/2 hover:bg-brand-100 rounded-full p-0.5"
 								>
 									<X class="h-3 w-3 text-brand-400" />
-								</button>
+								</Button>
 							{/if}
 						</div>
 					{/each}
@@ -523,7 +511,7 @@
 					{#each activeFilters() as filter}
 						{#if filter.type !== 'sort'}
 							<div class="relative group">
-								<button
+								<Button
 									onclick={() => toggleGroup(filter.type)}
 									class={cn(
 										"flex items-center gap-1.5 px-3 py-2 rounded-sm border font-medium transition-all duration-100",
@@ -537,13 +525,13 @@
 										<span class="text-sm">: {getFilterLabel(filter.type)}</span>
 										<X class="h-3 w-3 ml-1" onclick={(e) => { e.stopPropagation(); clearFilter(filter.type); }} />
 									{/if}
-								</button>
+								</Button>
 								
 								<!-- Dropdown -->
 								{#if expandedGroups[filter.type]}
 									<div class="absolute top-full left-0 mt-2 bg-white rounded-sm border border-gray-200 p-2 min-w-[150px] z-10 shadow-md">
 										{#each filter.options as option}
-											<button
+											<Button
 												onclick={() => updateFilter(filter.type, option.value)}
 												class={cn(
 													"w-full text-left px-3 py-2 rounded-sm text-sm transition-colors duration-100",
@@ -553,7 +541,7 @@
 												)}
 											>
 												{option.label}
-											</button>
+											</Button>
 										{/each}
 									</div>
 								{/if}
@@ -562,12 +550,9 @@
 					{/each}
 					
 					{#if activeFilterCount > 0}
-						<button
-							onclick={handleClearFilters}
-							class="text-sm text-gray-600 hover:text-brand-400 font-medium ml-2"
-						>
+						<Button variant="link" class="hover:text-brand-400 ml-2" onclick={handleClearFilters}>
 							Clear all
-						</button>
+						</Button>
 					{/if}
 				</div>
 				
@@ -619,19 +604,16 @@
 				</div>
 				<div class="flex items-center gap-2">
 					{#if activeFilterCount > 0}
-						<button
-							onclick={handleClearFilters}
-							class="text-xs text-primary hover:text-primary/90 font-medium px-2 py-1 rounded-lg hover:bg-primary/10"
-						>
+						<Button size="xs" class="text-primary hover:text-primary/90" onclick={handleClearFilters}>
 							{m.filter_clear_all?.() || 'Clear all'}
-						</button>
+						</Button>
 					{/if}
-					<button
+					<Button
 						onclick={() => onClose?.()}
 						class="p-1.5 hover:bg-muted rounded-lg transition-colors"
 					>
 						<X class="h-4 w-4 text-muted-foreground" />
-					</button>
+					</Button>
 				</div>
 			</div>
 			
@@ -643,7 +625,7 @@
 						<h3 class="text-sm font-semibold text-foreground mb-2">{m.filter_categories?.() || 'Categories'}</h3>
 						<div class="grid grid-cols-2 gap-2">
 							{#each categories as category}
-								<button
+								<Button
 									onclick={() => onCategoryChange?.(category.id)}
 									class={cn(
 										"flex items-center gap-2 p-2 rounded-lg border transition-all duration-200 text-left",
@@ -662,7 +644,7 @@
 									{#if selectedCategory === category.id}
 										<Check class="h-3 w-3 text-primary flex-shrink-0" />
 									{/if}
-								</button>
+								</Button>
 							{/each}
 						</div>
 					</div>
@@ -674,8 +656,8 @@
 						<h3 class="text-sm font-semibold text-foreground mb-2">{m.filter_what_looking_for?.() || 'What are you looking for?'}</h3>
 						<div class="grid grid-cols-2 gap-2">
 							{#each subcategories as subcategory}
-								<button
-									onclick={() => onSubcategoryChange?.(subcategory.id)}
+								<Button>
+	onSubcategoryChange?.(subcategory.id)}
 									class={cn(
 										"flex items-center gap-1.5 p-2 rounded-lg border transition-all duration-200 text-left",
 										selectedSubcategory === subcategory.id
@@ -688,7 +670,7 @@
 									{#if selectedSubcategory === subcategory.id}
 										<Check class="h-3 w-3 text-primary flex-shrink-0" />
 									{/if}
-								</button>
+</Button>
 							{/each}
 						</div>
 					</div>
@@ -701,8 +683,8 @@
 						{#if filter.type === 'price'}
 							<div class="grid grid-cols-2 gap-2">
 								{#each filter.options as option}
-									<button
-										onclick={() => updateFilter(filter.type, option.value)}
+									<Button>
+	updateFilter(filter.type, option.value)}
 										class={cn(
 											"p-2 rounded-lg border text-center font-medium text-xs transition-all duration-200",
 											isFilterActive(filter.type, option.value)
@@ -711,14 +693,14 @@
 										)}
 									>
 										{option.label}
-									</button>
+</Button>
 								{/each}
 							</div>
 						{:else if filter.type === 'size'}
 							<div class="flex flex-wrap gap-2">
 								{#each filter.options as option}
-									<button
-										onclick={() => updateFilter(filter.type, option.value)}
+									<Button>
+	updateFilter(filter.type, option.value)}
 										class={cn(
 											"px-3 py-1.5 rounded-lg border font-medium text-xs transition-all duration-200 min-w-[45px]",
 											isFilterActive(filter.type, option.value)
@@ -727,14 +709,14 @@
 										)}
 									>
 										{option.label}
-									</button>
+</Button>
 								{/each}
 							</div>
 						{:else if filter.type === 'brand'}
 							<div class="grid grid-cols-2 gap-2">
 								{#each filter.options as option}
-									<button
-										onclick={() => updateFilter(filter.type, option.value)}
+									<Button>
+	updateFilter(filter.type, option.value)}
 										class={cn(
 											"p-2 rounded-lg border text-center font-medium text-xs transition-all duration-200",
 											isFilterActive(filter.type, option.value)
@@ -743,14 +725,14 @@
 										)}
 									>
 										{option.label}
-									</button>
+</Button>
 								{/each}
 							</div>
 						{:else}
 							<div class="space-y-2">
 								{#each filter.options as option}
-									<button
-										onclick={() => updateFilter(filter.type, option.value)}
+									<Button>
+	updateFilter(filter.type, option.value)}
 										class={cn(
 											"w-full p-2 rounded-lg border text-left font-medium text-xs transition-all duration-200 flex items-center justify-between",
 											isFilterActive(filter.type, option.value)
@@ -765,7 +747,7 @@
 										{#if isFilterActive(filter.type, option.value)}
 											<Check class="h-3 w-3 text-primary" />
 										{/if}
-									</button>
+</Button>
 								{/each}
 							</div>
 						{/if}
@@ -775,16 +757,13 @@
 			
 			<!-- Footer -->
 			<div class="border-t border-border p-3 bg-muted">
-				<button
-					onclick={handleApplyFilters}
-					class="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground font-semibold py-3 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95 text-sm"
-				>
-					{#if activeFilterCount > 0}
+				<Button class="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground shadow-lg hover:shadow-xl active:scale-95" onclick={handleApplyFilters}>
+	{#if activeFilterCount > 0}
 						{m.filter_apply_count?.({ count: activeFilterCount }) || `Apply ${activeFilterCount} Filters`}
 					{:else}
 						{m.filter_browse_all?.() || 'Browse All'}
 					{/if}
-				</button>
+</Button>
 			</div>
 		</div>
 	</div>
@@ -800,15 +779,15 @@
 			aria-label={m.filter_categories?.() || 'Filter categories'}
 		>
 			{#each maxVisibleFilters ? quickFilters.slice(0, maxVisibleFilters) : quickFilters as filter}
-				<button
-					onclick={() => onQuickFilterClick?.(filter.action)}
+				<Button>
+	onQuickFilterClick?.(filter.action)}
 					onkeydown={(e) => handleKeyDown(e, filter.action)}
 					aria-label={filter.ariaLabel || filter.name}
 					class={getFilterClasses(filter.variant)}
 				>
 					<span class="text-sm" aria-hidden="true">{filter.icon}</span>
 					<span>{filter.name}</span>
-				</button>
+</Button>
 			{/each}
 		</div>
 		
@@ -834,15 +813,15 @@
 						{#if showCategoryButton}
 							<div class="flex-shrink-0">
 								{#if categoryButtonType === 'icon'}
-									<button
-										onclick={() => showCategoryModal = true}
+									<Button>
+	showCategoryModal = true}
 										class="flex items-center justify-center w-12 h-12 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 hover:border-primary/30 transition-all duration-200"
 										aria-label="Browse categories"
 									>
 										<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
 										</svg>
-									</button>
+</Button>
 								{:else if categoryButtonType === 'dropdown'}
 									<CategoryDropdown 
 										isOpen={categoryDropdownOpen}
@@ -850,15 +829,15 @@
 										onClose={() => categoryDropdownOpen = false}
 									/>
 								{:else if categoryButtonType === 'icon-only'}
-									<button
-										onclick={() => categoryDropdownOpen = !categoryDropdownOpen}
+									<Button>
+	categoryDropdownOpen = !categoryDropdownOpen}
 										class="flex items-center justify-center w-11 h-11 rounded-lg border border-input bg-background hover:bg-muted hover:border-primary/30 transition-all duration-200"
 										aria-label="Browse categories"
 									>
 										<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
 										</svg>
-									</button>
+</Button>
 									{#if categoryDropdownOpen}
 										<CategoryDropdown 
 											isOpen={categoryDropdownOpen}
@@ -893,12 +872,9 @@
 			
 			{#if hasActiveFilters}
 				<div class="flex justify-end mb-3">
-					<button
-						onclick={handleClearFilters}
-						class="text-sm text-muted-foreground hover:text-foreground"
-					>
-						Clear all
-					</button>
+					<Button class="text-muted-foreground hover:text-foreground" onclick={handleClearFilters}>
+	Clear all
+</Button>
 				</div>
 			{/if}
 			
@@ -906,7 +882,7 @@
 			<div class="flex gap-1.5 overflow-x-auto pb-1 md:hidden scrollbar-hide {filterClass}">
 				{#each activeFilters() as filter}
 					<select
-						value={Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type][0] || '' : selectedFilters[filter.type] || ''}
+						value={Array.isArray(selectedFilters[filter.type]) ? (selectedFilters[filter.type] as string[])[0] || '' : (selectedFilters[filter.type] as string) || ''}
 						onchange={(e) => updateFilter(filter.type, e.currentTarget.value)}
 						class="rounded-full border border-input bg-background px-2.5 py-1.5 text-xs flex-shrink-0 min-w-20"
 					>
@@ -922,7 +898,7 @@
 			<div class="hidden md:flex items-center gap-3 {filterClass}">
 				{#each activeFilters() as filter}
 					<select
-						value={Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type][0] || '' : selectedFilters[filter.type] || ''}
+						value={Array.isArray(selectedFilters[filter.type]) ? (selectedFilters[filter.type] as string[])[0] || '' : (selectedFilters[filter.type] as string) || ''}
 						onchange={(e) => updateFilter(filter.type, e.currentTarget.value)}
 						class="rounded-lg border border-input bg-background px-3 py-2 text-sm"
 					>
@@ -940,18 +916,20 @@
 					{#if searchQuery}
 						<div class="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded-full text-xs">
 							<span>"{searchQuery}"</span>
-							<button onclick={() => clearFilter('search')}>
+							<Button>
+	clearFilter('search')}>
 								<X class="h-3 w-3" />
-							</button>
+</Button>
 						</div>
 					{/if}
 					{#each activeFilters() as filter}
 						{#if selectedFilters[filter.type] && selectedFilters[filter.type] !== ''}
 							<div class="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded-full text-xs">
 								<span>{getFilterLabel(filter.type)}</span>
-								<button onclick={() => clearFilter(filter.type)}>
+								<Button>
+	clearFilter(filter.type)}>
 									<X class="h-3 w-3" />
-								</button>
+</Button>
 							</div>
 						{/if}
 					{/each}
@@ -968,13 +946,13 @@
 					<!-- Header -->
 					<div class="flex items-center justify-between p-4 border-b bg-background rounded-t-2xl">
 						<h2 class="text-lg font-semibold">Quick Categories</h2>
-						<button 
-							onclick={() => showCategoryModal = false}
+						<Button>
+	showCategoryModal = false}
 							class="p-2 hover:bg-muted rounded-lg"
 							aria-label="Close categories"
 						>
 							<X class="h-5 w-5" />
-						</button>
+</Button>
 					</div>
 					
 					<!-- Categories Content -->
@@ -987,15 +965,15 @@
 								</h3>
 								<div class="grid grid-cols-2 gap-2">
 									{#each quickCategories as category}
-										<button
-											onclick={() => selectQuickCategory(category.value)}
+										<Button>
+	selectQuickCategory(category.value)}
 											class="p-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors text-left"
 										>
 											<div class="flex items-center justify-between">
 												<span class="font-medium">{category.name}</span>
 												<span class="text-xs text-muted-foreground">{category.count}</span>
 											</div>
-										</button>
+</Button>
 									{/each}
 								</div>
 							</div>
@@ -1007,15 +985,15 @@
 								</h3>
 								<div class="grid grid-cols-2 gap-2">
 									{#each popularItems as item}
-										<button
-											onclick={() => selectQuickCategory(item.value)}
+										<Button>
+	selectQuickCategory(item.value)}
 											class="p-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors text-left"
 										>
 											<div class="flex items-center gap-2">
 												<span class="text-lg">{item.emoji}</span>
 												<span class="font-medium">{item.name}</span>
 											</div>
-										</button>
+</Button>
 									{/each}
 								</div>
 							</div>
@@ -1033,8 +1011,8 @@
 		<div class="bg-white border-b sticky top-0 z-20">
 			<div class="container mx-auto px-4 py-4">
 				<div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-					<button
-						onclick={() => onSubcategoryChange?.('all')}
+					<Button>
+	onSubcategoryChange?.('all')}
 						class={cn(
 							"flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all",
 							selectedSubcategory === 'all'
@@ -1043,10 +1021,10 @@
 						)}
 					>
 						All
-					</button>
+</Button>
 					{#each subcategories as subcategory}
-						<button
-							onclick={() => onSubcategoryChange?.(subcategory.id)}
+						<Button>
+	onSubcategoryChange?.(subcategory.id)}
 							class={cn(
 								"flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap",
 								selectedSubcategory === subcategory.id
@@ -1055,7 +1033,7 @@
 							)}
 						>
 							{subcategory.icon} {subcategory.name}
-						</button>
+</Button>
 					{/each}
 				</div>
 			</div>
@@ -1071,11 +1049,11 @@
 					{#each activeFilters() as filter}
 						<div class="relative">
 							<select
-								value={Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type][0] || '' : selectedFilters[filter.type] || ''}
+								value={Array.isArray(selectedFilters[filter.type]) ? (selectedFilters[filter.type] as string[])[0] || '' : (selectedFilters[filter.type] as string) || ''}
 								onchange={(e) => updateFilter(filter.type, e.currentTarget.value)}
 								class={cn(
 									"w-full pl-3 pr-8 py-2 rounded-lg text-xs font-medium border cursor-pointer transition-all duration-200 min-w-[80px] max-w-[130px] shadow-sm focus:outline-none focus:ring-2",
-									selectedFilters[filter.type] && (Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type].length > 0 : selectedFilters[filter.type])
+									selectedFilters[filter.type] && (Array.isArray(selectedFilters[filter.type]) ? (selectedFilters[filter.type] as string[]).length > 0 : selectedFilters[filter.type])
 										? theme === 'pink' 
 											? "bg-pink-50 border-pink-200 text-pink-700 hover:bg-pink-100 focus:ring-pink-200"
 											: "bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100 focus:ring-blue-200"
@@ -1093,13 +1071,13 @@
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
 								</svg>
 							</div>
-							{#if selectedFilters[filter.type] && (Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type].length > 0 : selectedFilters[filter.type])}
-								<button
-									onclick={() => clearFilter(filter.type)}
+							{#if selectedFilters[filter.type] && (Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type]?.length > 0 : selectedFilters[filter.type])}
+								<Button>
+	clearFilter(filter.type)}
 									class="absolute right-1.5 top-1/2 -translate-y-1/2"
 								>
 									<X class="h-2.5 w-2.5 text-blue-600" />
-								</button>
+</Button>
 							{/if}
 						</div>
 					{/each}
@@ -1112,11 +1090,11 @@
 					{#each activeFilters() as filter}
 						<div class="relative">
 							<select
-								value={Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type][0] || '' : selectedFilters[filter.type] || ''}
+								value={Array.isArray(selectedFilters[filter.type]) ? (selectedFilters[filter.type] as string[])[0] || '' : (selectedFilters[filter.type] as string) || ''}
 								onchange={(e) => updateFilter(filter.type, e.currentTarget.value)}
 								class={cn(
 									"w-full pl-4 pr-10 py-2.5 rounded-lg border cursor-pointer transition-all duration-200 min-w-[140px] font-medium text-sm shadow-sm focus:outline-none focus:ring-2",
-									selectedFilters[filter.type] && (Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type].length > 0 : selectedFilters[filter.type])
+									selectedFilters[filter.type] && (Array.isArray(selectedFilters[filter.type]) ? (selectedFilters[filter.type] as string[]).length > 0 : selectedFilters[filter.type])
 										? theme === 'pink' 
 											? "bg-pink-50 border-pink-200 text-pink-700 hover:bg-pink-100 hover:border-pink-300 focus:ring-pink-200"
 											: "bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100 hover:border-blue-300 focus:ring-blue-200"
@@ -1138,12 +1116,9 @@
 					{/each}
 					
 					{#if activeFilterCount > 0}
-						<button
-							onclick={handleClearFilters}
-							class="text-sm text-gray-600 hover:text-blue-600 font-medium ml-2"
-						>
-							Clear all
-						</button>
+						<Button variant="link" class="hover:text-blue-600 ml-2" onclick={handleClearFilters}>
+	Clear all
+</Button>
 					{/if}
 				</div>
 			</div>

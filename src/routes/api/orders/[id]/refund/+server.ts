@@ -5,7 +5,7 @@ import Stripe from 'stripe';
 import { emailService } from '$lib/server/email';
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  apiVersion: '2024-06-20'
+  apiVersion: '2025-06-30.basil'
 });
 
 export const POST: RequestHandler = async ({ locals, params, request }) => {
@@ -19,7 +19,7 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
   const orderId = params?.id;
   const { reason, refund_type = 'full' } = await request.json();
 
-  if (!reason || reason?.trim()?.length ?? 0 < 10) {
+  if (!reason || ((reason?.trim()?.length ?? 0) < 10)) {
     return json({ error: 'Please provide a detailed reason for the refund request' }, { status: 400 });
   }
 
@@ -76,20 +76,20 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
 
     // Check if refund request already exists
     const { data: existingRefund } = await supabase
-      .from('refund_requests')
+      .from('refund_requests' as any)
       .select('id, status')
       .eq('order_id', orderId)
       .single();
 
     if (existingRefund) {
       return json({ 
-        error: `Refund request already exists with status: ${existingRefund?.status}` 
+        error: `Refund request already exists with status: ${(existingRefund as any)?.status}` 
       }, { status: 400 });
     }
 
     // Create refund request
     const { data: refundRequest, error: refundError } = await supabase
-      .from('refund_requests')
+      .from('refund_requests' as any)
       .insert({
         order_id: orderId,
         buyer_id: order?.buyer_id,
@@ -113,8 +113,8 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
     // Send email notification to seller
     if (order.seller?.email) {
       await emailService?.sendRefundRequestNotification(
-        order.seller,
-        order?.buyer,
+        order.seller as any,
+        order?.buyer as any,
         order,
         refundRequest
       );
@@ -124,7 +124,7 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
     await supabase
       .from('orders')
       .update({
-        status: 'refund_requested',
+        status: 'refund_requested' as any,
         updated_at: new Date().toISOString()
       })
       .eq('id', orderId);
@@ -160,7 +160,7 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
   try {
     // Get refund request
     const { data: refundRequest, error: refundError } = await supabase
-      .from('refund_requests')
+      .from('refund_requests' as any)
       .select(`
         *,
         order:orders (
@@ -193,43 +193,43 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
     }
 
     // Check if user is the seller
-    if (session?.user.id !== refundRequest?.seller_id) {
+    if (session?.user.id !== (refundRequest as any)?.seller_id) {
       return json({ error: 'Only the seller can respond to this refund request' }, { status: 403 });
     }
 
     if (action === 'approve') {
       // Update refund request to approved
       await supabase
-        .from('refund_requests')
+        .from('refund_requests' as any)
         .update({
           status: 'approved',
           seller_response: response_notes,
           seller_response_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         })
-        .eq('id', refundRequest?.id);
+        .eq('id', (refundRequest as any)?.id);
 
       // Process refund via Stripe
-      if (refundRequest?.order?.transaction?.stripe_payment_intent_id) {
+      if ((refundRequest as any)?.order?.transaction?.stripe_payment_intent_id) {
         try {
           const refund = await stripe?.refunds.create({
-            payment_intent: refundRequest?.order?.transaction.stripe_payment_intent_id,
-            amount: refundRequest?.refund_type === 'full' ? undefined : refundRequest?.amount,
+            payment_intent: (refundRequest as any)?.order?.transaction.stripe_payment_intent_id,
+            amount: (refundRequest as any)?.refund_type === 'full' ? undefined : (refundRequest as any)?.amount,
             reason: 'requested_by_customer',
             metadata: {
               order_id: orderId,
-              refund_request_id: refundRequest?.id
+              refund_request_id: (refundRequest as any)?.id
             }
           });
 
           // Update refund request with Stripe refund ID
           await supabase
-            .from('refund_requests')
+            .from('refund_requests' as any)
             .update({
               stripe_refund_id: refund?.id,
               updated_at: new Date().toISOString()
             })
-            .eq('id', refundRequest?.id);
+            .eq('id', (refundRequest as any)?.id);
 
           // Update order status
           await supabase
@@ -244,24 +244,24 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
           console?.error('Stripe refund error:', stripeError);
           // Update refund request to failed
           await supabase
-            .from('refund_requests')
+            .from('refund_requests' as any)
             .update({
               status: 'failed',
-              error_message: stripeError?.message,
+              error_message: (stripeError as any)?.message,
               updated_at: new Date().toISOString()
             })
-            .eq('id', refundRequest?.id);
+            .eq('id', (refundRequest as any)?.id);
 
           return json({ error: 'Failed to process refund payment' }, { status: 500 });
         }
       }
 
       // Send approval email to buyer
-      if (refundRequest?.order?.buyer?.email) {
+      if ((refundRequest as any)?.order?.buyer?.email) {
         await emailService?.sendRefundApprovalNotification(
-          refundRequest?.order?.buyer,
-          refundRequest?.order,
-          refundRequest
+          (refundRequest as any)?.order?.buyer,
+          (refundRequest as any)?.order,
+          refundRequest as any
         );
       }
 
@@ -273,30 +273,30 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
     } else {
       // Reject refund request
       await supabase
-        .from('refund_requests')
+        .from('refund_requests' as any)
         .update({
           status: 'rejected',
           seller_response: response_notes,
           seller_response_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         })
-        .eq('id', refundRequest?.id);
+        .eq('id', (refundRequest as any)?.id);
 
       // Update order status back to completed
       await supabase
         .from('orders')
         .update({
-          status: 'completed',
+          status: 'delivered',
           updated_at: new Date().toISOString()
         })
         .eq('id', orderId);
 
       // Send rejection email to buyer
-      if (refundRequest?.order?.buyer?.email) {
+      if ((refundRequest as any)?.order?.buyer?.email) {
         await emailService?.sendRefundRejectionNotification(
-          refundRequest?.order?.buyer,
-          refundRequest?.order,
-          refundRequest
+          (refundRequest as any)?.order?.buyer,
+          (refundRequest as any)?.order,
+          refundRequest as any
         );
       }
 

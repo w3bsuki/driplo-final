@@ -28,14 +28,14 @@ export async function loadCategoryPage(categorySlug: string, supabase: SupabaseC
 
     // Get products using optimized RPC function
     supabase.rpc('get_category_listings', {
-      p_category_id: category.id,
+      category_slug: categorySlug,
       p_limit: 50,
       p_offset: 0
     }),
 
     // Get top sellers for this category
     supabase.rpc('get_top_category_sellers', { 
-      category_uuid: category.id
+      category_slug: categorySlug
     })
   ]);
 
@@ -111,7 +111,7 @@ export async function loadSubcategoryPage(categorySlug: string, subcategorySlug:
 
   // Use optimized RPC function for subcategory listings
   const { data: productsData, error: productsError } = await supabase.rpc('get_category_listings', {
-    p_category_id: category.id,
+    category_slug: categorySlug,
     p_subcategory_id: subcategory.id,
     p_limit: limit,
     p_offset: offset,

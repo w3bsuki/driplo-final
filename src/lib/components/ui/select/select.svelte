@@ -23,8 +23,9 @@
 </script>
 
 <SelectPrimitive.Root
+	type="single"
 	bind:value
-	{onValueChange}
+	onValueChange={onValueChange}
 	{disabled}
 	bind:open
 	{onOpenChange}

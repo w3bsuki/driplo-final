@@ -4,7 +4,7 @@ import Stripe from 'stripe';
 import { STRIPE_SECRET_KEY } from '$env/static/private';
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  apiVersion: '2024-06-20'
+  apiVersion: '2025-06-30.basil'
 });
 
 export const GET: RequestHandler = async () => {

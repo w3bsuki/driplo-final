@@ -7,7 +7,7 @@
 		createSrcSet,
 		getSizesAttribute,
 		type LazyLoadingOptions
-	} from '$lib/utils/lazy-loading';
+	} from '$lib/utils/lazy-load';
 	import { debug } from '$lib/utils/debug-logger';
 	
 	let { 
@@ -44,7 +44,7 @@
 		lazyOptions?: LazyLoadingOptions;
 	} = $props();
 	
-	let imgElement: HTMLImageElement;
+	let imgElement: HTMLImageElement | null;
 	let isLoaded = $state(false);
 	let isIntersecting = $state(false);
 	let hasError = $state(false);

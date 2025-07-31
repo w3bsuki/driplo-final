@@ -8,14 +8,12 @@
 		class?: string;
 		children: Snippet;
 		side?: 'top' | 'right' | 'bottom' | 'left';
-		sideOffset?: number;
 	}
 
 	let { 
 		class: className, 
 		children,
-		side = 'top',
-		_sideOffset= 4
+		side = 'top'
 	}: Props = $props();
 
 	const context = getContext<{
@@ -50,6 +48,6 @@
 				side === 'bottom' && 'bottom-full left-1/2 -translate-x-1/2 translate-y-1',
 				side === 'left' && 'left-full top-1/2 -translate-y-1/2 -translate-x-1'
 			)}
-		/>
+		></div>
 	</div>
 {/if}

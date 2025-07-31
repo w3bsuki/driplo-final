@@ -1,6 +1,6 @@
 // CSRF Protection utilities for SvelteKit
 import { dev } from '$app/environment'
-import { fail, type RequestEvent } from '@sveltejs/kit'
+import { fail, type RequestEvent, type ActionFailure } from '@sveltejs/kit'
 
 // Generate a secure CSRF token
 export function generateCSRFToken(): string {
@@ -31,7 +31,7 @@ export function validateCSRFToken(
 }
 
 // Middleware function to check CSRF for form submissions
-export function withCSRFProtection<T extends Record<string, unknown>>(
+export function withCSRFProtection<T extends Record<string, unknown> | ActionFailure<any>>(
 	handler: (event: RequestEvent) => Promise<T>
 ) {
 	return async (event: RequestEvent): Promise<T> => {
@@ -67,7 +67,7 @@ export function setCSRFTokenHeader(response: Response, token: string): void {
 }
 
 // Create a CSRF-protected form action wrapper
-export function csrfProtectedAction<T extends Record<string, unknown>>(
+export function csrfProtectedAction<T extends Record<string, unknown> | ActionFailure<any>>(
 	action: (event: RequestEvent) => Promise<T>
 ) {
 	return withCSRFProtection(action)

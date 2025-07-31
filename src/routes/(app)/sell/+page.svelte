@@ -4,7 +4,7 @@
 	import CreateListingForm from '$lib/components/listings/CreateListingForm/CreateListingForm.svelte'
 	import { onMount } from 'svelte'
 	import * as m from '$lib/paraglide/messages.js'
-	import { _page} from '$app/stores'
+	import { page } from '$app/stores'
 	import type { PageData } from './$types'
 	
 	let { data }: { data: PageData } = $props()

@@ -1,0 +1,2672 @@
+{
+  "summary": {
+    "total_unique_errors": 383,
+    "files_with_errors": 92,
+    "error_files_analyzed": 8
+  },
+  "category_breakdown": {
+    "svelte_props": 33,
+    "return_paths": 3,
+    "type_assignment": 54,
+    "optional_chaining": 4,
+    "construct_signatures": 4,
+    "unused_variables": 54,
+    "property_access": 79,
+    "other": 92,
+    "import_module": 20,
+    "null_safety": 21,
+    "function_arguments": 13,
+    "translation_keys": 6
+  },
+  "top_20_files_by_errors": [
+    [
+      "\u001b[32msrc/routes/(app)/brands/[slug]/+page.svelte\u001b",
+      46
+    ],
+    [
+      "\u001b[32msrc/lib/components/shared/UnifiedFilter.svelte\u001b",
+      43
+    ],
+    [
+      "\u001b[32msrc/routes/(app)/onboarding/+page.svelte\u001b",
+      16
+    ],
+    [
+      "\u001b[32msrc/lib/components/home/HeroSearch.svelte\u001b",
+      12
+    ],
+    [
+      "\u001b[32msrc/lib/components/home/HeroSearchFixed.svelte\u001b",
+      12
+    ],
+    [
+      "\u001b[32msrc/lib/components/shared/UnifiedSearch.svelte\u001b",
+      12
+    ],
+    [
+      "\u001b[32msrc/lib/components/profile/SocialMediaLinks.svelte\u001b",
+      11
+    ],
+    [
+      "\u001b[32msrc/routes/(auth)/register/+page.svelte\u001b",
+      9
+    ],
+    [
+      "\u001b[32msrc/lib/components/checkout/CheckoutFlow.svelte\u001b",
+      8
+    ],
+    [
+      "\u001b[32msrc/lib/components/checkout/CheckoutModal.svelte\u001b",
+      8
+    ],
+    [
+      "\u001b[32msrc/lib/components/category/CategoryLanding.svelte\u001b",
+      7
+    ],
+    [
+      "\u001b[32msrc/routes/(auth)/login/+page.svelte\u001b",
+      7
+    ],
+    [
+      "\u001b[32msrc/lib/components/onboarding/ProfileSetupWizard.svelte\u001b",
+      7
+    ],
+    [
+      "\u001b[32msrc/lib/components/onboarding/WelcomeModal.svelte\u001b",
+      6
+    ],
+    [
+      "\u001b[32msrc/lib/components/subcategory/SubcategoryBrowse.svelte\u001b",
+      6
+    ],
+    [
+      "\u001b[32msrc/lib/components/checkout/checkout-modal/PaymentInstructions.svelte\u001b",
+      5
+    ],
+    [
+      "\u001b[32msrc/lib/components/shared/CategoryDropdownFixed.svelte\u001b",
+      5
+    ],
+    [
+      "\u001b[32msrc/routes/(app)/messages/+page.svelte\u001b",
+      5
+    ],
+    [
+      "\u001b[32msrc/lib/components/ui/badge.svelte\u001b",
+      5
+    ],
+    [
+      "\u001b[32msrc/lib/components/ui/Confetti.svelte\u001b",
+      5
+    ]
+  ],
+  "most_frequent_patterns": [
+    [
+      "Property 'IDENTIFIER' does not exist on type 'IDENTIFIER'. Property 'IDENTIFIER' does not exist on type 'IDENTIFIER'.",
+      56
+    ],
+    [
+      "Object literal may only specify known properties, and 'IDENTIFIER' does not exist in type 'IDENTIFIER'.  <CategoryDropdown {categories} isOpen={isCategoryDropdownOpen}",
+      11
+    ],
+    [
+      "Type 'IDENTIFIER' is not assignable to type 'IDENTIFIER'. Type 'IDENTIFIER' is not assignable to type 'IDENTIFIER'.",
+      8
+    ],
+    [
+      "Type 'IDENTIFIER' is not assignable to type 'IDENTIFIER'. Type 'IDENTIFIER' is missing the following properties from type 'IDENTIFIER': type, label, options",
+      8
+    ],
+    [
+      "Type 'IDENTIFIER' is not assignable to type 'IDENTIFIER'. Type 'IDENTIFIER' is not assignable to type 'IDENTIFIER'. Types of property 'IDENTIFIER' are incompatible. Type 'IDENTIFIER' is not assignable to type 'IDENTIFIER'.",
+      6
+    ],
+    [
+      "Object is possibly 'IDENTIFIER'.  <select value={Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type][NUMBER] || 'IDENTIFIER' : selectedFilters[filter.type] || 'IDENTIFIER'} onchange={(e) => updateFilter(filter.type, e.currentTarget.value)}",
+      5
+    ],
+    [
+      "This expression is not constructable. Type 'IDENTIFIER' has no construct signatures.",
+      4
+    ],
+    [
+      "Type 'IDENTIFIER' is not assignable to type 'IDENTIFIER'. Type 'IDENTIFIER' is missing the following properties from type 'IDENTIFIER': app_metadata, user_metadata, aud, created_at",
+      4
+    ],
+    [
+      "Element implicitly has an 'IDENTIFIER' type because expression of type 'IDENTIFIER' can'IDENTIFIER'{ default: string; secondary: string; success: string; destructive: string; outline: string; 'IDENTIFIER': string; 'IDENTIFIER': string; 'IDENTIFIER': string; ... NUMBER more ...; interactive: string; }'IDENTIFIER'string'IDENTIFIER'{ default: string; secondary: string; success: string; destructive: string; outline: string; 'IDENTIFIER': string; 'IDENTIFIER': string; 'IDENTIFIER': string; ... NUMBER more ...; interactive: string; }'.",
+      4
+    ],
+    [
+      "Argument of type 'IDENTIFIER' is not assignable to parameter of type 'IDENTIFIER'. Type 'IDENTIFIER' is not assignable to type 'IDENTIFIER'.",
+      4
+    ],
+    [
+      "'IDENTIFIER' is of type 'IDENTIFIER'.  } catch (error) { toast.error(error.message || 'IDENTIFIER'); } finally {",
+      4
+    ],
+    [
+      "Object literal may only specify known properties, and 'IDENTIFIER' does not exist in type 'IDENTIFIER'.  showLoading={false} {supabase} />",
+      3
+    ],
+    [
+      "Type 'IDENTIFIER' is not assignable to type 'IDENTIFIER'. Type 'IDENTIFIER' provides no match for the signature 'IDENTIFIER'.",
+      3
+    ],
+    [
+      "'IDENTIFIER' is declared but its value is never read.  <script lang=\"STRING\"> import { X, Search, Filter, Sparkles, ChevronRight, Check, ChevronDown } from 'IDENTIFIER'; import { goto } from 'IDENTIFIER';",
+      3
+    ],
+    [
+      "Operator 'IDENTIFIER' cannot be applied to types 'IDENTIFIER' and 'IDENTIFIER'.  {#if activeFilterCount > NUMBER} <button",
+      3
+    ],
+    [
+      "'IDENTIFIER' has no exported member named 'IDENTIFIER'. Did you mean 'IDENTIFIER'?  import { _page} from 'IDENTIFIER'; import { Building2, Globe, Instagram, Facebook, Twitter, MapPin, Calendar, Star, Package, _ShoppingBag, _Users, _TrendingUp, ExternalLink, Check } from 'IDENTIFIER'; import type { PageData } from 'IDENTIFIER';",
+      3
+    ],
+    [
+      "'IDENTIFIER' has no exported member named 'IDENTIFIER'. Did you mean 'IDENTIFIER'?  <script lang=\"STRING\"> import { X, Search, _Filter, Sparkles, _ChevronRight, Check, _ChevronDown} from 'IDENTIFIER'; import { goto } from 'IDENTIFIER';",
+      3
+    ],
+    [
+      "Type 'IDENTIFIER' is not assignable to type 'IDENTIFIER'. Type 'IDENTIFIER' is not assignable to type 'IDENTIFIER'. Type 'IDENTIFIER' is not assignable to type 'IDENTIFIER'. Types of property 'IDENTIFIER' are incompatible. Type 'IDENTIFIER' is not assignable to type 'IDENTIFIER'.",
+      2
+    ],
+    [
+      "Invalid optional chain from new expression. Did you mean to call 'IDENTIFIER'?  function getFormattedAmount(): string { const formatter = new Intl?.NumberFormat('IDENTIFIER', { style: 'IDENTIFIER',",
+      2
+    ],
+    [
+      "Property 'IDENTIFIER' does not exist on type 'IDENTIFIER'.  <!-- Size Ranges --> {#if categoryData?.sizeRanges} <div class=\"STRING\">",
+      2
+    ]
+  ],
+  "file_extension_breakdown": {
+    ".svelte\u001b": 383
+  },
+  "detailed_file_errors": {
+    "\u001b[32msrc/lib/components/ui/sheet/sheet.svelte\u001b": [
+      {
+        "line": 37,
+        "column": 3,
+        "message": "Object literal may only specify known properties, and 'closeOnOutsideClick' does not exist in type '{ open?: boolean | undefined; onOpenChange?: OnChangeFn<boolean> | undefined; onOpenChangeComplete?: OnChangeFn<boolean> | undefined; } & { children?: Snippet<...> | undefined; }'.  {onOpenChange} {closeOnOutsideClick} {portal}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 39,
+        "column": 3,
+        "message": "Object literal may only specify known properties, and 'closeOnEscape' does not exist in type '{ open?: boolean | undefined; onOpenChange?: OnChangeFn<boolean> | undefined; onOpenChangeComplete?: OnChangeFn<boolean> | undefined; } & { children?: Snippet<...> | undefined; }'.  {onOpenChange} {closeOnEscape} {closeOnOutsideClick}",
+        "category": "svelte_props"
+      }
+    ],
+    "\u001b[32msrc/lib/components/listings/CreateListingForm/steps/ProductDetailsStep.svelte\u001b": [
+      {
+        "line": 95,
+        "column": 10,
+        "message": "Not all code paths return a value.  // Auto-save draft when user stops typing $effect(() => { if (form.hasUnsavedChanges) {",
+        "category": "return_paths"
+      },
+      {
+        "line": 2,
+        "column": 33,
+        "message": "An import path can only end with a '.ts' extension when 'allowImportingTsExtensions' is enabled.  <script lang=\"ts\"> import { getFormContext } from '../FormContext.svelte.ts' import { validateField, sanitizeInput } from '../utils/validation'",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/listings/CreateListingForm/steps/MediaUploadStep.svelte\u001b": [
+      {
+        "line": 30,
+        "column": 10,
+        "message": "Not all code paths return a value.  // Auto-save when images change $effect(() => { if (form.formData.images.length > 0 && !hasActiveUploads) {",
+        "category": "return_paths"
+      }
+    ],
+    "\u001b[32msrc/lib/components/checkout/CheckoutFlow.svelte\u001b": [
+      {
+        "line": 282,
+        "column": 18,
+        "message": "Argument of type '() => ({ formData, action, cancel }: any) => Promise<(({ result, update }: any) => Promise<void>) | undefined>' is not assignable to parameter of type 'SubmitFunction<Record<string, unknown> | undefined, Record<string, unknown> | undefined>'. Type '({ formData, action, cancel }: any) => Promise<(({ result, update }: any) => Promise<void>) | undefined>' is not assignable to type 'MaybePromise<void | ((opts: { formData: FormData; formElement: HTMLFormElement; action: URL; result: ActionResult<Record<string, unknown> | undefined, Record<string, unknown> | undefined>; update: (options?: { ...; } | undefined) => Promise<...>; }) => MaybePromise<...>)>'. Type '({ formData, action, cancel }: any) => Promise<(({ result, update }: any) => Promise<void>) | undefined>' is not assignable to type '(opts: { formData: FormData; formElement: HTMLFormElement; action: URL; result: ActionResult<Record<string, unknown> | undefined, Record<string, unknown> | undefined>; update: (options?: { ...; } | undefined) => Promise<...>; }) => MaybePromise<...>'. Type 'Promise<(({ result, update }: any) => Promise<void>) | undefined>' is not assignable to type 'MaybePromise<void>'. Type 'Promise<(({ result, update }: any) => Promise<void>) | undefined>' is not assignable to type 'Promise<void>'. Type '(({ result, update }: any) => Promise<void>) | undefined' is not assignable to type 'void'. Type '({ result, update }: any) => Promise<void>' is not assignable to type 'void'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 402,
+        "column": 37,
+        "message": "Expected 2 arguments, but got 1.  <span>Item Price</span> <span class=\"font-medium\">{formatCurrency(itemPrice)}</span> </div>",
+        "category": "function_arguments"
+      },
+      {
+        "line": 406,
+        "column": 56,
+        "message": "Expected 2 arguments, but got 1.  <span>Shipping</span> <span class=\"font-medium\">{shippingCost > 0 ? formatCurrency(shippingCost) : 'Free'}</span> </div>",
+        "category": "function_arguments"
+      },
+      {
+        "line": 410,
+        "column": 17,
+        "message": "Expected 2 arguments, but got 1.  <span>Buyer Protection (5% + $1)</span> <span>{formatCurrency(buyerFee)}</span> </div>",
+        "category": "function_arguments"
+      },
+      {
+        "line": 415,
+        "column": 56,
+        "message": "Expected 2 arguments, but got 1.  <span>Total</span> <span class=\"text-[var(--color-brand-600)]\">{formatCurrency(totalAmount)}</span> </div>",
+        "category": "function_arguments"
+      },
+      {
+        "line": 481,
+        "column": 92,
+        "message": "Expected 2 arguments, but got 1.  <p class=\"font-medium text-[var(--font-size-sm)]\">{listing.title}</p> <p class=\"text-[var(--font-size-xs)] text-[var(--color-text-secondary)]\">Total: {formatCurrency(totalAmount)}</p> </div>",
+        "category": "function_arguments"
+      },
+      {
+        "line": 509,
+        "column": 35,
+        "message": "Expected 2 arguments, but got 1.  <p class=\"text-[var(--font-size-sm)] text-[var(--color-text-secondary)] mt-[var(--spacing-3)] mb-[var(--spacing-1)]\">Total Amount</p> <p class=\"font-semibold\">{formatCurrency(orderData.amount)}</p> </div>",
+        "category": "function_arguments"
+      },
+      {
+        "line": 581,
+        "column": 14,
+        "message": "Expected 2 arguments, but got 1.  {:else} Pay {formatCurrency(totalAmount)} {/if}",
+        "category": "function_arguments"
+      }
+    ],
+    "\u001b[32msrc/lib/components/brands/BrandOnboardingWizard.svelte\u001b": [
+      {
+        "line": 138,
+        "column": 18,
+        "message": "Type '{ brandName: string; brandCategory: string; brandDescription: string; onUpdate: (updates: any) => void; disabled: boolean; logoFile?: undefined; logoPreview?: undefined; logoUrl?: undefined; supabase?: undefined; onUploadStateChange?: undefined; } | { ...; } | { ...; }' is not assignable to type '(Props & Props) | undefined'. Type '{ brandName: string; brandCategory: string; brandDescription: string; onUpdate: (updates: any) => void; disabled: boolean; logoFile?: undefined; logoPreview?: undefined; logoUrl?: undefined; supabase?: undefined; onUploadStateChange?: undefined; }' is not assignable to type 'Props & Props'. Type '{ brandName: string; brandCategory: string; brandDescription: string; onUpdate: (updates: any) => void; disabled: boolean; logoFile?: undefined; logoPreview?: undefined; logoUrl?: undefined; supabase?: undefined; onUploadStateChange?: undefined; }' is not assignable to type 'Props'. Types of property 'logoFile' are incompatible. Type 'undefined' is not assignable to type 'File | null'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 2,
+        "column": 2,
+        "message": "'X' is declared but its value is never read.  <script lang=\"ts\"> import { X } from 'lucide-svelte'; import { fade, scale } from 'svelte/transition';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 139,
+        "column": 18,
+        "message": "Type '{ brandName: string; brandCategory: string; brandDescription: string; onUpdate: (updates: any) => void; disabled: boolean; logoFile?: undefined; logoPreview?: undefined; logoUrl?: undefined; supabase?: undefined; onUploadStateChange?: undefined; } | { ...; } | { ...; }' is not assignable to type '(Props & Props) | undefined'. Type '{ brandName: string; brandCategory: string; brandDescription: string; onUpdate: (updates: any) => void; disabled: boolean; logoFile?: undefined; logoPreview?: undefined; logoUrl?: undefined; supabase?: undefined; onUploadStateChange?: undefined; }' is not assignable to type 'Props & Props'. Type '{ brandName: string; brandCategory: string; brandDescription: string; onUpdate: (updates: any) => void; disabled: boolean; logoFile?: undefined; logoPreview?: undefined; logoUrl?: undefined; supabase?: undefined; onUploadStateChange?: undefined; }' is not assignable to type 'Props'. Types of property 'logoFile' are incompatible. Type 'undefined' is not assignable to type 'File | null'.",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/checkout/checkout-modal/PaymentInstructions.svelte\u001b": [
+      {
+        "line": 32,
+        "column": 29,
+        "message": "Invalid optional chain from new expression. Did you mean to call 'Intl()'?  function getFormattedAmount(): string { const formatter = new Intl?.NumberFormat('bg-BG', { style: 'currency',",
+        "category": "optional_chaining"
+      },
+      {
+        "line": 32,
+        "column": 25,
+        "message": "This expression is not constructable. Type 'typeof Intl' has no construct signatures.",
+        "category": "construct_signatures"
+      },
+      {
+        "line": 33,
+        "column": 29,
+        "message": "Invalid optional chain from new expression. Did you mean to call 'Intl()'?  function getFormattedAmount(): string { const formatter = new Intl?.NumberFormat('bg-BG', { style: 'currency',",
+        "category": "optional_chaining"
+      },
+      {
+        "line": 3,
+        "column": 11,
+        "message": "'\"$lib/utils/currency\"' has no exported member named '_formatCurrency'. Did you mean 'formatCurrency'?  import { ExternalLink, Check, Clock, AlertCircle } from 'lucide-svelte'; import { _formatCurrency} from '$lib/utils/currency'; import * as m from '$lib/paraglide/messages.js';",
+        "category": "other"
+      },
+      {
+        "line": 33,
+        "column": 25,
+        "message": "This expression is not constructable. Type 'typeof Intl' has no construct signatures.",
+        "category": "construct_signatures"
+      }
+    ],
+    "\u001b[32msrc/lib/components/checkout/checkout-modal/PaymentProcessor.svelte\u001b": [
+      {
+        "line": 2,
+        "column": 11,
+        "message": "'onMount' is declared but its value is never read.  <script lang=\"ts\"> import { onMount, onDestroy } from 'svelte'; import { CreditCard } from 'lucide-svelte';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 4,
+        "column": 2,
+        "message": "'toast' is declared but its value is never read.  import { CreditCard } from 'lucide-svelte'; import { toast } from 'svelte-sonner'; import { logger } from '$lib/services/logger';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 2,
+        "column": 11,
+        "message": "'\"svelte\"' has no exported member named '_onMount'. Did you mean 'onMount'?  <script lang=\"ts\"> import { _onMount, onDestroy } from 'svelte'; import { CreditCard } from 'lucide-svelte';",
+        "category": "other"
+      },
+      {
+        "line": 4,
+        "column": 11,
+        "message": "'\"svelte-sonner\"' has no exported member named '_toast'. Did you mean 'toast'?  import { CreditCard } from 'lucide-svelte'; import { _toast} from 'svelte-sonner'; import { logger } from '$lib/services/logger';",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/layout/ProfileDropdownContent.svelte\u001b": [
+      {
+        "line": 8,
+        "column": 25,
+        "message": "'Button' is declared but its value is never read.  import type { ExtendedProfile } from '$lib/types'; import { DropdownMenu, Button } from '$lib/components/ui';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 8,
+        "column": 25,
+        "message": "'\"$lib/components/ui\"' has no exported member named '_Button'. Did you mean 'Button'?  import type { ExtendedProfile } from '$lib/types'; import { DropdownMenu, _Button} from '$lib/components/ui';",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/layout/header/UserMenu.svelte\u001b": [
+      {
+        "line": 90,
+        "column": 35,
+        "message": "Object literal may only specify known properties, and 'session' does not exist in type 'Props'.  > <ProfileDropdownContent {user} {session} {profile} {brandSlug} {onSignOut} /> </DropdownMenu.Content>",
+        "category": "svelte_props"
+      }
+    ],
+    "\u001b[32msrc/lib/components/layout/header/DesktopNav.svelte\u001b": [
+      {
+        "line": 53,
+        "column": 13,
+        "message": "Type 'UserProfile | null' is not assignable to type 'User | null'. Type 'UserProfile' is missing the following properties from type 'User': app_metadata, user_metadata, aud, created_at",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/layout/header/MobileActions.svelte\u001b": [
+      {
+        "line": 34,
+        "column": 13,
+        "message": "Type 'UserProfile | null' is not assignable to type 'User | null'. Type 'UserProfile' is missing the following properties from type 'User': app_metadata, user_metadata, aud, created_at",
+        "category": "type_assignment"
+      },
+      {
+        "line": 2,
+        "column": 2,
+        "message": "'goto' is declared but its value is never read.  <script lang=\"ts\"> import { goto } from '$app/navigation'; import { cn } from '$lib/utils/cn';",
+        "category": "unused_variables"
+      }
+    ],
+    "\u001b[32msrc/lib/components/shared/CategoryDropdown.svelte\u001b": [
+      {
+        "line": 237,
+        "column": 26,
+        "message": "Property 'sizeRanges' does not exist on type 'CategoryData'.  <!-- Size Ranges --> {#if categoryData?.sizeRanges} <div class=\"border-t border-gray-200 pt-3\">",
+        "category": "property_access"
+      },
+      {
+        "line": 241,
+        "column": 31,
+        "message": "Property 'sizeRanges' does not exist on type 'CategoryData'.  <div class=\"grid grid-cols-3 gap-2\"> {#each categoryData?.sizeRanges as size} <button",
+        "category": "property_access"
+      },
+      {
+        "line": 5,
+        "column": 16,
+        "message": "Module '\"$lib/types\"' has no exported member 'Category'.  import { goto } from '$app/navigation'; import type { Category } from '$lib/types'; // import * as m from '$lib/paraglide/messages.js';",
+        "category": "import_module"
+      }
+    ],
+    "\u001b[32msrc/lib/components/ui/alert-dialog/AlertDialogContent.svelte\u001b": [
+      {
+        "line": 43,
+        "column": 10,
+        "message": "Not all code paths return a value.  $effect(() => { if ($isOpen) {",
+        "category": "return_paths"
+      }
+    ],
+    "\u001b[32msrc/lib/components/ui/data-table/DataTable.svelte\u001b": [
+      {
+        "line": 59,
+        "column": 7,
+        "message": "Object literal may only specify known properties, and '\"colspan\"' does not exist in type 'Props'.  <TableCell colspan={columns.length} class=\"h-24 text-center text-gray-500\"",
+        "category": "svelte_props"
+      },
+      {
+        "line": 71,
+        "column": 7,
+        "message": "Object literal may only specify known properties, and '\"onclick\"' does not exist in type 'Props'.  )} onclick={() => onRowClick?.(_item)} >",
+        "category": "svelte_props"
+      }
+    ],
+    "\u001b[32msrc/lib/components/ui/dialog/Dialog.svelte\u001b": [
+      {
+        "line": 253,
+        "column": 4,
+        "message": "Object literal may only specify known properties, but 'ariaLabel' does not exist in type 'HTMLProps<\"div\", HTMLAttributes<any>>'. Did you mean to write 'aria-label'?  aria-modal=\"true\" {ariaLabel} aria-labelledby={ariaLabelledby || (title ? 'modal-title' : undefined)}",
+        "category": "svelte_props"
+      }
+    ],
+    "\u001b[32msrc/lib/components/ui/pagination/PaginationPrevious.svelte\u001b": [
+      {
+        "line": 23,
+        "column": 2,
+        "message": "Object literal may only specify known properties, and '\"aria-label\"' does not exist in type 'Props'.  class={cn('gap-1 px-2.5', className)} aria-label=\"Go to previous page\" >",
+        "category": "svelte_props"
+      }
+    ],
+    "\u001b[32msrc/lib/components/ui/pagination/PaginationNext.svelte\u001b": [
+      {
+        "line": 23,
+        "column": 2,
+        "message": "Object literal may only specify known properties, and '\"aria-label\"' does not exist in type 'Props'.  class={cn('gap-1 px-2.5', className)} aria-label=\"Go to next page\" >",
+        "category": "svelte_props"
+      }
+    ],
+    "\u001b[32msrc/lib/components/ui/popover/PopoverContent.svelte\u001b": [
+      {
+        "line": 2,
+        "column": 23,
+        "message": "'onMount' is declared but its value is never read.  <script lang=\"ts\"> import { getContext, onMount, tick } from 'svelte'; import { cn } from '$lib/utils';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 2,
+        "column": 23,
+        "message": "'\"svelte\"' has no exported member named '_onMount'. Did you mean 'onMount'?  <script lang=\"ts\"> import { getContext, _onMount, tick } from 'svelte'; import { cn } from '$lib/utils';",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/NotificationPopup.svelte\u001b": [
+      {
+        "line": 3,
+        "column": 16,
+        "message": "'fade' is declared but its value is never read.  import { notifications } from '$lib/stores/notifications.svelte'; import { fly, fade } from 'svelte/transition'; import { CheckCircle, XCircle, Info, AlertTriangle, X } from 'lucide-svelte';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 33,
+        "column": 29,
+        "message": "This comparison appears to be unintentional because the types '\"error\" | \"success\" | \"warning\" | \"info\"' and '\"default\"' have no overlap.  {notification.type === 'warning' ? 'border-warning-200 dark:border-warning-500/30 bg-warning-50 dark:bg-warning-500/10' : ''} {!notification.type || notification.type === 'default' ? 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900' : ''}\" >",
+        "category": "other"
+      },
+      {
+        "line": 40,
+        "column": 30,
+        "message": "This comparison appears to be unintentional because the types '\"error\" | \"success\" | \"warning\" | \"info\"' and '\"default\"' have no overlap.  {notification.type === 'warning' ? 'text-warning-600 dark:text-warning-400' : ''} {!notification.type || notification.type === 'default' ? 'text-gray-600 dark:text-gray-400' : ''}\"> {#if Icon}",
+        "category": "other"
+      },
+      {
+        "line": 3,
+        "column": 16,
+        "message": "'\"svelte/transition\"' has no exported member named '_fade'. Did you mean 'fade'?  import { notifications } from '$lib/stores/notifications.svelte'; import { fly, _fade} from 'svelte/transition'; import { CheckCircle, XCircle, Info, AlertTriangle, X } from 'lucide-svelte';",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/auth/CaptchaWrapper.svelte\u001b": [
+      {
+        "line": 16,
+        "column": 35,
+        "message": "Property 'PUBLIC_RECAPTCHA_SITE_KEY' comes from an index signature, so it must be accessed with ['PUBLIC_RECAPTCHA_SITE_KEY'].  // PUBLIC_RECAPTCHA_SITE_KEY=your_recaptcha_v2_site_key const siteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || ''",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/auth/TurnstileWrapper.svelte\u001b": [
+      {
+        "line": 59,
+        "column": 5,
+        "message": "Object literal may only specify known properties, and '\"oncallback\"' does not exist in type '{ widgetId?: string | null | undefined; turnstile?: TurnstileObject | null | undefined; siteKey: string; appearance?: \"execute\" | \"always\" | \"interaction-only\" | undefined; ... 15 more ...; reset?: ((widget?: string | ... 1 more ... | undefined) => void) | undefined; }'.  siteKey={siteKey} oncallback={handleCallback} onexpire={handleExpire}",
+        "category": "svelte_props"
+      }
+    ],
+    "\u001b[32msrc/lib/components/listings/ListingGrid.svelte\u001b": [
+      {
+        "line": 2,
+        "column": 26,
+        "message": "Cannot find module './ListingCard.svelte' or its corresponding type declarations.  <script lang=\"ts\"> import ListingCard from './ListingCard.svelte'; import InfiniteScroll from '$lib/components/ui/InfiniteScroll.svelte';",
+        "category": "import_module"
+      }
+    ],
+    "\u001b[32msrc/lib/components/shared/UnifiedFilter.svelte\u001b": [
+      {
+        "line": 648,
+        "column": 25,
+        "message": "Property 'count' does not exist on type '{ created_at: string | null; description: string | null; display_order: number | null; icon: string | null; icon_url: string | null; id: string; is_active: boolean | null; meta_title: string | null; ... 5 more ...; updated_at: string | null; }'.  <div class=\"font-medium text-xs\">{category.name}</div> {#if category.count} <div class=\"text-xs text-muted-foreground\">{category.count}</div>",
+        "category": "property_access"
+      },
+      {
+        "line": 649,
+        "column": 65,
+        "message": "Property 'count' does not exist on type '{ created_at: string | null; description: string | null; display_order: number | null; icon: string | null; icon_url: string | null; id: string; is_active: boolean | null; meta_title: string | null; ... 5 more ...; updated_at: string | null; }'.  {#if category.count} <div class=\"text-xs text-muted-foreground\">{category.count}</div> {/if}",
+        "category": "property_access"
+      },
+      {
+        "line": 1086,
+        "column": 92,
+        "message": "Object is possibly 'undefined'.  </div> {#if selectedFilters[filter.type] && (Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type]?.length > 0 : selectedFilters[filter.type])} <button",
+        "category": "null_safety"
+      },
+      {
+        "line": 2,
+        "column": 22,
+        "message": "'Filter' is declared but its value is never read.  <script lang=\"ts\"> import { X, Search, Filter, Sparkles, ChevronRight, Check, ChevronDown } from 'lucide-svelte'; import { goto } from '$app/navigation';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 2,
+        "column": 40,
+        "message": "'ChevronRight' is declared but its value is never read.  <script lang=\"ts\"> import { X, Search, Filter, Sparkles, ChevronRight, Check, ChevronDown } from 'lucide-svelte'; import { goto } from '$app/navigation';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 2,
+        "column": 61,
+        "message": "'ChevronDown' is declared but its value is never read.  <script lang=\"ts\"> import { X, Search, Filter, Sparkles, ChevronRight, Check, ChevronDown } from 'lucide-svelte'; import { goto } from '$app/navigation';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 332,
+        "column": 17,
+        "message": "Cannot find name 'key'. Did you mean '_key'?  if (Array.isArray(value) && value.length > 0) { params.set(key === 'size' ? 'sizes' : key === 'condition' ? 'conditions' : key + 's', value.join(',')); } else if (value && value !== 'recent' && value !== '') {",
+        "category": "other"
+      },
+      {
+        "line": 637,
+        "column": 53,
+        "message": "Property 'id' does not exist on type 'Category'. Property 'id' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 640,
+        "column": 41,
+        "message": "Property 'id' does not exist on type 'Category'. Property 'id' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 645,
+        "column": 44,
+        "message": "Property 'icon' does not exist on type 'Category'. Property 'icon' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 647,
+        "column": 54,
+        "message": "Property 'name' does not exist on type 'Category'. Property 'name' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 648,
+        "column": 25,
+        "message": "Property 'count' does not exist on type 'Category'. Property 'count' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 649,
+        "column": 65,
+        "message": "Property 'count' does not exist on type 'Category'. Property 'count' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 652,
+        "column": 45,
+        "message": "Property 'id' does not exist on type 'Category'. Property 'id' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 668,
+        "column": 59,
+        "message": "Property 'id' does not exist on type 'Category'. Property 'id' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 671,
+        "column": 47,
+        "message": "Property 'id' does not exist on type 'Category'. Property 'id' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 676,
+        "column": 45,
+        "message": "Property 'icon' does not exist on type 'Category'. Property 'icon' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 677,
+        "column": 64,
+        "message": "Property 'name' does not exist on type 'Category'. Property 'name' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 678,
+        "column": 51,
+        "message": "Property 'id' does not exist on type 'Category'. Property 'id' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 1039,
+        "column": 57,
+        "message": "Property 'id' does not exist on type 'Category'. Property 'id' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 1042,
+        "column": 45,
+        "message": "Property 'id' does not exist on type 'Category'. Property 'id' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 1047,
+        "column": 21,
+        "message": "Property 'icon' does not exist on type 'Category'. Property 'icon' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 1047,
+        "column": 40,
+        "message": "Property 'name' does not exist on type 'Category'. Property 'name' does not exist on type '\"women\"'.",
+        "category": "property_access"
+      },
+      {
+        "line": 1086,
+        "column": 92,
+        "message": "Object is possibly 'undefined'.  </div> {#if selectedFilters[filter.type] && (Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type].length > 0 : selectedFilters[filter.type])} <button",
+        "category": "null_safety"
+      },
+      {
+        "line": 214,
+        "column": 18,
+        "message": "Operator '>' cannot be applied to types '() => number' and 'number'.  const hasActiveFilters = $derived( searchQuery || activeFilterCount > 0 );",
+        "category": "other"
+      },
+      {
+        "line": 278,
+        "column": 30,
+        "message": "Argument of type 'string | undefined' is not assignable to parameter of type 'string'. Type 'undefined' is not assignable to type 'string'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 463,
+        "column": 8,
+        "message": "Operator '>' cannot be applied to types '() => number' and 'number'.  {#if activeFilterCount > 0} <button",
+        "category": "other"
+      },
+      {
+        "line": 483,
+        "column": 62,
+        "message": "Object is possibly 'undefined'.  <select value={Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type][0] || '' : selectedFilters[filter.type] || ''} onchange={(e) => updateFilter(filter.type, e.currentTarget.value)}",
+        "category": "null_safety"
+      },
+      {
+        "line": 554,
+        "column": 11,
+        "message": "Operator '>' cannot be applied to types '() => number' and 'number'.  {#if activeFilterCount > 0} <button",
+        "category": "other"
+      },
+      {
+        "line": 604,
+        "column": 11,
+        "message": "Operator '>' cannot be applied to types '() => number' and 'number'.  <h2 class=\"text-base font-bold text-foreground\">{m.nav_filters?.() || 'Filters'}</h2> {#if activeFilterCount > 0} <span class=\"bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded-full\">",
+        "category": "other"
+      },
+      {
+        "line": 611,
+        "column": 11,
+        "message": "Operator '>' cannot be applied to types '() => number' and 'number'.  <div class=\"flex items-center gap-2\"> {#if activeFilterCount > 0} <button",
+        "category": "other"
+      },
+      {
+        "line": 772,
+        "column": 11,
+        "message": "Operator '>' cannot be applied to types '() => number' and 'number'.  > {#if activeFilterCount > 0} {m.filter_apply_count?.({ count: activeFilterCount }) || `Apply ${activeFilterCount} Filters`}",
+        "category": "other"
+      },
+      {
+        "line": 899,
+        "column": 60,
+        "message": "Object is possibly 'undefined'.  <select value={Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type][0] || '' : selectedFilters[filter.type] || ''} onchange={(e) => updateFilter(filter.type, e.currentTarget.value)}",
+        "category": "null_safety"
+      },
+      {
+        "line": 915,
+        "column": 60,
+        "message": "Object is possibly 'undefined'.  <select value={Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type][0] || '' : selectedFilters[filter.type] || ''} onchange={(e) => updateFilter(filter.type, e.currentTarget.value)}",
+        "category": "null_safety"
+      },
+      {
+        "line": 1064,
+        "column": 62,
+        "message": "Object is possibly 'undefined'.  <select value={Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type][0] || '' : selectedFilters[filter.type] || ''} onchange={(e) => updateFilter(filter.type, e.currentTarget.value)}",
+        "category": "null_safety"
+      },
+      {
+        "line": 1068,
+        "column": 89,
+        "message": "Object is possibly 'undefined'.  \"w-full pl-3 pr-8 py-2 rounded-lg text-xs font-medium border cursor-pointer transition-all duration-200 min-w-[80px] max-w-[130px] shadow-sm focus:outline-none focus:ring-2\", selectedFilters[filter.type] && (Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type].length > 0 : selectedFilters[filter.type]) ? theme === 'pink'",
+        "category": "null_safety"
+      },
+      {
+        "line": 1105,
+        "column": 62,
+        "message": "Object is possibly 'undefined'.  <select value={Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type][0] || '' : selectedFilters[filter.type] || ''} onchange={(e) => updateFilter(filter.type, e.currentTarget.value)}",
+        "category": "null_safety"
+      },
+      {
+        "line": 1109,
+        "column": 89,
+        "message": "Object is possibly 'undefined'.  \"w-full pl-4 pr-10 py-2.5 rounded-lg border cursor-pointer transition-all duration-200 min-w-[140px] font-medium text-sm shadow-sm focus:outline-none focus:ring-2\", selectedFilters[filter.type] && (Array.isArray(selectedFilters[filter.type]) ? selectedFilters[filter.type].length > 0 : selectedFilters[filter.type]) ? theme === 'pink'",
+        "category": "null_safety"
+      },
+      {
+        "line": 1130,
+        "column": 11,
+        "message": "Operator '>' cannot be applied to types '() => number' and 'number'.  {#if activeFilterCount > 0} <button",
+        "category": "other"
+      },
+      {
+        "line": 2,
+        "column": 22,
+        "message": "'\"lucide-svelte\"' has no exported member named '_Filter'. Did you mean 'Filter'?  <script lang=\"ts\"> import { X, Search, _Filter, Sparkles, _ChevronRight, Check, _ChevronDown} from 'lucide-svelte'; import { goto } from '$app/navigation';",
+        "category": "other"
+      },
+      {
+        "line": 2,
+        "column": 41,
+        "message": "'\"lucide-svelte\"' has no exported member named '_ChevronRight'. Did you mean 'ChevronRight'?  <script lang=\"ts\"> import { X, Search, _Filter, Sparkles, _ChevronRight, Check, _ChevronDown} from 'lucide-svelte'; import { goto } from '$app/navigation';",
+        "category": "other"
+      },
+      {
+        "line": 2,
+        "column": 63,
+        "message": "'\"lucide-svelte\"' has no exported member named '_ChevronDown'. Did you mean 'ChevronDown'?  <script lang=\"ts\"> import { X, Search, _Filter, Sparkles, _ChevronRight, Check, _ChevronDown} from 'lucide-svelte'; import { goto } from '$app/navigation';",
+        "category": "other"
+      },
+      {
+        "line": 10,
+        "column": 16,
+        "message": "Module '\"$lib/types\"' has no exported member 'Category'.  import CategoryDropdown from './CategoryDropdown.svelte'; import type { Category } from '$lib/types';",
+        "category": "import_module"
+      }
+    ],
+    "\u001b[32msrc/lib/components/category/CategoryLanding.svelte\u001b": [
+      {
+        "line": 385,
+        "column": 10,
+        "message": "Object literal may only specify known properties, and 'supabase' does not exist in type 'Props'.  showLoading={false} {supabase} />",
+        "category": "svelte_props"
+      },
+      {
+        "line": 323,
+        "column": 8,
+        "message": "Type '{ created_at: string | null; description: string | null; display_order: number | null; icon: string | null; icon_url: string | null; id: string; is_active: boolean | null; meta_title: string | null; ... 5 more ...; updated_at: string | null; }[]' is not assignable to type 'Category[]'. Type '{ created_at: string | null; description: string | null; display_order: number | null; icon: string | null; icon_url: string | null; id: string; is_active: boolean | null; meta_title: string | null; ... 5 more ...; updated_at: string | null; }' is not assignable to type 'Category'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 2,
+        "column": 17,
+        "message": "Module '\"$lib/types\"' has no exported member 'Category'.  <script lang=\"ts\"> import type { Category } from '$lib/types'; import ListingGrid from '$lib/components/listings/ListingGrid.svelte';",
+        "category": "import_module"
+      },
+      {
+        "line": 197,
+        "column": 17,
+        "message": "Object is possibly 'undefined'.  (entries) => { if (entries[0].isIntersecting) { (visibleSections as any)[stateKey] = true;",
+        "category": "null_safety"
+      },
+      {
+        "line": 7,
+        "column": 3,
+        "message": "'ChevronRight' is declared but its value is never read.  import { cn } from '$lib/utils'; import { ChevronRight } from 'lucide-svelte'; import type { SupabaseClient } from '@supabase/supabase-js';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 198,
+        "column": 17,
+        "message": "Object is possibly 'undefined'.  (entries) => { if (entries[0].isIntersecting) { (visibleSections as any)[stateKey] = true;",
+        "category": "null_safety"
+      },
+      {
+        "line": 386,
+        "column": 10,
+        "message": "Object literal may only specify known properties, and 'supabase' does not exist in type 'Props'.  showLoading={false} {supabase} />",
+        "category": "svelte_props"
+      }
+    ],
+    "\u001b[32msrc/lib/components/checkout/LazyCheckoutFlow.svelte\u001b": [
+      {
+        "line": 2,
+        "column": 2,
+        "message": "'onMount' is declared but its value is never read.  <script lang=\"ts\"> import { onMount } from 'svelte'; import type { Listing } from '$lib/types';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 3,
+        "column": 2,
+        "message": "'Listing' is declared but its value is never read.  import { onMount } from 'svelte'; import type { Listing } from '$lib/types'; import Spinner from '$lib/components/ui/Spinner.svelte';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 2,
+        "column": 11,
+        "message": "'\"svelte\"' has no exported member named '_onMount'. Did you mean 'onMount'?  <script lang=\"ts\"> import { _onMount} from 'svelte'; import type { _Listing} from '$lib/types';",
+        "category": "other"
+      },
+      {
+        "line": 3,
+        "column": 16,
+        "message": "'\"$lib/types\"' has no exported member named '_Listing'. Did you mean 'Listing'?  import { _onMount} from 'svelte'; import type { _Listing} from '$lib/types'; import Spinner from '$lib/components/ui/Spinner.svelte';",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/shared/CategoryDropdownFixed.svelte\u001b": [
+      {
+        "line": 5,
+        "column": 2,
+        "message": "'Category' is declared but its value is never read.  import { goto } from '$app/navigation'; import type { UnifiedCategory as Category } from '$lib/types';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 216,
+        "column": 26,
+        "message": "Property 'sizeRanges' does not exist on type 'CategoryData'.  <!-- Size Ranges --> {#if categoryData?.sizeRanges} <div class=\"border-t border-[var(--color-border-primary)] pt-3\">",
+        "category": "property_access"
+      },
+      {
+        "line": 220,
+        "column": 31,
+        "message": "Property 'sizeRanges' does not exist on type 'CategoryData'.  <div class=\"grid grid-cols-3 gap-2\"> {#each categoryData?.sizeRanges as size} <button",
+        "category": "property_access"
+      },
+      {
+        "line": 5,
+        "column": 2,
+        "message": "'Category' is declared but its value is never read.  import { goto } from '$app/navigation'; import type { Category } from '$lib/types';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 5,
+        "column": 16,
+        "message": "Module '\"$lib/types\"' has no exported member 'Category'.  import { goto } from '$app/navigation'; import type { Category } from '$lib/types';",
+        "category": "import_module"
+      }
+    ],
+    "\u001b[32msrc/lib/components/search/StickySearchBar.svelte\u001b": [
+      {
+        "line": 8,
+        "column": 2,
+        "message": "'goto' is declared but its value is never read.  import * as m from '$lib/paraglide/messages.js'; import { goto } from '$app/navigation';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 25,
+        "column": 3,
+        "message": "'onCategorySelect' is declared but its value is never read.  onSearch, onCategorySelect, categories = [],",
+        "category": "unused_variables"
+      },
+      {
+        "line": 119,
+        "column": 8,
+        "message": "Type '{ created_at: string | null; description: string | null; display_order: number | null; icon: string | null; icon_url: string | null; id: string; is_active: boolean | null; meta_title: string | null; ... 5 more ...; updated_at: string | null; }[]' is not assignable to type 'Category[]'. Type '{ created_at: string | null; description: string | null; display_order: number | null; icon: string | null; icon_url: string | null; id: string; is_active: boolean | null; meta_title: string | null; ... 5 more ...; updated_at: string | null; }' is not assignable to type 'Category'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 6,
+        "column": 16,
+        "message": "Module '\"$lib/types\"' has no exported member 'Category'.  import CategoryDropdown from '$lib/components/shared/CategoryDropdown.svelte'; import type { Category } from '$lib/types'; import * as m from '$lib/paraglide/messages.js';",
+        "category": "import_module"
+      }
+    ],
+    "\u001b[32msrc/lib/components/home/HeroSearch.svelte\u001b": [
+      {
+        "line": 139,
+        "column": 38,
+        "message": "Property 'name_bg' does not exist on type '{ created_at: string | null; description: string | null; display_order: number | null; icon: string | null; icon_url: string | null; id: string; is_active: boolean | null; meta_title: string | null; ... 5 more ...; updated_at: string | null; }'.  const locale = getLocale(); return locale === 'bg' && category.name_bg ? category.name_bg : category.name; };",
+        "category": "property_access"
+      },
+      {
+        "line": 326,
+        "column": 8,
+        "message": "Object literal may only specify known properties, and 'categories' does not exist in type 'Props'.  <CategoryDropdown {categories} isOpen={isCategoryDropdownOpen}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 389,
+        "column": 11,
+        "message": "Object literal may only specify known properties, and 'categories' does not exist in type 'Props'.  <CategoryDropdown {categories} isOpen={isCategoryDropdownOpen}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 10,
+        "column": 16,
+        "message": "Module '\"$lib/types\"' has no exported member 'Category'.  import TrendingSearches from '$lib/components/search/TrendingSearches.svelte'; import type { Category } from '$lib/types'; import { onMount } from 'svelte';",
+        "category": "import_module"
+      },
+      {
+        "line": 281,
+        "column": 10,
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'FilterGroup[]'. Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }' is missing the following properties from type 'FilterGroup': type, label, options",
+        "category": "type_assignment"
+      },
+      {
+        "line": 291,
+        "column": 10,
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'FilterGroup[]'. Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }' is missing the following properties from type 'FilterGroup': type, label, options",
+        "category": "type_assignment"
+      },
+      {
+        "line": 320,
+        "column": 8,
+        "message": "Object literal may only specify known properties, and 'categories' does not exist in type 'Props'.  <CategoryDropdown {categories} isOpen={isCategoryDropdownOpen}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 383,
+        "column": 11,
+        "message": "Object literal may only specify known properties, and 'categories' does not exist in type 'Props'.  <CategoryDropdown {categories} isOpen={isCategoryDropdownOpen}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 400,
+        "column": 12,
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'FilterGroup[]'. Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }' is missing the following properties from type 'FilterGroup': type, label, options",
+        "category": "type_assignment"
+      },
+      {
+        "line": 281,
+        "column": 10,
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'QuickFilter[]'. Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }' is not assignable to type 'QuickFilter'. Types of property 'variant' are incompatible. Type 'string' is not assignable to type '\"default\" | \"blue\" | \"sale\" | \"pink\" | \"golden\" | \"hot\" | undefined'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 291,
+        "column": 10,
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'QuickFilter[]'. Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }' is not assignable to type 'QuickFilter'. Types of property 'variant' are incompatible. Type 'string' is not assignable to type '\"default\" | \"blue\" | \"sale\" | \"pink\" | \"golden\" | \"hot\" | undefined'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 400,
+        "column": 12,
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'QuickFilter[]'. Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }' is not assignable to type 'QuickFilter'. Types of property 'variant' are incompatible. Type 'string' is not assignable to type '\"default\" | \"blue\" | \"sale\" | \"pink\" | \"golden\" | \"hot\" | undefined'.",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/home/HeroSearchFixed.svelte\u001b": [
+      {
+        "line": 138,
+        "column": 38,
+        "message": "Property 'name_bg' does not exist on type '{ created_at: string | null; description: string | null; display_order: number | null; icon: string | null; icon_url: string | null; id: string; is_active: boolean | null; meta_title: string | null; ... 5 more ...; updated_at: string | null; }'.  const locale = getLocale(); return locale === 'bg' && category.name_bg ? category.name_bg : category.name; };",
+        "category": "property_access"
+      },
+      {
+        "line": 321,
+        "column": 8,
+        "message": "Object literal may only specify known properties, and 'categories' does not exist in type 'Props'.  <CategoryDropdown {categories} isOpen={isCategoryDropdownOpen}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 381,
+        "column": 11,
+        "message": "Object literal may only specify known properties, and 'categories' does not exist in type 'Props'.  <CategoryDropdown {categories} isOpen={isCategoryDropdownOpen}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 10,
+        "column": 16,
+        "message": "Module '\"$lib/types\"' has no exported member 'Category'.  import TrendingSearches from '$lib/components/search/TrendingSearches.svelte'; import type { Category } from '$lib/types'; import { onMount } from 'svelte';",
+        "category": "import_module"
+      },
+      {
+        "line": 276,
+        "column": 10,
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'FilterGroup[]'. Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }' is missing the following properties from type 'FilterGroup': type, label, options",
+        "category": "type_assignment"
+      },
+      {
+        "line": 286,
+        "column": 10,
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'FilterGroup[]'. Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }' is missing the following properties from type 'FilterGroup': type, label, options",
+        "category": "type_assignment"
+      },
+      {
+        "line": 315,
+        "column": 8,
+        "message": "Object literal may only specify known properties, and 'categories' does not exist in type 'Props'.  <CategoryDropdown {categories} isOpen={isCategoryDropdownOpen}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 375,
+        "column": 11,
+        "message": "Object literal may only specify known properties, and 'categories' does not exist in type 'Props'.  <CategoryDropdown {categories} isOpen={isCategoryDropdownOpen}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 392,
+        "column": 12,
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'FilterGroup[]'. Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }' is missing the following properties from type 'FilterGroup': type, label, options",
+        "category": "type_assignment"
+      },
+      {
+        "line": 276,
+        "column": 10,
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'QuickFilter[]'. Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }' is not assignable to type 'QuickFilter'. Types of property 'variant' are incompatible. Type 'string' is not assignable to type '\"default\" | \"blue\" | \"sale\" | \"pink\" | \"golden\" | \"hot\" | undefined'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 286,
+        "column": 10,
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'QuickFilter[]'. Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }' is not assignable to type 'QuickFilter'. Types of property 'variant' are incompatible. Type 'string' is not assignable to type '\"default\" | \"blue\" | \"sale\" | \"pink\" | \"golden\" | \"hot\" | undefined'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 392,
+        "column": 12,
+        "message": "Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }[]' is not assignable to type 'QuickFilter[]'. Type '{ icon: string; name: string; action: string; ariaLabel: string; variant: string; }' is not assignable to type 'QuickFilter'. Types of property 'variant' are incompatible. Type 'string' is not assignable to type '\"default\" | \"blue\" | \"sale\" | \"pink\" | \"golden\" | \"hot\" | undefined'.",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/home/LandingCategories.svelte\u001b": [
+      {
+        "line": 4,
+        "column": 2,
+        "message": "'ChevronRight' is declared but its value is never read.  import { goto } from '$app/navigation'; import { ChevronRight } from 'lucide-svelte'; import type { UnifiedCategory as Category } from '$lib/types';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 5,
+        "column": 2,
+        "message": "'Category' is declared but its value is never read.  import { ChevronRight } from 'lucide-svelte'; import type { UnifiedCategory as Category } from '$lib/types';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 4,
+        "column": 11,
+        "message": "'\"lucide-svelte\"' has no exported member named '_ChevronRight'. Did you mean 'ChevronRight'?  import { goto } from '$app/navigation'; import { _ChevronRight} from 'lucide-svelte'; import type { _Category} from '$lib/types';",
+        "category": "other"
+      },
+      {
+        "line": 5,
+        "column": 16,
+        "message": "Module '\"$lib/types\"' has no exported member '_Category'.  import { _ChevronRight} from 'lucide-svelte'; import type { _Category} from '$lib/types';",
+        "category": "import_module"
+      }
+    ],
+    "\u001b[32msrc/lib/components/home/SellerQuickView.svelte\u001b": [
+      {
+        "line": 46,
+        "column": 18,
+        "message": "Invalid optional chain from new expression. Did you mean to call 'Intl()'?  function formatPrice(price: number): string { return new Intl?.NumberFormat('en-US', { style: 'currency',",
+        "category": "optional_chaining"
+      },
+      {
+        "line": 3,
+        "column": 11,
+        "message": "Module '\"$lib/utils\"' has no exported member '_cn'.  import { X, Star, MapPin, Calendar, TrendingUp, Award, ShoppingBag, Users, ExternalLink, UserPlus } from 'lucide-svelte'; import { _cn} from '$lib/utils'; import type { Profile, Listing } from '$lib/types/unified';",
+        "category": "import_module"
+      },
+      {
+        "line": 46,
+        "column": 14,
+        "message": "This expression is not constructable. Type 'typeof Intl' has no construct signatures.",
+        "category": "construct_signatures"
+      },
+      {
+        "line": 199,
+        "column": 13,
+        "message": "Type 'Json | undefined' is not assignable to type 'string | null | undefined'. Type 'number' is not assignable to type 'string'.",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/home/TopSellersWithModal.svelte\u001b": [
+      {
+        "line": 19,
+        "column": 6,
+        "message": "'isLoadingListings' is declared but its value is never read.  let sellerTopListings: Listing[] = $state([]); let isLoadingListings = $state(false);",
+        "category": "unused_variables"
+      }
+    ],
+    "\u001b[32msrc/lib/components/layout/MobileNav.svelte\u001b": [
+      {
+        "line": 3,
+        "column": 2,
+        "message": "'goto' is declared but its value is never read.  import { page } from '$app/stores'; import { goto } from '$app/navigation'; import { cn } from '$lib/utils/cn';",
+        "category": "unused_variables"
+      }
+    ],
+    "\u001b[32msrc/lib/components/layout/PromotionalBanner.svelte\u001b": [
+      {
+        "line": 66,
+        "column": 2,
+        "message": "Modifiers cannot appear here. If this is a declare statement, move it into <script context=\"module\">..</script>",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/listings/LazyCreateListingForm.svelte\u001b": [
+      {
+        "line": 11,
+        "column": 9,
+        "message": "Expected 1 arguments, but got 2.  () => import('./CreateListingForm/CreateListingForm.svelte'), { preloadOnHover: true } );",
+        "category": "function_arguments"
+      }
+    ],
+    "\u001b[32msrc/lib/components/listings/ProductGallery.svelte\u001b": [
+      {
+        "line": 140,
+        "column": 4,
+        "message": "Object literal may only specify known properties, and '\"onclick|stopPropagation\"' does not exist in type 'Omit<HTMLAttributes<HTMLDivElement>, never> & HTMLAttributes<any>'.  class=\"relative w-full h-full flex items-center justify-center p-3\" onclick|stopPropagation use:focusTrap={{ enabled: showFullscreen, onDeactivate: closeFullscreen }}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 164,
+        "column": 6,
+        "message": "Object literal may only specify known properties, and '\"onclick|stopPropagation\"' does not exist in type 'HTMLProps<\"button\", HTMLAttributes<any>>'.  <button onclick|stopPropagation={prevImage} class=\"absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors duration-100\"",
+        "category": "svelte_props"
+      },
+      {
+        "line": 171,
+        "column": 6,
+        "message": "Object literal may only specify known properties, and '\"onclick|stopPropagation\"' does not exist in type 'HTMLProps<\"button\", HTMLAttributes<any>>'.  <button onclick|stopPropagation={nextImage} class=\"absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors duration-100\"",
+        "category": "svelte_props"
+      }
+    ],
+    "\u001b[32msrc/lib/components/listings/listing-card/ListingCardImage.svelte\u001b": [
+      {
+        "line": 120,
+        "column": 4,
+        "message": "Object literal may only specify known properties, and '\"className\"' does not exist in type '$$ComponentProps'.  sizes=\"(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw\" className=\"absolute inset-0 h-full w-full object-cover transition-transform duration-200 ease-out group-hover:scale-105\" lazyOptions={{",
+        "category": "svelte_props"
+      }
+    ],
+    "\u001b[32msrc/lib/components/messaging/ConversationList.svelte\u001b": [
+      {
+        "line": 135,
+        "column": 49,
+        "message": "Property 'id' comes from an index signature, so it must be accessed with ['id'].  {@const otherUser = getOtherUser(conversation)} {@const isActive = $page.params.id === conversation.id}",
+        "category": "other"
+      },
+      {
+        "line": 151,
+        "column": 46,
+        "message": "Object is possibly 'undefined'.  <div class=\"flex items-center justify-center h-full text-lg font-semibold\"> {otherUser.username[0].toUpperCase()} </div>",
+        "category": "null_safety"
+      }
+    ],
+    "\u001b[32msrc/lib/components/messaging/ConversationListEnhanced.svelte\u001b": [
+      {
+        "line": 128,
+        "column": 50,
+        "message": "Property 'id' comes from an index signature, so it must be accessed with ['id'].  {@const otherUser = getOtherUser(conversation)} {@const isActive = $page?.params.id === conversation?.id} {@const isArchiving = archivingStates[conversation?.id]}",
+        "category": "other"
+      },
+      {
+        "line": 145,
+        "column": 46,
+        "message": "Object is possibly 'undefined'.  <div class=\"flex items-center justify-center h-full text-lg font-semibold\"> {otherUser?.username[0].toUpperCase()} </div>",
+        "category": "null_safety"
+      },
+      {
+        "line": 185,
+        "column": 46,
+        "message": "Type '\"xs\"' is not assignable to type '\"sm\" | \"lg\" | \"xl\" | \"md\" | undefined'.  {#if isArchiving} <Spinner size=\"xs\" /> {:else}",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/messaging/LazyMessageThread.svelte\u001b": [
+      {
+        "line": 24,
+        "column": 15,
+        "message": "Type 'Promise<{ default: ComponentType<never>; } | { default: Component<MessageThreadProps, {}, \"\">; }>' is not assignable to type 'Promise<{ default: ComponentType<SvelteComponent<Record<string, any>, any, any>>; }>'. Type '{ default: ComponentType<never>; } | { default: Component<MessageThreadProps, {}, \"\">; }' is not assignable to type '{ default: ComponentType<SvelteComponent<Record<string, any>, any, any>>; }'. Type '{ default: ComponentType<never>; }' is not assignable to type '{ default: ComponentType<SvelteComponent<Record<string, any>, any, any>>; }'. Types of property 'default' are incompatible. Type 'ComponentType<never>' is not assignable to type 'ComponentType<SvelteComponent<Record<string, any>, any, any>>'. Type 'ComponentType<never>' is not assignable to type 'new (options: ComponentConstructorOptions<Record<string, any>>) => SvelteComponent<Record<string, any>, any, any>'. Types of parameters 'options' and 'options' are incompatible. Type 'ComponentConstructorOptions<Record<string, any>>' is not assignable to type 'ComponentConstructorOptions<never>'. Type 'Record<string, any>' is not assignable to type 'never'.",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/messaging/MessageSearch.svelte\u001b": [
+      {
+        "line": 77,
+        "column": 14,
+        "message": "'_highlightText' is declared but its value is never read.  function _highlightText(text: string, query: string): string { if (!query) return text;",
+        "category": "unused_variables"
+      },
+      {
+        "line": 206,
+        "column": 87,
+        "message": "No overload matches this call. Overload 1 of 4, '(value: string | number | Date): Date', gave the following error. Argument of type 'string | null' is not assignable to parameter of type 'string | number | Date'. Type 'null' is not assignable to type 'string | number | Date'. Overload 2 of 4, '(value: string | number): Date', gave the following error. Argument of type 'string | null' is not assignable to parameter of type 'string | number'. Type 'null' is not assignable to type 'string | number'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 198,
+        "column": 58,
+        "message": "Object is possibly 'undefined'.  <div class=\"w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-xs font-medium\"> {message?.sender.username[0].toUpperCase()} </div>",
+        "category": "null_safety"
+      }
+    ],
+    "\u001b[32msrc/lib/components/onboarding/LazyProfileSetupWizard.svelte\u001b": [
+      {
+        "line": 9,
+        "column": 15,
+        "message": "Type 'Promise<{ default: ComponentType<never>; } | { default: Component<Props, {}, \"\">; }>' is not assignable to type 'Promise<{ default: ComponentType<SvelteComponent<Record<string, any>, any, any>>; }>'. Type '{ default: ComponentType<never>; } | { default: Component<Props, {}, \"\">; }' is not assignable to type '{ default: ComponentType<SvelteComponent<Record<string, any>, any, any>>; }'. Type '{ default: ComponentType<never>; }' is not assignable to type '{ default: ComponentType<SvelteComponent<Record<string, any>, any, any>>; }'. Types of property 'default' are incompatible. Type 'ComponentType<never>' is not assignable to type 'ComponentType<SvelteComponent<Record<string, any>, any, any>>'. Type 'ComponentType<never>' is not assignable to type 'new (options: ComponentConstructorOptions<Record<string, any>>) => SvelteComponent<Record<string, any>, any, any>'. Types of parameters 'options' and 'options' are incompatible. Type 'ComponentConstructorOptions<Record<string, any>>' is not assignable to type 'ComponentConstructorOptions<never>'. Type 'Record<string, any>' is not assignable to type 'never'.",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/onboarding/WelcomeModal.svelte\u001b": [
+      {
+        "line": 78,
+        "column": 33,
+        "message": "'currentSlideData' is possibly 'undefined'.  <div class=\"mb-6 min-h-[200px] flex flex-col items-center justify-center\"> <div class=\"text-6xl mb-4\">{currentSlideData.emoji}</div> <h2 class=\"text-2xl font-bold mb-2\">{currentSlideData.title}</h2>",
+        "category": "other"
+      },
+      {
+        "line": 79,
+        "column": 42,
+        "message": "'currentSlideData' is possibly 'undefined'.  <div class=\"text-6xl mb-4\">{currentSlideData.emoji}</div> <h2 class=\"text-2xl font-bold mb-2\">{currentSlideData.title}</h2> <p class=\"text-muted-foreground\">{currentSlideData.description}</p>",
+        "category": "other"
+      },
+      {
+        "line": 80,
+        "column": 39,
+        "message": "'currentSlideData' is possibly 'undefined'.  <h2 class=\"text-2xl font-bold mb-2\">{currentSlideData.title}</h2> <p class=\"text-muted-foreground\">{currentSlideData.description}</p> </div>",
+        "category": "other"
+      },
+      {
+        "line": 76,
+        "column": 33,
+        "message": "Object is possibly 'undefined'.  <div class=\"mb-6 min-h-[200px] flex flex-col items-center justify-center\"> <div class=\"text-6xl mb-4\">{slides[currentSlide].emoji}</div> <h2 class=\"text-2xl font-bold mb-2\">{slides[currentSlide].title}</h2>",
+        "category": "null_safety"
+      },
+      {
+        "line": 77,
+        "column": 42,
+        "message": "Object is possibly 'undefined'.  <div class=\"text-6xl mb-4\">{slides[currentSlide].emoji}</div> <h2 class=\"text-2xl font-bold mb-2\">{slides[currentSlide].title}</h2> <p class=\"text-muted-foreground\">{slides[currentSlide].description}</p>",
+        "category": "null_safety"
+      },
+      {
+        "line": 78,
+        "column": 39,
+        "message": "Object is possibly 'undefined'.  <h2 class=\"text-2xl font-bold mb-2\">{slides[currentSlide].title}</h2> <p class=\"text-muted-foreground\">{slides[currentSlide].description}</p> </div>",
+        "category": "null_safety"
+      }
+    ],
+    "\u001b[32msrc/lib/components/orders/OrderDetails.svelte\u001b": [
+      {
+        "line": 100,
+        "column": 24,
+        "message": "Invalid optional chain from new expression. Did you mean to call 'Intl()'?  function formatPrice(cents: number) { return new Intl?.NumberFormat('en-US', { style: 'currency',",
+        "category": "optional_chaining"
+      },
+      {
+        "line": 78,
+        "column": 20,
+        "message": "'updateOrderStatus' is declared but its value is never read.  async function updateOrderStatus(newStatus: string, reason?: string) { if (!order) return;",
+        "category": "unused_variables"
+      },
+      {
+        "line": 100,
+        "column": 20,
+        "message": "This expression is not constructable. Type 'typeof Intl' has no construct signatures.",
+        "category": "construct_signatures"
+      }
+    ],
+    "\u001b[32msrc/lib/components/orders/OrderList.svelte\u001b": [
+      {
+        "line": 4,
+        "column": 19,
+        "message": "'\"$lib/types\"' has no exported member named '_Database'. Did you mean 'Database'?  import { formatDistanceToNow } from 'date-fns'; import type { _Database} from '$lib/types'; import { Package, _ShoppingBag, Clock, ChevronRight, Check, X, Truck, AlertCircle, MoreVertical } from 'lucide-svelte';",
+        "category": "other"
+      },
+      {
+        "line": 5,
+        "column": 23,
+        "message": "'\"lucide-svelte\"' has no exported member named '_ShoppingBag'. Did you mean 'ShoppingBag'?  import type { _Database} from '$lib/types'; import { Package, _ShoppingBag, Clock, ChevronRight, Check, X, Truck, AlertCircle, MoreVertical } from 'lucide-svelte'; import Spinner from '$lib/components/ui/Spinner.svelte';",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/payment/PaymentAccountSetup.svelte\u001b": [
+      {
+        "line": 43,
+        "column": 4,
+        "message": "Type 'string' is not assignable to type 'boolean'.  } else if (payoutMethod === 'bank_transfer') { isValid = validateBankAccount(); } else if (payoutMethod === 'paypal') {",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/profile/SocialMediaLinks.svelte\u001b": [
+      {
+        "line": 7,
+        "column": 56,
+        "message": "')' expected.  type Profile = ExtendedProfile; type SocialMediaAccount = (Database['public']['Tables'] as any)['social_media_accounts']['Row'];",
+        "category": "other"
+      },
+      {
+        "line": 7,
+        "column": 58,
+        "message": "Unexpected keyword or identifier.  type Profile = ExtendedProfile; type SocialMediaAccount = (Database['public']['Tables'] as any)['social_media_accounts']['Row'];",
+        "category": "other"
+      },
+      {
+        "line": 7,
+        "column": 64,
+        "message": "Declaration or statement expected.  type Profile = ExtendedProfile; type SocialMediaAccount = (Database['public']['Tables'] as any)['social_media_accounts']['Row'];",
+        "category": "other"
+      },
+      {
+        "line": 7,
+        "column": 58,
+        "message": "Cannot find name 'as'.  type Profile = ExtendedProfile; type SocialMediaAccount = (Database['public']['Tables'] as any)['social_media_accounts']['Row'];",
+        "category": "other"
+      },
+      {
+        "line": 7,
+        "column": 61,
+        "message": "'any' only refers to a type, but is being used as a value here.  type Profile = ExtendedProfile; type SocialMediaAccount = (Database['public']['Tables'] as any)['social_media_accounts']['Row'];",
+        "category": "other"
+      },
+      {
+        "line": 7,
+        "column": 91,
+        "message": "Element implicitly has an 'any' type because index expression is not of type 'number'.  type Profile = ExtendedProfile; type SocialMediaAccount = (Database['public']['Tables'] as any)['social_media_accounts']['Row'];",
+        "category": "other"
+      },
+      {
+        "line": 92,
+        "column": 19,
+        "message": "Property 'platform' does not exist on type '{ categories: { Row: { created_at: string | null; description: string | null; display_order: number | null; icon: string | null; icon_url: string | null; id: string; is_active: boolean | null; ... 6 more ...; updated_at: string | null; }; Insert: { ...; }; Update: { ...; }; Relationships: [...]; }; ... 19 more ...; ...'.  ...socialAccounts?.map(acc => ({ platform: acc?.platform, username: acc?.username,",
+        "category": "property_access"
+      },
+      {
+        "line": 93,
+        "column": 19,
+        "message": "Property 'username' does not exist on type '{ categories: { Row: { created_at: string | null; description: string | null; display_order: number | null; icon: string | null; icon_url: string | null; id: string; is_active: boolean | null; ... 6 more ...; updated_at: string | null; }; Insert: { ...; }; Update: { ...; }; Relationships: [...]; }; ... 19 more ...; ...'.  platform: acc?.platform, username: acc?.username, url: acc?.url || '#',",
+        "category": "property_access"
+      },
+      {
+        "line": 94,
+        "column": 14,
+        "message": "Property 'url' does not exist on type '{ categories: { Row: { created_at: string | null; description: string | null; display_order: number | null; icon: string | null; icon_url: string | null; id: string; is_active: boolean | null; ... 6 more ...; updated_at: string | null; }; Insert: { ...; }; Update: { ...; }; Relationships: [...]; }; ... 19 more ...; ...'.  username: acc?.username, url: acc?.url || '#', isVerified: acc?.is_verified",
+        "category": "property_access"
+      },
+      {
+        "line": 95,
+        "column": 21,
+        "message": "Property 'is_verified' does not exist on type '{ categories: { Row: { created_at: string | null; description: string | null; display_order: number | null; icon: string | null; icon_url: string | null; id: string; is_active: boolean | null; ... 6 more ...; updated_at: string | null; }; Insert: { ...; }; Update: { ...; }; Relationships: [...]; }; ... 19 more ...; ...'.  url: acc?.url || '#', isVerified: acc?.is_verified })),",
+        "category": "property_access"
+      },
+      {
+        "line": 127,
+        "column": 18,
+        "message": "Property 'isVerified' does not exist on type '{ platform: string; username: string; url: string; } | { platform: any; username: any; url: any; isVerified: any; }'. Property 'isVerified' does not exist on type '{ platform: string; username: string; url: string; }'.",
+        "category": "property_access"
+      }
+    ],
+    "\u001b[32msrc/lib/components/seo/CategorySEO.svelte\u001b": [
+      {
+        "line": 2,
+        "column": 3,
+        "message": "'page' is declared but its value is never read.  <script lang=\"ts\"> import { page } from '$app/stores'; import type { UnifiedCategory as Category } from '$lib/types';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 2,
+        "column": 12,
+        "message": "'\"$app/stores\"' has no exported member named '_page'. Did you mean 'page'?  <script lang=\"ts\"> import { _page} from '$app/stores'; import type { Category } from '$lib/types';",
+        "category": "other"
+      },
+      {
+        "line": 3,
+        "column": 17,
+        "message": "Module '\"$lib/types\"' has no exported member 'Category'.  import { _page} from '$app/stores'; import type { Category } from '$lib/types';",
+        "category": "import_module"
+      }
+    ],
+    "\u001b[32msrc/lib/components/shared/UnifiedSearch.svelte\u001b": [
+      {
+        "line": 73,
+        "column": 3,
+        "message": "'activeCategory' is declared but its value is never read.  onCategorySelect, activeCategory = '', quickFilters = [],",
+        "category": "unused_variables"
+      },
+      {
+        "line": 88,
+        "column": 3,
+        "message": "'mobileLayout' is declared but its value is never read.  stickyOffset = 0, mobileLayout = 'compact' }: Props = $props();",
+        "category": "unused_variables"
+      },
+      {
+        "line": 94,
+        "column": 6,
+        "message": "'_isSticky' is declared but its value is never read.  let isCategoryDropdownOpen = $state(false); let _isSticky = $state(false); let searchRef: HTMLInputElement | null;",
+        "category": "unused_variables"
+      },
+      {
+        "line": 219,
+        "column": 11,
+        "message": "'handleCategorySelect' is declared but its value is never read.  function handleCategorySelect(categorySlug: string) { if (onCategorySelect) {",
+        "category": "unused_variables"
+      },
+      {
+        "line": 335,
+        "column": 12,
+        "message": "Type 'QuickFilter[]' is not assignable to type 'QuickFilter[]'. Two different types with this name exist, but they are unrelated. Type 'QuickFilter' is not assignable to type 'QuickFilter'. Two different types with this name exist, but they are unrelated. Types of property 'variant' are incompatible. Type 'string' is not assignable to type '\"default\" | \"blue\" | \"sale\" | \"pink\" | \"golden\" | \"hot\" | undefined'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 347,
+        "column": 10,
+        "message": "Object literal may only specify known properties, and 'categories' does not exist in type 'Props'.  <CategoryDropdown {categories} isOpen={isCategoryDropdownOpen}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 397,
+        "column": 12,
+        "message": "Object literal may only specify known properties, and 'categories' does not exist in type 'Props'.  <CategoryDropdown {categories} isOpen={isCategoryDropdownOpen}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 411,
+        "column": 13,
+        "message": "Type 'QuickFilter[]' is not assignable to type 'QuickFilter[]'. Two different types with this name exist, but they are unrelated. Type 'QuickFilter' is not assignable to type 'QuickFilter'. Two different types with this name exist, but they are unrelated. Types of property 'variant' are incompatible. Type 'string' is not assignable to type '\"default\" | \"blue\" | \"sale\" | \"pink\" | \"golden\" | \"hot\" | undefined'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 475,
+        "column": 8,
+        "message": "Object literal may only specify known properties, and 'categories' does not exist in type 'Props'.  <CategoryDropdown {categories} isOpen={isCategoryDropdownOpen}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 9,
+        "column": 16,
+        "message": "Module '\"$lib/types\"' has no exported member 'Category'.  import TrendingSearches from '$lib/components/search/TrendingSearches.svelte'; import type { Category } from '$lib/types'; import * as m from '$lib/paraglide/messages.js';",
+        "category": "import_module"
+      },
+      {
+        "line": 335,
+        "column": 12,
+        "message": "Type 'QuickFilter[]' is not assignable to type 'FilterGroup[]'. Type 'QuickFilter' is missing the following properties from type 'FilterGroup': type, label, options",
+        "category": "type_assignment"
+      },
+      {
+        "line": 411,
+        "column": 13,
+        "message": "Type 'QuickFilter[]' is not assignable to type 'FilterGroup[]'. Type 'QuickFilter' is missing the following properties from type 'FilterGroup': type, label, options",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/subcategory/SubcategoryBrowse.svelte\u001b": [
+      {
+        "line": 2,
+        "column": 17,
+        "message": "Module '\"$lib/types\"' has no exported member 'Category'.  <script lang=\"ts\"> import type { Category, Product } from '$lib/types'; import ListingGrid from '$lib/components/listings/ListingGrid.svelte';",
+        "category": "import_module"
+      },
+      {
+        "line": 2,
+        "column": 27,
+        "message": "Module '\"$lib/types\"' has no exported member 'Product'.  <script lang=\"ts\"> import type { Category, Product } from '$lib/types'; import ListingGrid from '$lib/components/listings/ListingGrid.svelte';",
+        "category": "import_module"
+      },
+      {
+        "line": 67,
+        "column": 11,
+        "message": "Object literal may only specify known properties, and '\"category\"' does not exist in type 'Props'.  mode=\"sidebar\" category={category.slug} subcategory={subcategory.slug}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 79,
+        "column": 14,
+        "message": "Object literal may only specify known properties, and 'supabase' does not exist in type 'Props'.  showLoading={false} {supabase} />",
+        "category": "svelte_props"
+      },
+      {
+        "line": 86,
+        "column": 21,
+        "message": "Object literal may only specify known properties, and '\"href\"' does not exist in type 'ButtonProps'.  </p> <Button href=\"/{category.slug}\" variant=\"outline\"> Browse all {category.name}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 107,
+        "column": 11,
+        "message": "Object literal may only specify known properties, and '\"category\"' does not exist in type 'Props'.  mode=\"sidebar\" category={category.slug} subcategory={subcategory.slug}",
+        "category": "svelte_props"
+      }
+    ],
+    "\u001b[32msrc/lib/components/ui/ColorPicker.svelte\u001b": [
+      {
+        "line": 9,
+        "column": 3,
+        "message": "'size' is declared but its value is never read.  colors: customColors, size = 'md', allowCustom = false,",
+        "category": "unused_variables"
+      },
+      {
+        "line": 10,
+        "column": 3,
+        "message": "'allowCustom' is declared but its value is never read.  size = 'md', allowCustom = false, showValue = false,",
+        "category": "unused_variables"
+      },
+      {
+        "line": 11,
+        "column": 3,
+        "message": "'showValue' is declared but its value is never read.  allowCustom = false, showValue = false, onColorChange,",
+        "category": "unused_variables"
+      }
+    ],
+    "\u001b[32msrc/lib/components/ui/icon.svelte\u001b": [
+      {
+        "line": 3,
+        "column": 16,
+        "message": "'\"svelte\"' has no exported member named '_ComponentProps'. Did you mean 'ComponentProps'?  import { cn } from '$lib/utils'; import type { _ComponentProps} from 'svelte';",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/upload/ImageUpload.svelte\u001b": [
+      {
+        "line": 2,
+        "column": 39,
+        "message": "'\"lucide-svelte\"' has no exported member named '_AlertCircle'. Did you mean 'AlertCircle'?  <script lang=\"ts\"> import { Upload, X, Camera, Loader2, _AlertCircle} from 'lucide-svelte' import { _Button} from '$lib/components/ui'",
+        "category": "other"
+      },
+      {
+        "line": 3,
+        "column": 11,
+        "message": "'\"$lib/components/ui\"' has no exported member named '_Button'. Did you mean 'Button'?  import { Upload, X, Camera, Loader2, _AlertCircle} from 'lucide-svelte' import { _Button} from '$lib/components/ui' import { cn } from '$lib/utils'",
+        "category": "other"
+      },
+      {
+        "line": 169,
+        "column": 12,
+        "message": "Cannot find name 'handleDisabled'.  )} onclick={handleDisabled || loading || processing ? undefined : triggerFileInput} ondragover={disabled || loading || processing ? undefined : handleDragOver}",
+        "category": "other"
+      },
+      {
+        "line": 231,
+        "column": 59,
+        "message": "Object is possibly 'undefined'.  <p class=\"text-xs text-muted-foreground mt-1\"> {m.upload_file_types({ types: allowedTypes.map(t => t.split('/')[1].toUpperCase()).join(', '), size: Math.round(maxSizeBytes / 1024 / 1024) })} </p>",
+        "category": "null_safety"
+      }
+    ],
+    "\u001b[32msrc/routes/+error.svelte\u001b": [
+      {
+        "line": 4,
+        "column": 3,
+        "message": "'m' is declared but its value is never read.  import { getErrorMessage } from '$lib/utils/error-handling'; import * as m from '$lib/paraglide/messages.js';",
+        "category": "unused_variables"
+      }
+    ],
+    "\u001b[32msrc/routes/(app)/+error.svelte\u001b": [
+      {
+        "line": 5,
+        "column": 3,
+        "message": "'m' is declared but its value is never read.  import Header from '$lib/components/layout/header/Header.svelte'; import * as m from '$lib/paraglide/messages.js';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 16,
+        "column": 11,
+        "message": "'_errorString' is declared but its value is never read.  let appErrorContent = $derived((() => { const _errorString = error?.message || String(error || '').toLowerCase(); const pathname = $page.url.pathname;",
+        "category": "unused_variables"
+      },
+      {
+        "line": 141,
+        "column": 11,
+        "message": "Object literal may only specify known properties, and '\"categories\"' does not exist in type 'Omit<HeaderProps, \"supabase\"> & { supabase: SupabaseClient<Database, \"public\", { Tables: { categories: { Row: { created_at: string | null; description: string | null; ... 11 more ...; updated_at: string | null; }; Insert: { ...; }; Update: { ...; }; Relationships: [...]; }; ... 19 more ...; payments?: { ...; } | und...'.  {#if data?.categories} <Header categories={data.categories} supabase={data.supabase} /> {/if}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 5,
+        "column": 3,
+        "message": "'m' is declared but its value is never read.  import Header from '$lib/components/layout/Header.svelte'; import * as m from '$lib/paraglide/messages.js';",
+        "category": "unused_variables"
+      }
+    ],
+    "\u001b[32msrc/routes/(app)/admin/+page.svelte\u001b": [
+      {
+        "line": 95,
+        "column": 23,
+        "message": "This comparison appears to be unintentional because the types '\"pending\" | \"confirmed\" | \"processing\" | \"shipped\" | \"delivered\" | \"cancelled\" | \"refunded\" | \"disputed\"' and '\"completed\"' have no overlap.  </div> <span class=\"{order?.status === 'completed' ? statusClasses.completed : statusClasses.default}\"> {order?.status}",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/routes/(app)/admin/users/+page.svelte\u001b": [
+      {
+        "line": 14,
+        "column": 16,
+        "message": "Expression expected.  const filteredUsers = $derived( data?.users??.filter?.((user => user?.email.toLowerCase().includes(searchQuery?.toLowerCase()) ||",
+        "category": "other"
+      },
+      {
+        "line": 20,
+        "column": 1,
+        "message": "')' expected.  ) </script>",
+        "category": "other"
+      },
+      {
+        "line": 14,
+        "column": 27,
+        "message": "Parameter 'user' implicitly has an 'any' type.  const filteredUsers = $derived( data?.users??.filter?.((user => user?.email.toLowerCase().includes(searchQuery?.toLowerCase()) ||",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/routes/(app)/admin/verify-emails/+page.svelte\u001b": [
+      {
+        "line": 53,
+        "column": 21,
+        "message": "Property 'full_name' does not exist on type '{ id: string; email: string; created_at: string; raw_user_meta_data: Record<string, unknown>; }'.  <div class=\"text-sm font-medium text-gray-900\"> {user?.full_name || user?.username || 'Unknown'} </div>",
+        "category": "property_access"
+      },
+      {
+        "line": 53,
+        "column": 40,
+        "message": "Property 'username' does not exist on type '{ id: string; email: string; created_at: string; raw_user_meta_data: Record<string, unknown>; }'.  <div class=\"text-sm font-medium text-gray-900\"> {user?.full_name || user?.username || 'Unknown'} </div>",
+        "category": "property_access"
+      },
+      {
+        "line": 55,
+        "column": 24,
+        "message": "Property 'username' does not exist on type '{ id: string; email: string; created_at: string; raw_user_meta_data: Record<string, unknown>; }'.  </div> {#if user?.username} <div class=\"text-sm text-gray-500\">@{user?.username}</div>",
+        "category": "property_access"
+      },
+      {
+        "line": 56,
+        "column": 57,
+        "message": "Property 'username' does not exist on type '{ id: string; email: string; created_at: string; raw_user_meta_data: Record<string, unknown>; }'.  {#if user?.username} <div class=\"text-sm text-gray-500\">@{user?.username}</div> {/if}",
+        "category": "property_access"
+      }
+    ],
+    "\u001b[32msrc/routes/(app)/brands/+page.svelte\u001b": [
+      {
+        "line": 157,
+        "column": 27,
+        "message": "Property 'topBrands' does not exist on type '{ csrfToken: string; categories: { id: string; name: string; slug: string; icon: string | null; }[]; user: User | null; supabase: SupabaseClient<Database, \"public\", { Tables: { categories: { ...; }; ... 19 more ...; payments?: { ...; } | undefined; }; Views: {}; Functions: { ...; }; Enums: { ...; }; CompositeTypes: ...'.  <!-- Brands Content --> <TopBrands brands={data?.topBrands} />",
+        "category": "property_access"
+      }
+    ],
+    "\u001b[32msrc/routes/(app)/brands/[slug]/+page.svelte\u001b": [
+      {
+        "line": 228,
+        "column": 21,
+        "message": "Object literal may only specify known properties, and 'listing' does not exist in type 'Props'.  {#each listings as listing} <ListingCard {listing} /> {/each}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 26,
+        "column": 34,
+        "message": "')' expected.  { platform: 'tiktok', url: brandProfile?.tiktok_url, icon: null } ]?.filter?.((link => link?.url));",
+        "category": "other"
+      },
+      {
+        "line": 2,
+        "column": 11,
+        "message": "'\"$app/stores\"' has no exported member named '_page'. Did you mean 'page'?  <script lang=\"ts\"> import { _page} from '$app/stores'; import { Building2, Globe, Instagram, Facebook, Twitter, MapPin, Calendar, Star, Package, _ShoppingBag, _Users, _TrendingUp, ExternalLink, Check } from 'lucide-svelte';",
+        "category": "other"
+      },
+      {
+        "line": 3,
+        "column": 92,
+        "message": "'\"lucide-svelte\"' has no exported member named '_ShoppingBag'. Did you mean 'ShoppingBag'?  import { _page} from '$app/stores'; import { Building2, Globe, Instagram, Facebook, Twitter, MapPin, Calendar, Star, Package, _ShoppingBag, _Users, _TrendingUp, ExternalLink, Check } from 'lucide-svelte'; import type { PageData } from './$types';",
+        "category": "other"
+      },
+      {
+        "line": 3,
+        "column": 106,
+        "message": "'\"lucide-svelte\"' has no exported member named '_Users'. Did you mean 'Users'?  import { _page} from '$app/stores'; import { Building2, Globe, Instagram, Facebook, Twitter, MapPin, Calendar, Star, Package, _ShoppingBag, _Users, _TrendingUp, ExternalLink, Check } from 'lucide-svelte'; import type { PageData } from './$types';",
+        "category": "other"
+      },
+      {
+        "line": 3,
+        "column": 114,
+        "message": "'\"lucide-svelte\"' has no exported member named '_TrendingUp'. Did you mean 'TrendingUp'?  import { _page} from '$app/stores'; import { Building2, Globe, Instagram, Facebook, Twitter, MapPin, Calendar, Star, Package, _ShoppingBag, _Users, _TrendingUp, ExternalLink, Check } from 'lucide-svelte'; import type { PageData } from './$types';",
+        "category": "other"
+      },
+      {
+        "line": 6,
+        "column": 2,
+        "message": "'m' is declared but its value is never read.  import ListingCard from '$lib/components/listings/ListingCard.svelte'; import * as m from '$lib/paraglide/messages.js';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 15,
+        "column": 38,
+        "message": "Property 'user' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'user' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 21,
+        "column": 45,
+        "message": "Property 'website_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'website_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 22,
+        "column": 47,
+        "message": "Property 'instagram_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'instagram_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 23,
+        "column": 46,
+        "message": "Property 'facebook_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'facebook_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 24,
+        "column": 45,
+        "message": "Property 'twitter_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'twitter_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 25,
+        "column": 44,
+        "message": "Property 'tiktok_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'tiktok_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 46,
+        "column": 24,
+        "message": "Property 'brand_name' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_name' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 47,
+        "column": 51,
+        "message": "Property 'brand_description' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_description' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 47,
+        "column": 99,
+        "message": "Property 'brand_name' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_name' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 52,
+        "column": 21,
+        "message": "Property 'brand_cover_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_cover_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 55,
+        "column": 24,
+        "message": "Property 'brand_cover_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_cover_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 56,
+        "column": 25,
+        "message": "Property 'brand_name' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_name' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 64,
+        "column": 48,
+        "message": "Property 'brand_cover_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_cover_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 71,
+        "column": 26,
+        "message": "Property 'brand_logo_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_logo_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 73,
+        "column": 28,
+        "message": "Property 'brand_logo_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_logo_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 74,
+        "column": 29,
+        "message": "Property 'brand_name' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_name' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 85,
+        "column": 68,
+        "message": "Property 'brand_name' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_name' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 86,
+        "column": 27,
+        "message": "Property 'verification_status' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'verification_status' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 94,
+        "column": 26,
+        "message": "Property 'brand_description' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_description' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 95,
+        "column": 63,
+        "message": "Property 'brand_description' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_description' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 107,
+        "column": 46,
+        "message": "Property 'created_at' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'created_at' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 245,
+        "column": 66,
+        "message": "Property 'brand_name' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_name' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 247,
+        "column": 25,
+        "message": "Property 'brand_description' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_description' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 250,
+        "column": 64,
+        "message": "Property 'brand_description' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_description' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 254,
+        "column": 25,
+        "message": "Property 'brand_story' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_story' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 257,
+        "column": 84,
+        "message": "Property 'brand_story' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_story' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 266,
+        "column": 25,
+        "message": "Property 'brand_values' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_values' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 269,
+        "column": 64,
+        "message": "Property 'brand_values' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_values' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 273,
+        "column": 25,
+        "message": "Property 'brand_mission' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_mission' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 276,
+        "column": 64,
+        "message": "Property 'brand_mission' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'brand_mission' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 287,
+        "column": 57,
+        "message": "Property 'created_at' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'created_at' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 291,
+        "column": 25,
+        "message": "Property 'website_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'website_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 294,
+        "column": 29,
+        "message": "Property 'website_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'website_url' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 314,
+        "column": 23,
+        "message": "Property 'reviewer' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'reviewer' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 315,
+        "column": 23,
+        "message": "Property 'reviewer' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'reviewer' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 321,
+        "column": 59,
+        "message": "Property 'reviewer' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'reviewer' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 326,
+        "column": 44,
+        "message": "Property 'rating' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'rating' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 331,
+        "column": 44,
+        "message": "Property 'created_at' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'created_at' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      },
+      {
+        "line": 335,
+        "column": 44,
+        "message": "Property 'comment' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\"> | SelectQueryError<\"Invalid RelationName cannot infer result type\">'. Property 'comment' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.",
+        "category": "property_access"
+      }
+    ],
+    "\u001b[32msrc/routes/(app)/messages/+page.svelte\u001b": [
+      {
+        "line": 2,
+        "column": 5,
+        "message": "'page' is declared but its value is never read.  <script lang=\"ts\"> import { page } from '$app/stores'; import { goto } from '$app/navigation';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 63,
+        "column": 29,
+        "message": "Type '{ unread_count: number; id: string; listing_id: string; buyer_id: string; seller_id: string; last_message_at: string | null; archived_by_buyer: boolean | null; archived_by_seller: boolean | null; ... 5 more ...; last_message: { ...; }[]; }[]' is not assignable to type 'Conversation[]'. Type '{ unread_count: number; id: string; listing_id: string; buyer_id: string; seller_id: string; last_message_at: string | null; archived_by_buyer: boolean | null; archived_by_seller: boolean | null; ... 5 more ...; last_message: { ...; }[]; }' is not assignable to type 'Conversation'. Type '{ unread_count: number; id: string; listing_id: string; buyer_id: string; seller_id: string; last_message_at: string | null; archived_by_buyer: boolean | null; archived_by_seller: boolean | null; ... 5 more ...; last_message: { ...; }[]; }' is not assignable to type '{ listing: { id: string; title: string; images: string[]; price: number; }; buyer: { id: string; username: string; avatar_url: string | null; }; seller: { id: string; username: string; avatar_url: string | null; }; last_message: { ...; } | null; unread_count: number; }'. The types of 'listing.images' are incompatible between these types. Type 'Json' is not assignable to type 'string[]'. Type 'null' is not assignable to type 'string[]'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 86,
+        "column": 5,
+        "message": "Object literal may only specify known properties, and '\"userId\"' does not exist in type '$$ComponentProps'.  bind:isOpen={showSearch} userId={data.user.id} onclose={() => showSearch = false}",
+        "category": "svelte_props"
+      },
+      {
+        "line": 85,
+        "column": 5,
+        "message": "Cannot use 'bind:' with this property. It is declared as non-bindable inside the component. To mark a property as bindable: 'let { isOpen = $bindable() } = $props()'",
+        "category": "other"
+      },
+      {
+        "line": 2,
+        "column": 14,
+        "message": "'\"$app/stores\"' has no exported member named '_page'. Did you mean 'page'?  <script lang=\"ts\"> import { _page} from '$app/stores'; import { goto } from '$app/navigation';",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/routes/(app)/messages/[id]/+page.svelte\u001b": [
+      {
+        "line": 26,
+        "column": 54,
+        "message": "Property 'id' comes from an index signature, so it must be accessed with ['id'].  <MessageThread conversationId={$page.params.id || ''} userId={data.session?.user.id || ''}",
+        "category": "other"
+      },
+      {
+        "line": 26,
+        "column": 25,
+        "message": "Type 'string | undefined' is not assignable to type 'string'. Type 'undefined' is not assignable to type 'string'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 26,
+        "column": 54,
+        "message": "Property 'id' comes from an index signature, so it must be accessed with ['id'].  <MessageThread conversationId={$page.params.id} userId={data.session?.user.id || ''}",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/routes/(app)/onboarding/+page.svelte\u001b": [
+      {
+        "line": 28,
+        "column": 9,
+        "message": "'_isNewSignup' is declared but its value is never read.  // Check if coming from email verification const _isNewSignup = $page?.url.searchParams?.get('new') === 'true';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 48,
+        "column": 41,
+        "message": "Type instantiation is excessively deep and possibly infinite.  // Get the brand profile to find the slug const { data: brandProfile } = await data.supabase .from('brand_profiles') .select('brand_slug') .eq('user_id', $user!.id) .single();",
+        "category": "other"
+      },
+      {
+        "line": 49,
+        "column": 11,
+        "message": "No overload matches this call. Overload 1 of 2, '(relation: \"categories\" | \"listings\" | \"profiles\" | \"transactions\" | \"conversations\" | \"orders\" | \"favorites\" | \"user_follows\" | \"user_ratings\" | \"stripe_webhook_events\" | \"seller_payouts\" | ... 9 more ... | \"payments\"): PostgrestQueryBuilder<...>', gave the following error. Argument of type '\"brand_profiles\"' is not assignable to parameter of type '\"categories\" | \"listings\" | \"profiles\" | \"transactions\" | \"conversations\" | \"orders\" | \"favorites\" | \"user_follows\" | \"user_ratings\" | \"stripe_webhook_events\" | \"seller_payouts\" | ... 9 more ... | \"payments\"'. Overload 2 of 2, '(relation: never): PostgrestQueryBuilder<{ Tables: { categories: { Row: { created_at: string | null; description: string | null; display_order: number | null; icon: string | null; icon_url: string | null; ... 8 more ...; updated_at: string | null; }; Insert: { ...; }; Update: { ...; }; Relationships: [...]; }; ... 19 more ...; payments?: { ...; } | undefined; }; Views: {}; Functions: { ...; }; Enums: { ...; }; CompositeTypes: {}; }, never, never, never>', gave the following error. Argument of type '\"brand_profiles\"' is not assignable to parameter of type 'never'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 54,
+        "column": 22,
+        "message": "Property 'brand_slug' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.  if (brandProfile?.brand_slug) { // Redirect to brand profile",
+        "category": "property_access"
+      },
+      {
+        "line": 56,
+        "column": 34,
+        "message": "Property 'brand_slug' does not exist on type 'SelectQueryError<\"Invalid Relationships cannot infer result type\">'.  // Redirect to brand profile goto(`/brands/${brandProfile.brand_slug}`); return;",
+        "category": "property_access"
+      },
+      {
+        "line": 84,
+        "column": 4,
+        "message": "Type '{ avatar_url: string | null; bio: string | null; buyer_rating: number | null; buyer_rating_count: number | null; completion_percentage: number | null; cover_url: string | null; ... 53 more ...; brand_mission?: string | ... 1 more ... | undefined; } | null' is not assignable to type '{ avatar_url: string | null; bio: string | null; buyer_rating: number | null; buyer_rating_count: number | null; completion_percentage: number | null; cover_url: string | null; ... 53 more ...; brand_mission?: string | ... 1 more ... | undefined; }'. Type 'null' is not assignable to type '{ avatar_url: string | null; bio: string | null; buyer_rating: number | null; buyer_rating_count: number | null; completion_percentage: number | null; cover_url: string | null; ... 53 more ...; brand_mission?: string | ... 1 more ... | undefined; }'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 9,
+        "column": 6,
+        "message": "'data' is declared but its value is never read.  let { data }: { data: PageData } = $props(); let showSetup = $state(false);",
+        "category": "unused_variables"
+      },
+      {
+        "line": 37,
+        "column": 9,
+        "message": "Cannot find name 'auth'.  // Mark onboarding as complete await auth?.supabase .from('profiles')",
+        "category": "other"
+      },
+      {
+        "line": 43,
+        "column": 14,
+        "message": "Cannot find name 'auth'.  }) .eq('id', auth?.user!.id);",
+        "category": "other"
+      },
+      {
+        "line": 46,
+        "column": 9,
+        "message": "Cannot find name 'auth'.  // Refresh profile await auth?.loadProfile();",
+        "category": "other"
+      },
+      {
+        "line": 49,
+        "column": 7,
+        "message": "Cannot find name 'auth'.  // Check if user created a brand account if (auth?.profile?.account_type === 'brand') { // Get the brand profile to find the slug",
+        "category": "other"
+      },
+      {
+        "line": 51,
+        "column": 41,
+        "message": "Cannot find name 'auth'.  // Get the brand profile to find the slug const { data: brandProfile } = await auth?.supabase .from('brand_profiles')",
+        "category": "other"
+      },
+      {
+        "line": 54,
+        "column": 20,
+        "message": "Cannot find name 'auth'.  .select('brand_slug') .eq('user_id', auth?.user!.id) .single();",
+        "category": "other"
+      },
+      {
+        "line": 83,
+        "column": 24,
+        "message": "Cannot find name 'auth'.  </div> {:else if showSetup && auth?.user} <div class=\"min-h-[100dvh] bg-gradient-to-br from-blue-50 to-purple-50\">",
+        "category": "other"
+      },
+      {
+        "line": 86,
+        "column": 10,
+        "message": "Cannot find name 'auth'.  <ProfileSetupWizard user={auth?.user} profile={auth?.profile}",
+        "category": "other"
+      },
+      {
+        "line": 87,
+        "column": 13,
+        "message": "Cannot find name 'auth'.  user={auth?.user} profile={auth?.profile} onComplete={handleComplete}",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/routes/(app)/orders/[id]/+page.svelte\u001b": [
+      {
+        "line": 2,
+        "column": 5,
+        "message": "'page' is declared but its value is never read.  <script lang=\"ts\"> import { page } from '$app/stores'; import OrderDetails from '$lib/components/orders/OrderDetails.svelte';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 22,
+        "column": 13,
+        "message": "Type '{ id: string; order_number: string; buyer_id: string; seller_id: string; transaction_id: string | null; status: \"pending\" | \"confirmed\" | \"processing\" | \"shipped\" | \"delivered\" | \"cancelled\" | \"refunded\" | \"disputed\"; ... 24 more ...; disputes: { ...; }[]; }' is not assignable to type 'Order'. Type '{ id: string; order_number: string; buyer_id: string; seller_id: string; transaction_id: string | null; status: \"pending\" | \"confirmed\" | \"processing\" | \"shipped\" | \"delivered\" | \"cancelled\" | \"refunded\" | \"disputed\"; ... 24 more ...; disputes: { ...; }[]; }' is not assignable to type '{ buyer: { id: string; username: string; email: string; avatar_url: string | null; }; seller: { id: string; username: string; email: string; avatar_url: string | null; }; order_items: { id: string; quantity: number; price: number; total: number; item_snapshot: any; listing: { ...; }; }[]; status_history: { ...; }[];...'. The types of 'buyer.email' are incompatible between these types. Type 'string | null' is not assignable to type 'string'. Type 'null' is not assignable to type 'string'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 2,
+        "column": 14,
+        "message": "'\"$app/stores\"' has no exported member named '_page'. Did you mean 'page'?  <script lang=\"ts\"> import { _page} from '$app/stores'; import OrderDetails from '$lib/components/orders/OrderDetails.svelte';",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/routes/(app)/profile/+page.svelte\u001b": [
+      {
+        "line": 10,
+        "column": 39,
+        "message": "Property 'supabase' comes from an index signature, so it must be accessed with ['supabase'].  // Get supabase client from page data const supabase = $derived($page.data.supabase)",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/routes/(app)/sell/+page.svelte\u001b": [
+      {
+        "line": 7,
+        "column": 2,
+        "message": "'page' is declared but its value is never read.  import * as m from '$lib/paraglide/messages.js' import { page } from '$app/stores' import type { PageData } from './$types'",
+        "category": "unused_variables"
+      },
+      {
+        "line": 7,
+        "column": 11,
+        "message": "'\"$app/stores\"' has no exported member named '_page'. Did you mean 'page'?  import * as m from '$lib/paraglide/messages.js' import { _page} from '$app/stores' import type { PageData } from './$types'",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/routes/(app)/sell/success/+page.svelte\u001b": [
+      {
+        "line": 7,
+        "column": 2,
+        "message": "'m' is declared but its value is never read.  import confetti from 'canvas-confetti' import * as m from '$lib/paraglide/messages.js'",
+        "category": "unused_variables"
+      },
+      {
+        "line": 16,
+        "column": 39,
+        "message": "Property 'supabase' comes from an index signature, so it must be accessed with ['supabase'].  // Get supabase client from page data const supabase = $derived($page.data.supabase)",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/routes/(app)/sellers/+page.svelte\u001b": [
+      {
+        "line": 2,
+        "column": 11,
+        "message": "'\"svelte\"' has no exported member named '_onMount'. Did you mean 'onMount'?  <script lang=\"ts\"> import { _onMount} from 'svelte'; import * as m from '$lib/paraglide/messages.js';",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/routes/(auth)/+error.svelte\u001b": [
+      {
+        "line": 4,
+        "column": 3,
+        "message": "'m' is declared but its value is never read.  import { getErrorMessage } from '$lib/utils/error-handling'; import * as m from '$lib/paraglide/messages.js';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 81,
+        "column": 7,
+        "message": "Type 'Timeout' is not assignable to type 'number'.  retryCountdown = 30; retryTimer = setInterval(() => { retryCountdown--;",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/routes/(auth)/login/+page.svelte\u001b": [
+      {
+        "line": 179,
+        "column": 12,
+        "message": "Type 'typeof Github' is not assignable to type 'Component<{}, {}, string>'. Type 'typeof Github' provides no match for the signature '(this: void, internals: Brand<\"ComponentInternals\">, props: {}): { $on?(type: string, callback: (e: any) => void): () => void; $set?(props: Partial<{}>): void; }'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 248,
+        "column": 15,
+        "message": "Type 'typeof EyeOff' is not assignable to type 'Component<{}, {}, string>'. Type 'typeof EyeOff' provides no match for the signature '(this: void, internals: Brand<\"ComponentInternals\">, props: {}): { $on?(type: string, callback: (e: any) => void): () => void; $set?(props: Partial<{}>): void; }'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 250,
+        "column": 15,
+        "message": "Type 'typeof Eye' is not assignable to type 'Component<{}, {}, string>'. Type 'typeof Eye' provides no match for the signature '(this: void, internals: Brand<\"ComponentInternals\">, props: {}): { $on?(type: string, callback: (e: any) => void): () => void; $set?(props: Partial<{}>): void; }'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 73,
+        "column": 17,
+        "message": "Argument of type '{}' is not assignable to parameter of type 'string | AnyComponent'.  if (form?.['error']) { toast?.error(form['error']) if (form['error'].includes('verify your email')) {",
+        "category": "type_assignment"
+      },
+      {
+        "line": 74,
+        "column": 22,
+        "message": "Property 'includes' does not exist on type '{}'.  toast?.error(form['error']) if (form['error'].includes('verify your email')) { showResendForm = true",
+        "category": "property_access"
+      },
+      {
+        "line": 213,
+        "column": 12,
+        "message": "Type '{}' is not assignable to type 'string | number | undefined'.  type=\"email\" bind:value={email} placeholder=\"Enter your email\"",
+        "category": "type_assignment"
+      },
+      {
+        "line": 219,
+        "column": 47,
+        "message": "Property 'includes' does not exist on type '{}'.  size=\"lg\" class={form?.['error'] && form['error'].includes('email') ? 'border-red-500' : ''} />",
+        "category": "property_access"
+      }
+    ],
+    "\u001b[32msrc/routes/(auth)/register/+page.svelte\u001b": [
+      {
+        "line": 8,
+        "column": 2,
+        "message": "'m' is declared but its value is never read.  import { z } from 'zod' import * as m from '$lib/paraglide/messages.js' import Spinner from '$lib/components/ui/Spinner.svelte'",
+        "category": "unused_variables"
+      },
+      {
+        "line": 11,
+        "column": 11,
+        "message": "'\"svelte\"' has no exported member named '_onMount'. Did you mean 'onMount'?  import { cn } from '$lib/utils' import { _onMount} from 'svelte' import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public'",
+        "category": "other"
+      },
+      {
+        "line": 90,
+        "column": 10,
+        "message": "'_validatedData' is declared but its value is never read.  try { const _validatedData = registerSchema?.parse({ email,",
+        "category": "unused_variables"
+      },
+      {
+        "line": 105,
+        "column": 12,
+        "message": "Property '_data' does not exist on type 'AuthResponse'.  const tempUsername = (email?.split('@')[0] || 'user').replace(/[^a-zA-Z0-9]/g, '') + Math.floor(Math.random() * 1000) const { _data, error } = await supabaseClient?.auth.signUp({ email,",
+        "category": "property_access"
+      },
+      {
+        "line": 105,
+        "column": 12,
+        "message": "'_data' is declared but its value is never read.  const tempUsername = (email?.split('@')[0] || 'user').replace(/[^a-zA-Z0-9]/g, '') + Math.floor(Math.random() * 1000) const { _data, error } = await supabaseClient?.auth.signUp({ email,",
+        "category": "unused_variables"
+      },
+      {
+        "line": 104,
+        "column": 25,
+        "message": "Object is possibly 'undefined'.  // Use direct Supabase client for signup const tempUsername = email?.split('@')[0].replace(/[^a-zA-Z0-9]/g, '') + Math?.floor(Math?.random() * 1000) const { _data, error } = await supabaseClient?.auth.signUp({",
+        "category": "null_safety"
+      },
+      {
+        "line": 105,
+        "column": 12,
+        "message": "Property '_data' does not exist on type 'AuthResponse'.  const tempUsername = email?.split('@')[0].replace(/[^a-zA-Z0-9]/g, '') + Math?.floor(Math?.random() * 1000) const { _data, error } = await supabaseClient?.auth.signUp({ email,",
+        "category": "property_access"
+      },
+      {
+        "line": 105,
+        "column": 12,
+        "message": "'_data' is declared but its value is never read.  const tempUsername = email?.split('@')[0].replace(/[^a-zA-Z0-9]/g, '') + Math?.floor(Math?.random() * 1000) const { _data, error } = await supabaseClient?.auth.signUp({ email,",
+        "category": "unused_variables"
+      },
+      {
+        "line": 487,
+        "column": 18,
+        "message": "Parameter 'token' implicitly has an 'any' type.  bind:this={captchaRef} onVerify={(token) => { captchaToken = token",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/ui/badge.svelte\u001b": [
+      {
+        "line": 181,
+        "column": 4,
+        "message": "Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ default: string; secondary: string; success: string; destructive: string; outline: string; 'condition-new-with-tags': string; 'condition-new-without-tags': string; 'condition-very-good': string; ... 7 more ...; interactive: string; }'. No index signature with a parameter of type 'string' was found on type '{ default: string; secondary: string; success: string; destructive: string; outline: string; 'condition-new-with-tags': string; 'condition-new-without-tags': string; 'condition-very-good': string; ... 7 more ...; interactive: string; }'.",
+        "category": "other"
+      },
+      {
+        "line": 231,
+        "column": 4,
+        "message": "Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ default: string; secondary: string; success: string; destructive: string; outline: string; 'condition-new-with-tags': string; 'condition-new-without-tags': string; 'condition-very-good': string; ... 7 more ...; interactive: string; }'. No index signature with a parameter of type 'string' was found on type '{ default: string; secondary: string; success: string; destructive: string; outline: string; 'condition-new-with-tags': string; 'condition-new-without-tags': string; 'condition-very-good': string; ... 7 more ...; interactive: string; }'.",
+        "category": "other"
+      },
+      {
+        "line": 3,
+        "column": 2,
+        "message": "'Snippet' is declared but its value is never read.  import { cn } from '$lib/utils'; import type { Snippet } from 'svelte'; import { Package2, Ruler, CheckCircle2, Store, Check } from 'lucide-svelte';",
+        "category": "unused_variables"
+      },
+      {
+        "line": 182,
+        "column": 4,
+        "message": "Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ default: string; secondary: string; success: string; destructive: string; outline: string; 'condition-new-with-tags': string; 'condition-new-without-tags': string; 'condition-very-good': string; ... 7 more ...; interactive: string; }'. No index signature with a parameter of type 'string' was found on type '{ default: string; secondary: string; success: string; destructive: string; outline: string; 'condition-new-with-tags': string; 'condition-new-without-tags': string; 'condition-very-good': string; ... 7 more ...; interactive: string; }'.",
+        "category": "other"
+      },
+      {
+        "line": 232,
+        "column": 4,
+        "message": "Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ default: string; secondary: string; success: string; destructive: string; outline: string; 'condition-new-with-tags': string; 'condition-new-without-tags': string; 'condition-very-good': string; ... 7 more ...; interactive: string; }'. No index signature with a parameter of type 'string' was found on type '{ default: string; secondary: string; success: string; destructive: string; outline: string; 'condition-new-with-tags': string; 'condition-new-without-tags': string; 'condition-very-good': string; ... 7 more ...; interactive: string; }'.",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/listings/CreateListingForm/components/ImageUploader.svelte\u001b": [
+      {
+        "line": 212,
+        "column": 31,
+        "message": "Argument of type 'string | undefined' is not assignable to parameter of type 'string'. Type 'undefined' is not assignable to type 'string'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 279,
+        "column": 36,
+        "message": "'fileInput' is possibly 'null'.  type=\"button\" onclick={() => canUploadMore && fileInput.click()} disabled={!canUploadMore}",
+        "category": "other"
+      },
+      {
+        "line": 390,
+        "column": 7,
+        "message": "Type '\"xs\"' is not assignable to type '\"sm\" | \"lg\" | \"md\" | undefined'.  max={100} size=\"xs\" variant=\"default\"",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/onboarding/ProfileSetupWizard.svelte\u001b": [
+      {
+        "line": 215,
+        "column": 16,
+        "message": "'error' is of type 'unknown'.  } catch (error) { toast.error(error.message || 'Failed to save progress'); } finally {",
+        "category": "other"
+      },
+      {
+        "line": 235,
+        "column": 16,
+        "message": "'error' is of type 'unknown'.  } catch (error) { toast.error(error.message || 'Failed to complete setup'); } finally {",
+        "category": "other"
+      },
+      {
+        "line": 3,
+        "column": 11,
+        "message": "'\"$app/navigation\"' has no exported member named '_goto'. Did you mean 'goto'?  import { onMount } from 'svelte'; import { _goto} from '$app/navigation'; // Props are passed down, don't need to import stores directly",
+        "category": "other"
+      },
+      {
+        "line": 15,
+        "column": 16,
+        "message": "'\"$lib/types\"' has no exported member named '_Tables'. Did you mean 'Tables'?  import type { User, SupabaseClient } from '@supabase/supabase-js'; import type { _Tables} from '$lib/types'; import type { ExtendedProfile } from '$lib/types';",
+        "category": "other"
+      },
+      {
+        "line": 217,
+        "column": 16,
+        "message": "'error' is of type 'unknown'.  } catch (error) { toast.error(error.message || 'Failed to save progress'); } finally {",
+        "category": "other"
+      },
+      {
+        "line": 237,
+        "column": 16,
+        "message": "'error' is of type 'unknown'.  } catch (error) { toast.error(error.message || 'Failed to complete setup'); } finally {",
+        "category": "other"
+      },
+      {
+        "line": 323,
+        "column": 9,
+        "message": "Type '\"xs\"' is not assignable to type '\"sm\" | \"lg\" | \"md\" | undefined'.  max={100} size=\"xs\" variant=\"success\"",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/layout/header/Header.svelte\u001b": [
+      {
+        "line": 53,
+        "column": 10,
+        "message": "Argument of type '() => Promise<void>' is not assignable to parameter of type '() => void | (() => void)'. Type 'Promise<void>' is not assignable to type 'void | (() => void)'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 171,
+        "column": 5,
+        "message": "Type 'UserProfile | null' is not assignable to type 'User | null'. Type 'UserProfile' is missing the following properties from type 'User': app_metadata, user_metadata, aud, created_at",
+        "category": "type_assignment"
+      },
+      {
+        "line": 186,
+        "column": 5,
+        "message": "Type 'UserProfile | null' is not assignable to type 'User | null'. Type 'UserProfile' is missing the following properties from type 'User': app_metadata, user_metadata, aud, created_at",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/common/LazyAvatar.svelte\u001b": [
+      {
+        "line": 46,
+        "column": 9,
+        "message": "Object is possibly 'undefined'.  (entries) => { if (entries[0].isIntersecting) { isIntersecting = true;",
+        "category": "null_safety"
+      }
+    ],
+    "\u001b[32msrc/lib/components/category/TopThreeSellers.svelte\u001b": [
+      {
+        "line": 4,
+        "column": 17,
+        "message": "Module '\"$lib/types\"' has no exported member 'Category'.  import { Star } from 'lucide-svelte'; import type { Category } from '$lib/types';",
+        "category": "import_module"
+      },
+      {
+        "line": 40,
+        "column": 18,
+        "message": "Object is possibly 'undefined'.  <Avatar.AvatarFallback class=\"text-sm font-medium text-gray-600\"> {seller.username[0].toUpperCase()} </Avatar.AvatarFallback>",
+        "category": "null_safety"
+      }
+    ],
+    "\u001b[32msrc/lib/components/ui/select/select.svelte\u001b": [
+      {
+        "line": 26,
+        "column": 7,
+        "message": "Type 'string | undefined' is not assignable to type 'string[] | undefined'. Type 'string' is not assignable to type 'string[]'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 27,
+        "column": 3,
+        "message": "Type '((value: string) => void) | undefined' is not assignable to type 'OnChangeFn<string[]> | undefined'. Type '(value: string) => void' is not assignable to type 'OnChangeFn<string[]>'. Types of parameters 'value' and 'value' are incompatible. Type 'string[]' is not assignable to type 'string'.",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/ui/Confetti.svelte\u001b": [
+      {
+        "line": 22,
+        "column": 4,
+        "message": "Type 'string | undefined' is not assignable to type 'string'. Type 'undefined' is not assignable to type 'string'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 68,
+        "column": 4,
+        "message": "'ctx' is possibly 'null'.  function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height);",
+        "category": "other"
+      },
+      {
+        "line": 68,
+        "column": 24,
+        "message": "'canvas' is possibly 'null'.  function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height);",
+        "category": "other"
+      },
+      {
+        "line": 72,
+        "column": 19,
+        "message": "Argument of type 'CanvasRenderingContext2D | null' is not assignable to parameter of type 'CanvasRenderingContext2D'. Type 'null' is not assignable to type 'CanvasRenderingContext2D'.",
+        "category": "type_assignment"
+      },
+      {
+        "line": 75,
+        "column": 25,
+        "message": "'canvas' is possibly 'null'.  // Remove particles that are off screen return particle.y < canvas.height + 20; });",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/listings/CreateListingForm/steps/ShippingStep.svelte\u001b": [
+      {
+        "line": 104,
+        "column": 37,
+        "message": "Argument of type 'string' is not assignable to parameter of type '\"standard\" | \"express\" | \"pickup\"'.  function handleShippingTypeChange(type: string) { form.updateField('shipping_type', type)",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/listings/CreateListingForm/CreateListingForm.svelte\u001b": [
+      {
+        "line": 127,
+        "column": 21,
+        "message": "Type 'Partial<{ category_id: string; description: string; title: string; color: string; condition: string; images: string[]; location_city: string; price: number; shipping_cost: number; shipping_type: \"standard\" | \"express\" | \"pickup\"; ... 5 more ...; size?: string | ... 1 more ... | undefined; }>' is not assignable to type '{ category_id: string; description: string; title: string; color: string; condition: string; images: string[]; location_city: string; price: number; shipping_cost: number; shipping_type: \"standard\" | \"express\" | \"pickup\"; ... 5 more ...; size?: string | ... 1 more ... | undefined; }'. Types of property 'category_id' are incompatible. Type 'string | undefined' is not assignable to type 'string'. Type 'undefined' is not assignable to type 'string'.",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/onboarding/BrandInfoForm.svelte\u001b": [
+      {
+        "line": 2,
+        "column": 53,
+        "message": "'\"lucide-svelte\"' has no exported member named '_Instagram'. Did you mean 'Instagram'?  <script lang=\"ts\"> import { Building2, Tag, FileText, Link2, Plus, X, _Instagram, _Globe, ShieldCheck } from 'lucide-svelte'; import { toast } from 'svelte-sonner';",
+        "category": "other"
+      },
+      {
+        "line": 2,
+        "column": 65,
+        "message": "'\"lucide-svelte\"' has no exported member named '_Globe'. Did you mean 'Globe'?  <script lang=\"ts\"> import { Building2, Tag, FileText, Link2, Plus, X, _Instagram, _Globe, ShieldCheck } from 'lucide-svelte'; import { toast } from 'svelte-sonner';",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/checkout/checkout-modal/OrderSummary.svelte\u001b": [
+      {
+        "line": 52,
+        "column": 6,
+        "message": "Expected 2 arguments, but got 1.  <p class=\"text-sm font-medium text-gray-900\"> {formatCurrency(itemPrice)} </p>",
+        "category": "function_arguments"
+      },
+      {
+        "line": 61,
+        "column": 33,
+        "message": "Expected 2 arguments, but got 1.  <span class=\"text-gray-600\">Item price</span> <span class=\"text-gray-900\">{formatCurrency(itemPrice)}</span> </div>",
+        "category": "function_arguments"
+      },
+      {
+        "line": 67,
+        "column": 34,
+        "message": "Expected 2 arguments, but got 1.  <span class=\"text-gray-600\">Shipping</span> <span class=\"text-gray-900\">{formatCurrency(shippingCost)}</span> </div>",
+        "category": "function_arguments"
+      },
+      {
+        "line": 74,
+        "column": 34,
+        "message": "Expected 2 arguments, but got 1.  <span class=\"text-gray-600\">Service fee</span> <span class=\"text-gray-900\">{formatCurrency(buyerFee)}</span> </div>",
+        "category": "function_arguments"
+      },
+      {
+        "line": 81,
+        "column": 56,
+        "message": "Expected 2 arguments, but got 1.  <span class=\"text-base font-medium text-gray-900\">Total</span> <span class=\"text-base font-medium text-gray-900\">{formatCurrency(totalAmount)}</span> </div>",
+        "category": "function_arguments"
+      }
+    ],
+    "\u001b[32msrc/lib/components/checkout/CheckoutModal.svelte\u001b": [
+      {
+        "line": 40,
+        "column": 19,
+        "message": "Cannot find name 'm'.  if (result?.success) { toast?.success(m?.payment_successful());",
+        "category": "translation_keys"
+      },
+      {
+        "line": 49,
+        "column": 5,
+        "message": "The left-hand side of an assignment expression may not be an optional property access.  // Navigate to order confirmation page window?.location.href = `/orders/${result?.order_id}`; } else if (result?.payment_intent_id) {",
+        "category": "other"
+      },
+      {
+        "line": 52,
+        "column": 5,
+        "message": "The left-hand side of an assignment expression may not be an optional property access.  // Navigate to order confirmation with payment intent window?.location.href = `/order-confirmation?payment_intent=${result?.payment_intent_id}`; }",
+        "category": "other"
+      },
+      {
+        "line": 60,
+        "column": 25,
+        "message": "Cannot find name 'm'.  logger?.error('❌ Payment failed:', error); toast?.error(error || m?.payment_failed()); checkoutState?.setIsProcessing(false);",
+        "category": "translation_keys"
+      },
+      {
+        "line": 73,
+        "column": 19,
+        "message": "Cannot find name 'm'.  if (checkoutState?.isProcessing) { toast?.warning(m?.cannot_close_during_payment()); return;",
+        "category": "translation_keys"
+      },
+      {
+        "line": 117,
+        "column": 7,
+        "message": "Cannot find name 'm'.  <h2 id=\"checkout-title\" class=\"text-xl font-bold text-gray-900\"> {m?.checkout_title()} </h2>",
+        "category": "translation_keys"
+      },
+      {
+        "line": 123,
+        "column": 18,
+        "message": "Cannot find name 'm'.  class=\"p-2 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed\" aria-label={m?.close_modal()} >",
+        "category": "translation_keys"
+      },
+      {
+        "line": 172,
+        "column": 44,
+        "message": "Cannot find name 'm'.  <div class=\"animate-spin rounded-full h-4 w-4 border-b-2 border-brand-500\"></div> <span class=\"text-sm text-gray-600\">{m?.processing_please_wait()}</span> </div>",
+        "category": "translation_keys"
+      }
+    ],
+    "\u001b[32msrc/lib/components/shared/category-dropdown/CategorySection.svelte\u001b": [
+      {
+        "line": 135,
+        "column": 26,
+        "message": "'_index' is declared but its value is never read.  <div class={getGridClasses()}> {#each items as item, _index} {@const display = getItemDisplay(item)}",
+        "category": "unused_variables"
+      }
+    ],
+    "\u001b[32msrc/lib/components/ui/alert-dialog/AlertDialogTrigger.svelte\u001b": [
+      {
+        "line": 4,
+        "column": 16,
+        "message": "'\"svelte/store\"' has no exported member named '_Writable'. Did you mean 'Writable'?  import type { Snippet } from 'svelte'; import type { _Writable} from 'svelte/store';",
+        "category": "other"
+      }
+    ],
+    "\u001b[32msrc/lib/components/ui/data-table/DataTablePagination.svelte\u001b": [
+      {
+        "line": 5,
+        "column": 3,
+        "message": "Module '\"$lib/components/ui/select\"' has no exported member 'Select'.  import { Select, SelectContent,",
+        "category": "import_module"
+      },
+      {
+        "line": 6,
+        "column": 3,
+        "message": "Module '\"$lib/components/ui/select\"' has no exported member 'SelectContent'.  Select, SelectContent, SelectItem,",
+        "category": "import_module"
+      },
+      {
+        "line": 7,
+        "column": 3,
+        "message": "Module '\"$lib/components/ui/select\"' has no exported member 'SelectItem'.  SelectContent, SelectItem, SelectTrigger,",
+        "category": "import_module"
+      },
+      {
+        "line": 8,
+        "column": 3,
+        "message": "Module '\"$lib/components/ui/select\"' has no exported member 'SelectTrigger'.  SelectItem, SelectTrigger, SelectValue",
+        "category": "import_module"
+      },
+      {
+        "line": 9,
+        "column": 3,
+        "message": "Module '\"$lib/components/ui/select\"' has no exported member 'SelectValue'.  SelectTrigger, SelectValue } from '$lib/components/ui/select';",
+        "category": "import_module"
+      }
+    ],
+    "\u001b[32msrc/lib/components/listings/listing-card/ListingCardInfo.svelte\u001b": [
+      {
+        "line": 54,
+        "column": 11,
+        "message": "'getAvatarGradient' is declared but its value is never read.  function getAvatarGradient(username: string): string { const index = username.charCodeAt(0) % AVATAR_GRADIENT_COLORS.length;",
+        "category": "unused_variables"
+      },
+      {
+        "line": 56,
+        "column": 3,
+        "message": "Type 'string | undefined' is not assignable to type 'string'. Type 'undefined' is not assignable to type 'string'.",
+        "category": "type_assignment"
+      }
+    ],
+    "\u001b[32msrc/lib/components/listings/listing-card/ListingCard.svelte\u001b": [
+      {
+        "line": 2,
+        "column": 2,
+        "message": "'cn' is declared but its value is never read.  <script lang=\"ts\"> import { cn } from '$lib/utils'; import ListingCardImage from './ListingCardImage.svelte';",
+        "category": "unused_variables"
+      }
+    ],
+    "\u001b[32msrc/lib/components/shared/ErrorBoundary.svelte\u001b": [
+      {
+        "line": 9,
+        "column": 3,
+        "message": "'Snippet' is declared but its value is never read.  import type { Snippet } from 'svelte'; import type { ErrorBoundaryProps } from '$lib/types/components';",
+        "category": "unused_variables"
+      }
+    ],
+    "\u001b[32msrc/lib/components/dashboard/StreamedDashboard.svelte\u001b": [
+      {
+        "line": 13,
+        "column": 6,
+        "message": "'loading' is declared but its value is never read.  let loading = $state(true) let error = $state<Error | null>(null)",
+        "category": "unused_variables"
+      }
+    ],
+    "\u001b[32msrc/lib/components/debug/DebugOverlay.svelte\u001b": [
+      {
+        "line": 2,
+        "column": 2,
+        "message": "'debug' is declared but its value is never read.  <script lang=\"ts\"> import { debug } from '$lib/utils/debug-logger';",
+        "category": "unused_variables"
+      }
+    ]
+  }
+}

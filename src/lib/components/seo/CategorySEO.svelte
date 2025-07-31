@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { _page} from '$app/stores';
-  import type { Category } from '$lib/types';
+  import { page } from '$app/stores';
+  import type { UnifiedCategory as Category } from '$lib/types';
   
   interface Props {
     category: Category;

@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { _cn} from '$lib/utils';
+	import { cn } from '$lib/utils';
 	import * as Sheet from '$lib/components/ui/sheet';
 	import { Tabs, TabsList, TabsTrigger, TabsContent } from '$lib/components/ui/tabs';
-	import type { Category } from '$lib/types';
+	import type { UnifiedCategory as Category } from '$lib/types';
 	import * as m from '$lib/paraglide/messages.js';
-	import { _getLocale} from '$lib/paraglide/runtime.js';
+	import { getLocale } from '$lib/paraglide/runtime.js';
 
 	interface Props {
 		categories?: Category[];
@@ -14,7 +14,7 @@
 	}
 
 	let { 
-		_categories= [], 
+		categories = [], 
 		open = false,
 		onOpenChange = () => {}
 	}: Props = $props();

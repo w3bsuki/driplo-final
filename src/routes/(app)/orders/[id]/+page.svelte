@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { _page} from '$app/stores';
+    import { page } from '$app/stores';
     import OrderDetails from '$lib/components/orders/OrderDetails.svelte';
     import type { PageData } from './$types';
     

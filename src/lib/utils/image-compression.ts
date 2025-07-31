@@ -199,8 +199,8 @@ async function getImageDimensions(file: File): Promise<{ width: number; height: 
  */
 export function base64ToFile(base64: string, filename: string): File {
 	const arr = base64.split(',')
-	const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/jpeg'
-	const bstr = atob(arr[1])
+	const mime = arr[0]?.match(/:(.*?);/)?.[1] || 'image/jpeg'
+	const bstr = atob(arr[1] || '')
 	let n = bstr.length
 	const u8arr = new Uint8Array(n)
 

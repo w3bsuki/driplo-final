@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { _X} from 'lucide-svelte';
 	import { fade, scale } from 'svelte/transition';
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';
@@ -125,8 +124,8 @@
 		<WizardHeader
 			currentStep={wizardState.state.currentStep}
 			totalSteps={wizardState.state.totalSteps}
-			stepTitle={wizardState.getCurrentStepInfo().title}
-			stepDescription={wizardState.getCurrentStepInfo().description}
+			stepTitle={wizardState.getCurrentStepInfo()?.title || ''}
+			stepDescription={wizardState.getCurrentStepInfo()?.description || ''}
 			completionPercentage={wizardState.getCompletionPercentage()}
 			isStepCompleted={wizardState.isStepCompleted}
 		/>
@@ -146,7 +145,7 @@
 						<span class="text-lg font-semibold text-gray-600">{wizardState.state.currentStep}</span>
 					</div>
 					<h3 class="text-lg font-medium text-gray-900 mb-2">
-						{wizardState.getCurrentStepInfo().title}
+						{wizardState.getCurrentStepInfo()?.title || ''}
 					</h3>
 					<p class="text-sm text-gray-600 mb-4">
 						This step component is being implemented...

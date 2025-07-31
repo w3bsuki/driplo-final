@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { goto } from '$app/navigation';
-	import { _ChevronRight} from 'lucide-svelte';
-	import type { _Category} from '$lib/types';
+	import { ChevronRight } from 'lucide-svelte';
+	import type { UnifiedCategory as Category } from '$lib/types';
 
 	interface Props {
 		categories?: any[];

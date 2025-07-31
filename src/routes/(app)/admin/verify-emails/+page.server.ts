@@ -1,5 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
+import { generateCSRFToken, csrfProtectedAction } from '$lib/server/csrf'
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { supabase, user } = locals;
@@ -10,24 +11,26 @@ export const load: PageServerLoad = async ({ locals }) => {
 	
 	// Check if user is admin
 	const { data: adminData } = await supabase
-		.from('admin_users')
+		.from('admin_users' as any)
 		.select('*')
 		.eq('user_id', user?.id)
 		.single();
 	
-	if (!adminData || !adminData?.can_verify_emails) {
+	if (!adminData || !(adminData as any)?.can_verify_emails) {
 		throw error(403, 'Unauthorized');
 	}
 	
 	// Get all unverified users using RPC
 	const { data: unverifiedUsers, error: usersError } = await supabase
-		.rpc('get_unverified_users_for_admin');
+		.rpc('get_unverified_users_for_admin', {});
 	
 	if (usersError) {
 		console?.error('Error fetching unverified users:', usersError);
 		return {
+		csrfToken: generateCSRFToken(),
 			unverifiedUsers: []
-		};
+		
+	};
 	}
 	
 	return {
@@ -52,7 +55,7 @@ export const actions = {
 		
 		try {
 			// Call the admin function to verify email
-			const { _data, error: verifyError } = await supabase
+			const { error: verifyError } = await supabase
 				.rpc('admin_verify_user_email', {
 					target_user_id: targetUserId
 				});

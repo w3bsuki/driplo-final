@@ -221,6 +221,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 				message: 'Payout rejected successfully'
 			});
 
+		} else {
+			return apiError('Invalid action. Must be either "approve" or "reject"', 400);
 		}
 
 	} catch (error) {

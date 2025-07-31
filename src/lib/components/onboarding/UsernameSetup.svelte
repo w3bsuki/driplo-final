@@ -17,7 +17,7 @@
 		error = $bindable('')
 	}: Props = $props();
 	
-	const supabase = $derived($page.data.supabase);
+	const supabase = $derived($page.data['supabase']);
 	let checkTimeout: NodeJS.Timeout;
 	
 	// Username validation rules

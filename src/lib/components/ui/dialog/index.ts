@@ -1,4 +1,5 @@
-import Dialog from './Dialog.svelte';
+// Compatibility layer - routes to unified Modal component
+import Dialog from '../compat/DialogCompat.svelte';
 import DialogContent from './DialogContent.svelte';
 import DialogHeader from './DialogHeader.svelte';
 import DialogTitle from './DialogTitle.svelte';

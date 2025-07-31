@@ -12,7 +12,7 @@
 	import PaymentSelector from './checkout-modal/PaymentSelector.svelte';
 	import PaymentProcessor from './checkout-modal/PaymentProcessor.svelte';
 	
-	// import * as m from '$lib/paraglide/messages.js';
+	import * as m from '$lib/paraglide/messages.js';
 
 	interface PaymentResult {
 		success: boolean;
@@ -46,10 +46,10 @@
 			// Redirect to order confirmation or handle success
 			if (result?.order_id) {
 				// Navigate to order confirmation page
-				window?.location.href = `/orders/${result?.order_id}`;
+				if (window) window.location.href = `/orders/${result?.order_id}`;
 			} else if (result?.payment_intent_id) {
 				// Navigate to order confirmation with payment intent
-				window?.location.href = `/order-confirmation?payment_intent=${result?.payment_intent_id}`;
+				if (window) window.location.href = `/order-confirmation?payment_intent=${result?.payment_intent_id}`;
 			}
 		}
 	}
@@ -87,11 +87,6 @@
 	// Handle payment provider changes
 	function handleProviderChange(provider: 'stripe' | 'revolut_manual') {
 		checkoutState?.setPaymentProvider(provider);
-	}
-
-	// Check if checkout form is valid
-	function _isCheckoutValid(): boolean {
-		return checkoutState?.isShippingAddressValid && checkoutState?.totalAmount > 0;
 	}
 </script>
 

@@ -23,7 +23,7 @@
                 <!-- Message thread -->
                 <div class="lg:col-span-2">
                     <MessageThread 
-                        conversationId={$page.params.id} 
+                        conversationId={$page.params.id || ''} 
                         userId={data.session?.user.id || ''} 
                         supabase={data.supabase}
                     />

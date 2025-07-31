@@ -4,7 +4,7 @@
     import type { PageData } from './$types';
     import { Package, ShoppingBag, TrendingUp, Calendar, Filter, Download, ChevronDown, BarChart3 } from 'lucide-svelte';
     
-    let { _data}: { data: PageData } = $props();
+    let { data }: { data: PageData } = $props();
     
     let activeTab = $derived($page?.url.searchParams?.get('tab') || 'all');
     let statusFilter = $derived($page?.url.searchParams?.get('status') || null);
@@ -37,13 +37,13 @@
             if (response?.ok) {
                 const blob = await response?.blob();
                 const url = window?.URL.createObjectURL(blob);
-                const a = document?.createElement('a');
-                a?.href = url;
-                a?.download = `orders-${new Date().toISOString().split('T')[0]}.${format}`;
-                document?.body.appendChild(a);
-                a?.click();
-                window?.URL.revokeObjectURL(url);
-                document?.body.removeChild(a);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `orders-${new Date().toISOString().split('T')[0]}.${format}`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
             }
         } catch (error) {
             console?.error('Export failed:', error);

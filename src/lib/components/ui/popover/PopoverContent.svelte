@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext, _onMount, tick } from 'svelte';
+	import { getContext, onMount, tick } from 'svelte';
 	import { cn } from '$lib/utils';
 	import type { Snippet } from 'svelte';
 	import type { Writable } from 'svelte/store';
@@ -27,7 +27,7 @@
 
 	const { isOpen, setOpen } = context;
 
-	let contentEl: HTMLDivElement;
+	let contentEl: HTMLDivElement | null;
 
 	function handleClickOutside(e: MouseEvent) {
 		if (contentEl && !contentEl.contains(e.target as Node)) {

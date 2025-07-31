@@ -21,22 +21,22 @@ export const load: PageServerLoad = async ({ locals }) => {
 	}
 
 	// Check if already a brand
-	if (profile?.account_type === 'brand') {
+	if ((profile as any)?.account_type === 'brand') {
 		// Check if brand profile exists
 		const { data: brandProfile } = await supabase
-			.from('brand_profiles')
+			.from('brand_profiles' as any)
 			.select('brand_slug')
 			.eq('user_id', session?.user.id)
 			.single();
 
-		if (brandProfile?.brand_slug) {
-			throw redirect(303, `/brands/${brandProfile?.brand_slug}`);
+		if ((brandProfile as any)?.brand_slug) {
+			throw redirect(303, `/brands/${(brandProfile as any)?.brand_slug}`);
 		}
 	}
 
 	// Get existing brand profile if any (for editing)
 	const { data: existingBrandProfile } = await supabase
-		.from('brand_profiles')
+		.from('brand_profiles' as any)
 		.select('*')
 		.eq('user_id', session?.user.id)
 		.single();

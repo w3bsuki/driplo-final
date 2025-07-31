@@ -1,13 +1,7 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import Button from '$lib/components/ui/button.svelte';
-	import {
-		Select,
-		SelectContent,
-		SelectItem,
-		SelectTrigger,
-		SelectValue
-	} from '$lib/components/ui/select';
+	import * as Select from '$lib/components/ui/select';
 	import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-svelte';
 
 	interface Props {
@@ -55,21 +49,21 @@
 	<div class="flex items-center space-x-6 lg:space-x-8">
 		<div class="flex items-center space-x-2">
 			<p class="text-sm font-medium">Rows per page</p>
-			<Select
+			<Select.Root
 				value={pageSize.toString()}
 				onValueChange={handlePageSizeChange}
 			>
-				<SelectTrigger class="h-8 w-[70px]">
-					<SelectValue placeholder={pageSize.toString()} />
-				</SelectTrigger>
-				<SelectContent side="top">
+				<Select.Trigger class="h-8 w-[70px]">
+					{pageSize}
+				</Select.Trigger>
+				<Select.Content side="top">
 					{#each pageSizeOptions as option}
-						<SelectItem value={option.toString()}>
+						<Select.Item value={option.toString()}>
 							{option}
-						</SelectItem>
+						</Select.Item>
 					{/each}
-				</SelectContent>
-			</Select>
+				</Select.Content>
+			</Select.Root>
 		</div>
 		<div class="flex w-[100px] items-center justify-center text-sm font-medium">
 			Page {page} of {totalPages}

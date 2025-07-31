@@ -3,8 +3,8 @@ import { STRIPE_SECRET_KEY } from '$env/static/private';
 import type { RequestHandler } from './$types';
 import { z } from 'zod';
 import { 
-  _apiError, 
-  _apiSuccess, 
+  apiError, 
+  apiSuccess, 
   requireAuth, 
   validateRequest,
   handleDatabaseError,
@@ -17,7 +17,7 @@ import {
 } from '$lib/server/api-utils';
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  apiVersion: '2024-06-20'
+  apiVersion: '2025-06-30.basil'
 });
 
 // Request validation schema
@@ -228,7 +228,7 @@ export const POST: RequestHandler = async (event) => {
           transaction_id: orderRef,
           seller_id: listing?.seller_id,
           amount: sellerPayoutAmount,
-          seller_revtag: sellerProfile?.revtag || '@unknown',
+          seller_revtag: (sellerProfile as any)?.revtag || '@unknown',
           status: 'pending',
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()

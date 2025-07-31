@@ -14,6 +14,7 @@ export { Label } from './label/index.js';
 export { Textarea } from './textarea/index.js';
 export { default as Spinner } from './Spinner.svelte';
 export { default as LazyModal } from './LazyModal.svelte';
+export { default as Modal } from './Modal.svelte';
 export { default as Skeleton } from './skeleton.svelte';
 export { default as PasswordStrength } from './PasswordStrength.svelte';
 export { default as Confetti } from './Confetti.svelte';

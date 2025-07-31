@@ -62,7 +62,6 @@ export const POST: RequestHandler = async (event) => {
 
 		// Upload to Supabase Storage with retry
 		let uploadError = null
-		let _data = null
 		
 		for (let attempt = 1; attempt <= 3; attempt++) {
 			try {
@@ -89,7 +88,6 @@ export const POST: RequestHandler = async (event) => {
 						await new Promise(resolve => setTimeout(resolve, 1000 * attempt))
 					}
 				} else {
-					data = result?.data
 					uploadError = null
 					break
 				}

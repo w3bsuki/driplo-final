@@ -1,9 +1,10 @@
-export { default as AlertDialog } from './AlertDialog.svelte';
-export { default as AlertDialogTrigger } from './AlertDialogTrigger.svelte';
-export { default as AlertDialogContent } from './AlertDialogContent.svelte';
-export { default as AlertDialogHeader } from './AlertDialogHeader.svelte';
+// Compatibility layer - routes to unified Modal component
+export { default as AlertDialog } from '../compat/AlertDialogCompat.svelte';
+export { default as AlertDialogTrigger } from '../compat/AlertDialogTriggerCompat.svelte';
+export { default as AlertDialogContent } from '../compat/AlertDialogContentCompat.svelte';
+export { default as AlertDialogHeader } from '../compat/AlertDialogHeaderCompat.svelte';
 export { default as AlertDialogTitle } from './AlertDialogTitle.svelte';
 export { default as AlertDialogDescription } from './AlertDialogDescription.svelte';
-export { default as AlertDialogFooter } from './AlertDialogFooter.svelte';
-export { default as AlertDialogAction } from './AlertDialogAction.svelte';
-export { default as AlertDialogCancel } from './AlertDialogCancel.svelte';
+export { default as AlertDialogFooter } from '../compat/AlertDialogFooterCompat.svelte';
+export { default as AlertDialogAction } from '../compat/AlertDialogActionCompat.svelte';
+export { default as AlertDialogCancel } from '../compat/AlertDialogCancelCompat.svelte';

@@ -465,7 +465,7 @@ class EmailService {
     `;
 
     return await this.send({
-      to: recipient.email,
+      to: recipient.email || '',
       subject,
       html
     });

@@ -18,7 +18,7 @@
 	let showResendForm = $state(false)
 	
 	// Use form data to preserve values on validation errors
-	let email = $state(form?.(email ?? ''))
+	let email = $state(form?.['email'] ?? '')
 	let password = $state('')
 	let rememberMe = $state(false)
 
@@ -69,9 +69,9 @@
 		}
 		
 		// Handle form validation errors
-		if (form?.error) {
-			toast?.error(form.error)
-			if (form.error.includes('verify your email')) {
+		if (form?.['error']) {
+			toast?.error(form['error'])
+			if (form['error'].includes('verify your email')) {
 				showResendForm = true
 			}
 		}
@@ -216,7 +216,7 @@
 						disabled={isSubmitting}
 						autocomplete="email"
 						size="lg"
-						class={form?.error && form.error.includes('email') ? 'border-red-500' : ''}
+						class={form?.['error'] && form['error'].includes('email') ? 'border-red-500' : ''}
 					/>
 				</div>
 

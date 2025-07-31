@@ -22,7 +22,7 @@ export const load: PageServerLoad = async ({ locals }) => {
       // Use optimized RPC functions to reduce queries
       const [categoriesResult, featuredResult] = await Promise?.all([
         // Get main categories with product counts in single query
-        locals?.supabase.rpc('get_categories_with_counts'),
+        locals?.supabase.rpc('get_categories_with_counts', {}),
 
         // Get featured listings with all related data
         locals?.supabase.rpc('get_homepage_listings', {

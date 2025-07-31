@@ -16,7 +16,7 @@
 	let selectedSeller: Profile | null = $state(null);
 	let isModalOpen = $state(false);
 	let sellerTopListings: Listing[] = $state([]);
-	let _isLoadingListings = $state(false);
+	let isLoadingListings = $state(false);
 
 	async function handleSellerClick(seller: Profile) {
 		selectedSeller = seller;

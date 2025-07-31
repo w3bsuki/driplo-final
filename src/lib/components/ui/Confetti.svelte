@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	let canvas: HTMLCanvasElement;
+	let canvas: HTMLCanvasElement | null;
 	let particles: Particle[] = [];
 
 	class Particle {
@@ -19,7 +19,8 @@
 			this.y = y;
 			this.vx = (Math.random() - 0.5) * 10;
 			this.vy = Math.random() * -15 - 5;
-			this.color = ['#3B82F6', '#8B5CF6', '#EC4899', '#10B981', '#F59E0B'][Math.floor(Math.random() * 5)];
+			const colors = ['#3B82F6', '#8B5CF6', '#EC4899', '#10B981', '#F59E0B'];
+		this.color = colors[Math.floor(Math.random() * colors.length)] || '#3B82F6';
 			this.size = Math.random() * 6 + 4;
 			this.angle = Math.random() * Math.PI * 2;
 			this.angularVelocity = (Math.random() - 0.5) * 0.2;
@@ -65,14 +66,20 @@
 		let animationId: number;
 		
 		function animate() {
+			// Ensure both canvas and ctx are still available
+			if (!canvas || !ctx) return;
+			
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			
+			// Store canvas height to avoid repeated null checks
+			const canvasHeight = canvas.height;
 			
 			particles = particles.filter(particle => {
 				particle.update();
 				particle.draw(ctx);
 				
 				// Remove particles that are off screen
-				return particle.y < canvas.height + 20;
+				return particle.y < canvasHeight + 20;
 			});
 			
 			if (particles.length > 0) {
@@ -94,7 +101,7 @@
 <canvas
 	bind:this={canvas}
 	class="fixed inset-0 pointer-events-none z-50"
-/>
+></canvas>
 
 <style>
 	canvas {

@@ -38,7 +38,7 @@ export class ImageOptimizer {
 	private supabase: SupabaseClient<Database>;
 
 	constructor(supabase: SupabaseClient<Database>) {
-		this?.supabase = supabase;
+		this.supabase = supabase;
 	}
 
 	/**
@@ -78,7 +78,7 @@ export class ImageOptimizer {
 			.from(bucket)
 			.getPublicUrl(originalData?.path);
 
-		results?.original = {
+		results.original = {
 			url: originalUrl,
 			path: originalData?.path,
 			width: originalMetadata?.width || 0,
@@ -129,7 +129,7 @@ export class ImageOptimizer {
 			srcSetParts?.push(`${publicUrl} ${resizedMetadata?.width}w`);
 		}
 
-		results?.srcSet = srcSetParts?.join(', ');
+		results.srcSet = srcSetParts.join(', ');
 
 		return results as OptimizationResult;
 	}

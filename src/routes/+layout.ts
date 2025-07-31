@@ -5,7 +5,7 @@ import type { Database } from '$lib/types/db'
 import { createRoutePreloader } from '$lib/utils/lazy-load'
 
 // Create route preloader for heavy routes
-const routePreloader = isBrowser ? createRoutePreloader({
+const routePreloader = isBrowser() ? createRoutePreloader({
 	'/messages': () => import('$lib/components/messaging/MessageThread.svelte'),
 	'/sell': () => import('$lib/components/listings/CreateListingForm/CreateListingForm.svelte'),
 	'/checkout': () => import('$lib/components/checkout/CheckoutFlow.svelte'),
@@ -35,7 +35,7 @@ export const load: LayoutLoad = async ({ data, depends, fetch, url }) => {
 	})
 
 	// Preload routes based on current path (performance optimization)
-	if (isBrowser && routePreloader) {
+	if (isBrowser() && routePreloader) {
 		routePreloader.preloadMatchingRoutes(url.pathname);
 		
 		// Preload commonly accessed routes after page load
@@ -53,7 +53,7 @@ export const load: LayoutLoad = async ({ data, depends, fetch, url }) => {
 		session: data.session,
 		supabase,
 		user: data.user,
-		profile: data.profile,
+		profile: (data as any).profile,
 		categories: data.categories || [],
 		csrfToken: data.csrfToken
 	}

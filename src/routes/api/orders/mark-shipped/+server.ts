@@ -39,7 +39,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		}
 
 		// Check if already shipped
-		if (transaction?.item_shipped_at) {
+		if ((transaction as any)?.item_shipped_at) {
 			return json({ error: 'Item already marked as shipped' }, { status: 400 });
 		}
 
@@ -99,10 +99,10 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			.eq('id', transaction_id)
 			.single();
 
-		if (shippingData && shippingData?.buyer && shippingData?.listing) {
+		if (shippingData && (shippingData as any)?.buyer && (shippingData as any)?.listing) {
 			await emailService?.sendShippingUpdate(
-				shippingData?.buyer,
-				shippingData?.listing,
+				(shippingData as any)?.buyer,
+				(shippingData as any)?.listing,
 				tracking_number
 			);
 		}

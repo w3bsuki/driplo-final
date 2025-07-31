@@ -21,7 +21,7 @@
     } = $props();
     
     const lazyThread = createLazyComponent(
-        () => import('./MessageThread.svelte')
+        () => import('./MessageThread.svelte').then(m => ({ default: m.default || m }))
     );
     
     // Load component when conversationId is provided

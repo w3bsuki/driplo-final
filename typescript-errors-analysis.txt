@@ -1,0 +1,157 @@
+# TypeScript Errors Analysis
+Generated from typescript-errors-full.txt (5930 lines)
+
+## Summary Statistics
+- **Total Errors**: 527
+- **Total Warnings**: 112
+- **Total Files Affected**: 201
+
+## Error Categories Breakdown
+
+### 1. TypeScript Type Errors (Most Common - ~40%)
+- **Type Mismatches**: Properties not assignable to expected types
+- **Missing Properties**: Object literals missing required properties
+- **Null/Undefined Issues**: Type 'undefined' not assignable to type 'string'
+- **Index Signature Errors**: Properties must be accessed with bracket notation
+
+### 2. Svelte-Specific Warnings (~25%)
+- **Accessibility (a11y) Warnings**: 
+  - `a11y_click_events_have_key_events` - Click handlers need keyboard events
+  - `a11y_no_static_element_interactions` - Static elements with handlers need ARIA roles
+  - `a11y_label_has_associated_control` - Labels must be associated with controls
+  - `a11y_consider_explicit_label` - Buttons need text or aria-label
+
+### 3. JavaScript Parse Errors (~15%)
+- **Optional Chaining in Invalid Positions**: Cannot use `?.` in left-hand side of assignments
+- **Unexpected Tokens**: Syntax errors in template expressions
+- **Mixed Logical/Coalesce Operators**: Need parentheses when mixing && and ??
+
+### 4. Import/Export Errors (~10%)
+- **Missing Exports**: Modules have no default export
+- **Incorrect Import Names**: Using _ComponentProps instead of ComponentProps
+- **TypeScript Extension Issues**: Cannot use .ts extension in imports
+
+### 5. CSS/Style Errors (~5%)
+- **Invalid CSS Syntax**: Malformed rgba values (e.g., `rgba(0, 0, 0, 0?.15)`)
+- **Unused CSS Selectors**: Defined but not used in component
+
+### 6. Svelte 5 Migration Issues (~5%)
+- **Deprecated Features**: `<svelte:component>` deprecated in runes mode
+- **Non-reactive Updates**: Variables not declared with `$state()`
+- **Invalid Self-closing Tags**: `<textarea />` should be `<textarea></textarea>`
+
+## Top 20 Files with Most Errors
+
+1. **src/lib/components/checkout/checkout-modal/ShippingForm.svelte** - Missing message translations
+2. **src/lib/components/checkout/checkout-modal/PaymentSelector.svelte** - Missing message translations
+3. **src/lib/components/checkout/checkout-modal/PaymentInstructions.svelte** - Missing messages + syntax errors
+4. **src/lib/components/checkout/CheckoutFlow.svelte** - Type errors + missing formatCurrency arguments
+5. **src/routes/(app)/admin/users/+page.svelte** - Syntax errors with optional chaining
+6. **src/routes/(app)/brands/[slug]/+page.svelte** - Invalid component names in templates
+7. **src/routes/(app)/profile/settings/+page.svelte** - Invalid bind expressions
+8. **src/lib/components/ui/badge.svelte** - Type indexing errors
+9. **src/lib/components/listings/CreateListingForm/CreateListingForm.svelte** - Type incompatibilities
+10. **src/routes/(app)/onboarding/+page.svelte** - Missing 'auth' variable references
+11. **src/lib/components/checkout/CheckoutModal.svelte** - Optional chaining in assignments
+12. **src/routes/(auth)/register/+page.svelte** - Import errors + unused variables
+13. **src/lib/components/shared/CategoryDropdown.svelte** - Missing properties on types
+14. **src/lib/components/layout/header/Header.svelte** - Type mismatches with User types
+15. **src/routes/(app)/wishlist/+page.svelte** - Complex expression parsing errors
+16. **src/routes/(app)/listings/[id]/+page.svelte** - Logical operator precedence issues
+17. **src/routes/(app)/orders/+page.svelte** - Optional chaining in left-hand side
+18. **src/lib/components/ui/Confetti.svelte** - Null reference errors
+19. **src/lib/utils/error-handling.ts** - Return type issues
+20. **src/routes/brands/settings/+page.svelte** - Multiple form label warnings
+
+## Most Common Error Patterns
+
+### Pattern 1: Missing Paraglide Message Keys (~80 occurrences)
+```typescript
+Element implicitly has an 'any' type because expression of type '"key_name"' can't be used to index type 'typeof import("$lib/paraglide/messages")'
+```
+**Fix**: Add missing translation keys to paraglide messages
+
+### Pattern 2: Optional Chaining in Assignments (~30 occurrences)
+```typescript
+window?.location.href = '/path' // Invalid
+```
+**Fix**: Use proper null checks before assignment
+
+### Pattern 3: Type Mismatches (~50 occurrences)
+```typescript
+Type 'string | undefined' is not assignable to type 'string'
+```
+**Fix**: Add proper null checks or use non-null assertions where safe
+
+### Pattern 4: Missing Function Arguments (~20 occurrences)
+```typescript
+formatCurrency(amount) // Expected 2 arguments
+```
+**Fix**: Provide all required function arguments
+
+### Pattern 5: Accessibility Warnings (~40 occurrences)
+```svelte
+<div onclick={handler}> // Needs keyboard handler and ARIA role
+```
+**Fix**: Add keyboard handlers and appropriate ARIA roles
+
+### Pattern 6: Import/Export Issues (~15 occurrences)
+```typescript
+import { _Button } from '$lib/components/ui' // Should be Button
+```
+**Fix**: Use correct export names
+
+### Pattern 7: CSS Syntax Errors (~10 occurrences)
+```css
+rgba(0, 0, 0, 0?.15) // Invalid syntax
+```
+**Fix**: Remove optional chaining from CSS values
+
+## Systematic Fix Strategies
+
+### 1. **Paraglide Messages** (Highest Impact)
+- Create a script to extract all missing message keys
+- Add them to the paraglide messages file in bulk
+- Consider using a fallback pattern for missing translations
+
+### 2. **Type Safety**
+- Add proper null checks for optional values
+- Use type guards where appropriate
+- Fix function signatures to match expected types
+
+### 3. **Accessibility**
+- Add keyboard handlers to all click handlers
+- Add appropriate ARIA roles to interactive elements
+- Associate all labels with their controls
+
+### 4. **Import Cleanup**
+- Fix all import names (remove underscores)
+- Remove unused imports
+- Ensure correct module exports
+
+### 5. **Svelte 5 Migration**
+- Replace deprecated `<svelte:component>` with dynamic components
+- Fix self-closing tags for non-void elements
+- Update reactive declarations to use `$state()`
+
+### 6. **Expression Fixes**
+- Fix optional chaining usage (not in left-hand assignments)
+- Add parentheses for mixed logical operators
+- Fix malformed template expressions
+
+## Priority Actions
+
+1. **Critical**: Fix JavaScript parse errors that prevent compilation
+2. **High**: Fix TypeScript errors that break type safety
+3. **Medium**: Address accessibility warnings for better UX
+4. **Low**: Clean up unused CSS and deprecated features
+
+## Automated Fix Opportunities
+
+1. **Paraglide Messages**: Script to add all missing keys with placeholder values
+2. **Import Names**: Find/replace all `_ComponentName` patterns
+3. **Optional Chaining**: Script to fix assignment patterns
+4. **CSS Values**: Regex to fix malformed rgba values
+5. **Accessibility**: Add keyboard handlers where onclick exists
+
+This analysis provides a roadmap for systematically addressing all TypeScript errors in the codebase.

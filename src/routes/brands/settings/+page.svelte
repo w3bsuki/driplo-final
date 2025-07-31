@@ -71,7 +71,7 @@
 		
 		while (true) {
 			const { data } = await supabase
-				.from('brand_profiles')
+				.from('brand_profiles' as any)
 				.select('id')
 				.eq('brand_slug', slug)
 				.single();
@@ -102,7 +102,7 @@
 			
 			if (fetchedProfile) {
 				// Update the local state with fetched profile
-				data?.profile = fetchedProfile;
+				if (data) data.profile = fetchedProfile;
 			}
 		}
 		
@@ -125,7 +125,7 @@
 		const socialAccounts = data?.socialMediaAccounts;
 		
 		if (socialAccounts) {
-			socialAccounts?.forEach((account: { platform: string; username: string }) => {
+			(socialAccounts as any)?.forEach((account: { platform: string; username: string }) => {
 				switch (account?.platform) {
 					case 'twitter':
 						brandTwitter = account?.username;
@@ -169,7 +169,7 @@
 			
 			// Create brand profile
 			const { error: brandProfileError } = await supabase
-				.from('brand_profiles')
+				.from('brand_profiles' as any)
 				.insert({
 					user_id: user?.id,
 					brand_name: brandName,
@@ -221,7 +221,7 @@
 			for (const social of socialPlatforms) {
 				if (social?.username) {
 					await supabase
-						.from('social_media_accounts')
+						.from('social_media_accounts' as any)
 						.upsert({
 							user_id: user?.id,
 							platform: social?.platform,
@@ -533,7 +533,7 @@
 									bind:value={brandDescription}
 									rows="3"
 									class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-								/>
+								></textarea>
 							</div>
 							
 							<div>
@@ -545,7 +545,7 @@
 									rows="5"
 									placeholder="Tell your brand's story..."
 									class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-								/>
+								></textarea>
 							</div>
 							
 							<div class="grid md:grid-cols-2 gap-6">

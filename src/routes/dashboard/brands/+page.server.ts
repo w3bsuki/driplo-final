@@ -45,7 +45,7 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 	// Format requests with username
 	const formattedRequests = requests?.map(request => ({
 		...request,
-		username: request?.profiles?.username || 'unknown'
+		username: (request as any)?.profiles?.username || 'unknown'
 	})) || [];
 	
 	return {

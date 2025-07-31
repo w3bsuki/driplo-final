@@ -71,7 +71,11 @@ export async function uploadImage(
 						maxSizeMB: 4.5, // Leave some buffer under 5MB limit
 						handleHEIC: true
 					})
-					processedFile = compressed[0]
+					if (compressed[0]) {
+						processedFile = compressed[0]
+					} else {
+						throw new Error('Compression returned no file')
+					}
 					console.log(`Processed image: ${file.name} (${file.type || 'unknown'}) from ${(file.size / 1024 / 1024).toFixed(2)}MB to ${(processedFile.size / 1024 / 1024).toFixed(2)}MB`)
 				} catch (compressionError) {
 					console.warn('Image compression failed, using original:', compressionError)
@@ -117,7 +121,7 @@ export async function uploadImage(
 				
 				// If not the last attempt, wait before retrying
 				if (attempt < maxRetries) {
-					console.warn(`Upload attempt ${attempt} failed, retrying in ${attempt}s...`, lastError.message);
+					console.warn(`Upload attempt ${attempt} failed, retrying in ${attempt}s...`, lastError?.message || 'Unknown error');
 					await new Promise(resolve => setTimeout(resolve, attempt * 1000));
 				}
 			}
@@ -153,7 +157,9 @@ export async function uploadMultipleImages(
 	const results: UploadResult[] = []
 	
 	for (let i = 0; i < files.length; i++) {
-		const result = await uploadImage(files[i], bucket, supabase, userId)
+		const file = files[i]
+		if (!file) continue
+		const result = await uploadImage(file, bucket, supabase, userId)
 		results.push(result)
 		
 		if (onProgress) {

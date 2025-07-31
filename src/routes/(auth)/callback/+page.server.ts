@@ -32,11 +32,15 @@ export const load: PageServerLoad = async ({ url, locals: { supabase, safeGetSes
 			}
 
 			// Log successful authentication
-			await supabase?.rpc('log_auth_event', {
-				p_user_id: user?.id,
-				p_action: 'oauth_login',
-				p_success: true
-			}).catch(console?.error)
+			try {
+				await supabase?.rpc('log_auth_event', {
+					user_id: user?.id,
+					p_action: 'oauth_login',
+					p_success: true
+				})
+			} catch (error) {
+				console?.error(error)
+			}
 
 			// Successfully authenticated, redirect to next page
 			redirect(303, `/${next?.slice(1)}`)

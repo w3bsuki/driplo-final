@@ -14,7 +14,7 @@ export const POST: RequestHandler = async ({ request, locals: { supabase } }) =>
 		
 		// Upsert draft (insert or update)
 		const { data, error: dbError } = await supabase
-			.from('listing_drafts')
+			.from('listing_drafts' as any)
 			.upsert({
 				user_id: user?.id,
 				form_data: formData
@@ -51,7 +51,7 @@ export const GET: RequestHandler = async ({ locals: { supabase } }) => {
 	
 	try {
 		const { data, error: dbError } = await supabase
-			.from('listing_drafts')
+			.from('listing_drafts' as any)
 			.select('*')
 			.eq('user_id', user?.id)
 			.single()
@@ -66,8 +66,8 @@ export const GET: RequestHandler = async ({ locals: { supabase } }) => {
 		}
 		
 		return json({ 
-			draft: (data && typeof data === 'object' && 'form_data' in data) ? data?.form_data : null,
-			updated_at: data?.updated_at
+			draft: (data && typeof data === 'object' && 'form_data' in data) ? (data as any)?.form_data : null,
+			updated_at: (data as any)?.updated_at
 		})
 	} catch (err: any) {
 		console?.error('Draft load error:', err)
@@ -86,7 +86,7 @@ export const DELETE: RequestHandler = async ({ locals: { supabase } }) => {
 	
 	try {
 		const { error: dbError } = await supabase
-			.from('listing_drafts')
+			.from('listing_drafts' as any)
 			.delete()
 			.eq('user_id', user?.id)
 		

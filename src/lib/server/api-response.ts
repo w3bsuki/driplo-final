@@ -221,15 +221,15 @@ export async function validateAuth(event: RequestEvent): Promise<{ user: any; se
  * Rate limiting helper (to be used with database rate limiter)
  */
 export async function checkRateLimit(
-  event: RequestEvent,
+  _event: RequestEvent,
   _identifier: string,
   _limit: number = 60,
   _window: number = 60000
 ): Promise<void> {
   // This would integrate with your database rate limiter
   // For now, just a placeholder
-  const _userAgent = event.request.headers.get('user-agent') || 'unknown';
-  const _ip = event.getClientAddress();
+  // const _userAgent = event.request.headers.get('user-agent') || 'unknown';
+  // const _ip = event.getClientAddress();
   
   // In a real implementation, you'd check against your rate limiting storage
   // and throw an ApiError if limit exceeded

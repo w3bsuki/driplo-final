@@ -1,6 +1,6 @@
 <script>
 	import '../app.css';
-	import Header from '$lib/components/layout/Header.svelte';
+	import Header from '$lib/components/layout/header/Header.svelte';
 	import MobileNav from '$lib/components/layout/MobileNav.svelte';
 	import PromotionalBanner from '$lib/components/layout/PromotionalBanner.svelte';
 	import CookieConsent from '$lib/components/cookie-consent/CookieConsent.svelte';

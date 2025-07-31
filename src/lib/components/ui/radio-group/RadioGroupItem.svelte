@@ -35,7 +35,7 @@
 	{...restProps}
 >
 	<RadioGroupPrimitive?.ItemIndicator class="flex items-center justify-center">
-		<div class="h-2 w-2 rounded-full bg-current" />
+		<div class="h-2 w-2 rounded-full bg-current"></div>
 	</RadioGroupPrimitive?.ItemIndicator>
 	{#if children}
 		{@render children()}

@@ -140,7 +140,9 @@ export async function uploadMultipleImages(
 	const results: UploadResult[] = []
 	
 	for (let i = 0; i < files.length; i++) {
-		const result = await uploadImage(files[i], bucket, supabase, userId, optimize)
+		const file = files[i]
+		if (!file) continue
+		const result = await uploadImage(file, bucket, supabase, userId, optimize)
 		results?.push(result)
 		
 		if (onProgress) {
@@ -182,8 +184,8 @@ export async function deleteImage(
 export function fileToBase64(file: File): Promise<string> {
 	return new Promise((resolve, reject) => {
 		const reader = new FileReader()
-		reader?.readAsDataURL(file)
-		reader?.onload = () => resolve(reader?.result as string)
-		reader?.onerror = error => reject(error)
+		reader.readAsDataURL(file)
+		reader.onload = () => resolve(reader.result as string)
+		reader.onerror = error => reject(error)
 	})
 }

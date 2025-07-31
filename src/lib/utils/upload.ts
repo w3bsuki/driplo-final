@@ -43,6 +43,10 @@ export async function deleteListingImage(
 	}
 
 	const filePath = pathParts[1]
+	if (!filePath) {
+		console.error('File path not found in URL')
+		return
+	}
 
 	const { error } = await supabase.storage
 		.from('listings')

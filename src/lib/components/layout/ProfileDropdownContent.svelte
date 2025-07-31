@@ -3,20 +3,18 @@
 	// User icon not used, removed import
 	import LanguageSwitcher from './LanguageSwitcher.svelte';
 	// import * as m from '$lib/paraglide/messages.js';
-	import type { User, Session } from '@supabase/supabase-js';
+	import type { User } from '@supabase/supabase-js';
 	import type { ExtendedProfile } from '$lib/types';
-	import { DropdownMenu, _Button} from '$lib/components/ui';
+	import { DropdownMenu, Button } from '$lib/components/ui';
 	
 	interface Props {
 		user: User | null;
-		session: Session | null;
 		profile: ExtendedProfile | null;
 		brandSlug?: string | null;
 		onSignOut: () => void;
-		open?: boolean;
 	}
 	
-	let { user, _session, profile, brandSlug = null, onSignOut, _open}: Props = $props();
+	let { user, profile, brandSlug = null, onSignOut}: Props = $props();
 	
 	// Badge mapping
 	const badgeConfig: Record<string, { emoji: string; label: string }> = {
@@ -41,9 +39,9 @@
 				alt="Profile" 
 				class="h-8 w-8 rounded-sm object-cover" 
 			/>
-			{#if profile?.badges?.length && profile.badges.length > 0}
+			{#if (profile as any)?.badges?.length && (profile as any).badges.length > 0}
 				<div class="absolute -bottom-1 -right-1 flex">
-					{#each profile.badges.slice(0, 2) as badge}
+					{#each (profile as any).badges.slice(0, 2) as badge}
 						{#if badgeConfig[badge]}
 							<span 
 								class="text-xs -ml-1 first:ml-0" 
@@ -59,8 +57,8 @@
 		<div class="flex-1">
 			<div class="flex items-center gap-1">
 				<p class="text-sm font-medium">{profile?.username || 'user'}</p>
-				{#if profile?.badges?.length && profile.badges.length > 2}
-					{#each profile.badges.slice(2) as badge}
+				{#if (profile as any)?.badges?.length && (profile as any).badges.length > 2}
+					{#each (profile as any).badges.slice(2) as badge}
 						{#if badgeConfig[badge]}
 							<span 
 								class="text-xs" 
@@ -136,7 +134,7 @@
 			</DropdownMenu.Item>
 		{/if}
 		
-		{#if profile?.is_admin}
+		{#if (profile as any)?.is_admin}
 			<DropdownMenu.Item
 				onSelect={() => goto('/admin')}
 				class="flex flex-col items-center gap-1 p-2 rounded-sm bg-primary/10 hover:bg-primary/20 text-center col-span-2"

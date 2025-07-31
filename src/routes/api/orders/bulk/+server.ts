@@ -57,9 +57,9 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
                     // Update order status to shipped
                     await locals.supabase.rpc('update_order_status', {
-                        p_order_id: orderId,
+                        order_id: orderId,
                         p_new_status: 'shipped',
-                        p_user_id: session.user.id,
+                        user_id: session.user.id,
                         p_reason: 'Bulk action: marked as shipped',
                         p_metadata: { bulk_action: true }
                     });
@@ -85,9 +85,9 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
                     // Update order status to cancelled
                     await locals.supabase.rpc('update_order_status', {
-                        p_order_id: orderId,
+                        order_id: orderId,
                         p_new_status: 'cancelled',
-                        p_user_id: session.user.id,
+                        user_id: session.user.id,
                         p_reason: 'Bulk action: cancelled',
                         p_metadata: { bulk_action: true }
                     });

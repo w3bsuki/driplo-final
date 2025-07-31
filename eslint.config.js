@@ -1,5 +1,4 @@
-// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-import storybook from "eslint-plugin-storybook";
+// Storybook plugin removed as dependency not present in package.json
 
 import js from '@eslint/js';
 import ts from '@typescript-eslint/eslint-plugin';
@@ -52,8 +51,7 @@ export default [js.configs.recommended, {
         'svelte/no-at-html-tags': 'off',
         // Prevent inline styles - critical for design system consistency
         'svelte/no-inline-styles': ['error', {
-            allowTransitions: false,
-            allowAnimations: false
+            allowTransitions: false
         }],
         // Warn about unused CSS custom properties
         'svelte/no-unused-class-name': 'warn',
@@ -74,4 +72,4 @@ export default [js.configs.recommended, {
         'vite.config.js.timestamp-*',
         'vite.config.ts.timestamp-*'
     ]
-}, ...storybook.configs["flat/recommended"]];
+}];

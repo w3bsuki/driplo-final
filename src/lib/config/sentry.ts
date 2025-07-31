@@ -3,7 +3,7 @@ import { dev } from '$app/environment';
 // Sentry configuration constants
 export const SENTRY_CONFIG = {
   // Environment configuration
-  environment: dev ? 'development' : (import.meta.env.VERCEL_ENV || 'production'),
+  environment: dev ? 'development' : (import.meta.env['VERCEL_ENV'] || 'production'),
   
   // Sample rates
   tracesSampleRate: dev ? 1.0 : 0.1, // 100% in dev, 10% in production
@@ -15,7 +15,7 @@ export const SENTRY_CONFIG = {
   sendDefaultPii: false, // Don't send personally identifiable information by default
   
   // Release tracking
-  release: import.meta.env.VERCEL_GIT_COMMIT_SHA || 'development',
+  release: import.meta.env['VERCEL_GIT_COMMIT_SHA'] || 'development',
   
   // Error filtering
   ignoreErrors: [

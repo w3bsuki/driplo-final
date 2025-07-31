@@ -148,7 +148,7 @@
                                         <img src={otherUser.avatar_url} alt={otherUser.username} width="48" height="48" class="w-full h-full rounded-full object-cover" />
                                     {:else}
                                         <div class="flex items-center justify-center h-full text-lg font-semibold">
-                                            {otherUser.username[0].toUpperCase()}
+                                            {otherUser.username[0]?.toUpperCase() || '?'}
                                         </div>
                                     {/if}
                                 </div>

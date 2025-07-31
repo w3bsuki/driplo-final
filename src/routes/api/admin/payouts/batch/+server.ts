@@ -27,11 +27,11 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     const { payout_ids, action, notes } = body;
 
     // Validate inputs
-    if (!payout_ids || !Array?.isArray(payout_ids) || payout_ids?.length ?? 0 === 0) {
+    if (!payout_ids || !Array.isArray(payout_ids) || (payout_ids?.length ?? 0) === 0) {
       return apiError('Invalid payout IDs', 400);
     }
 
-    if (payout_ids?.length ?? 0 > 50) {
+    if ((payout_ids?.length ?? 0) > 50) {
       return apiError('Cannot process more than 50 payouts at once', 400);
     }
 
@@ -147,7 +147,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
           .in('id', transactionIds);
 
         // Log admin actions in batch
-        const logPromises = updatedPayouts?.map?.((payout => 
+        const logPromises = updatedPayouts?.map(payout => 
           logAdminAction(locals?.supabase, {
             action: AdminActions?.PAYOUT_REJECT,
             resourceType: ResourceTypes?.PAYOUT,

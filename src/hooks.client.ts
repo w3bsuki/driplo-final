@@ -2,10 +2,10 @@ import { handleErrorWithSentry, replayIntegration } from '@sentry/sveltekit';
 import * as Sentry from '@sentry/sveltekit';
 import { SENTRY_CONFIG } from '$lib/config/sentry';
 import type { HandleClientError } from '@sveltejs/kit';
-import { initWebVitals } from '$lib/utils/webVitals';
+import { initWebVitals } from '$lib/utils/web-vitals';
 
 // Try to get Sentry DSN from environment
-const PUBLIC_SENTRY_DSN = import.meta.env.PUBLIC_SENTRY_DSN || '';
+const PUBLIC_SENTRY_DSN = import.meta.env['PUBLIC_SENTRY_DSN'] || '';
 
 // Initialize Sentry only if DSN is provided
 if (PUBLIC_SENTRY_DSN) {
@@ -33,9 +33,6 @@ if (PUBLIC_SENTRY_DSN) {
     integrations: [
       replayIntegration(SENTRY_CONFIG.integrations.replay),
       Sentry.browserTracingIntegration({
-        // Enable navigation spans
-        enableNavigationSpans: true,
-        
         // Track initial page load
         enableInitialPageLoadSpan: true,
         
@@ -59,9 +56,6 @@ if (PUBLIC_SENTRY_DSN) {
     
     // Transport options
     transportOptions: {
-      // Retry failed requests
-      maxRetries: 3,
-      
       // Custom headers (if needed)
       headers: {},
     },
@@ -89,7 +83,7 @@ if (PUBLIC_SENTRY_DSN) {
           account_type: userData.account_type,
         });
       }
-    } catch (e) {
+    } catch (e: unknown) {
       // Ignore parsing errors
     }
   }

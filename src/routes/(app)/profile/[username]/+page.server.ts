@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	let brandProfile = null
 	if (profileData?.account_type === 'brand') {
 		const { data: brandData } = await locals?.supabase
-			.from('brand_profiles')
+			.from('brand_profiles' as any)
 			.select('*')
 			.eq('user_id', profileData?.id)
 			.maybeSingle()
@@ -62,7 +62,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	// Social media accounts
 	parallelQueries?.push(
 		locals?.supabase
-			.from('social_media_accounts')
+			.from('social_media_accounts' as any)
 			.select('*')
 			.eq('user_id', profileData?.id)
 	)
@@ -73,15 +73,15 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	let socialAccounts = []
 	
 	if (session?.user && session.user.id !== profileData?.id) {
-		isFollowing = !!results[0]?.data
-		socialAccounts = results[1]?.data || []
+		isFollowing = !!(results[0] as any)?.data
+		socialAccounts = (results[1] as any)?.data || []
 	} else {
-		socialAccounts = results[0]?.data || []
+		socialAccounts = (results[0] as any)?.data || []
 	}
 
 	// Get stats from RPC result (already optimized)
-	const totalListings = profileResult?.total_listings || 0
-	const totalLikes = profileResult?.total_likes || 0
+	const totalListings = (profileResult as any)?.total_listings || 0
+	const totalLikes = (profileResult as any)?.total_likes || 0
 	
 	return {
 		profile: {
@@ -92,7 +92,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			seller_rating_count: profileData?.seller_rating_count || 0,
 			response_time_hours: 24,
 			total_sales: profileData?.total_sales || 0,
-			verification_badges: profileData?.badges || []
+			verification_badges: (profileData as any)?.badges || []
 		},
 		brandProfile,
 		listings: listings || [],

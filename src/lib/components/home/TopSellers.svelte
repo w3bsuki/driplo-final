@@ -83,9 +83,9 @@
 						<!-- Status Badge -->
 						{#if getSellerBadge(seller)}
 							{@const badge = getSellerBadge(seller)}
-							{@const BadgeIcon = badge.icon}
+							{@const BadgeIcon = badge?.icon || (() => null)}
 							<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-white rounded-sm flex items-center justify-center border border-gray-200">
-								<BadgeIcon class="h-3 w-3 {badge.color}" />
+								<BadgeIcon class="h-3 w-3 {badge?.color || ''}" />
 							</div>
 						{/if}
 					</div>
@@ -106,7 +106,7 @@
 					</div>
 
 					<!-- Hover Effect -->
-					<div class="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-blue-600/10 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity duration-100 pointer-events-none" />
+					<div class="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-blue-600/10 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity duration-100 pointer-events-none"></div>
 				</button>
 			{/each}
 		</div>

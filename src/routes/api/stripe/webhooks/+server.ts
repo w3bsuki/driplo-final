@@ -1,4 +1,4 @@
-import { json, _text} from '@sveltejs/kit';
+import { json, text } from '@sveltejs/kit';
 import Stripe from 'stripe';
 import { STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET } from '$env/static/private';
 import type { RequestHandler } from './$types';
@@ -6,14 +6,14 @@ import { emailService } from '$lib/server/email';
 import { databaseRateLimiters } from '$lib/server/database-rate-limit';
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  apiVersion: '2024-06-20'
+  apiVersion: '2025-06-30.basil'
 });
 
 export const POST: RequestHandler = async (event) => {
   const { request, locals } = event;
   
   // Apply database-backed rate limiting (per IP for webhooks)
-  const rateLimitResponse = await databaseRateLimiters?.webhook(event);
+  const rateLimitResponse = await databaseRateLimiters.webhook(event);
   if (rateLimitResponse) {
     return rateLimitResponse;
   }
@@ -70,7 +70,7 @@ export const POST: RequestHandler = async (event) => {
     switch (stripeEvent?.type) {
       case 'payment_intent.succeeded': {
         const paymentIntent = stripeEvent?.data.object as Stripe.PaymentIntent;
-        const orderId = paymentIntent?.metadata.order_id;
+        const orderId = paymentIntent?.metadata['order_id'];
 
         if (!orderId) {
           console?.error('No order_id in payment intent metadata');
@@ -99,7 +99,7 @@ export const POST: RequestHandler = async (event) => {
             status: 'sold',
             updated_at: new Date().toISOString()
           })
-          .eq('id', paymentIntent?.metadata.listing_id);
+          .eq('id', paymentIntent?.metadata['listing_id'] || '');
 
         if (listingError) {
           console?.error('Failed to update listing:', listingError);
@@ -120,16 +120,16 @@ export const POST: RequestHandler = async (event) => {
         if (transactionData && transactionData?.buyer && transactionData?.seller && transactionData.listing) {
           // Send confirmation emails
           await emailService?.sendPaymentConfirmation(
-            transactionData?.buyer,
-            transactionData.listing,
-            transactionData
+            (transactionData as any)?.buyer,
+            (transactionData as any).listing,
+            transactionData as any
           );
 
           await emailService?.sendSaleConfirmation(
-            transactionData?.seller,
-            transactionData?.buyer,
-            transactionData.listing,
-            transactionData
+            (transactionData as any)?.seller,
+            (transactionData as any)?.buyer,
+            (transactionData as any).listing,
+            transactionData as any
           );
         }
 
@@ -139,7 +139,7 @@ export const POST: RequestHandler = async (event) => {
 
       case 'payment_intent.payment_failed': {
         const paymentIntent = stripeEvent?.data.object as Stripe.PaymentIntent;
-        const orderId = paymentIntent?.metadata.order_id;
+        const orderId = paymentIntent?.metadata['order_id'];
 
         if (!orderId) break;
 
@@ -201,9 +201,9 @@ export const POST: RequestHandler = async (event) => {
 
           if (disputeData && disputeData?.seller && disputeData?.listing) {
             await emailService?.sendDisputeAlert(
-              disputeData?.seller,
-              disputeData?.listing,
-              disputeData
+              (disputeData as any)?.seller,
+              (disputeData as any)?.listing,
+              disputeData as any
             );
           }
 
@@ -279,8 +279,8 @@ export const POST: RequestHandler = async (event) => {
 
           if (refundData && refundData?.buyer && refundData?.listing) {
             await emailService?.sendRefundNotification(
-              refundData?.buyer,
-              refundData?.listing,
+              (refundData as any)?.buyer,
+              (refundData as any)?.listing,
               refundAmount,
               isFullRefund
             );
@@ -292,8 +292,8 @@ export const POST: RequestHandler = async (event) => {
       }
 
       case 'transfer.created': {
-        const transfer = stripeEvent?.data.object as Stripe?.Transfer;
-        const payoutId = transfer?.metadata?.payout_id;
+        const transfer = stripeEvent?.data.object as Stripe.Transfer;
+        const payoutId = transfer?.metadata?.['payout_id'];
 
         if (payoutId) {
           // Update payout status to processing
@@ -318,8 +318,8 @@ export const POST: RequestHandler = async (event) => {
 
           if (payoutData && payoutData?.seller) {
             await emailService?.sendPayoutNotification(
-              payoutData?.seller,
-              payoutData?.amount,
+              (payoutData as any)?.seller,
+              (payoutData as any)?.amount,
               'processing'
             );
           }
@@ -330,8 +330,8 @@ export const POST: RequestHandler = async (event) => {
       }
 
       case 'transfer.paid': {
-        const transfer = stripeEvent?.data.object as Stripe?.Transfer;
-        const payoutId = transfer?.metadata?.payout_id;
+        const transfer = stripeEvent?.data.object as Stripe.Transfer;
+        const payoutId = transfer?.metadata?.['payout_id'];
 
         if (payoutId) {
           // Update payout status to completed
@@ -356,8 +356,8 @@ export const POST: RequestHandler = async (event) => {
 
           if (payoutData && payoutData?.seller) {
             await emailService?.sendPayoutNotification(
-              payoutData?.seller,
-              payoutData?.amount,
+              (payoutData as any)?.seller,
+              (payoutData as any)?.amount,
               'completed'
             );
           }

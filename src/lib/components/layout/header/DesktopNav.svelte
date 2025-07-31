@@ -3,11 +3,11 @@
 	import NotificationBell from './NotificationBell.svelte';
 	import UserMenu from './UserMenu.svelte';
 	import * as m from '$lib/paraglide/messages.js';
-	import type { User, Session } from '@supabase/supabase-js';
-	import type { ExtendedProfile } from '$lib/types';
+	import type { Session } from '@supabase/supabase-js';
+	import type { ExtendedProfile, UserProfile } from '$lib/types';
 	
 	interface DesktopNavProps {
-		user: User | null;
+		user: UserProfile | null;
 		session: Session | null;
 		profile: ExtendedProfile | null;
 		brandSlug: string | null;

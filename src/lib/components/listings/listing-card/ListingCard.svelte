@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { _cn} from '$lib/utils';
 	import ListingCardImage from './ListingCardImage.svelte';
 	import ListingCardInfo from './ListingCardInfo.svelte';
 	import ListingCardActions from './ListingCardActions.svelte';
-	import { useLikeToggle } from './useLikeToggle.svelte.ts';
+	import { useLikeToggle } from './useLikeToggle.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 	
 	interface Props {

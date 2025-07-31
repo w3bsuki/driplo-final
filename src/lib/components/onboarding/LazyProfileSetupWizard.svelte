@@ -6,7 +6,7 @@
     let { open = false, currentStep = 1, ...restProps }: { open?: boolean; currentStep?: number; [key: string]: any } = $props();
     
     const lazyWizard = createLazyComponent(
-        () => import('./ProfileSetupWizard.svelte')
+        () => import('./ProfileSetupWizard.svelte').then(m => ({ default: m.default || m }))
     );
     
     // Load when dialog opens

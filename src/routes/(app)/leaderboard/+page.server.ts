@@ -60,14 +60,14 @@ export const load: PageServerLoad = async ({ locals }) => {
 	
 	// Process brand data with joined profile data
 	const brands = (brandsResult?.data || [])?.map((brand) => {
-		const profile = brand?.profiles || {};
+		const profile = (brand as any)?.profiles || {};
 		return {
-			brand_id: brand?.id,
-			brand_name: brand?.brand_name,
-			brand_slug: brand?.brand_slug,
-			brand_logo_url: brand?.brand_logo_url,
-			verification_status: brand?.verification_status,
-			created_at: brand?.created_at,
+			brand_id: (brand as any)?.id,
+			brand_name: (brand as any)?.brand_name,
+			brand_slug: (brand as any)?.brand_slug,
+			brand_logo_url: (brand as any)?.brand_logo_url,
+			verification_status: (brand as any)?.verification_status,
+			created_at: (brand as any)?.created_at,
 			username: profile?.username,
 			avatar_url: profile?.avatar_url,
 			total_sales: profile?.total_sales || 0,

@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 
 	// Get brand profile
 	const { data: brandProfile } = await supabase
-		.from('brand_profiles')
+		.from('brand_profiles' as any)
 		.select('*')
 		.eq('user_id', user?.id)
 		.single();
@@ -73,20 +73,20 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 
 	// Get review stats
 	const { data: reviewStats } = await supabase
-		.from('reviews')
+		.from('reviews' as any)
 		.select('rating')
 		.eq('seller_id', user?.id);
 
 	const avgRating = reviewStats && reviewStats.length > 0 
-		? reviewStats.reduce((sum, r) => sum + r.rating, 0) / reviewStats.length
+		? reviewStats.reduce((sum, r) => sum + (r as any).rating, 0) / reviewStats.length
 		: 0;
 
 	const ratingDistribution = {
-		5: reviewStats?.filter(r => r.rating === 5).length || 0,
-		4: reviewStats?.filter(r => r.rating === 4).length || 0,
-		3: reviewStats?.filter(r => r.rating === 3).length || 0,
-		2: reviewStats?.filter(r => r.rating === 2).length || 0,
-		1: reviewStats?.filter(r => r.rating === 1).length || 0
+		5: reviewStats?.filter(r => (r as any).rating === 5).length || 0,
+		4: reviewStats?.filter(r => (r as any).rating === 4).length || 0,
+		3: reviewStats?.filter(r => (r as any).rating === 3).length || 0,
+		2: reviewStats?.filter(r => (r as any).rating === 2).length || 0,
+		1: reviewStats?.filter(r => (r as any).rating === 1).length || 0
 	};
 
 	return {

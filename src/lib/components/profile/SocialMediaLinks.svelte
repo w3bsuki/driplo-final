@@ -4,7 +4,12 @@
 	import type { ExtendedProfile } from '$lib/types';
 
 	type Profile = ExtendedProfile;
-	type SocialMediaAccount = Database['public']['Tables']['social_media_accounts']['Row'];
+	interface SocialMediaAccount {
+		id: string;
+		platform: string;
+		handle: string;
+		url: string;
+	}
 
 	interface Props {
 		profile: Profile;

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { _page} from '$app/stores';
+    import { page } from '$app/stores';
     import { goto } from '$app/navigation';
     import ConversationListEnhanced from '$lib/components/messaging/ConversationListEnhanced.svelte';
     import MessageSearch from '$lib/components/messaging/MessageSearch.svelte';

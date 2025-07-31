@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { getFormContext } from '../FormContext.svelte.ts'
-	import { validateField, _getSuggestions, sanitizeInput } from '../utils/validation'
+	import { getFormContext } from '../FormContext.svelte'
+	import { validateField, sanitizeInput } from '../utils/validation'
 	import { cn } from '$lib/utils'
 	import { fade, slide } from 'svelte/transition'
 	import Input from '$lib/components/ui/input.svelte'
@@ -125,10 +125,10 @@
 				placeholder="e.g., Nike Air Max 90 - Size 10"
 				class={cn(
 					"w-full pr-16",
-					form.validationErrors.title && "border-red-300 focus:ring-red-500"
+					form.validationErrors['title'] && "border-red-300 focus:ring-red-500"
 				)}
-				aria-invalid={!!form.validationErrors.title}
-				aria-describedby={form.validationErrors.title ? "title-error" : undefined}
+				aria-invalid={!!form.validationErrors['title']}
+				aria-describedby={form.validationErrors['title'] ? "title-error" : undefined}
 			/>
 			<span class={cn(
 				"absolute right-3 top-1/2 -translate-y-1/2 text-xs",
@@ -137,10 +137,10 @@
 				{titleCharCount}/100
 			</span>
 		</div>
-		{#if form.validationErrors.title}
+		{#if form.validationErrors['title']}
 			<p id="title-error" class="mt-1 text-xs text-red-500 flex items-center gap-1" transition:slide>
 				<AlertCircle class="w-3 h-3" />
-				{form.validationErrors.title}
+				{form.validationErrors['title']}
 			</p>
 		{/if}
 		{#if titleCharCount > 0 && titleCharCount < 20}
@@ -164,7 +164,7 @@
 						"hover:border-gray-400 transition-colors",
 						"flex items-center justify-between",
 						"active:bg-gray-50", // Touch feedback
-						form.validationErrors.category_id && "border-red-300",
+						form.validationErrors['category_id'] && "border-red-300",
 						selectedCategory ? "text-gray-900" : "text-gray-500"
 					)}
 					onclick={() => showCategorySuggestions = !showCategorySuggestions}
@@ -227,10 +227,10 @@
 					</div>
 				{/if}
 			</div>
-			{#if form.validationErrors.category_id}
+			{#if form.validationErrors['category_id']}
 				<p class="mt-1 text-xs text-red-500 flex items-center gap-1" transition:slide>
 					<AlertCircle class="w-3 h-3" />
-					{form.validationErrors.category_id}
+					{form.validationErrors['category_id']}
 				</p>
 			{/if}
 		</div>
@@ -269,17 +269,17 @@
 			placeholder="Describe your item - include condition details, measurements, any flaws, and why you're selling..."
 			class={cn(
 				"w-full resize-none",
-				form.validationErrors.description && "border-red-300 focus:ring-red-500"
+				form.validationErrors['description'] && "border-red-300 focus:ring-red-500"
 			)}
-			aria-invalid={!!form.validationErrors.description}
-			aria-describedby={form.validationErrors.description ? "description-error" : undefined}
+			aria-invalid={!!form.validationErrors['description']}
+			aria-describedby={form.validationErrors['description'] ? "description-error" : undefined}
 		/>
 		<div class="flex justify-between items-start mt-1">
 			<div class="flex-1">
-				{#if form.validationErrors.description}
+				{#if form.validationErrors['description']}
 					<p id="description-error" class="text-xs text-red-500 flex items-center gap-1" transition:slide>
 						<AlertCircle class="w-3 h-3" />
-						{form.validationErrors.description}
+						{form.validationErrors['description']}
 					</p>
 				{:else if descriptionCharCount > 0 && descriptionCharCount < 50}
 					<p class="text-xs text-gray-500">

@@ -109,7 +109,7 @@ export function extractUsernameFromUrl(url: string): string {
     const match = cleaned.match(pattern);
     if (match) {
       // Return the last captured group (username)
-      return match[match.length - 1];
+      return match[match.length - 1] || '';
     }
   }
   

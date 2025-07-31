@@ -8,7 +8,6 @@
 		TableHeader,
 		TableRow
 	} from '$lib/components/ui/table';
-	import type { _Snippet} from 'svelte';
 
 	interface Column<T> {
 		key: keyof T | string;
@@ -22,7 +21,6 @@
 		columns: Column<T>[];
 		class?: string;
 		onRowClick?: (item: T) => void;
-		getRowKey?: (item: T) => string;
 		emptyMessage?: string;
 	}
 
@@ -31,13 +29,12 @@
 		columns,
 		class: className,
 		onRowClick,
-		_getRowKey= (item: T, index: number) => index?.toString(),
 		emptyMessage = 'No data available'
 	}: Props<T> = $props();
 
 	function getCellValue(item: T, column: Column<T>): string {
 		if (column?.cell) {
-			return column?.cell(_item);
+			return column?.cell(item);
 		}
 		const value = item[column?.key as keyof T];
 		return value != null ? String(value) : '';
@@ -66,7 +63,7 @@
 					</TableCell>
 				</TableRow>
 			{:else}
-				{#each data as _item, _index}
+				{#each data as _item}
 					<TableRow
 						class={cn(
 							onRowClick && 'cursor-pointer'

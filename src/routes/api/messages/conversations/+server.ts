@@ -72,7 +72,7 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 
     // Count unread messages per conversation
     const unreadMap = new Map<string, number>();
-    unreadCounts.forEach(msg => {
+    (unreadCounts || []).forEach(msg => {
         const count = unreadMap.get(msg.conversation_id) || 0;
         unreadMap.set(msg.conversation_id, count + 1);
     });

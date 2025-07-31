@@ -6,7 +6,7 @@
 	import type { PageData } from './$types';
 	import ProfileSetupWizard from '$lib/components/onboarding/ProfileSetupWizard.svelte';
 	
-	let { _data}: { data: PageData } = $props();
+	let { data }: { data: PageData } = $props();
 	let showSetup = $state(false);
 	let loading = $state(true);
 	
@@ -18,7 +18,7 @@
 		}
 		
 		// Check if profile setup is already completed
-		if ($profile?.onboarding_completed) {
+		if (($profile as any)?.onboarding_completed) {
 			// Profile already set up, redirect to home
 			goto('/');
 			return;
@@ -34,24 +34,21 @@
 
 	async function handleComplete() {
 		// Mark onboarding as complete
-		await auth?.supabase
+		await data.supabase
 			.from('profiles')
 			.update({ 
 				onboarding_completed: true,
 				onboarding_step: 5 // Final step
 			})
-			.eq('id', auth?.user!.id);
-
-		// Refresh profile
-		await auth?.loadProfile();
+			.eq('id', $user!.id);
 
 		// Check if user created a brand account
-		if (auth?.profile?.account_type === 'brand') {
+		if ($profile?.account_type === 'brand') {
 			// Get the brand profile to find the slug
-			const { data: brandProfile } = await auth?.supabase
+			const { data: brandProfile } = await data.supabase
 				.from('brand_profiles')
 				.select('brand_slug')
-				.eq('user_id', auth?.user!.id)
+				.eq('user_id', $user!.id)
 				.single();
 
 			if (brandProfile?.brand_slug) {
@@ -80,11 +77,11 @@
 			<p class="text-gray-600">Preparing your profile setup...</p>
 		</div>
 	</div>
-{:else if showSetup && auth?.user}
+{:else if showSetup && $user}
 	<div class="min-h-[100dvh] bg-gradient-to-br from-blue-50 to-purple-50">
 		<ProfileSetupWizard 
-			user={auth?.user} 
-			profile={auth?.profile}
+			user={$user} 
+			profile={$profile}
 			onComplete={handleComplete}
 		/>
 	</div>

@@ -1,5 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import { generateCSRFToken, csrfProtectedAction } from '$lib/server/csrf'
 
 export const load: PageServerLoad = async ({ params, locals, parent }) => {
 	const { isAdmin, user } = await parent();
@@ -23,7 +24,7 @@ export const load: PageServerLoad = async ({ params, locals, parent }) => {
 	const { data: profile, error: profileError } = await locals?.supabase
 		.from('profiles')
 		.select('*')
-		.eq('id', request?.user_id)
+		.eq('id', (request as any)?.user_id)
 		.single();
 	
 	if (profileError || !profile) {
@@ -32,28 +33,30 @@ export const load: PageServerLoad = async ({ params, locals, parent }) => {
 	
 	// Get social media accounts
 	const { data: socialAccounts } = await locals?.supabase
-		.from('social_media_accounts')
+		.from('social_media_accounts' as any)
 		.select('*')
-		.eq('user_id', request?.user_id);
+		.eq('user_id', (request as any)?.user_id);
 	
 	// Get admin who reviewed (if applicable)
 	let reviewer = null;
-	if (request?.reviewed_by) {
+	if ((request as any)?.reviewed_by) {
 		const { data: reviewerData } = await locals?.supabase
 			.from('profiles')
 			.select('username, full_name')
-			.eq('id', request?.reviewed_by)
+			.eq('id', (request as any)?.reviewed_by)
 			.single();
 		
 		reviewer = reviewerData;
 	}
 	
 	return {
+		csrfToken: generateCSRFToken(),
 		request,
 		profile,
 		socialAccounts: socialAccounts || [],
 		reviewer,
 		user
+	
 	};
 };
 
@@ -98,7 +101,7 @@ export const actions: Actions = {
 					brand_name: (requestData as any)?.brand_name,
 					brand_category: (requestData as any)?.brand_category
 				})
-				.eq('id', requestData?.user_id);
+				.eq('id', (requestData as any)?.user_id);
 
 			if (profileError) {
 				throw error(500, 'Failed to update profile');

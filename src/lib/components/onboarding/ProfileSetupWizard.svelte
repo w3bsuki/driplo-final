@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { _goto} from '$app/navigation';
 	// Props are passed down, don't need to import stores directly
 	import { toast } from 'svelte-sonner';
 	import { ChevronLeft, ChevronRight, Check, User as UserIcon, Palette, Building2, Sparkles, AtSign } from 'lucide-svelte';
@@ -12,7 +11,6 @@
 	import BrandInfoForm from './BrandInfoForm.svelte';
 	import SetupComplete from './SetupComplete.svelte';
 	import type { User, SupabaseClient } from '@supabase/supabase-js';
-	import type { _Tables} from '$lib/types';
 	import type { ExtendedProfile } from '$lib/types';
 
 	interface Props {
@@ -27,7 +25,7 @@
 	
 	// Get default supabase client if not provided
 	import { page } from '$app/stores';
-	const defaultSupabase = $derived($page.data.supabase);
+	const defaultSupabase = $derived($page.data['supabase']);
 
 	// Check if user needs username setup
 	const needsUsernameSetup = !profile?.setup_completed || profile?.username?.match(/[0-9]+$/);
@@ -211,10 +209,10 @@
 			// Move to next step
 			const nextStepIndex = currentStepIndex + 1;
 			if (nextStepIndex < activeSteps.length) {
-				currentStep = activeSteps[nextStepIndex].id;
+				currentStep = activeSteps[nextStepIndex]?.id || currentStep;
 			}
-		} catch (error) {
-			toast.error(error.message || 'Failed to save progress');
+		} catch (error: unknown) {
+			toast.error(error instanceof Error ? error.message : 'Failed to save progress');
 		} finally {
 			loading = false;
 		}
@@ -222,7 +220,7 @@
 
 	function handleBack() {
 		if (currentStepIndex > 0) {
-			currentStep = activeSteps[currentStepIndex - 1].id;
+			currentStep = activeSteps[currentStepIndex - 1]?.id || currentStep;
 		}
 	}
 
@@ -233,8 +231,8 @@
 				await onComplete();
 			}
 			toast.success('Profile setup complete! 🎉');
-		} catch (error) {
-			toast.error(error.message || 'Failed to complete setup');
+		} catch (error: unknown) {
+			toast.error(error instanceof Error ? error.message : 'Failed to complete setup');
 		} finally {
 			loading = false;
 		}
@@ -320,7 +318,7 @@
 							<ProgressBar 
 								value={isCompleted ? 100 : 0}
 								max={100}
-								size="xs"
+								size="sm"
 								variant="success"
 								class="flex-1 mx-4 bg-gradient-to-r from-green-500 to-blue-600"
 							/>

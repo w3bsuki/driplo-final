@@ -1,0 +1,52 @@
+Please conduct a comprehensive Svelte 5, SvelteKit 2, and TypeScript audit of this codebase.
+
+Focus on these 7 key areas:
+
+1. Svelte 5 Migration Status
+   - Check for legacy patterns (export let, on:click, <slot>, $:)
+   - Verify rune adoption ($state, $derived, $effect, $props)
+   - Review event handling patterns
+
+2. SvelteKit 2 Best Practices
+   - Route structure and file conventions
+   - Data loading patterns (load functions, streaming)
+   - Form actions and progressive enhancement
+   - API routes and error handling
+
+3. TypeScript Type Safety
+   - Type coverage and any usage
+   - Type assertions and non-null assertions
+   - Generic usage and type imports
+   - Interface vs type patterns
+
+4. Component Architecture
+   - Props typing and validation
+   - Component composition patterns
+   - State management approaches
+   - Event handling patterns
+
+5. Performance Patterns
+   - Bundle splitting and lazy loading
+   - Image optimization strategies
+   - SSR/hydration optimization
+   - Preloading and caching
+
+6. State Management
+   - Store patterns (Svelte stores vs classes)
+   - Context API usage
+   - Form state handling
+   - URL state synchronization
+
+7. Security Practices
+   - XSS prevention measures
+   - CSRF protection implementation
+   - Input validation and sanitization
+   - Authentication and authorization
+
+For each area, provide:
+- Current status score (1-10)
+- Specific examples with file paths
+- Issues found
+- Recommendations
+
+End with a prioritized migration roadmap.

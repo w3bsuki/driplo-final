@@ -1,4 +1,5 @@
 import type { PageServerLoad, Actions } from './$types'
+import { generateCSRFToken, csrfProtectedAction } from '$lib/server/csrf'
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { data: requests } = await locals.supabase
@@ -15,7 +16,9 @@ export const load: PageServerLoad = async ({ locals }) => {
 		.order('created_at', { ascending: false })
 	
 	return {
+		csrfToken: generateCSRFToken(),
 		requests: requests || []
+	
 	}
 }
 

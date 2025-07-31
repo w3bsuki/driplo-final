@@ -1,5 +1,6 @@
 import { redirect, fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
+import { generateCSRFToken, csrfProtectedAction } from '$lib/server/csrf'
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	const { session, user } = await safeGetSession();
@@ -10,8 +11,10 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	}
 	
 	return {
+		csrfToken: generateCSRFToken(),
 		user,
 		session
+	
 	};
 };
 
@@ -42,7 +45,7 @@ export const actions: Actions = {
 
 			// Log successful onboarding completion
 			await supabase.rpc('log_auth_event', {
-				p_user_id: user.id,
+				user_id: user.id,
 				p_action: 'onboarding_completed',
 				p_success: true,
 				p_metadata: {
@@ -57,7 +60,7 @@ export const actions: Actions = {
 			
 			// Log failed attempt
 			await supabase.rpc('log_auth_event', {
-				p_user_id: user.id,
+				user_id: user.id,
 				p_action: 'onboarding_completed',
 				p_success: false,
 				p_error_message: err instanceof Error ? err.message : 'Unknown error'

@@ -16,7 +16,7 @@
 		Star,
 		_Tag,
 		_AlertCircle} from 'lucide-svelte'
-	import ListingCard from '$lib/components/listings/ListingCard.svelte'
+	import ListingCard from '$lib/components/listings/listing-card/ListingCard.svelte'
 	import type { PageData } from './$types'
 	import { _onMount} from 'svelte'
 	import { formatDistanceToNow } from 'date-fns'

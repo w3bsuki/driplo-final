@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { _page} from '$app/stores';
+	import { page } from '$app/stores';
 	import { 
 		TrendingUp, Package, DollarSign, Star, ShoppingBag, 
 		Eye, Heart, _Calendar, ArrowUp, _ArrowDown, Minus,
@@ -193,7 +193,7 @@
 						<div>
 							<h3 class="text-lg font-semibold mb-4">Top Performing Listings</h3>
 							<div class="space-y-3">
-								{#each listingStats??.slice?.((0, 5) as listing}
+								{#each listingStats?.slice?.(0, 5) as listing}
 									<div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
 										<div class="flex items-center gap-4">
 											<div class="w-12 h-12 bg-gray-200 rounded-lg"></div>

@@ -2,7 +2,7 @@
 	import { cn } from '$lib/utils'
 	import { scale } from 'svelte/transition'
 	import { flip } from 'svelte/animate'
-	import { Upload, X, Image as ImageIcon, Loader2, _AlertCircle, Move } from 'lucide-svelte'
+	import { Upload, X, Image as ImageIcon, Loader2, Move } from 'lucide-svelte'
 	import ProgressBar from '$lib/components/ui/ProgressBar.svelte'
 	import { 
 		validateImageFile, 
@@ -31,7 +31,7 @@
 	let dragCounter = $state(0)
 	let uploadingFiles = $state<Map<string, { name: string; progress: number }>>(new Map())
 	let imageHashes = $state<Set<string>>(new Set())
-	let fileInput: HTMLInputElement
+	let fileInput: HTMLInputElement | null
 	
 	// Drag state for reordering
 	let draggedIndex = $state<number | null>(null)
@@ -208,9 +208,11 @@
 		e.preventDefault()
 		if (draggedIndex !== null && draggedIndex !== index) {
 			const newImages = [...images]
-			const [removed] = newImages.splice(draggedIndex, 1)
-			newImages.splice(index, 0, removed)
-			onImagesChange(newImages)
+			const [removed] = newImages.splice(draggedIndex as number, 1)
+			if (removed) {
+				newImages.splice(index, 0, removed)
+				onImagesChange(newImages)
+			}
 		}
 		draggedIndex = null
 		dropTargetIndex = null
@@ -276,7 +278,7 @@
 		
 		<button
 			type="button"
-			onclick={() => canUploadMore && fileInput.click()}
+			onclick={() => canUploadMore && fileInput?.click()}
 			disabled={!canUploadMore}
 			class={cn(
 				"w-full p-6 sm:p-8 flex flex-col items-center justify-center gap-3",
@@ -387,7 +389,7 @@
 					<ProgressBar 
 						value={file.progress}
 						max={100}
-						size="xs"
+						size="sm"
 						variant="default"
 						class="mt-2"
 					/>

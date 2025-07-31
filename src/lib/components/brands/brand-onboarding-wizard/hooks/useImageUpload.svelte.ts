@@ -119,8 +119,14 @@ export function useImageUpload(supabase: any, config: ImageUploadConfig) {
 	async function compressImage(file: File, maxWidth: number = 1200, quality: number = 0.8): Promise<File> {
 		return new Promise((resolve) => {
 			const canvas = document.createElement('canvas');
-			const ctx = canvas.getContext('2d')!;
+			const ctx = canvas.getContext('2d');
 			const img = new Image();
+
+			if (!ctx) {
+				// If canvas context is not available, return original file
+				resolve(file);
+				return;
+			}
 
 			img.onload = () => {
 				// Calculate new dimensions
@@ -175,7 +181,7 @@ export function useImageUpload(supabase: any, config: ImageUploadConfig) {
 			const filePath = `${config.folder}/${uniqueFileName}`;
 
 			// Upload to Supabase storage
-			const { _data, error: uploadError } = await supabase.storage
+			const { error: uploadError } = await supabase.storage
 				.from(config.bucket)
 				.upload(filePath, file, {
 					cacheControl: '3600',

@@ -284,6 +284,202 @@ export interface RPCFunctions {
     };
   };
 
+  // Category Management
+  get_categories_with_counts: {
+    Args: Record<string, never>;
+    Returns: Array<{
+      category_data: Record<string, unknown>;
+      product_count: number;
+    }>;
+  };
+
+  // Admin Functions
+  get_unverified_users_for_admin: {
+    Args: Record<string, never>;
+    Returns: Array<{
+      id: string;
+      email: string;
+      created_at: string;
+      raw_user_meta_data: Record<string, unknown>;
+    }>;
+  };
+
+  admin_verify_user_email: {
+    Args: {
+      user_id: string;
+    };
+    Returns: {
+      success: boolean;
+      message?: string;
+    };
+  };
+
+  // Rate Limiting
+  cleanup_expired_rate_limits: {
+    Args: Record<string, never>;
+    Returns: number;
+  };
+
+  // Homepage Functions
+  get_homepage_listings: {
+    Args: {
+      p_type: string;
+      p_limit: number;
+    };
+    Returns: Array<Record<string, unknown>>;
+  };
+
+  // Auth Rate Limiting
+  check_auth_rate_limit: {
+    Args: {
+      email: string;
+      ip_address?: string;
+    };
+    Returns: {
+      allowed: boolean;
+      retry_after?: number;
+    };
+  };
+
+  check_rate_limit: {
+    Args: {
+      identifier: string;
+      action: string;
+      limit?: number;
+    };
+    Returns: {
+      allowed: boolean;
+      current_count: number;
+      retry_after?: number;
+    };
+  };
+
+  // Listing Functions
+  get_category_listings: {
+    Args: {
+      category_slug: string;
+      limit_count?: number;
+      offset_count?: number;
+      sort_by?: string;
+      filters?: Record<string, unknown>;
+    };
+    Returns: Array<{
+      id: string;
+      title: string;
+      price: number;
+      images: string[];
+      condition: string;
+      size: string | null;
+      seller_id: string;
+      seller_username: string;
+      created_at: string;
+    }>;
+  };
+
+  get_listings_count: {
+    Args: {
+      filters?: Record<string, unknown>;
+    };
+    Returns: number;
+  };
+
+  get_listings_with_favorites: {
+    Args: {
+      user_id?: string;
+      limit_count?: number;
+      offset_count?: number;
+    };
+    Returns: Array<{
+      id: string;
+      title: string;
+      price: number;
+      images: string[];
+      is_favorited: boolean;
+      seller_username: string;
+      created_at: string;
+    }>;
+  };
+
+  get_profile_listings_with_stats: {
+    Args: {
+      profile_username: string;
+      viewer_id?: string;
+      limit_count?: number;
+      offset_count?: number;
+    };
+    Returns: {
+      listings: Array<Record<string, unknown>>;
+      stats: {
+        total_listings: number;
+        total_sales: number;
+        average_rating: number;
+      };
+    };
+  };
+
+  get_user_favorites_with_listings: {
+    Args: {
+      user_id: string;
+      limit_count?: number;
+      offset_count?: number;
+    };
+    Returns: Array<{
+      listing_id: string;
+      listing: Record<string, unknown>;
+      favorited_at: string;
+    }>;
+  };
+
+  increment_listing_quantity: {
+    Args: {
+      listing_id: string;
+      increment_by: number;
+    };
+    Returns: {
+      new_quantity: number;
+      success: boolean;
+    };
+  };
+
+  // Auth Event Logging
+  log_auth_event: {
+    Args: {
+      event_type: string;
+      user_id?: string;
+      email?: string;
+      ip_address?: string;
+      user_agent?: string;
+      metadata?: Record<string, unknown>;
+    };
+    Returns: void;
+  };
+
+  // Listing Analytics
+  track_listing_view: {
+    Args: {
+      listing_id: string;
+      viewer_id?: string;
+      ip_address?: string;
+    };
+    Returns: void;
+  };
+
+  // Top Category Sellers (referenced as type constraint)
+  get_top_category_sellers: {
+    Args: {
+      category_slug: string;
+      limit_count?: number;
+      time_period?: string;
+    };
+    Returns: Array<{
+      seller_id: string;
+      username: string;
+      avatar_url: string | null;
+      total_sales: number;
+      rating: number;
+    }>;
+  };
+
 }
 
 // Helper type to extract RPC function names

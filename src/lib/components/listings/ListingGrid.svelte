@@ -2,7 +2,7 @@
 	import ListingCard from './ListingCard.svelte';
 	import InfiniteScroll from '$lib/components/ui/InfiniteScroll.svelte';
 	// import VirtualGrid from '$lib/components/ui/VirtualGrid.svelte';
-	import { getLoadingStrategy } from '$lib/utils/lazy-loading';
+	import { getLoadingStrategy } from '$lib/utils/lazy-load';
 	import * as m from '$lib/paraglide/messages.js';
 	import { browser } from '$app/environment';
 	import { debug } from '$lib/utils/debug-logger';
@@ -50,7 +50,6 @@
 		onLoadMore?: () => Promise<void> | void;
 		userFavorites?: string[];
 		useVirtualScrolling?: boolean;
-		virtualScrollHeight?: number;
 		showEmptyState?: boolean;
 		isLoading?: boolean;
 		error?: string | null;
@@ -65,7 +64,6 @@
 		onLoadMore,
 		userFavorites = [],
 		useVirtualScrolling = false,
-		_virtualScrollHeight= 600,
 		showEmptyState = true,
 		isLoading = false,
 		error = null

@@ -1,11 +1,9 @@
 <script lang="ts">
-  import type { Category } from '$lib/types';
-  import HeroSearch from '$lib/components/home/HeroSearch.svelte';
+  import type { UnifiedCategory as Category } from '$lib/types';
   import ListingGrid from '$lib/components/listings/ListingGrid.svelte';
   import UnifiedFilter from '$lib/components/shared/UnifiedFilter.svelte';
   import LazyAvatar from '$lib/components/common/LazyAvatar.svelte';
   import { cn } from '$lib/utils';
-  import { _ChevronRight} from 'lucide-svelte';
   import type { SupabaseClient } from '@supabase/supabase-js';
   import type { Database } from '$lib/types';
   import { getFiltersForCategory } from '$lib/config/categoryFilters';
@@ -78,11 +76,12 @@
           if (typeof filterValue === 'string') {
             const [min, max] = filterValue.split('-').map(Number);
             filtered = filtered.filter(p => {
-              if (max) {
+              if (min !== undefined && max) {
                 return p.price >= min && p.price <= max;
-              } else {
+              } else if (min !== undefined) {
                 return p.price >= min;
               }
+              return true;
             });
           }
           break;
@@ -195,7 +194,7 @@
       
         const observer = new IntersectionObserver(
           (entries) => {
-            if (entries[0].isIntersecting) {
+            if (entries[0]?.isIntersecting) {
               (visibleSections as any)[stateKey] = true;
               observer.disconnect();
               placeholder.remove();
@@ -388,7 +387,7 @@
     {:else}
       <div class="text-center py-12">
         <p class="text-gray-500 text-sm mb-4">No items found</p>
-        {#if hasActiveFilters}
+        {#if hasActiveFilters()}
           <button
             onclick={handleClearFilters}
             class="text-primary hover:text-primary/80 font-medium"
@@ -401,7 +400,7 @@
   {:else}
     <!-- Loading skeleton for products -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-3">
-      {#each Array(10) as _, _i}
+      {#each Array(10) as _}
         <div class="animate-pulse">
           <div class="aspect-[3/4] bg-gray-200 rounded-t-sm"></div>
           <div class="p-3 space-y-2 bg-white rounded-b-sm border border-gray-200">

@@ -1,0 +1,1565 @@
+{
+  "critical": [
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/health/stripe/+server.ts",
+      "line_number": 28,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "s: 'error',\n      service: 'stripe',\n      error: error.message || 'Stripe connection failed',\n      timestamp: n",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 75
+      },
+      "catch_context": "return json({\n      status: 'error',\n      service: 'stripe',\n      error: error.message || 'Stripe connection failed',\n      timestamp: new Date().toISOString()\n    }, { status: 503 });"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/utils/storage-client.ts",
+      "line_number": 114,
+      "catch_parameter": "fetchError: any",
+      "error_variable": "fetchError",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "name",
+        "pattern": "fetchError.name",
+        "context": "clearTimeout(timeoutId);\n\t\t\t\tif (fetchError.name === 'AbortError') {\n\t\t\t\t\tlastError = new Error(`U",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 33
+      },
+      "catch_context": "clearTimeout(timeoutId);\n\t\t\t\tif (fetchError.name === 'AbortError') {\n\t\t\t\t\tlastError = new Error(`Upload timed out after ${timeout/1000}s. Please try again with a smaller image.`);\n\t\t\t\t} else {\n\t\t\t\t\tla..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/onboarding/ProfileSetupWizard.svelte",
+      "line_number": 214,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "toast.error(error.message || 'Failed to save progress');",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 12
+      },
+      "catch_context": "toast.error(error.message || 'Failed to save progress');"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/onboarding/ProfileSetupWizard.svelte",
+      "line_number": 234,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "toast.error(error.message || 'Failed to complete setup');",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 12
+      },
+      "catch_context": "toast.error(error.message || 'Failed to complete setup');"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/checkout/LazyCheckoutFlow.svelte",
+      "line_number": 32,
+      "catch_parameter": "e",
+      "error_variable": "e",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "error",
+        "pattern": "e.error",
+        "context": "error = e as Error;\n\t\t\tconsole.error('Failed to load checkout flow:', e);",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 29
+      },
+      "catch_context": "error = e as Error;\n\t\t\tconsole.error('Failed to load checkout flow:', e);"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/ui/dialog/dialog.svelte",
+      "line_number": 145,
+      "catch_parameter": "e",
+      "error_variable": "e",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "error",
+        "pattern": "e.error",
+        "context": "error = e as Error;\n\t\t\tconsole.error('Failed to load modal component:', e);",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 29
+      },
+      "catch_context": "error = e as Error;\n\t\t\tconsole.error('Failed to load modal component:', e);"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(app)/sell/+page.server.ts",
+      "line_number": 44,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "code",
+        "pattern": "error.code",
+        "context": "If error is \"no rows returned\", that's fine\n\t\tif (error.code !== 'PGRST116') {\n\t\t\tconsole.error('Failed to che",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 53
+      },
+      "catch_context": "// If error is \"no rows returned\", that's fine\n\t\tif (error.code !== 'PGRST116') {\n\t\t\tconsole.error('Failed to check payment account:', error)\n\t\t}"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(app)/sell/+page.server.ts",
+      "line_number": 156,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "rror)\n\t\t\treturn fail(500, { \n\t\t\t\tform,\n\t\t\t\terror: error.message || 'Failed to create listing' \n\t\t\t})",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 185
+      },
+      "catch_context": "// If it's a redirect, rethrow it\n\t\t\tif (error.status === 303) {\n\t\t\t\tthrow error\n\t\t\t}\n\t\t\t\n\t\t\tconsole.error('Listing creation error:', error)\n\t\t\treturn fail(500, { \n\t\t\t\tform,\n\t\t\t\terror: error.message |..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(app)/sell/+page.server.ts",
+      "line_number": 156,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "status",
+        "pattern": "error.status",
+        "context": "// If it's a redirect, rethrow it\n\t\t\tif (error.status === 303) {\n\t\t\t\tthrow error\n\t\t\t}\n\t\t\t\n\t\t\tconsole.er",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 41
+      },
+      "catch_context": "// If it's a redirect, rethrow it\n\t\t\tif (error.status === 303) {\n\t\t\t\tthrow error\n\t\t\t}\n\t\t\t\n\t\t\tconsole.error('Listing creation error:', error)\n\t\t\treturn fail(500, { \n\t\t\t\tform,\n\t\t\t\terror: error.message |..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/utils/web-vitals.ts",
+      "line_number": 212,
+      "catch_parameter": "e",
+      "error_variable": "e",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "error",
+        "pattern": "e.error",
+        "context": "console.error('Failed to measure performance:', e);",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 6
+      },
+      "catch_context": "console.error('Failed to measure performance:', e);"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/onboarding/AvatarPicker.svelte",
+      "line_number": 124,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "toast.error(error.message || 'Failed to upload avatar');",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 12
+      },
+      "catch_context": "toast.error(error.message || 'Failed to upload avatar');"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/payment/account/setup/+server.ts",
+      "line_number": 146,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "error: 'Internal server error', \n\t\t\tdetails: error.message,\n\t\t\tstack: error.stack \n\t\t}, { status: 500 });",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 119
+      },
+      "catch_context": "console.error('Payment account setup error:', error);\n\t\treturn json({ \n\t\t\terror: 'Internal server error', \n\t\t\tdetails: error.message,\n\t\t\tstack: error.stack \n\t\t}, { status: 500 });"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/payment/account/setup/+server.ts",
+      "line_number": 146,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "stack",
+        "pattern": "error.stack",
+        "context": "ver error', \n\t\t\tdetails: error.message,\n\t\t\tstack: error.stack \n\t\t}, { status: 500 });",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 144
+      },
+      "catch_context": "console.error('Payment account setup error:', error);\n\t\treturn json({ \n\t\t\terror: 'Internal server error', \n\t\t\tdetails: error.message,\n\t\t\tstack: error.stack \n\t\t}, { status: 500 });"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/stores/onboarding.svelte.ts",
+      "line_number": 94,
+      "catch_parameter": "e",
+      "error_variable": "e",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "error",
+        "pattern": "e.error",
+        "context": "console.error('Failed to parse onboarding state:', e);",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 6
+      },
+      "catch_context": "console.error('Failed to parse onboarding state:', e);"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/ui/LazyModal.svelte",
+      "line_number": 33,
+      "catch_parameter": "e",
+      "error_variable": "e",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "error",
+        "pattern": "e.error",
+        "context": "error = e as Error;\n\t\t\tconsole.error('Failed to load modal component:', e);",
+        "severity": "critical",
+        "has_type_check": false,
+        "position": 29
+      },
+      "catch_context": "error = e as Error;\n\t\t\tconsole.error('Failed to load modal component:', e);"
+    }
+  ],
+  "high": [
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/utils/error-handling.ts",
+      "line_number": 126,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "code",
+        "pattern": "error?.code",
+        "context": "error?.status === 404 || // Not found\n        error?.code === 'auth/invalid-credentials' ||\n        error?.",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 216
+      },
+      "catch_context": "lastError = error;\n\n      // Don't retry certain errors\n      if (\n        error?.status === 401 || // Unauthorized\n        error?.status === 403 || // Forbidden\n        error?.status === 404 || // No..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/utils/error-handling.ts",
+      "line_number": 126,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "code",
+        "pattern": "error?.code",
+        "context": "r?.code === 'auth/invalid-credentials' ||\n        error?.code === 'payment/card-declined'\n      ) {\n        thr",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 270
+      },
+      "catch_context": "lastError = error;\n\n      // Don't retry certain errors\n      if (\n        error?.status === 401 || // Unauthorized\n        error?.status === 403 || // Forbidden\n        error?.status === 404 || // No..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/utils/error-handling.ts",
+      "line_number": 126,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "status",
+        "pattern": "error?.status",
+        "context": "// Don't retry certain errors\n      if (\n        error?.status === 401 || // Unauthorized\n        error?.status",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 75
+      },
+      "catch_context": "lastError = error;\n\n      // Don't retry certain errors\n      if (\n        error?.status === 401 || // Unauthorized\n        error?.status === 403 || // Forbidden\n        error?.status === 404 || // No..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/utils/error-handling.ts",
+      "line_number": 126,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "status",
+        "pattern": "error?.status",
+        "context": "error?.status === 401 || // Unauthorized\n        error?.status === 403 || // Forbidden\n        error?.status ===",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 124
+      },
+      "catch_context": "lastError = error;\n\n      // Don't retry certain errors\n      if (\n        error?.status === 401 || // Unauthorized\n        error?.status === 403 || // Forbidden\n        error?.status === 404 || // No..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/utils/error-handling.ts",
+      "line_number": 126,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "status",
+        "pattern": "error?.status",
+        "context": "error?.status === 403 || // Forbidden\n        error?.status === 404 || // Not found\n        error?.code === '",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 170
+      },
+      "catch_context": "lastError = error;\n\n      // Don't retry certain errors\n      if (\n        error?.status === 401 || // Unauthorized\n        error?.status === 403 || // Forbidden\n        error?.status === 404 || // No..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/listings/CreateListingForm/CreateListingForm.svelte",
+      "line_number": 228,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "e?.preventDefault()\n\t\t\ttoast?.error(error?.message)\n\t\t\treturn",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 36
+      },
+      "catch_context": "e?.preventDefault()\n\t\t\ttoast?.error(error?.message)\n\t\t\treturn"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/brands/settings/+page.svelte",
+      "line_number": 186,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "toast?.error(error?.message || 'Failed to upgrade account');",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 13
+      },
+      "catch_context": "toast?.error(error?.message || 'Failed to upgrade account');"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/brands/settings/+page.svelte",
+      "line_number": 237,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "toast?.error(error?.message || 'Failed to update brand info');",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 13
+      },
+      "catch_context": "toast?.error(error?.message || 'Failed to update brand info');"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/brands/settings/+page.svelte",
+      "line_number": 301,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "toast?.error(error?.message || 'Failed to submit verification');",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 13
+      },
+      "catch_context": "toast?.error(error?.message || 'Failed to submit verification');"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/upload/simple/+server.ts",
+      "line_number": 118,
+      "catch_parameter": "err: any",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "err?.message",
+        "context": "rr?.status) {\n\t\t\tthrow err\n\t\t}\n\t\tthrow error(500, err?.message || 'Internal server error')",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 94
+      },
+      "catch_context": "console?.error('Upload error:', err)\n\t\tif (err?.status) {\n\t\t\tthrow err\n\t\t}\n\t\tthrow error(500, err?.message || 'Internal server error')"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/upload/simple/+server.ts",
+      "line_number": 118,
+      "catch_parameter": "err: any",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "status",
+        "pattern": "err?.status",
+        "context": "console?.error('Upload error:', err)\n\t\tif (err?.status) {\n\t\t\tthrow err\n\t\t}\n\t\tthrow error(500, err?.messa",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 43
+      },
+      "catch_context": "console?.error('Upload error:', err)\n\t\tif (err?.status) {\n\t\t\tthrow err\n\t\t}\n\t\tthrow error(500, err?.message || 'Internal server error')"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/drafts/listing/+server.ts",
+      "line_number": 37,
+      "catch_parameter": "err: any",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "status",
+        "pattern": "err?.status",
+        "context": "console?.error('Draft save error:', err)\n\t\tif (err?.status) throw err\n\t\tthrow error(500, 'Internal server er",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 47
+      },
+      "catch_context": "console?.error('Draft save error:', err)\n\t\tif (err?.status) throw err\n\t\tthrow error(500, 'Internal server error')"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/drafts/listing/+server.ts",
+      "line_number": 72,
+      "catch_parameter": "err: any",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "status",
+        "pattern": "err?.status",
+        "context": "console?.error('Draft load error:', err)\n\t\tif (err?.status) throw err\n\t\tthrow error(500, 'Internal server er",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 47
+      },
+      "catch_context": "console?.error('Draft load error:', err)\n\t\tif (err?.status) throw err\n\t\tthrow error(500, 'Internal server error')"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/drafts/listing/+server.ts",
+      "line_number": 99,
+      "catch_parameter": "err: any",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "status",
+        "pattern": "err?.status",
+        "context": "console?.error('Draft delete error:', err)\n\t\tif (err?.status) throw err\n\t\tthrow error(500, 'Internal server er",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 49
+      },
+      "catch_context": "console?.error('Draft delete error:', err)\n\t\tif (err?.status) throw err\n\t\tthrow error(500, 'Internal server error')"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(app)/profile/settings/+page.svelte",
+      "line_number": 215,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "code",
+        "pattern": "error?.code",
+        "context": "nsole?.error('Save profile error:', error)\n\t\t\tif (error?.code === '23505') {\n\t\t\t\ttoast?.error(m?.settings_usern",
+        "severity": "high",
+        "has_type_check": false,
+        "position": 52
+      },
+      "catch_context": "console?.error('Save profile error:', error)\n\t\t\tif (error?.code === '23505') {\n\t\t\t\ttoast?.error(m?.settings_username_taken())\n\t\t\t} else {\n\t\t\t\ttoast?.error(m?.settings_save_error())\n\t\t\t}"
+    }
+  ],
+  "medium": [
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(app)/onboarding/+page.server.ts",
+      "line_number": 55,
+      "catch_parameter": "err",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "err.message",
+        "context": "alse,\n\t\t\t\tp_error_message: err instanceof Error ? err.message : 'Unknown error'\n\t\t\t});\n\n\t\t\treturn fail(500, { e",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 249
+      },
+      "catch_context": "console.error('Onboarding completion error:', err);\n\t\t\t\n\t\t\t// Log failed attempt\n\t\t\tawait supabase.rpc('log_auth_event', {\n\t\t\t\tuser_id: user.id,\n\t\t\t\tp_action: 'onboarding_completed',\n\t\t\t\tp_success: fa..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/onboarding/complete/+server.ts",
+      "line_number": 39,
+      "catch_parameter": "err",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "err.message",
+        "context": "false,\n\t\t\tp_error_message: err instanceof Error ? err.message : 'Unknown error'\n\t\t});\n\n\t\tthrow error(500, 'Fail",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 242
+      },
+      "catch_context": "console.error('Onboarding completion error:', err);\n\t\t\n\t\t// Log failed attempt\n\t\tawait supabase.rpc('log_auth_event', {\n\t\t\tuser_id: user.id,\n\t\t\tp_action: 'onboarding_completed',\n\t\t\tp_success: false,\n\t..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/stripe/webhooks/+server.ts",
+      "line_number": 383,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": ".update({\n        error: error instanceof Error ? error?.message : 'Unknown error'\n      })\n      .eq('stripe_even",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 128
+      },
+      "catch_context": "// Record error\n    await supabase\n      .from('stripe_webhook_events')\n      .update({\n        error: error instanceof Error ? error?.message : 'Unknown error'\n      })\n      .eq('stripe_event_id', s..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/payment/create-intent/+server.ts",
+      "line_number": 259,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "ApiError(\n          `Payment processing error: ${error?.message}`,\n          400,\n          ApiErrorType?.EXTERNA",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 157
+      },
+      "catch_context": "// Handle Stripe-specific errors\n      if (error instanceof stripe?.errors.StripeError) {\n        throw new ApiError(\n          `Payment processing error: ${error?.message}`,\n          400,\n          ..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/payment/create-intent/+server.ts",
+      "line_number": 259,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "code",
+        "pattern": "error?.code",
+        "context": "type: error?.type,\n            stripe_error_code: error?.code\n          }\n        );\n      }\n      \n      // Re",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 320
+      },
+      "catch_context": "// Handle Stripe-specific errors\n      if (error instanceof stripe?.errors.StripeError) {\n        throw new ApiError(\n          `Payment processing error: ${error?.message}`,\n          400,\n          ..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/payment/create-intent/+server.ts",
+      "line_number": 259,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "type",
+        "pattern": "error?.type",
+        "context": "VICE,\n          { \n            stripe_error_type: error?.type,\n            stripe_error_code: error?.code",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 276
+      },
+      "catch_context": "// Handle Stripe-specific errors\n      if (error instanceof stripe?.errors.StripeError) {\n        throw new ApiError(\n          `Payment processing error: ${error?.message}`,\n          400,\n          ..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(app)/listings/[id]/+page.server.ts",
+      "line_number": 396,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "status",
+        "pattern": "error?.status",
+        "context": "f (error instanceof Error && 'status' in error && error?.status === 303) {\n\t\t\t\tthrow error // Re-throw redirect",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 51
+      },
+      "catch_context": "if (error instanceof Error && 'status' in error && error?.status === 303) {\n\t\t\t\tthrow error // Re-throw redirect\n\t\t\t}\n\t\t\t\n\t\t\tconsole?.error('Payment confirmation error:', error)\n\t\t\treturn fail(500, { ..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(auth)/register/+page.svelte",
+      "line_number": 137,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "// Handle specific Supabase auth errors\n\t\t\t\tif (error?.message.includes('duplicate key') || error?.message.inclu",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 237
+      },
+      "catch_context": "if (error instanceof z?.ZodError) {\n\t\t\t\t// Zod validation errors\n\t\t\t\terror?.issues.forEach((issue) => {\n\t\t\t\t\ttoast?.error(issue?.message)\n\t\t\t\t})\n\t\t\t} else if (error instanceof Error) {\n\t\t\t\t// Handle s..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(auth)/register/+page.svelte",
+      "line_number": 137,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "if (error?.message.includes('duplicate key') || error?.message.includes('already registered')) {\n\t\t\t\t\ttoast?.err",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 281
+      },
+      "catch_context": "if (error instanceof z?.ZodError) {\n\t\t\t\t// Zod validation errors\n\t\t\t\terror?.issues.forEach((issue) => {\n\t\t\t\t\ttoast?.error(issue?.message)\n\t\t\t\t})\n\t\t\t} else if (error instanceof Error) {\n\t\t\t\t// Handle s..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(auth)/register/+page.svelte",
+      "line_number": 137,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "dy exists. Please login instead.')\n\t\t\t\t} else if (error?.message.includes('username') && error?.message.includes('",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 431
+      },
+      "catch_context": "if (error instanceof z?.ZodError) {\n\t\t\t\t// Zod validation errors\n\t\t\t\terror?.issues.forEach((issue) => {\n\t\t\t\t\ttoast?.error(issue?.message)\n\t\t\t\t})\n\t\t\t} else if (error instanceof Error) {\n\t\t\t\t// Handle s..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(auth)/register/+page.svelte",
+      "line_number": 137,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "} else if (error?.message.includes('username') && error?.message.includes('unique')) {\n\t\t\t\t\ttoast?.error('This use",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 470
+      },
+      "catch_context": "if (error instanceof z?.ZodError) {\n\t\t\t\t// Zod validation errors\n\t\t\t\terror?.issues.forEach((issue) => {\n\t\t\t\t\ttoast?.error(issue?.message)\n\t\t\t\t})\n\t\t\t} else if (error instanceof Error) {\n\t\t\t\t// Handle s..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(auth)/register/+page.svelte",
+      "line_number": 137,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "dy taken. Please choose another.')\n\t\t\t\t} else if (error?.message.includes('rate limit')) {\n\t\t\t\t\ttoast?.error('Too",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 598
+      },
+      "catch_context": "if (error instanceof z?.ZodError) {\n\t\t\t\t// Zod validation errors\n\t\t\t\terror?.issues.forEach((issue) => {\n\t\t\t\t\ttoast?.error(issue?.message)\n\t\t\t\t})\n\t\t\t} else if (error instanceof Error) {\n\t\t\t\t// Handle s..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(auth)/register/+page.svelte",
+      "line_number": 137,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "ttempts. Please try again later.')\n\t\t\t\t} else if (error?.message.includes('invalid email')) {\n\t\t\t\t\ttoast?.error('P",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 725
+      },
+      "catch_context": "if (error instanceof z?.ZodError) {\n\t\t\t\t// Zod validation errors\n\t\t\t\terror?.issues.forEach((issue) => {\n\t\t\t\t\ttoast?.error(issue?.message)\n\t\t\t\t})\n\t\t\t} else if (error instanceof Error) {\n\t\t\t\t// Handle s..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(auth)/register/+page.svelte",
+      "line_number": 137,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "ase enter a valid email address.')\n\t\t\t\t} else if (error?.message.includes('weak password')) {\n\t\t\t\t\ttoast?.error('P",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 841
+      },
+      "catch_context": "if (error instanceof z?.ZodError) {\n\t\t\t\t// Zod validation errors\n\t\t\t\terror?.issues.forEach((issue) => {\n\t\t\t\t\ttoast?.error(issue?.message)\n\t\t\t\t})\n\t\t\t} else if (error instanceof Error) {\n\t\t\t\t// Handle s..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(auth)/register/+page.svelte",
+      "line_number": 137,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "ronger password.')\n\t\t\t\t} else {\n\t\t\t\t\ttoast?.error(error?.message || 'Registration failed')\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t\tt",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 991
+      },
+      "catch_context": "if (error instanceof z?.ZodError) {\n\t\t\t\t// Zod validation errors\n\t\t\t\terror?.issues.forEach((issue) => {\n\t\t\t\t\ttoast?.error(issue?.message)\n\t\t\t\t})\n\t\t\t} else if (error instanceof Error) {\n\t\t\t\t// Handle s..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(auth)/register/+page.svelte",
+      "line_number": 175,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "if (error instanceof Error) {\n\t\t\t\ttoast?.error(error?.message || 'OAuth registration failed')\n\t\t\t} else {\n\t\t\t\tt",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 47
+      },
+      "catch_context": "if (error instanceof Error) {\n\t\t\t\ttoast?.error(error?.message || 'OAuth registration failed')\n\t\t\t} else {\n\t\t\t\ttoast?.error('OAuth registration failed')\n\t\t\t}\n\t\t\tloading = false"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/utils/storage.ts",
+      "line_number": 120,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "url: '', \n\t\t\terror: error instanceof Error ? error?.message : 'Failed to upload image' \n\t\t}",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 99
+      },
+      "catch_context": "console?.error('Upload error:', error)\n\t\treturn { \n\t\t\turl: '', \n\t\t\terror: error instanceof Error ? error?.message : 'Failed to upload image' \n\t\t}"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/orders/+server.ts",
+      "line_number": 259,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "r instanceof Error) {\n            return apiError(error?.message, 500, ApiErrorType?.INTERNAL_ERROR, { error: erro",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 58
+      },
+      "catch_context": "if (error instanceof Error) {\n            return apiError(error?.message, 500, ApiErrorType?.INTERNAL_ERROR, { error: error?.name }, requestId);\n        }\n        return apiError(\n            'Failed ..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/orders/+server.ts",
+      "line_number": 259,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "name",
+        "pattern": "error?.name",
+        "context": "sage, 500, ApiErrorType?.INTERNAL_ERROR, { error: error?.name }, requestId);\n        }\n        return apiError(",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 118
+      },
+      "catch_context": "if (error instanceof Error) {\n            return apiError(error?.message, 500, ApiErrorType?.INTERNAL_ERROR, { error: error?.name }, requestId);\n        }\n        return apiError(\n            'Failed ..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/brands/brand-onboarding-wizard/hooks/useImageUpload.svelte.ts",
+      "line_number": 208,
+      "catch_parameter": "err",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "err.message",
+        "context": "const errorMessage = err instanceof Error ? err.message : 'Upload failed';\n\t\t\terror = errorMessage;\n\t\t\tlo",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 44
+      },
+      "catch_context": "const errorMessage = err instanceof Error ? err.message : 'Upload failed';\n\t\t\terror = errorMessage;\n\t\t\tlogger.error('\u274c File upload failed:', err);\n\t\t\t\n\t\t\treturn {\n\t\t\t\tsuccess: false,\n\t\t\t\terror: errorM..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/brands/brand-onboarding-wizard/hooks/useImageUpload.svelte.ts",
+      "line_number": 276,
+      "catch_parameter": "err",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "err.message",
+        "context": "const errorMessage = err instanceof Error ? err.message : 'Upload failed';\n\t\t\tlogger.error('\u274c Image uploa",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 44
+      },
+      "catch_context": "const errorMessage = err instanceof Error ? err.message : 'Upload failed';\n\t\t\tlogger.error('\u274c Image upload failed:', err);\n\t\t\ttoast.error(errorMessage);\n\t\t\t\n\t\t\treturn {\n\t\t\t\tsuccess: false,\n\t\t\t\terror: ..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/brands/brand-onboarding-wizard/hooks/useImageUpload.svelte.ts",
+      "line_number": 307,
+      "catch_parameter": "err",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "err.message",
+        "context": "const errorMessage = err instanceof Error ? err.message : 'Delete failed';\n\t\t\tlogger.error('\u274c Image delet",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 44
+      },
+      "catch_context": "const errorMessage = err instanceof Error ? err.message : 'Delete failed';\n\t\t\tlogger.error('\u274c Image deletion failed:', err);\n\t\t\t\n\t\t\treturn {\n\t\t\t\tsuccess: false,\n\t\t\t\terror: errorMessage\n\t\t\t};"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/server/api-response.ts",
+      "line_number": 122,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "status",
+        "pattern": "error.status",
+        "context": "anceof ApiError) {\n        return apiError(error, error.status, event);\n      }\n      \n      // Handle Supabase",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 97
+      },
+      "catch_context": "// Handle known API errors\n      if (error instanceof ApiError) {\n        return apiError(error, error.status, event);\n      }\n      \n      // Handle Supabase errors\n      if (error && typeof error ==..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/checkout/checkout-modal/PaymentProcessor.svelte",
+      "line_number": 98,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "Handle different types of payment errors\n\t\t\t\tif (error?.message.includes('authentication')) {\n\t\t\t\t\terrorMessage =",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 247
+      },
+      "catch_context": "logger?.error('\u274c Payment processing failed:', error);\n\t\t\t\n\t\t\t// Enhanced error handling with specific error types\n\t\t\tlet errorMessage = 'Payment failed';\n\t\t\t\n\t\t\tif (error instanceof Error) {\n\t\t\t\t// Ha..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/checkout/checkout-modal/PaymentProcessor.svelte",
+      "line_number": 98,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "ion failed. Please log in again.';\n\t\t\t\t} else if (error?.message.includes('insufficient')) {\n\t\t\t\t\terrorMessage = '",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 374
+      },
+      "catch_context": "logger?.error('\u274c Payment processing failed:', error);\n\t\t\t\n\t\t\t// Enhanced error handling with specific error types\n\t\t\tlet errorMessage = 'Payment failed';\n\t\t\t\n\t\t\tif (error instanceof Error) {\n\t\t\t\t// Ha..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/checkout/checkout-modal/PaymentProcessor.svelte",
+      "line_number": 98,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "try a different payment method.';\n\t\t\t\t} else if (error?.message.includes('declined')) {\n\t\t\t\t\terrorMessage = 'Paym",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 514
+      },
+      "catch_context": "logger?.error('\u274c Payment processing failed:', error);\n\t\t\t\n\t\t\t// Enhanced error handling with specific error types\n\t\t\tlet errorMessage = 'Payment failed';\n\t\t\t\n\t\t\tif (error instanceof Error) {\n\t\t\t\t// Ha..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/checkout/checkout-modal/PaymentProcessor.svelte",
+      "line_number": 98,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "ent details or try another card.';\n\t\t\t\t} else if (error?.message.includes('network')) {\n\t\t\t\t\terrorMessage = 'Netwo",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 664
+      },
+      "catch_context": "logger?.error('\u274c Payment processing failed:', error);\n\t\t\t\n\t\t\t// Enhanced error handling with specific error types\n\t\t\tlet errorMessage = 'Payment failed';\n\t\t\t\n\t\t\tif (error instanceof Error) {\n\t\t\t\t// Ha..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/checkout/checkout-modal/PaymentProcessor.svelte",
+      "line_number": 98,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "and try again.';\n\t\t\t\t} else {\n\t\t\t\t\terrorMessage = error?.message;\n\t\t\t\t}\n\t\t\t}\n\t\t\t\n\t\t\tonPaymentError(errorMessage);",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 817
+      },
+      "catch_context": "logger?.error('\u274c Payment processing failed:', error);\n\t\t\t\n\t\t\t// Enhanced error handling with specific error types\n\t\t\tlet errorMessage = 'Payment failed';\n\t\t\t\n\t\t\tif (error instanceof Error) {\n\t\t\t\t// Ha..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(auth)/login/+page.svelte",
+      "line_number": 98,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "if (error instanceof Error) {\n\t\t\t\ttoast?.error(error?.message || m?.auth_oauth_failed())\n\t\t\t} else {\n\t\t\t\ttoast?",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 47
+      },
+      "catch_context": "if (error instanceof Error) {\n\t\t\t\ttoast?.error(error?.message || m?.auth_oauth_failed())\n\t\t\t} else {\n\t\t\t\ttoast?.error(m?.auth_oauth_failed())\n\t\t\t}"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/layout/header/Header.svelte",
+      "line_number": 80,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "brandSlugError = error instanceof Error ? error?.message : 'Unknown error occurred';\n\t\t\tconsole?.error('Fa",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 42
+      },
+      "catch_context": "brandSlugError = error instanceof Error ? error?.message : 'Unknown error occurred';\n\t\t\tconsole?.error('Failed to fetch brand slug:', error);"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/wishlist/+server.ts",
+      "line_number": 119,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "if (error instanceof Error) {\n\t\t\treturn apiError(error?.message, 500, ApiErrorType?.INTERNAL_ERROR, { error: erro",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 49
+      },
+      "catch_context": "if (error instanceof Error) {\n\t\t\treturn apiError(error?.message, 500, ApiErrorType?.INTERNAL_ERROR, { error: error?.name }, requestId)\n\t\t}\n\t\treturn apiError(\n\t\t\t'An unexpected error occurred',\n\t\t\t500,..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/wishlist/+server.ts",
+      "line_number": 119,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "name",
+        "pattern": "error?.name",
+        "context": "sage, 500, ApiErrorType?.INTERNAL_ERROR, { error: error?.name }, requestId)\n\t\t}\n\t\treturn apiError(\n\t\t\t'An unexp",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 109
+      },
+      "catch_context": "if (error instanceof Error) {\n\t\t\treturn apiError(error?.message, 500, ApiErrorType?.INTERNAL_ERROR, { error: error?.name }, requestId)\n\t\t}\n\t\treturn apiError(\n\t\t\t'An unexpected error occurred',\n\t\t\t500,..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/wishlist/+server.ts",
+      "line_number": 166,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "message",
+        "pattern": "error?.message",
+        "context": "if (error instanceof Error) {\n\t\t\treturn apiError(error?.message, 500, ApiErrorType?.INTERNAL_ERROR, { error: erro",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 49
+      },
+      "catch_context": "if (error instanceof Error) {\n\t\t\treturn apiError(error?.message, 500, ApiErrorType?.INTERNAL_ERROR, { error: error?.name }, requestId)\n\t\t}\n\t\treturn apiError(\n\t\t\t'An unexpected error occurred',\n\t\t\t500,..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/wishlist/+server.ts",
+      "line_number": 166,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "optional_chaining",
+        "property": "name",
+        "pattern": "error?.name",
+        "context": "sage, 500, ApiErrorType?.INTERNAL_ERROR, { error: error?.name }, requestId)\n\t\t}\n\t\treturn apiError(\n\t\t\t'An unexp",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 109
+      },
+      "catch_context": "if (error instanceof Error) {\n\t\t\treturn apiError(error?.message, 500, ApiErrorType?.INTERNAL_ERROR, { error: error?.name }, requestId)\n\t\t}\n\t\treturn apiError(\n\t\t\t'An unexpected error occurred',\n\t\t\t500,..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/payment/revolut/manual-payment/+server.ts",
+      "line_number": 144,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "(error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, request",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 52
+      },
+      "catch_context": "if (error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'Failed to create payment',\n\t\t\t500,\n\t\t\tApiErrorType.IN..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/payment/revolut/manual-payment/+server.ts",
+      "line_number": 144,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "status",
+        "pattern": "error.status",
+        "context": "eof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\tret",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 67
+      },
+      "catch_context": "if (error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'Failed to create payment',\n\t\t\t500,\n\t\t\tApiErrorType.IN..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/payment/revolut/manual-payment/+server.ts",
+      "line_number": 144,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "details",
+        "pattern": "error.details",
+        "context": "apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'Failed to",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 93
+      },
+      "catch_context": "if (error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'Failed to create payment',\n\t\t\t500,\n\t\t\tApiErrorType.IN..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/payment/revolut/manual-payment/+server.ts",
+      "line_number": 144,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "type",
+        "pattern": "error.type",
+        "context": "{\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 81
+      },
+      "catch_context": "if (error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'Failed to create payment',\n\t\t\t500,\n\t\t\tApiErrorType.IN..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/payment/revolut/manual-payment/+server.ts",
+      "line_number": 205,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "(error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, request",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 52
+      },
+      "catch_context": "if (error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'Failed to confirm payment',\n\t\t\t500,\n\t\t\tApiErrorType.I..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/payment/revolut/manual-payment/+server.ts",
+      "line_number": 205,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "status",
+        "pattern": "error.status",
+        "context": "eof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\tret",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 67
+      },
+      "catch_context": "if (error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'Failed to confirm payment',\n\t\t\t500,\n\t\t\tApiErrorType.I..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/payment/revolut/manual-payment/+server.ts",
+      "line_number": 205,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "details",
+        "pattern": "error.details",
+        "context": "apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'Failed to",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 93
+      },
+      "catch_context": "if (error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'Failed to confirm payment',\n\t\t\t500,\n\t\t\tApiErrorType.I..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/payment/revolut/manual-payment/+server.ts",
+      "line_number": 205,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "type",
+        "pattern": "error.type",
+        "context": "{\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 81
+      },
+      "catch_context": "if (error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'Failed to confirm payment',\n\t\t\t500,\n\t\t\tApiErrorType.I..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/(app)/browse/+page.server.ts",
+      "line_number": 113,
+      "catch_parameter": "err",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "err.message",
+        "context": "led to load browse page: ${err instanceof Error ? err.message : 'Unknown error'}`)",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 114
+      },
+      "catch_context": "console.error('Browse page error:', err)\n\t\tthrow error(500, `Failed to load browse page: ${err instanceof Error ? err.message : 'Unknown error'}`)"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/utils/api-client.ts",
+      "line_number": 69,
+      "catch_parameter": "error: any",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "name",
+        "pattern": "error.name",
+        "context": "(timeoutId);\n\n    // Handle abort/timeout\n    if (error.name === 'AbortError') {\n      throw new AppError('Req",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 62
+      },
+      "catch_context": "clearTimeout(timeoutId);\n\n    // Handle abort/timeout\n    if (error.name === 'AbortError') {\n      throw new AppError('Request timed out', 'network/timeout', 408);\n    }\n\n    // Re-throw if already an..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/server/api-utils.ts",
+      "line_number": 480,
+      "catch_parameter": "err",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "err.message",
+        "context": "(err instanceof ApiError) {\n      return apiError(err.message, err.status, err.type, err.details, context.reque",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 160
+      },
+      "catch_context": "if (dev) {\n      console.error(`[${context.requestId}] Error:`, err, monitor.getMetrics());\n    }\n    \n    if (err instanceof ApiError) {\n      return apiError(err.message, err.status, err.type, err.d..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/server/api-utils.ts",
+      "line_number": 480,
+      "catch_parameter": "err",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "status",
+        "pattern": "err.status",
+        "context": "of ApiError) {\n      return apiError(err.message, err.status, err.type, err.details, context.requestId);\n    }",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 173
+      },
+      "catch_context": "if (dev) {\n      console.error(`[${context.requestId}] Error:`, err, monitor.getMetrics());\n    }\n    \n    if (err instanceof ApiError) {\n      return apiError(err.message, err.status, err.type, err.d..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/server/api-utils.ts",
+      "line_number": 480,
+      "catch_parameter": "err",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "details",
+        "pattern": "err.details",
+        "context": "eturn apiError(err.message, err.status, err.type, err.details, context.requestId);\n    }\n    \n    return apiErr",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 195
+      },
+      "catch_context": "if (dev) {\n      console.error(`[${context.requestId}] Error:`, err, monitor.getMetrics());\n    }\n    \n    if (err instanceof ApiError) {\n      return apiError(err.message, err.status, err.type, err.d..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/server/api-utils.ts",
+      "line_number": 480,
+      "catch_parameter": "err",
+      "error_variable": "err",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "type",
+        "pattern": "err.type",
+        "context": "{\n      return apiError(err.message, err.status, err.type, err.details, context.requestId);\n    }",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 185
+      },
+      "catch_context": "if (dev) {\n      console.error(`[${context.requestId}] Error:`, err, monitor.getMetrics());\n    }\n    \n    if (err instanceof ApiError) {\n      return apiError(err.message, err.status, err.type, err.d..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/checkout/checkout-modal/hooks/useStripePayment.svelte.ts",
+      "line_number": 188,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "r) {\n\t\t\t\t// Handle specific Stripe errors\n\t\t\t\tif (error.message.includes('card_declined')) {\n\t\t\t\t\terrorMessage =",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 285
+      },
+      "catch_context": "logger.error('\u274c Unexpected error during payment processing:', error);\n\t\t\t\n\t\t\t// Enhanced error handling for different error types\n\t\t\tlet errorMessage = 'An unexpected error occurred. Please try again...."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/checkout/checkout-modal/hooks/useStripePayment.svelte.ts",
+      "line_number": 188,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "try a different payment method.';\n\t\t\t\t} else if (error.message.includes('insufficient_funds')) {\n\t\t\t\t\terrorMessa",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 429
+      },
+      "catch_context": "logger.error('\u274c Unexpected error during payment processing:', error);\n\t\t\t\n\t\t\t// Enhanced error handling for different error types\n\t\t\tlet errorMessage = 'An unexpected error occurred. Please try again...."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/checkout/checkout-modal/hooks/useStripePayment.svelte.ts",
+      "line_number": 188,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "try a different payment method.';\n\t\t\t\t} else if (error.message.includes('network')) {\n\t\t\t\t\terrorMessage = 'Netwo",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 574
+      },
+      "catch_context": "logger.error('\u274c Unexpected error during payment processing:', error);\n\t\t\t\n\t\t\t// Enhanced error handling for different error types\n\t\t\tlet errorMessage = 'An unexpected error occurred. Please try again...."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/checkout/checkout-modal/hooks/useRevolutPayment.svelte.ts",
+      "line_number": 89,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "nt';\n\t\t\t\n\t\t\tif (error instanceof Error) {\n\t\t\t\tif (error.message.includes('rate_limit')) {\n\t\t\t\t\terrorMessage = 'To",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 216
+      },
+      "catch_context": "logger.error('\u274c Failed to create manual payment:', error);\n\t\t\t\n\t\t\t// Enhanced error handling with user-friendly messages\n\t\t\tlet errorMessage = 'Failed to create payment';\n\t\t\t\n\t\t\tif (error instanceof E..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/checkout/checkout-modal/hooks/useRevolutPayment.svelte.ts",
+      "line_number": 89,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "ase wait a moment and try again.';\n\t\t\t\t} else if (error.message.includes('network')) {\n\t\t\t\t\terrorMessage = 'Netwo",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 349
+      },
+      "catch_context": "logger.error('\u274c Failed to create manual payment:', error);\n\t\t\t\n\t\t\t// Enhanced error handling with user-friendly messages\n\t\t\tlet errorMessage = 'Failed to create payment';\n\t\t\t\n\t\t\tif (error instanceof E..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/checkout/checkout-modal/hooks/useRevolutPayment.svelte.ts",
+      "line_number": 89,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "r. Please check your connection.';\n\t\t\t\t} else if (error.message.includes('server')) {\n\t\t\t\t\terrorMessage = 'Server",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 469
+      },
+      "catch_context": "logger.error('\u274c Failed to create manual payment:', error);\n\t\t\t\n\t\t\t// Enhanced error handling with user-friendly messages\n\t\t\tlet errorMessage = 'Failed to create payment';\n\t\t\t\n\t\t\tif (error instanceof E..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/checkout/checkout-modal/hooks/useRevolutPayment.svelte.ts",
+      "line_number": 89,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "y again later.';\n\t\t\t\t} else {\n\t\t\t\t\terrorMessage = error.message;\n\t\t\t\t}\n\t\t\t}\n\t\t\t\n\t\t\ttoast.error(errorMessage);",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 617
+      },
+      "catch_context": "logger.error('\u274c Failed to create manual payment:', error);\n\t\t\t\n\t\t\t// Enhanced error handling with user-friendly messages\n\t\t\tlet errorMessage = 'Failed to create payment';\n\t\t\t\n\t\t\tif (error instanceof E..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/checkout/checkout-modal/hooks/useRevolutPayment.svelte.ts",
+      "line_number": 154,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "const errorMessage = error instanceof Error ? error.message : 'Failed to confirm payment';\n\t\t\ttoast.error(err",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 109
+      },
+      "catch_context": "logger.error('\u274c Failed to confirm manual payment:', error);\n\t\t\tconst errorMessage = error instanceof Error ? error.message : 'Failed to confirm payment';\n\t\t\ttoast.error(errorMessage);\n\t\t\treturn { succ..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/auth/TwoFactorVerification.svelte",
+      "line_number": 45,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "toast.error(error instanceof Error ? error.message : 'Failed to verify code');",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 37
+      },
+      "catch_context": "toast.error(error instanceof Error ? error.message : 'Failed to verify code');"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/auth/TwoFactorSetup.svelte",
+      "line_number": 38,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "toast.error(error instanceof Error ? error.message : 'Failed to start 2FA setup');",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 37
+      },
+      "catch_context": "toast.error(error instanceof Error ? error.message : 'Failed to start 2FA setup');"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/auth/TwoFactorSetup.svelte",
+      "line_number": 68,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "toast.error(error instanceof Error ? error.message : 'Failed to verify code');",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 37
+      },
+      "catch_context": "toast.error(error instanceof Error ? error.message : 'Failed to verify code');"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/auth/resend-verification/+server.ts",
+      "line_number": 131,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "(error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, request",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 52
+      },
+      "catch_context": "if (error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'An unexpected error occurred',\n\t\t\t500,\n\t\t\tApiErrorTyp..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/auth/resend-verification/+server.ts",
+      "line_number": 131,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "status",
+        "pattern": "error.status",
+        "context": "eof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\tret",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 67
+      },
+      "catch_context": "if (error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'An unexpected error occurred',\n\t\t\t500,\n\t\t\tApiErrorTyp..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/auth/resend-verification/+server.ts",
+      "line_number": 131,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "details",
+        "pattern": "error.details",
+        "context": "apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'An unexpe",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 93
+      },
+      "catch_context": "if (error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'An unexpected error occurred',\n\t\t\t500,\n\t\t\tApiErrorTyp..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/routes/api/auth/resend-verification/+server.ts",
+      "line_number": 131,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "type",
+        "pattern": "error.type",
+        "context": "{\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 81
+      },
+      "catch_context": "if (error instanceof ApiError) {\n\t\t\treturn apiError(error.message, error.status, error.type, error.details, requestId);\n\t\t}\n\t\treturn apiError(\n\t\t\t'An unexpected error occurred',\n\t\t\t500,\n\t\t\tApiErrorTyp..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/server/scheduled/cleanup-rate-limits.ts",
+      "line_number": 15,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "ess: false,\n      error: error instanceof Error ? error.message : 'Unknown error'\n    };",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 126
+      },
+      "catch_context": "console.error('[Rate Limit Cleanup] Error:', error);\n    return {\n      success: false,\n      error: error instanceof Error ? error.message : 'Unknown error'\n    };"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/listings/listing-card/useLikeToggle.svelte.ts",
+      "line_number": 75,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "const errorMessage = error instanceof Error ? error.message : m.listing_favorite_error();\n\t\t\tapiError = error",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 128
+      },
+      "catch_context": "// Revert on error\n\t\t\tliked = originalLiked;\n\t\t\tlikeCount = originalCount;\n\t\t\t\n\t\t\tconst errorMessage = error instanceof Error ? error.message : m.listing_favorite_error();\n\t\t\tapiError = errorMessage;\n..."
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/auth/TwoFactorSettings.svelte",
+      "line_number": 66,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "toast.error(error instanceof Error ? error.message : 'Failed to disable 2FA');",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 37
+      },
+      "catch_context": "toast.error(error instanceof Error ? error.message : 'Failed to disable 2FA');"
+    },
+    {
+      "file_path": "K:\\driplo.bg-main\\src/lib/components/auth/TwoFactorSettings.svelte",
+      "line_number": 99,
+      "catch_parameter": "error",
+      "error_variable": "error",
+      "unsafe_pattern": {
+        "type": "direct_access",
+        "property": "message",
+        "pattern": "error.message",
+        "context": "toast.error(error instanceof Error ? error.message : 'Failed to regenerate backup codes');",
+        "severity": "medium",
+        "has_type_check": true,
+        "position": 37
+      },
+      "catch_context": "toast.error(error instanceof Error ? error.message : 'Failed to regenerate backup codes');"
+    }
+  ],
+  "summary": {
+    "total_files_analyzed": 140,
+    "files_with_issues": 43,
+    "total_unsafe_patterns": 97
+  }
+}

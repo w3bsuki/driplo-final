@@ -15,7 +15,7 @@
   // PUBLIC_RECAPTCHA_SITE_KEY=your_recaptcha_v2_site_key
   const siteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || ''
   
-  let recaptchaContainer: HTMLDivElement
+  let recaptchaContainer = $state<HTMLDivElement | null>(null)
   let widgetId: number | null = null
   
   onMount(() => {

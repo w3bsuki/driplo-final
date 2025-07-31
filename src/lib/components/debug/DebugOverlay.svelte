@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { _debug} from '$lib/utils/debug-logger';
 	
 	interface Props {
 		show?: boolean;

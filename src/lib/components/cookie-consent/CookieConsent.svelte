@@ -185,7 +185,7 @@
 			onclick={handleClosePreferences}
 			class="fixed inset-0 bg-black/50 backdrop-blur-sm"
 			aria-label="Close preferences"
-		/>
+		></button>
 		
 		<!-- Modal -->
 		<div

@@ -11,9 +11,9 @@ export const load: PageServerLoad = async ({ locals }) => {
 	// Use optimized RPC function to get favorites with all related data in single query
 	const { data: favoritesData, error: favoritesError } = await locals.supabase
 		.rpc('get_user_favorites_with_listings', {
-			p_user_id: session.user.id,
-			p_limit: 50,
-			p_offset: 0
+			user_id: session.user.id,
+			limit_count: 50,
+			offset_count: 0
 		})
 
 	if (favoritesError) {

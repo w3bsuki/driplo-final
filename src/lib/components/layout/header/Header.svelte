@@ -50,40 +50,42 @@
 	);
 
 	// Effect for fetching brand slug with proper error handling and caching
-	$effect(async () => {
+	$effect(() => {
 		if (!shouldFetchBrandSlug) return;
 
-		brandSlugLoading = true;
-		brandSlugError = null;
+		(async () => {
+			brandSlugLoading = true;
+			brandSlugError = null;
 
-		try {
-			const { data, error } = await effectiveSupabase
-				.from('brand_profiles')
-				.select('brand_slug')
-				.eq('user_id', user!.id)
-				.single();
+			try {
+				const { data, error } = await effectiveSupabase
+					.from('brand_profiles' as any)
+					.select('brand_slug')
+					.eq('user_id', user!.id)
+					.single();
 
-			if (error) {
-				// Handle specific error cases
-				if (error?.code === 'PGRST116') {
-					// No brand profile found - this is expected for new brand accounts
-					brandSlugError = 'No brand profile found';
+				if (error) {
+					// Handle specific error cases
+					if (error?.code === 'PGRST116') {
+						// No brand profile found - this is expected for new brand accounts
+						brandSlugError = 'No brand profile found';
+					} else {
+						brandSlugError = `Database error: ${error?.message}`;
+						console?.error('Brand slug fetch error:', error);
+					}
+				} else if ((data as any)?.brand_slug) {
+					brandSlug = (data && typeof data === 'object' && 'brand_slug' in data) ? (data && typeof data === 'object' && 'brand_slug' in data) ? (data as any).brand_slug : null : null;
 				} else {
-					brandSlugError = `Database error: ${error?.message}`;
-					console?.error('Brand slug fetch error:', error);
+					brandSlugError = 'Brand slug not available';
 				}
-			} else if (data?.brand_slug) {
-				brandSlug = (data && typeof data === 'object' && 'brand_slug' in data) ? (data && typeof data === 'object' && 'brand_slug' in data) ? data.brand_slug : null : null;
-			} else {
-				brandSlugError = 'Brand slug not available';
+			} catch (error) {
+				brandSlugError = error instanceof Error ? error?.message : 'Unknown error occurred';
+				console?.error('Failed to fetch brand slug:', error);
+			} finally {
+				brandSlugFetched = true;
+				brandSlugLoading = false;
 			}
-		} catch (error) {
-			brandSlugError = error instanceof Error ? error?.message : 'Unknown error occurred';
-			console?.error('Failed to fetch brand slug:', error);
-		} finally {
-			brandSlugFetched = true;
-			brandSlugLoading = false;
-		}
+		})();
 	});
 
 	// Reset brand slug state when user logs out or changes

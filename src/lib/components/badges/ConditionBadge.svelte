@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Badge from '$lib/components/ui/badge.svelte';
-	import { getConditionConfig, type _ListingCondition} from '$lib/config/conditions';
+	import { getConditionConfig } from '$lib/config/conditions';
 	import * as m from '$lib/paraglide/messages.js';
 	import type { ConditionBadgeProps } from '$lib/types/components';
 	

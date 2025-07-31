@@ -1,5 +1,6 @@
 import type { PageServerLoad, Actions } from './$types';
 import { error, fail, redirect } from '@sveltejs/kit';
+import { generateCSRFToken, csrfProtectedAction } from '$lib/server/csrf'
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const { session } = await locals.safeGetSession();
@@ -73,10 +74,12 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 			.eq('is_read', false);
 
 		return {
+		csrfToken: generateCSRFToken(),
 			conversation,
 			messages: messages || [],
 			currentUserId: session.user.id
-		};
+		
+	};
 	} catch (err) {
 		if (err && typeof err === 'object' && 'status' in err) {
 			throw err; // Re-throw SvelteKit errors

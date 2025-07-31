@@ -78,7 +78,9 @@
 													if (result?.type === 'success') {
 														toast?.success('Email verified successfully!');
 														// Remove from list
-														data?.unverifiedUsers = data?.unverifiedUsers?.filter?.(((u: any) => u?.id !== user?.id);
+														if (data && data.unverifiedUsers) {
+															data.unverifiedUsers = data.unverifiedUsers.filter((u: any) => u?.id !== user?.id);
+														}
 													} else {
 														toast?.error('Failed to verify email');
 													}

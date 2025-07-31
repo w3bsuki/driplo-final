@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
 	// Get brand profile
 	const { data: brandProfile, error: brandError } = await supabase
-		.from('brand_profiles')
+		.from('brand_profiles' as any)
 		.select('*')
 		.eq('brand_slug', brandSlug)
 		.eq('user_id', session.user.id)

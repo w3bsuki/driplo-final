@@ -106,7 +106,6 @@
 		ctaText, 
 		ctaHref, 
 		dismissible = true,
-		_countdown= false,
 		variant = 'gradient',
 		onDismiss,
 		class: className = ''

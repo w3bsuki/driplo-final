@@ -21,7 +21,7 @@
 <div class="space-y-4">
 	<div class="flex items-center space-x-2">
 		<Lock class="h-5 w-5 text-brand-500" />
-		<h3 class="text-lg font-semibold text-gray-900">{m?.payment_method()}</h3>
+		<h3 class="text-lg font-semibold text-gray-900">{m?.['payment_method']()}</h3>
 	</div>
 
 	<div class="space-y-3">
@@ -55,8 +55,8 @@
 							<CreditCard class={`w-5 h-5 ${paymentProvider === 'stripe' ? 'text-brand-600' : 'text-gray-600'}`} />
 						</div>
 						<div>
-							<h4 class="text-sm font-medium text-gray-900">{m?.card_payment()}</h4>
-							<p class="text-xs text-gray-600">{m?.stripe_card_description()}</p>
+							<h4 class="text-sm font-medium text-gray-900">{m?.['card_payment']()}</h4>
+							<p class="text-xs text-gray-600">{m?.['stripe_card_description']()}</p>
 						</div>
 					</div>
 					{#if paymentProvider === 'stripe'}
@@ -75,7 +75,7 @@
 				<!-- Card Brand Icons -->
 				<div class="mt-3 flex items-center space-x-2">
 					<div class="flex items-center space-x-1">
-						<span class="text-xs text-gray-500">{m?.accepted_cards()}:</span>
+						<span class="text-xs text-gray-500">{m?.['accepted_cards']()}:</span>
 						<div class="flex space-x-1">
 							<span class="text-xs font-medium text-gray-600">Visa</span>
 							<span class="text-xs font-medium text-gray-600">MasterCard</span>
@@ -116,8 +116,8 @@
 							<Smartphone class={`w-5 h-5 ${paymentProvider === 'revolut_manual' ? 'text-brand-600' : 'text-gray-600'}`} />
 						</div>
 						<div>
-							<h4 class="text-sm font-medium text-gray-900">{m?.revolut_payment()}</h4>
-							<p class="text-xs text-gray-600">{m?.revolut_manual_description()}</p>
+							<h4 class="text-sm font-medium text-gray-900">{m?.['revolut_payment']()}</h4>
+							<p class="text-xs text-gray-600">{m?.['revolut_manual_description']()}</p>
 						</div>
 					</div>
 					{#if paymentProvider === 'revolut_manual'}
@@ -142,8 +142,8 @@
 			<div class="flex items-start space-x-2">
 				<Lock class="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
 				<div>
-					<h5 class="text-sm font-medium text-blue-900">{m?.secure_payment()}</h5>
-					<p class="text-xs text-blue-700 mt-1">{m?.stripe_security_description()}</p>
+					<h5 class="text-sm font-medium text-blue-900">{m?.['secure_payment']()}</h5>
+					<p class="text-xs text-blue-700 mt-1">{m?.['stripe_security_description']()}</p>
 				</div>
 			</div>
 		</div>
@@ -152,8 +152,8 @@
 			<div class="flex items-start space-x-2">
 				<Smartphone class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
 				<div>
-					<h5 class="text-sm font-medium text-amber-900">{m?.manual_verification()}</h5>
-					<p class="text-xs text-amber-700 mt-1">{m?.revolut_manual_process_description()}</p>
+					<h5 class="text-sm font-medium text-amber-900">{m?.['manual_verification']()}</h5>
+					<p class="text-xs text-amber-700 mt-1">{m?.['revolut_manual_process_description']()}</p>
 				</div>
 			</div>
 		</div>
@@ -164,7 +164,7 @@
 		<div class="flex items-center space-x-2">
 			<Lock class="w-4 h-4 text-gray-600" />
 			<p class="text-xs text-gray-600">
-				{m?.payment_security_notice()}
+				{m?.['payment_security_notice']()}
 			</p>
 		</div>
 	</div>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Avatar } from '$lib/components/ui';
   import { Star } from 'lucide-svelte';
-  import type { Category } from '$lib/types';
+  import type { UnifiedCategory as Category } from '$lib/types';
   
   interface TopSeller {
     id: string;
@@ -37,7 +37,7 @@
                 <Avatar.AvatarImage src={seller.avatar_url} alt={seller.username} />
               {/if}
               <Avatar.AvatarFallback class="text-sm font-medium text-gray-600">
-                {seller.username[0].toUpperCase()}
+                {seller.username[0]?.toUpperCase() || '?'}
               </Avatar.AvatarFallback>
             </Avatar.Avatar>
           </div>
@@ -54,7 +54,7 @@
       {/each}
       
       {#if sellers.length < 3}
-        {#each Array(3 - sellers.length) as _, _i}
+        {#each Array(3 - sellers.length) as _}
           <div class="text-center">
             <div class="w-12 h-12 mx-auto mb-1 rounded-full bg-gray-100 flex items-center justify-center">
               <span class="text-xs text-gray-400">?</span>

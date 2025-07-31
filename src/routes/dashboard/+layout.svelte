@@ -73,7 +73,7 @@
 
 				<div class="flex items-center gap-4">
 					<span class="text-sm text-muted-foreground">
-						{data?.profile?.full_name || data?.user?.email}
+						{(data?.profile as any)?.full_name || data?.user?.email}
 					</span>
 					<button
 						onclick={handleLogout}

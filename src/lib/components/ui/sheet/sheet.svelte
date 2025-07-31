@@ -6,7 +6,6 @@
 		children: Snippet;
 		open?: boolean;
 		onOpenChange?: (open: boolean) => void;
-		closeOnEscape?: boolean;
 		closeOnOutsideClick?: boolean;
 		portal?: HTMLElement | string | null;
 		forceMount?: boolean;
@@ -21,7 +20,6 @@
 		children,
 		open = $bindable(),
 		onOpenChange,
-		closeOnEscape = true,
 		closeOnOutsideClick = true,
 		portal,
 		forceMount = false,
@@ -36,7 +34,6 @@
 <SheetPrimitive.Root
 	bind:open
 	{onOpenChange}
-	{closeOnEscape}
 	{closeOnOutsideClick}
 	{portal}
 	{forceMount}

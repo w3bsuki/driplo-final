@@ -33,7 +33,7 @@
 		loading = false
 	}: Props = $props()
 
-	let fileInput: HTMLInputElement
+	let fileInput: HTMLInputElement | null
 	let previewUrl = $state('')
 	let dragOver = $state(false)
 	let uploading = $state(false)
@@ -166,7 +166,7 @@
 			previewUrl ? "border-solid border-border" : "",
 			!(disabled || loading || processing) && "cursor-pointer"
 		)}
-		onclick={handleDisabled || loading || processing ? undefined : triggerFileInput}
+		onclick={disabled || loading || processing ? undefined : triggerFileInput}
 		ondragover={disabled || loading || processing ? undefined : handleDragOver}
 		ondragleave={disabled || loading || processing ? undefined : handleDragLeave}
 		ondrop={disabled || loading || processing ? undefined : handleDrop}
@@ -228,7 +228,7 @@
 						{m.upload_drag_drop()}
 					</p>
 					<p class="text-xs text-muted-foreground mt-1">
-						{m.upload_file_types({ types: allowedTypes.map(t => t.split('/')[1].toUpperCase()).join(', '), size: Math.round(maxSizeBytes / 1024 / 1024) })}
+						{m.upload_file_types({ types: allowedTypes.map(t => t.split('/')[1]?.toUpperCase() || 'FILE').join(', '), size: Math.round(maxSizeBytes / 1024 / 1024) })}
 					</p>
 				{/if}
 			</div>

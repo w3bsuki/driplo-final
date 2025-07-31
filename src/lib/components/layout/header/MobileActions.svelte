@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { _goto} from '$app/navigation';
 	import { cn } from '$lib/utils/cn';
 	import NotificationBell from './NotificationBell.svelte';
 	import UserMenu from './UserMenu.svelte';
-	import type { User, Session } from '@supabase/supabase-js';
-	import type { ExtendedProfile } from '$lib/types';
+	import type { Session } from '@supabase/supabase-js';
+	import type { ExtendedProfile, UserProfile } from '$lib/types';
 	
 	interface MobileActionsProps {
-		user: User | null;
+		user: UserProfile | null;
 		session: Session | null;
 		profile: ExtendedProfile | null;
 		brandSlug: string | null;

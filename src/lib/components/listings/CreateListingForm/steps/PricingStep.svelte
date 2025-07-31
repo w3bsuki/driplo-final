@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getFormContext } from '../FormContext.svelte.ts'
+	import { getFormContext } from '../FormContext.svelte'
 	import { validateField, getSuggestions, formatPrice } from '../utils/validation'
 	import { cn } from '$lib/utils'
 	import { fade, slide } from 'svelte/transition'
@@ -220,13 +220,13 @@
 					Price Intelligence
 				</p>
 				<p class="text-sm text-blue-800 mt-1">
-					Similar items sell for <span class="font-semibold">${priceRange.min} - ${priceRange.max}</span>
+					Similar items sell for <span class="font-semibold">${priceRange?.min || 0} - ${priceRange?.max || 0}</span>
 				</p>
-				{#if form.formData.price < priceRange.min * 0.7}
+				{#if form.formData.price < (priceRange?.min || 0) * 0.7}
 					<p class="text-xs text-blue-700 mt-2">
 						Your price seems low. Consider pricing higher for faster profit.
 					</p>
-				{:else if form.formData.price > priceRange.max * 1.5}
+				{:else if form.formData.price > (priceRange?.max || 0) * 1.5}
 					<p class="text-xs text-blue-700 mt-2">
 						Your price is above market average. It might take longer to sell.
 					</p>

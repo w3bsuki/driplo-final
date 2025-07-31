@@ -10,7 +10,6 @@
 		detailedData: {}
 	})
 	
-	let _loading = $state(true)
 	let error = $state<Error | null>(null)
 	
 	onMount(() => {
@@ -18,11 +17,9 @@
 			streamedDashboard,
 			(data) => {
 				stats = data
-				loading = false
 			},
 			(err) => {
 				error = err
-				loading = false
 			}
 		)
 	})
@@ -46,8 +43,8 @@
 		<div class="stat-card">
 			<h3>Monthly Revenue</h3>
 			<p class="stat-value">
-				{#if stats?.detailedData.monthlyRevenue !== undefined}
-					£{stats?.detailedData.monthlyRevenue?.toLocaleString()}
+				{#if (stats?.detailedData as any).monthlyRevenue !== undefined}
+					£{(stats?.detailedData as any).monthlyRevenue?.toLocaleString()}
 				{:else}
 					<span class="loading-placeholder">Loading...</span>
 				{/if}

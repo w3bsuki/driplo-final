@@ -6,9 +6,9 @@
 	let { 
 		value = $bindable(), 
 		colors: customColors,
-		_size= 'md',
-		_allowCustom= false,
-		_showValue= false,
+		size = 'md',
+		allowCustom = false,
+		showValue = false,
 		onColorChange,
 		onchange,
 		label,

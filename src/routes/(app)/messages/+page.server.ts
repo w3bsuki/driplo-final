@@ -1,5 +1,6 @@
 import type { PageServerLoad, Actions } from './$types';
 import { error, fail, redirect } from '@sveltejs/kit';
+import { generateCSRFToken, csrfProtectedAction } from '$lib/server/csrf'
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { session } = await locals?.safeGetSession();
@@ -59,9 +60,11 @@ export const load: PageServerLoad = async ({ locals }) => {
 					.neq('sender_id', session?.user.id);
 
 				return {
+		csrfToken: generateCSRFToken(),
 					...conversation,
 					unread_count: count || 0
-				};
+				
+	};
 			}));
 
 		return {
@@ -75,7 +78,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-	archive: async ({ request, locals, _params}) => {
+	archive: async ({ request, locals }) => {
 		const { session } = await locals?.safeGetSession();
 		
 		if (!session) {

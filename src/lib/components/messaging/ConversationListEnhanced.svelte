@@ -74,8 +74,8 @@
     }
 
     // Handle form submission results
-    function handleArchiveResult({ _formElement, result, update }: any) {
-        const conversationId = formElement?.conversationId.value;
+    function handleArchiveResult({ formElement: _formElement, result, update }: any) {
+        const conversationId = _formElement?.conversationId.value;
         archivingStates[conversationId] = false;
         
         if (result?.type === 'success' && result?.data?.success) {
@@ -142,7 +142,7 @@
                                         <img src={otherUser?.avatar_url} alt={otherUser?.username} width="48" height="48" class="w-full h-full rounded-full object-cover" />
                                     {:else}
                                         <div class="flex items-center justify-center h-full text-lg font-semibold">
-                                            {otherUser?.username[0].toUpperCase()}
+                                            {otherUser?.username?.[0]?.toUpperCase() || '?'}
                                         </div>
                                     {/if}
                                 </div>
@@ -182,7 +182,7 @@
                         <div class="dropdown dropdown-end">
                             <label tabindex="0" class="btn btn-ghost btn-xs btn-circle">
                                 {#if isArchiving}
-                                    <Spinner size="xs" />
+                                    <Spinner size="sm" />
                                 {:else}
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v?.01M12 12v?.01M12 19v?.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
@@ -195,7 +195,7 @@
                                         <form 
                                             method="post" 
                                             action="?/unarchive"
-                                            use:enhance={({ _formElement}) => {
+                                            use:enhance={() => {
                                                 archivingStates[conversation?.id] = true;
                                                 return handleArchiveResult;
                                             }}
@@ -219,7 +219,7 @@
                                         <form 
                                             method="post" 
                                             action="?/archive"
-                                            use:enhance={({ _formElement}) => {
+                                            use:enhance={() => {
                                                 archivingStates[conversation?.id] = true;
                                                 return handleArchiveResult;
                                             }}

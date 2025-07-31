@@ -27,7 +27,7 @@ export const POST: RequestHandler = async ({ locals: { supabase, safeGetSession 
 
 		// Log successful onboarding completion
 		await supabase.rpc('log_auth_event', {
-			p_user_id: user.id,
+			user_id: user.id,
 			p_action: 'onboarding_completed',
 			p_success: true,
 			p_metadata: {
@@ -41,7 +41,7 @@ export const POST: RequestHandler = async ({ locals: { supabase, safeGetSession 
 		
 		// Log failed attempt
 		await supabase.rpc('log_auth_event', {
-			p_user_id: user.id,
+			user_id: user.id,
 			p_action: 'onboarding_completed',
 			p_success: false,
 			p_error_message: err instanceof Error ? err.message : 'Unknown error'

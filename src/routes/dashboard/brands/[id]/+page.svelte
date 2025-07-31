@@ -101,12 +101,12 @@
 				<div class="flex items-center gap-4 text-sm text-gray-600">
 					<span class="flex items-center gap-1">
 						<Calendar class="w-4 h-4" />
-						Submitted {formatDate(data.request?.submitted_at)}
+						Submitted {formatDate((data.request as any)?.submitted_at || '')}
 					</span>
-					{#if data.request?.verification_status !== 'pending'}
+					{#if (data.request as any)?.verification_status !== 'pending'}
 						<span class="flex items-center gap-1">
 							<Shield class="w-4 h-4" />
-							{data.request?.verification_status.replace('_', ' ')}
+							{(data.request as any)?.verification_status?.replace('_', ' ')}
 						</span>
 					{/if}
 				</div>
@@ -133,22 +133,22 @@
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 			<div>
 				<p class="text-sm text-gray-600 mb-1">Brand Name</p>
-				<p class="font-medium text-gray-900">{data.request?.brand_name}</p>
+				<p class="font-medium text-gray-900">{(data.request as any)?.brand_name}</p>
 			</div>
 			<div>
 				<p class="text-sm text-gray-600 mb-1">Category</p>
-				<p class="font-medium text-gray-900">{data.request?.brand_category}</p>
+				<p class="font-medium text-gray-900">{(data.request as any)?.brand_category}</p>
 			</div>
-			{#if data.request?.business_registration_number}
+			{#if (data.request as any)?.business_registration_number}
 				<div>
 					<p class="text-sm text-gray-600 mb-1">Business Registration</p>
-					<p class="font-medium text-gray-900">{data.request?.business_registration_number}</p>
+					<p class="font-medium text-gray-900">{(data.request as any)?.business_registration_number}</p>
 				</div>
 			{/if}
-			{#if data.request?.tax_id}
+			{#if (data.request as any)?.tax_id}
 				<div>
 					<p class="text-sm text-gray-600 mb-1">Tax ID</p>
-					<p class="font-medium text-gray-900">{data.request?.tax_id}</p>
+					<p class="font-medium text-gray-900">{(data.request as any)?.tax_id}</p>
 				</div>
 			{/if}
 		</div>
@@ -178,18 +178,18 @@
 				<p class="font-medium text-gray-900">{data.profile.full_name || data.profile.username}</p>
 				<p class="text-sm text-gray-600">@{data.profile.username}</p>
 				<p class="text-sm text-gray-600 mt-1">
-					Member since {formatDate(data.profile.created_at)}
+					Member since {formatDate(data.profile.created_at || '')}
 				</p>
 				<div class="flex items-center gap-4 mt-2 text-sm">
 					<span>
-						<span class="font-medium">{data.profile.followers_count}</span> followers
+						<span class="font-medium">{data.profile.follower_count || 0}</span> followers
 					</span>
 					<span>
-						<span class="font-medium">{data.profile.listings_count}</span> listings
+						<span class="font-medium">{(data.profile as any)?.listings_count || 0}</span> listings
 					</span>
-					{#if data.profile.seller_rating > 0}
+					{#if data.profile.seller_rating && data.profile.seller_rating > 0}
 						<span>
-							<span class="font-medium">{data.profile.seller_rating.toFixed(1)}</span> rating
+							<span class="font-medium">{data.profile.seller_rating?.toFixed(1)}</span> rating
 						</span>
 					{/if}
 				</div>
@@ -198,7 +198,7 @@
 	</div>
 
 	<!-- Social Media Accounts -->
-	{#if data.socialAccounts.length > 0 || (data.request?.social_media_accounts && Object.keys(data.request?.social_media_accounts).length > 0)}
+	{#if data.socialAccounts.length > 0 || ((data.request as any)?.social_media_accounts && Object.keys((data.request as any)?.social_media_accounts).length > 0)}
 		<div class="bg-white rounded-lg shadow-sm p-6">
 			<h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
 				<Link2 class="w-5 h-5" />
@@ -207,9 +207,9 @@
 			
 			<div class="space-y-3">
 				{#each data.socialAccounts as account}
-					{@const Icon = socialPlatformIcons[account?.platform as keyof typeof socialPlatformIcons] || Globe}
+					{@const Icon = socialPlatformIcons[(account as any)?.platform as keyof typeof socialPlatformIcons] || Globe}
 					<a
-						href={account?.url}
+						href={(account as any)?.url}
 						target="_blank"
 						rel="noopener noreferrer"
 						class="flex items-center justify-between p-3 bg-gray-50 rounded-lg
@@ -220,12 +220,12 @@
 								class="w-5 h-5 text-gray-600"
 							/>
 							<div>
-								<p class="font-medium text-gray-900 capitalize">{account?.platform}</p>
-								<p class="text-sm text-gray-600">@{account.username}</p>
+								<p class="font-medium text-gray-900 capitalize">{(account as any)?.platform}</p>
+								<p class="text-sm text-gray-600">@{(account as any)?.username}</p>
 							</div>
 						</div>
 						<div class="flex items-center gap-2">
-							{#if account?.is_verified}
+							{#if (account as any)?.is_verified}
 								<CheckCircle class="w-4 h-4 text-green-600" />
 							{/if}
 							<ExternalLink class="w-4 h-4 text-gray-400" />
@@ -237,7 +237,7 @@
 	{/if}
 
 	<!-- Documents -->
-	{#if data.request?.documents && data.request?.documents.length > 0}
+	{#if (data.request as any)?.documents && (data.request as any)?.documents.length > 0}
 		<div class="bg-white rounded-lg shadow-sm p-6">
 			<h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
 				<FileText class="w-5 h-5" />
@@ -245,7 +245,7 @@
 			</h2>
 			
 			<div class="space-y-2">
-				{#each data.request?.documents as doc}
+				{#each (data.request as any)?.documents as doc}
 					<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
 						<span class="text-sm text-gray-700">{doc.name}</span>
 						<a
@@ -262,7 +262,7 @@
 	{/if}
 
 	<!-- Admin Actions -->
-	{#if data.request?.verification_status === 'pending'}
+	{#if (data.request as any)?.verification_status === 'pending'}
 		<div class="bg-white rounded-lg shadow-sm p-6">
 			<h2 class="text-lg font-semibold text-gray-900 mb-4">Admin Actions</h2>
 			
@@ -370,25 +370,25 @@
 		</div>
 	{:else}
 		<!-- Already Reviewed -->
-		{@const StatusIcon = data.request?.verification_status === 'approved' ? CheckCircle : XCircle}
+		{@const StatusIcon = (data.request as any)?.verification_status === 'approved' ? CheckCircle : XCircle}
 		<div class="bg-gray-50 rounded-lg p-6">
 			<div class="flex items-center gap-3 mb-4">
 				<StatusIcon 
-					class="w-6 h-6 {data.request?.verification_status === 'approved' ? 'text-green-600' : 'text-red-600'}"
+					class="w-6 h-6 {(data.request as any)?.verification_status === 'approved' ? 'text-green-600' : 'text-red-600'}"
 				/>
 				<h3 class="text-lg font-semibold text-gray-900">
-					Request {data.request?.verification_status.replace('_', ' ')}
+					Request {(data.request as any)?.verification_status?.replace('_', ' ')}
 				</h3>
 			</div>
-			{#if data.request?.reviewed_at}
+			{#if (data.request as any)?.reviewed_at}
 				<p class="text-sm text-gray-600 mb-2">
-					Reviewed on {formatDate(data.request?.reviewed_at)}
+					Reviewed on {formatDate((data.request as any)?.reviewed_at || '')}
 				</p>
 			{/if}
-			{#if data.request?.admin_notes}
+			{#if (data.request as any)?.admin_notes}
 				<div class="bg-white rounded-lg p-4">
 					<p class="text-sm font-medium text-gray-700 mb-1">Admin Notes:</p>
-					<p class="text-gray-900">{data.request?.admin_notes}</p>
+					<p class="text-gray-900">{(data.request as any)?.admin_notes}</p>
 				</div>
 			{/if}
 		</div>

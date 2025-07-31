@@ -64,9 +64,9 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
     try {
         // Update order status to delivered
         await supabase?.rpc('update_order_status', {
-            p_order_id: orderId,
+            order_id: orderId,
             p_new_status: 'delivered',
-            p_user_id: session?.user.id,
+            user_id: session?.user.id,
             p_reason: reason || 'Order delivered and confirmed by buyer',
             p_metadata: {
                 delivered_by: 'buyer'
@@ -99,8 +99,8 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
             });
 
         // Create payout for seller if transaction exists
-        if (order?.transaction && order?.transaction?.seller_amount) {
-            const payoutAmount = order?.transaction?.seller_amount;
+        if ((order as any)?.transaction && (order as any)?.transaction?.seller_amount) {
+            const payoutAmount = (order as any)?.transaction?.seller_amount;
             
             // Create payout record
             await supabase
@@ -108,7 +108,7 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
                 .insert({
                     seller_id: order?.seller_id,
                     order_id: orderId,
-                    transaction_id: order?.transaction.id,
+                    transaction_id: (order as any)?.transaction.id,
                     amount: payoutAmount,
                     currency: 'usd',
                     status: 'pending',
@@ -124,7 +124,7 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
                     payout_eligible_at: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
                     updated_at: new Date().toISOString()
                 })
-                .eq('id', order?.transaction.id);
+                .eq('id', (order as any)?.transaction.id);
         }
 
         // TODO: Send email notifications when email service is configured
@@ -132,7 +132,7 @@ export const POST: RequestHandler = async ({ locals, params, request }) => {
         return json({ 
             success: true,
             message: 'Order marked as delivered successfully',
-            payout_scheduled: !!order?.transaction
+            payout_scheduled: !!(order as any)?.transaction
         });
     } catch (error) {
         console?.error('Error completing order:', error);

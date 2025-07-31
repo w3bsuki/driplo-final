@@ -1,6 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit'
 import type { Actions, PageServerLoad } from './$types'
 import { z } from 'zod'
+import { generateCSRFToken, csrfProtectedAction } from '$lib/server/csrf'
 
 const registerSchema = z.object({
 	email: z.string().email('Invalid email address'),
@@ -43,13 +44,17 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	// Check if showing success message
 	const success = url.searchParams.get('success') === 'true'
 	
+	// Generate CSRF token for the form
+	const csrfToken = generateCSRFToken()
+	
 	return {
-		success
+		success,
+		csrfToken
 	}
 }
 
-export const actions = {
-	default: async ({ request, locals, getClientAddress }) => {
+export const actions: Actions = {
+	default: csrfProtectedAction(async ({ request, locals, getClientAddress }) => {
 		const formData = await request.formData()
 		const data = Object.fromEntries(formData)
 		
@@ -73,12 +78,12 @@ export const actions = {
 		} = result.data
 		
 		// Verify CAPTCHA with Cloudflare Turnstile (skip in development if not configured)
-		const turnstileSecret = process.env.TURNSTILE_SECRET_KEY || '1x0000000000000000000000000000000AA' // Test key
+		const turnstileSecret = process.env['TURNSTILE_SECRET_KEY'] || '1x0000000000000000000000000000000AA' // Test key
 		
 		// In development with test keys, always pass
 		if (captchaToken === 'development-test-token' || turnstileSecret === '1x0000000000000000000000000000000AA') {
 			// Skip verification with test keys
-		} else if (process.env.NODE_ENV === 'production' && !captchaToken) {
+		} else if (process.env['NODE_ENV'] === 'production' && !captchaToken) {
 			// In production, CAPTCHA is required
 			return fail(400, {
 				error: 'CAPTCHA verification is required'
@@ -106,7 +111,7 @@ export const actions = {
 			} catch (error) {
 				console.error('CAPTCHA verification error:', error)
 				// Continue without CAPTCHA in development
-				if (process.env.NODE_ENV === 'production') {
+				if (process.env['NODE_ENV'] === 'production') {
 					return fail(500, {
 						error: 'CAPTCHA verification service unavailable'
 					})
@@ -127,15 +132,15 @@ export const actions = {
 			console.error('Rate limit check error:', rateLimitError)
 		}
 		
-		if (rateLimitCheck && !rateLimitCheck.allowed) {
-			const minutes = Math.ceil((rateLimitCheck.retry_after || 7200) / 60)
+		if (rateLimitCheck && !(rateLimitCheck as any).allowed) {
+			const minutes = Math.ceil(((rateLimitCheck as any).retry_after || 7200) / 60)
 			return fail(429, {
 				error: `Too many registration attempts. Please try again in ${minutes} minutes.`
 			})
 		}
 		
 		// Generate a temporary username from email
-		const tempUsername = email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '') + Math.floor(Math.random() * 1000)
+		const tempUsername = (email.split('@')[0] || 'user').replace(/[^a-zA-Z0-9]/g, '') + Math.floor(Math.random() * 1000)
 		
 		// Sign up user through Supabase Auth
 		const { data: signUpData, error: signUpError } = await locals.supabase.auth.signUp({
@@ -157,15 +162,19 @@ export const actions = {
 		
 		if (signUpError) {
 			// Log failed registration attempt
-			await locals.supabase.rpc('log_auth_event', {
-				p_user_id: null,
-				p_action: 'register_failed',
-				p_ip_address: getClientAddress(),
-				p_user_agent: request.headers.get('user-agent') || null,
-				p_success: false,
-				p_error_message: signUpError.message,
-				p_metadata: { email, account_type: accountType }
-			}).catch(console.error)
+			try {
+				await locals.supabase.rpc('log_auth_event', {
+					user_id: undefined,
+					p_action: 'register_failed',
+					p_ip_address: getClientAddress(),
+					p_user_agent: request.headers.get('user-agent') || undefined,
+					p_success: false,
+					p_error_message: signUpError.message,
+					p_metadata: { email, account_type: accountType }
+				})
+			} catch (error) {
+				console.error(error)
+			}
 			
 			// Handle specific error cases
 			if (signUpError.message?.includes('duplicate') || signUpError.message?.includes('already registered')) {
@@ -181,18 +190,22 @@ export const actions = {
 		
 		if (signUpData.user) {
 			// Log successful registration
-			await locals.supabase.rpc('log_auth_event', {
-				p_user_id: signUpData.user.id,
-				p_action: 'register_success',
-				p_ip_address: getClientAddress(),
-				p_user_agent: request.headers.get('user-agent') || null,
-				p_success: true,
-				p_error_message: null,
-				p_metadata: { email, account_type: accountType }
-			}).catch(console.error)
+			try {
+				await locals.supabase.rpc('log_auth_event', {
+					user_id: signUpData.user.id,
+					p_action: 'register_success',
+					p_ip_address: getClientAddress(),
+					p_user_agent: request.headers.get('user-agent') || undefined,
+					p_success: true,
+					p_error_message: null,
+					p_metadata: { email, account_type: accountType }
+				})
+			} catch (error) {
+				console.error(error)
+			}
 		}
 		
 		// Redirect to success page
 		throw redirect(303, '/register?success=true')
-	}
+	})
 } satisfies Actions

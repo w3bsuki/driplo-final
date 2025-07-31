@@ -14,7 +14,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 			const redirectTo = url?.searchParams.get('redirect') || '/'
 			throw redirect(303, redirectTo)
 		}
-	} catch (error) {
+	} catch (error: unknown) {
 		// If it's a redirect from SvelteKit, rethrow it
 		if (error && typeof error === 'object' && 'status' in error && 'location' in error) {
 			throw error
@@ -65,9 +65,9 @@ export const actions: Actions = {
 					p_block_minutes: 30
 				})
 				
-				if (rateLimitCheck && !rateLimitCheck?.allowed) {
-					const errorMessage = rateLimitCheck?.reason === 'blocked' 
-						? `Too many login attempts. Please try again in ${Math?.ceil(rateLimitCheck?.retry_after / 60)} minutes.`
+				if (rateLimitCheck && !(rateLimitCheck as any)?.allowed) {
+					const errorMessage = (rateLimitCheck as any)?.reason === 'blocked' 
+						? `Too many login attempts. Please try again in ${Math?.ceil((rateLimitCheck as any)?.retry_after / 60)} minutes.`
 						: 'Too many login attempts. Please try again later.'
 						
 					return fail(429, { 
@@ -90,7 +90,7 @@ export const actions: Actions = {
 				// Log failed login attempt
 				try {
 					await locals?.supabase.rpc('log_auth_event', {
-						p_user_id: null,
+						user_id: undefined,
 						p_action: 'login_failed',
 						p_ip_address: request?.headers.get('x-forwarded-for') || 
 									  request?.headers.get('x-real-ip') || 
@@ -124,7 +124,7 @@ export const actions: Actions = {
 				// Log successful login
 				try {
 					await locals?.supabase.rpc('log_auth_event', {
-						p_user_id: data?.user.id,
+						user_id: data?.user.id,
 						p_action: 'login',
 						p_ip_address: request?.headers.get('x-forwarded-for') || 
 									  request?.headers.get('x-real-ip') || 
@@ -159,7 +159,7 @@ export const actions: Actions = {
 				email: email
 			})
 			
-		} catch (error) {
+		} catch (error: unknown) {
 			// Handle redirect
 			if (error && typeof error === 'object' && 'status' in error && 'location' in error) {
 				throw error

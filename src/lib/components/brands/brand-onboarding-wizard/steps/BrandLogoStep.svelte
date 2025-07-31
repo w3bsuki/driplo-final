@@ -32,7 +32,7 @@
 		minDimensionPx: 100
 	});
 
-	let fileInput: HTMLInputElement;
+	let fileInput = $state<HTMLInputElement | null>(null);
 	let dragActive = $state(false);
 
 	// Watch upload state and notify parent
@@ -86,7 +86,7 @@
 
 	function triggerFileSelect() {
 		if (!disabled && !imageUpload.isUploading) {
-			fileInput.click();
+			fileInput?.click();
 		}
 	}
 

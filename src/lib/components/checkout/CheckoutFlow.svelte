@@ -399,20 +399,20 @@
 							<div class="space-y-[var(--spacing-2)]">
 								<div class="flex justify-between text-[var(--font-size-sm)]">
 									<span>Item Price</span>
-									<span class="font-medium">{formatCurrency(itemPrice)}</span>
+									<span class="font-medium">{formatCurrency(itemPrice, 'en')}</span>
 								</div>
 								<div class="flex justify-between text-[var(--font-size-sm)]">
 									<span>Shipping</span>
-									<span class="font-medium">{shippingCost > 0 ? formatCurrency(shippingCost) : 'Free'}</span>
+									<span class="font-medium">{shippingCost > 0 ? formatCurrency(shippingCost, 'en') : 'Free'}</span>
 								</div>
 								<div class="flex justify-between text-[var(--font-size-sm)] text-[var(--color-text-secondary)]">
 									<span>Buyer Protection (5% + $1)</span>
-									<span>{formatCurrency(buyerFee)}</span>
+									<span>{formatCurrency(buyerFee, 'en')}</span>
 								</div>
 								<div class="border-t border-[var(--color-brand-100)] pt-[var(--spacing-2)] mt-[var(--spacing-2)]">
 									<div class="flex justify-between font-semibold text-[var(--font-size-lg)]">
 										<span>Total</span>
-										<span class="text-[var(--color-brand-600)]">{formatCurrency(totalAmount)}</span>
+										<span class="text-[var(--color-brand-600)]">{formatCurrency(totalAmount, 'en')}</span>
 									</div>
 								</div>
 							</div>
@@ -478,7 +478,7 @@
 									/>
 									<div>
 										<p class="font-medium text-[var(--font-size-sm)]">{listing.title}</p>
-										<p class="text-[var(--font-size-xs)] text-[var(--color-text-secondary)]">Total: {formatCurrency(totalAmount)}</p>
+										<p class="text-[var(--font-size-xs)] text-[var(--color-text-secondary)]">Total: {formatCurrency(totalAmount, 'en')}</p>
 									</div>
 								</div>
 							</div>
@@ -506,7 +506,7 @@
 								<p class="text-[var(--font-size-sm)] text-[var(--color-text-secondary)] mb-[var(--spacing-1)]">Order ID</p>
 								<p class="font-mono text-[var(--font-size-sm)]">{orderData.orderId}</p>
 								<p class="text-[var(--font-size-sm)] text-[var(--color-text-secondary)] mt-[var(--spacing-3)] mb-[var(--spacing-1)]">Total Amount</p>
-								<p class="font-semibold">{formatCurrency(orderData.amount)}</p>
+								<p class="font-semibold">{formatCurrency(orderData.amount, 'en')}</p>
 							</div>
 
 							{#if orderData.paymentInstructions}
@@ -578,7 +578,7 @@
 								Continue to Payment
 								<ChevronRight class="w-4 h-4" />
 							{:else}
-								Pay {formatCurrency(totalAmount)}
+								Pay {formatCurrency(totalAmount, 'en')}
 							{/if}
 						</button>
 					{:else}

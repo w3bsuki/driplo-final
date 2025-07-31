@@ -55,7 +55,7 @@ export const GET: RequestHandler = async ({ locals, params, url }) => {
     if (messages && messages?.length ?? 0 > 0) {
         await supabase.rpc('mark_messages_as_read', {
             p_conversation_id: conversationId,
-            p_user_id: session.user.id
+            user_id: session.user.id
         });
     }
 

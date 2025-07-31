@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { _ChevronDown, Menu } from 'lucide-svelte';
+	import { Menu } from 'lucide-svelte';
 	import { cn } from '$lib/utils';
 	import { fly } from 'svelte/transition';
 	import CategoryDropdown from '$lib/components/shared/CategoryDropdown.svelte';
-	import type { Category } from '$lib/types';
+	import type { UnifiedCategory as Category } from '$lib/types';
 	import * as m from '$lib/paraglide/messages.js';
 	import { goto } from '$app/navigation';
 
@@ -24,7 +24,6 @@
 		onSearch,
 		onCategorySelect,
 		categories = [],
-		_activeCategory= '',
 		class: className = '',
 		visible = true
 	}: Props = $props();
@@ -82,17 +81,6 @@
 		if (e?.key === 'Enter') {
 			handleSearch();
 		}
-	}
-
-	// Handle category selection from dropdown
-	function handleCategoryClick(category: Category) {
-		if (onCategorySelect) {
-			onCategorySelect(category?.slug);
-		} else {
-			// Default navigation behavior
-			goto(`/${category?.slug}`);
-		}
-		closeCategoryDropdown();
 	}
 </script>
 

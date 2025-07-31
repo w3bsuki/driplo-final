@@ -100,9 +100,9 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
         // Handle status updates separately
         if (updates.status) {
             await supabase.rpc('update_order_status', {
-                p_order_id: orderId,
+                order_id: orderId,
                 p_new_status: updates.status,
-                p_user_id: session.user.id,
+                user_id: session.user.id,
                 p_reason: updates.status_reason || null,
                 p_metadata: updates.status_metadata || null
             });

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { _onMount, onDestroy } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { CreditCard } from 'lucide-svelte';
-	import { _toast} from 'svelte-sonner';
+	import { toast } from 'svelte-sonner';
 	import { logger } from '$lib/services/logger';
 	import { useStripePayment } from './hooks/useStripePayment.svelte';
 	import { useRevolutPayment } from './hooks/useRevolutPayment.svelte';
@@ -52,7 +52,7 @@
 	const revolutPayment = useRevolutPayment();
 
 	// Payment container element for Stripe
-	let stripeContainer: HTMLElement;
+	let stripeContainer = $state<HTMLElement | null>(null);
 
 	// Initialize payment method when provider changes
 	$effect(() => {
@@ -198,13 +198,13 @@
 	function getPaymentButtonText(): string {
 		if (isProcessing) {
 			return paymentProvider === 'stripe' 
-				? m?.processing_payment() 
-				: m?.creating_payment();
+				? m?.['processing_payment']() 
+				: m?.['creating_payment']();
 		}
 		
 		return paymentProvider === 'stripe' 
-			? m?.pay_now() 
-			: m?.create_payment_request();
+			? m?.['pay_now']() 
+			: m?.['create_payment_request']();
 	}
 </script>
 
@@ -215,14 +215,14 @@
 		<div class="space-y-4">
 			<div class="flex items-center space-x-2">
 				<CreditCard class="h-5 w-5 text-brand-500" />
-				<h3 class="text-lg font-semibold text-gray-900">{m?.card_details()}</h3>
+				<h3 class="text-lg font-semibold text-gray-900">{m?.['card_details']()}</h3>
 			</div>
 
 			<!-- Stripe Initialization Status -->
 			{#if stripePayment?.isInitializing}
 				<div class="flex items-center justify-center py-8">
 					<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500"></div>
-					<span class="ml-3 text-sm text-gray-600">{m?.loading_payment_form()}</span>
+					<span class="ml-3 text-sm text-gray-600">{m?.['loading_payment_form']()}</span>
 				</div>
 			{:else if stripePayment?.clientSecret}
 				<!-- Stripe Card Element Container -->
@@ -234,18 +234,18 @@
 				{#if !stripePayment?.cardElementMounted}
 					<div class="flex items-center justify-center py-4">
 						<div class="animate-spin rounded-full h-6 w-6 border-b-2 border-brand-500"></div>
-						<span class="ml-2 text-sm text-gray-600">{m?.loading_card_form()}</span>
+						<span class="ml-2 text-sm text-gray-600">{m?.['loading_card_form']()}</span>
 					</div>
 				{/if}
 			{:else}
 				<!-- Stripe Initialization Failed -->
 				<div class="bg-red-50 border border-red-200 rounded-lg p-4">
-					<p class="text-sm text-red-700">{m?.payment_form_load_error()}</p>
+					<p class="text-sm text-red-700">{m?.['payment_form_load_error']()}</p>
 					<button
 						onclick={initializePayment}
 						class="mt-2 text-sm text-red-600 hover:text-red-800 underline"
 					>
-						{m?.try_again()}
+						{m?.['try_again']()}
 					</button>
 				</div>
 			{/if}
@@ -281,9 +281,9 @@
 	<div class="text-center">
 		<p class="text-xs text-gray-500">
 			{#if paymentProvider === 'stripe'}
-				{m?.stripe_security_notice()}
+				{m?.['stripe_security_notice']()}
 			{:else}
-				{m?.revolut_security_notice()}
+				{m?.['revolut_security_notice']()}
 			{/if}
 		</p>
 	</div>

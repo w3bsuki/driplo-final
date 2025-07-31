@@ -258,7 +258,7 @@
 	>
 		<!-- Backdrop -->
 		<button
-			class={computedBackdropClass}
+			class={computedBackdropClass()}
 			onclick={handleBackdropClick}
 			aria-label="Close dialog"
 			tabindex="-1"
@@ -266,11 +266,11 @@
 		
 		<!-- Dialog content -->
 		<div 
-			class={cn("fixed z-50", positionClasses)}
+			class={cn("fixed z-50", positionClasses())}
 			use:focusTrap={{ enabled: open, onDeactivate: handleClose }}
 		>
 			<div 
-				class={contentClasses}
+				class={contentClasses()}
 				transition:scale={{ duration: animationDuration }}
 				onclick={(e) => e.stopPropagation()}
 			>

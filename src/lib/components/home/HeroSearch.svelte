@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Button from '$lib/components/ui/button.svelte';
 	import { ChevronDown, Menu, Search } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { cn } from '$lib/utils/cn';
@@ -7,7 +8,7 @@
 	import { debug } from '$lib/utils/debug-logger';
 	import UnifiedFilter from '$lib/components/shared/UnifiedFilter.svelte';
 	import TrendingSearches from '$lib/components/search/TrendingSearches.svelte';
-	import type { Category } from '$lib/types';
+	import type { UnifiedCategory as Category } from '$lib/types';
 	import { onMount } from 'svelte';
 	import {
 		header_categories,
@@ -60,7 +61,6 @@
 	const DESKTOP_QUICK_FILTERS_LIMIT = 4;
 	const DESKTOP_CATEGORY_LIMIT = 3;
 	const MOBILE_CATEGORIES_LIMIT = 2;
-	const _MOBILE_QUICK_FILTERS_FIRST_BATCH = 4;
 	const ICON_SIZE_SM = 'h-3.5 w-3.5';
 	const ICON_SIZE_BASE = 'h-4 w-4';
 	const BUTTON_HEIGHT = 'h-9';
@@ -72,7 +72,7 @@
 	let isCategoryDropdownOpen = $state(false);
 	let activeCategory = $state('');
 	let isSticky = $state(false);
-	let heroRef: HTMLElement;
+	let heroRef: HTMLElement | null;
 	let StickySearchBar = $state<any>(null);
 	let isHydrated = $state(false);
 
@@ -92,7 +92,13 @@
 	];
 
 	// Quick filters with emojis
-	const quickFilters = [
+	const quickFilters: Array<{
+		icon: string;
+		name: string;
+		action: string;
+		ariaLabel: string;
+		variant: 'golden' | 'blue' | 'pink' | 'hot' | 'sale' | 'default';
+	}> = [
 		{ icon: '⭐', name: quick_filter_top_sellers(), action: 'top-sellers', ariaLabel: quick_filter_top_sellers(), variant: 'golden' },
 		{ icon: '👨', name: quick_filter_men(), action: 'men', ariaLabel: category_men(), variant: 'blue' },
 		{ icon: '👩', name: quick_filter_women(), action: 'women', ariaLabel: category_women(), variant: 'pink' },
@@ -153,7 +159,9 @@
 		
 		const observer = new IntersectionObserver(
 			([entry]) => {
-				isSticky = !entry.isIntersecting;
+				if (entry) {
+					isSticky = !entry.isIntersecting;
+				}
 			},
 			{ threshold: 0, rootMargin: INTERSECTION_ROOT_MARGIN }
 		);
@@ -222,23 +230,14 @@
 						<div class="flex items-center min-w-0 py-2 px-3">
 							<!-- Category Dropdown Button -->
 							<div class="relative flex-shrink-0">
-								<button
-									data-categories-button
-									onclick={toggleCategoryDropdown}
-									class={cn(
-										`${BUTTON_HEIGHT} px-3 font-medium focus:outline-none transition-all duration-100 rounded-sm flex items-center gap-2`,
-										isCategoryDropdownOpen 
-											? "bg-brand-500 text-white hover:bg-brand-600" 
-											: "bg-gray-900 text-white hover:bg-gray-800"
-									)}
-								>
+								<Button class={cn(`${BUTTON_HEIGHT} px-3 py-2 text-sm font-medium hover:bg-gray-100`)} onclick={toggleCategoryDropdown}>
 									<span class="text-sm">{header_categories()}</span>
 									<ChevronDown class={cn(
 										ICON_SIZE_SM,
 										"transition-transform duration-100",
 										isCategoryDropdownOpen && "rotate-180"
 									)} />
-								</button>
+								</Button>
 							</div>
 							
 							<!-- Divider -->
@@ -260,13 +259,9 @@
 									aria-label={browse_search_placeholder()}
 									class={`${INPUT_HEIGHT} w-full border-0 focus:ring-0 bg-transparent text-sm`}
 								/>
-								<button
-									onclick={handleSearch}
-									class={`${BUTTON_HEIGHT} w-9 hover:opacity-75 transition-opacity duration-100 focus:outline-none focus:ring-1 focus:ring-brand-500 rounded-sm flex items-center justify-center flex-shrink-0`}
-									aria-label={quick_filter_search_button()}
-								>
+								<Button class={`${BUTTON_HEIGHT} px-3 py-2 bg-primary text-white hover:bg-primary/90`} onclick={handleSearch} aria-label={quick_filter_search_button()}>
 									<Search class={ICON_SIZE_BASE} />
-								</button>
+								</Button>
 							</div>
 						</div>
 						
@@ -277,8 +272,8 @@
 								
 								<!-- Quick Filters Component -->
 								<UnifiedFilter mode="pills"
-									filters={quickFilters.slice(0, DESKTOP_QUICK_FILTERS_LIMIT)}
-									onFilterClick={handleQuickFilter}
+									quickFilters={quickFilters.slice(0, DESKTOP_QUICK_FILTERS_LIMIT)}
+									onQuickFilterClick={handleQuickFilter}
 									class="flex-1"
 								/>
 								
@@ -287,8 +282,8 @@
 								
 								<!-- More Filters -->
 								<UnifiedFilter mode="pills"
-									filters={quickFilters.slice(DESKTOP_QUICK_FILTERS_LIMIT)}
-									onFilterClick={handleQuickFilter}
+									quickFilters={quickFilters.slice(DESKTOP_QUICK_FILTERS_LIMIT)}
+									onQuickFilterClick={handleQuickFilter}
 									class="flex-1"
 								/>
 								
@@ -298,14 +293,14 @@
 								<!-- Category Quick Links -->
 								<div class="flex items-center gap-2 overflow-x-auto scrollbar-hide">
 									{#each categories.slice(0, DESKTOP_CATEGORY_LIMIT) as category}
-										<button
+										<Button
 											onclick={() => handleCategorySelect(category.slug)}
 											aria-label="Category: {getCategoryName(category)}"
 											class="flex items-center gap-1.5 px-3 py-2 rounded-sm bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-sm font-medium whitespace-nowrap transition-colors duration-100 focus:outline-none focus:ring-1 focus:ring-brand-500"
 										>
 											<span class="text-sm" aria-hidden="true">{category.icon_url || category.icon || '📦'}</span>
 											<span>{getCategoryName(category)}</span>
-										</button>
+										</Button>
 									{/each}
 								</div>
 							</div>
@@ -337,14 +332,9 @@
 						<div class="flex items-center py-2 px-3 gap-2">
 							<!-- Categories Icon Button -->
 							<div class="relative">
-								<button
-									data-categories-button
-									onclick={toggleCategoryDropdown}
-									class={`${BUTTON_HEIGHT} w-9 rounded-sm bg-gray-900 text-white hover:bg-gray-800 transition-colors duration-100 flex items-center justify-center flex-shrink-0`}
-									aria-label={quick_filter_categories_menu()}
-								>
+								<Button class={`${BUTTON_HEIGHT} px-3 py-2 hover:bg-gray-100`} onclick={toggleCategoryDropdown} aria-label={quick_filter_categories_menu()}>
 									<Menu class={ICON_SIZE_BASE} />
-								</button>
+								</Button>
 							</div>
 							
 							<!-- Divider -->
@@ -366,13 +356,9 @@
 								class={`${INPUT_HEIGHT} flex-1 border-0 focus:ring-0 bg-transparent text-sm min-w-0`}
 							/>
 							
-							<button
-								onclick={handleSearch}
-								class={`${BUTTON_HEIGHT} w-9 hover:opacity-75 transition-opacity duration-100 focus:outline-none focus:ring-1 focus:ring-brand-500 rounded-sm flex items-center justify-center flex-shrink-0`}
-								aria-label={quick_filter_search_button()}
-							>
+							<Button class={`${BUTTON_HEIGHT} px-3 py-2 bg-primary text-white hover:bg-primary/90`} onclick={handleSearch} aria-label={quick_filter_search_button()}>
 								<Search class={ICON_SIZE_BASE} />
-							</button>
+							</Button>
 						</div>
 						
 						<!-- Mobile Category Dropdown - Opens above pills for better UX -->
@@ -396,8 +382,8 @@
 									<div class="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
 										<!-- Use QuickFilterPills component for consistent styling -->
 										<UnifiedFilter mode="pills"
-											filters={quickFilters}
-											onFilterClick={handleQuickFilter}
+											quickFilters={quickFilters}
+											onQuickFilterClick={handleQuickFilter}
 											class="flex-shrink-0"
 											showScrollHint={false}
 										/>
@@ -407,13 +393,13 @@
 										
 										<!-- Category Quick Links -->
 										{#each categories.slice(0, MOBILE_CATEGORIES_LIMIT) as category}
-											<button
+											<Button
 												onclick={() => handleCategorySelect(category.slug)}
 												class="flex items-center gap-1 px-2.5 py-1.5 rounded-sm bg-white border border-gray-200 text-gray-700 text-sm font-medium whitespace-nowrap flex-shrink-0 hover:border-gray-300 hover:bg-gray-50"
 											>
 												<span class="text-sm">{category.icon_url || category.icon || '📦'}</span>
 												<span>{getCategoryName(category)}</span>
-											</button>
+											</Button>
 										{/each}
 									</div>
 								</div>

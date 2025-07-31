@@ -69,33 +69,33 @@ export class AppError extends Error {
 export function getErrorMessage(error: any): string {
   // Check if it's our custom AppError
   if (error instanceof AppError) {
-    return ERROR_MESSAGES[error.code] || error.message || ERROR_MESSAGES['unknown'];
+    return ERROR_MESSAGES[error.code] || error.message || ERROR_MESSAGES['unknown'] || 'An unknown error occurred';
   }
 
   // Check for mapped error codes
   const errorString = error?.message || error?.code || String(error);
   for (const [key, code] of Object.entries(ERROR_CODE_MAP)) {
     if (errorString.toLowerCase().includes(key.toLowerCase())) {
-      return ERROR_MESSAGES[code] || ERROR_MESSAGES['unknown'];
+      return ERROR_MESSAGES[code] || ERROR_MESSAGES['unknown'] || 'An unknown error occurred';
     }
   }
 
   // Check for network errors
   if (!browser || !navigator.onLine) {
-    return ERROR_MESSAGES['network/offline'];
+    return ERROR_MESSAGES['network/offline'] || 'You appear to be offline. Please check your connection.';
   }
 
   // Check for specific error patterns
   if (error?.status === 429 || errorString.includes('rate limit')) {
-    return ERROR_MESSAGES['rate-limit/exceeded'];
+    return ERROR_MESSAGES['rate-limit/exceeded'] || 'Too many requests. Please wait a moment and try again.';
   }
 
   if (error?.status >= 500 || errorString.includes('server')) {
-    return ERROR_MESSAGES['network/server-error'];
+    return ERROR_MESSAGES['network/server-error'] || 'Server error. Please try again later.';
   }
 
   // Default message
-  return ERROR_MESSAGES.unknown;
+  return ERROR_MESSAGES['unknown'] || 'Something went wrong. Please try again.';
 }
 
 // Retry configuration
